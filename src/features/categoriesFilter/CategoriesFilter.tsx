@@ -26,7 +26,6 @@ const CategoriesFilter: React.FC<CategoriesFilterProps> = () => {
         return null;
     }
 };
-
   useEffect(() => {
     const fetchData = async () => {
         try {
