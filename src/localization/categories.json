@@ -1,0 +1,71 @@
+{
+  "categories": [
+    {
+      "name": "All",
+      "iconPath": "stars"
+    },
+    {
+      "name": "Questions",
+      "iconPath": "questionMark"
+    },
+    {
+      "name": "Social Media",
+      "iconPath": "socialMedia"
+    },
+    {
+      "name": "Digital Marketing",
+      "iconPath": "digitalMarketing"
+    }
+  ],
+  "forms": [
+    {
+      "name": "Multiple Choice Questions Generator",
+      "description": "Create a multiple choice assessment on any topic, grade, diagnostic assessment, and any other kind you can imagine.",
+      "iconPath": "questionCreator",
+      "categoryName": "Questions",
+      "redirect": "MultipleChoiceQuestionsGenerator"
+    },
+    {
+      "name": "Match the following Questions Generator",
+      "description": "Create a Match the following  assessment on any topic, grade, diagnostic assessment, and any other kind you can imagine.",
+      "iconPath": "questionCreator",
+      "categoryName": "Questions",
+      "redirect": "MatchQuestionsGenerator"
+    },
+    {
+      "name": "Social Media Post Content Ideas Generator",
+      "description": "Generate creative and engaging social media post ideas tailored to your target audience and chosen platform.",
+      "iconPath": "socialPost",
+      "categoryName": "Social Media",
+      "redirect": "SocialMediaPostContentIdeasGenerator"
+    },
+    {
+      "name": "Social Media Post Content Generator",
+      "description": "Craft detailed social media posts based on your conceptual ideas, specifically designed for your target audience and chosen platform.",
+      "iconPath": "socialPost",
+      "categoryName": "Social Media",
+      "redirect": "SocialMediaPostContentGenerator"
+    },
+    {
+      "name": "Social Media Meme Ideas Generator",
+      "description": "Generate creative and engaging meme ideas that resonate with your target audience and are suitable for various social media platforms.",
+      "iconPath": "socialPost",
+      "categoryName": "Social Media",
+      "redirect": "SocialMediaMemeIdeasGenerator"
+    },
+    {
+      "name": "Email Content Generator",
+      "description": "Create compelling and effective email content tailored to your audience and specific objectives.",
+      "iconPath": "emailContent",
+      "categoryName": "Digital Marketing",
+      "redirect": "EmailContentGenerator"
+    },
+    {
+      "name": "Facebook Ads Headline Generator",
+      "description": "Generate catchy and effective headlines for Facebook advertisements, specifically tailored to your campaign’s target audience and objectives.",
+      "iconPath": "emailContent",
+      "categoryName": "Digital Marketing",
+      "redirect": "FacebookAdsHeadlineGenerator"
+    }
+  ]
+}

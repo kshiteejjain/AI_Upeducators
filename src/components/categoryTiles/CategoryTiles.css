@@ -1,0 +1,40 @@
+@import "../../index.css";
+
+.tiles{
+    border-radius: 0.4rem;
+    background-color: var(--white);
+    max-width: 23%;
+    padding: 1.5rem;
+    box-sizing: border-box;
+    cursor: pointer;
+    box-shadow: 0 0 2px var(--white);
+    transition: all .3s;
+    margin: 0 1% 2% 1%;
+}
+.tiles:hover{
+    box-shadow: 0 0 7px var(--mediumGray);
+    transition: all .3s;
+}
+.tiles h1{
+    font-size: 1rem;
+    font-weight: bold;
+    text-align: left;
+    margin: 0 0 0.6rem 0;
+}
+.tiles p{
+    font-size: 0.95rem;
+    text-align: left;
+    margin: 0;
+}
+.tiles-icon{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 0 0 1rem 0;
+}
+.tilesIcon{
+    max-width: 1.5rem;
+}
+.bookmarkIcon{
+    max-width: 1.5rem;
+}

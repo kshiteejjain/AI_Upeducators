@@ -1,0 +1,49 @@
+@import '../../index.css';
+
+.result-section h2 {
+    font-size: 1.2rem;
+    margin: 0;
+}
+
+.result-section {
+    background-color: var(--white);
+    width: 49%;
+    border-radius: 0.5rem;
+    padding: 2rem;
+    box-sizing: border-box;
+    text-align: left;
+    max-height: calc(100vh - 150px);
+    overflow-y: auto;
+    position: relative;
+    border: 1px solid var(--primary);
+    line-height: 28px;
+}
+.resultQuestions {
+    margin-bottom: 1.5rem;
+    border-bottom: 1px solid #dee3ed;
+    padding-bottom: 1.5rem;
+    color: var(--black);
+    font-size: calc(var(--baseFontSize) - 1px);
+}
+.resultQuestions:last-child {
+    border: none;
+}
+
+.copyClipboard {
+    border-radius: 40px;
+    background-color: var(--white);
+    position: fixed;
+    right: 30px;
+    box-shadow: 0 0 5px var(--gray);
+    bottom: 30px;
+    width: 40px;
+    height: 40px;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.copyClipboard img {
+    max-width: 20px;
+}

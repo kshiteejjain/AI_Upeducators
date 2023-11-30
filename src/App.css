@@ -1,0 +1,73 @@
+@import "./index.css";
+#root {
+  margin: 0 auto;
+  text-align: center;
+  font-family: 'Lato', sans-serif;
+}
+.container{
+  max-width: 90%;
+  margin: 0 auto;
+}
+.page-wrapper{
+  margin: 2rem 0;
+}
+.page-wrapper .container{
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+}
+img{
+  max-width: 100%;
+}
+
+.form-group{
+  margin-bottom: 1.5rem;
+}
+
+.form-group label{
+  font-weight: bold;
+  font-size: calc(var(--baseFontSize) - 3px);
+  margin-bottom: 0.2rem;
+  display: block;
+}
+.form-control{
+  padding: 0.5rem;
+  border-radius: 0.3rem;
+  font-size: calc(var(--baseFontSize) - 3px);
+  background-color: var(--white);
+  color: var(--black);
+  width: 100%;
+  border: 1px solid var(--gray);
+  box-sizing: border-box;
+  font-family: 'Lato', sans-serif;
+}
+.asterisk{
+  color: var(--error);
+  font-size: var(--baseFontSize);
+}
+
+.promptMessage{
+  margin-top: 2rem;
+}
+.noDataFoundImage{
+  max-width: 250px;
+  margin: 100px auto;
+}
+
+.generator-section h2 {
+  font-size: 1.2rem;
+  margin: 0.5rem 0;
+}
+.generator-section h3 {
+  font-size: var(--baseFontSize);
+  margin: 0 0 2rem 0;
+  font-weight: normal;
+}
+.generator-section{
+  background-color: var(--white);
+  width: 49%;
+  border-radius: 0.5rem;
+  padding: 1.5rem 2rem;
+  box-sizing: border-box;
+  text-align: left;
+}

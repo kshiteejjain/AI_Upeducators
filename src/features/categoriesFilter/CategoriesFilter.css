@@ -1,0 +1,31 @@
+@import "../../index.css";
+
+.chipList{
+    display: flex;
+    flex-direction: column;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    background-color: var(--white);
+    border-radius: 1rem;
+    box-shadow: 0 0 5px var(--gray);
+    width: 15%;
+}
+.chipList li{
+    cursor: pointer;
+    padding: 1rem 1.5rem;
+    border-bottom: 1px solid var(--gray);
+    font-size: calc(var(--baseFontSize) - 2px);
+    display: flex;
+    align-items: center;
+}  
+.chipList li:hover{
+    background-color: var(--lightGray);
+}
+.chipList li:last-child{
+    border-bottom: none;
+}
+.category-icon{
+    max-width: 20px;
+    margin-right: 5px;
+}

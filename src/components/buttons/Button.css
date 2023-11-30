@@ -1,0 +1,19 @@
+@import "../../index.css";
+
+.button{
+    padding: 0.7rem 2rem;
+    text-align: center;
+    background-color: var(--primary);
+    color: #ffffff;
+    border-radius: 2rem;
+    font-size: 14px;
+    font-weight: bold;
+    border: 1px solid var(--primary);
+    transition: all .3s;
+}
+.button:hover{
+    background-color: #fff;
+    border-color: var(--primary);
+    color: #0e75be;
+    transition: all .3s;
+}
