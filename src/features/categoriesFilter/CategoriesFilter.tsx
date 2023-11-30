@@ -4,50 +4,57 @@ import CategoriesAPI from "../../localization/categories.json";
 import './CategoriesFilter.css';
 
 type CategoriesFilterType = {
-  IconComponent: string | undefined;
+  IconComponent?: string | undefined;
   name: string;
-  iconPath: string;
+  iconPath?: string;
 };
 
 type CategoriesFilterProps = {
-  categories: CategoriesFilterType[];
+  categories?: CategoriesFilterType[];
   onSelect: (category: string) => void;
 };
 
-const CategoriesFilter: React.FC<CategoriesFilterProps> = () => {
+const CategoriesFilter: React.FC<CategoriesFilterProps> = ({ onSelect }) => {
   const [categories, setCategories] = useState<CategoriesFilterType[]>([]);
+  const [activeCategory, setActiveCategory] = useState<string>('All'); // Default to 'All'
 
   const getIconPath = async (iconPath: string) => {
     try {
-        const iconModule = await import(`../../assets/${iconPath}.svg`);
-        return iconModule.default;
+      const iconModule = await import(`../../assets/${iconPath}.svg`);
+      return iconModule.default;
     } catch (error) {
-        console.error(`Error loading icon ${iconPath}:`, error);
-        return null;
+      console.error(`Error loading icon ${iconPath}:`, error);
+      return null;
     }
-};
+  };
+
   useEffect(() => {
     const fetchData = async () => {
-        try {
-            const formattedCategories = await Promise.all(
-                CategoriesAPI.categories.map(async (item) => ({
-                    name: item.name,
-                    IconComponent: await getIconPath(item.iconPath),
-                }))
-            );
-            setCategories(formattedCategories);
-        } catch (error) {
-            console.error('Error fetching categories:', error);
-        }
+      try {
+        const formattedCategories = await Promise.all(
+          CategoriesAPI.categories.map(async (item) => ({
+            name: item.name,
+            IconComponent: await getIconPath(item.iconPath),
+          }))
+        );
+        setCategories(formattedCategories);
+      } catch (error) {
+        console.error('Error fetching categories:', error);
+      }
     };
 
     fetchData();
-}, []);
+  }, []);
+
+  const handleClickTarget = (name: string) => {
+    setActiveCategory(name); // Set the active category on click
+    onSelect(name);
+  };
 
   return (
     <ul className="chipList">
       {categories.map((item, index) => (
-        <li key={index}>
+        <li key={index} onClick={() => handleClickTarget(item.name)} className={activeCategory === item.name ? 'active' : ''}>
           <img src={item.IconComponent} alt={`${item.iconPath}`} className="category-icon" />
           {item.name}
         </li>

@@ -20,6 +20,8 @@ type Props = {
 const Categories = () => {
 
     const [categories, setCategories] = useState<Props[]>([]);
+    const [filterCategory, setFilterCategory] = useState('All');
+
     const navigate = useNavigate();
 
     const getIconPath = async (iconPath: string) => {
@@ -42,6 +44,7 @@ const Categories = () => {
                         iconPath: item.iconPath,
                         redirect: item.redirect,
                         IconComponent: await getIconPath(item.iconPath),
+                        categoryName: item.categoryName
                     }))
                 );
                 setCategories(formattedCategories);
@@ -61,19 +64,33 @@ const Categories = () => {
         }
     };
 
+    const handleCategorySelect = (selectedCategory: string) => {
+        console.log('Selected category:', selectedCategory);
+        setFilterCategory(selectedCategory)
+    };
+
+
     return (
         <>
             <Header />
             <div className='page-wrapper'>
                 <div className='container'>
-                    <CategoriesFilter />
+                    <CategoriesFilter onSelect={handleCategorySelect} />
                     <div className='category-listing'>
-                        {categories.map((item, index) => (
-                            <CategoryTiles key={index} title={item.name}
-                                onClick={() => handleTile(item.redirect)}
-                                tilesIcon={item.IconComponent}
-                                description={item.description} />
-                        ))}
+                        {categories
+                            .filter(item => {
+                                const isMatchingCategory = filterCategory === 'All' || item.categoryName === filterCategory;
+                                return isMatchingCategory;
+                            })
+                            .map((item, index) => (
+                                <CategoryTiles
+                                    key={index}
+                                    title={item.name}
+                                    onClick={() => handleTile(item.redirect)}
+                                    tilesIcon={item.IconComponent}
+                                    description={item.description}
+                                />
+                            ))}
                     </div>
                 </div>
             </div>

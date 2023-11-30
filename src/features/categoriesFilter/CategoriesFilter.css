@@ -10,6 +10,8 @@
     border-radius: 1rem;
     box-shadow: 0 0 5px var(--gray);
     width: 15%;
+    min-height: 500px;
+    margin-bottom: 2rem;
 }
 .chipList li{
     cursor: pointer;
@@ -18,9 +20,12 @@
     font-size: calc(var(--baseFontSize) - 2px);
     display: flex;
     align-items: center;
-}  
+}
+.chipList li.active{
+    background-color:var(--lightBlue);
+}
 .chipList li:hover{
-    background-color: var(--lightGray);
+    background-color: var(--lightBlue);
 }
 .chipList li:last-child{
     border-bottom: none;
