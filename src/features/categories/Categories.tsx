@@ -9,6 +9,7 @@ import './Categories.css';
 
 
 type Props = {
+    categoryName: string;
     name: string;
     description: string;
     iconPath: string;
