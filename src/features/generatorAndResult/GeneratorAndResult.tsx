@@ -1,15 +1,13 @@
-import React, { Suspense } from 'react';
+import React, { Suspense, lazy } from 'react';
+import { useSelector } from 'react-redux';
 import Header from '../../components/header/Header';
 
 const GeneratorAndResult = () => {
-    const pathName = localStorage.getItem('redirectTo');
+    
+    const pathName = useSelector((state) => state.selectedCategory?.selectedCategory);
+    console.log('pathName redux', pathName)
 
-    let Generator;
-    if (pathName) {
-        Generator = React.lazy(() => import(`../promptsList/${pathName}`));
-    } else {
-        Generator = null; // Set a default value or handle the case where pathName is not set
-    }
+    const Generator = pathName ? lazy(() => import(`../promptsList/${pathName}`)): <p>Something went wrong</p>;
 
     const Result = React.lazy(() => import('../resultSection/Result'));
 

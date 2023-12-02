@@ -1,5 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { setCategory } from './CategoriesSlice';
 import CategoryTiles from '../../components/categoryTiles/CategoryTiles';
 import Header from '../../components/header/Header';
 import CategoriesAPI from "../../localization/categories.json";
@@ -20,9 +22,10 @@ type Props = {
 const Categories = () => {
 
     const [categories, setCategories] = useState<Props[]>([]);
-    const [filterCategory, setFilterCategory] = useState<Props[]>('All');
+    const [filterCategory, setFilterCategory] = useState('All');
 
     const navigate = useNavigate();
+    const dispatch = useDispatch();
 
     const getIconPath = async (iconPath: string) => {
         try {
@@ -58,9 +61,9 @@ const Categories = () => {
 
     const handleTile = (redirect?: string) => {
         if (redirect) {
-            localStorage.setItem('redirectTo', redirect)
-            navigate('/GeneratorAndResult');
-            console.log(redirect);
+            console.log(redirect)
+            dispatch(setCategory(redirect));
+            navigate('/GeneratorAndResult')
         }
     };
 

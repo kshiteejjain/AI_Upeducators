@@ -1,9 +1,11 @@
 import { configureStore } from '@reduxjs/toolkit'
-import generatorSlice from '../features/questionGeneratorSlice/QuestionGeneratorSlice'
+import generatorSlice from '../features/promptListGeneratorSlice/QuestionGeneratorSlice'
+import categoriesSlice from '../features/categories/CategoriesSlice'
 
 export const store = configureStore({
   reducer: {
     generatorData: generatorSlice,
+    selectedCategory: categoriesSlice,
   },
 })
 

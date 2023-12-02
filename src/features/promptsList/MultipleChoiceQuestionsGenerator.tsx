@@ -1,7 +1,7 @@
 import React, { useEffect, useState, ChangeEvent } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { ThunkDispatch } from 'redux-thunk';
-import { generatorPrompt } from '../questionGeneratorSlice/QuestionGeneratorSlice';
+import { generatorPrompt } from '../promptListGeneratorSlice/QuestionGeneratorSlice';
 import Button from '../../components/buttons/Button';
 import Loader from '../../components/loader/Loader';
 import { AnyAction } from '@reduxjs/toolkit';

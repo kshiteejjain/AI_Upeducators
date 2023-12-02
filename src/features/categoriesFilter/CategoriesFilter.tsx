@@ -14,41 +14,41 @@ type CategoriesFilterProps = {
   onSelect: (category: string) => void;
 };
 
-const CategoriesFilter: React.FC<CategoriesFilterProps> = ({onSelect}) => {
+const CategoriesFilter: React.FC<CategoriesFilterProps> = ({ onSelect }) => {
   const [categories, setCategories] = useState<CategoriesFilterType[]>([]);
   const [selectedCategory, setSelectedCategory] = useState('');
 
   const getIconPath = async (iconPath: string) => {
     try {
-        const iconModule = await import(`../../assets/${iconPath}.svg`);
-        return iconModule.default;
+      const iconModule = await import(`../../assets/${iconPath}.svg`);
+      return iconModule.default;
     } catch (error) {
-        console.error(`Error loading icon ${iconPath}:`, error);
-        return null;
+      console.error(`Error loading icon ${iconPath}:`, error);
+      return null;
     }
-};
+  };
   useEffect(() => {
     const fetchData = async () => {
-        try {
-            const formattedCategories = await Promise.all(
-                CategoriesAPI.categories.map(async (item) => ({
-                    name: item.name,
-                    IconComponent: await getIconPath(item.iconPath),
-                }))
-            );
-            setCategories(formattedCategories);
-        } catch (error) {
-            console.error('Error fetching categories:', error);
-        }
+      try {
+        const formattedCategories = await Promise.all(
+          CategoriesAPI.categories.map(async (item) => ({
+            name: item.name,
+            IconComponent: await getIconPath(item.iconPath),
+          }))
+        );
+        setCategories(formattedCategories);
+      } catch (error) {
+        console.error('Error fetching categories:', error);
+      }
     };
 
     fetchData();
-}, []);
+  }, []);
 
-const handleClickTarget = (name: string) => {
-  setSelectedCategory(name);
-  onSelect(name);
-};
+  const handleClickTarget = (name: string) => {
+    setSelectedCategory(name);
+    onSelect(name);
+  };
 
   return (
     <ul className="chipList">
