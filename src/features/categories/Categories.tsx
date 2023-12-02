@@ -9,7 +9,6 @@ import './Categories.css';
 
 
 type Props = {
-    categoryName: string;
     name: string;
     description: string;
     iconPath: string;
@@ -21,7 +20,7 @@ type Props = {
 const Categories = () => {
 
     const [categories, setCategories] = useState<Props[]>([]);
-    const [filterCategory, setFilterCategory] = useState('All');
+    const [filterCategory, setFilterCategory] = useState<Props[]>('All');
 
     const navigate = useNavigate();
 
