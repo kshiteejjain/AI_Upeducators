@@ -4,17 +4,18 @@ import './App.css'
 import GeneratorAndResult from './features/generatorAndResult/GeneratorAndResult'
 import Login from './features/login/Login';
 import Categories from './features/categories/Categories';
+import { useSelector } from 'react-redux';
 
 
 function App() {
-
+  const pathName = useSelector((state) => state.selectedCategory?.selectedCategory);
   return (
     <React.StrictMode>
       <Router>
         <Routes>
           <Route path="/" element={<Login />} />
           <Route path="/Categories" element={<Categories />} />
-          <Route path="/GeneratorAndResult" element={<GeneratorAndResult />} />
+          <Route path="/GeneratorAndResult" element={<GeneratorAndResult componentPath={pathName} />} />
         </Routes>
       </Router>
     </React.StrictMode>
