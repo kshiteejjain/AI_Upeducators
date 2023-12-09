@@ -18,6 +18,11 @@
     border: 1px solid var(--primary);
     line-height: 28px;
 }
+.resultQuestions:empty {
+    border: none;
+    margin: 0;
+    padding: 0;
+}
 .resultQuestions {
     margin-bottom: 1.5rem;
     border-bottom: 1px solid #dee3ed;

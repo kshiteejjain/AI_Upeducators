@@ -1,6 +1,8 @@
+import { useEffect, useMemo, useState } from 'react';
 import { useSelector } from 'react-redux';
 import NoDataFoundImage from '../../assets/no-data-found.svg';
 import CopyClipboard from '../../assets/copyClipboard.svg';
+import mp3Sound from '../../assets/result-audio.mp3';
 
 import './Result.css';
 
@@ -16,11 +18,40 @@ type RootState = {
 };
 
 const Result = () => {
+  const [isTabActive, setIsTabActive] = useState(true);
+  const [audioPlayed, setAudioPlayed] = useState(false);
   const generatedData = useSelector((state: RootState) => state.generatorData?.data?.choices[0].text);
   const questions = generatedData?.split(/\n\n\d+\) /).filter(Boolean);
   const questionElements = questions?.map((question, index) => (
     <div key={index} className="resultQuestions" dangerouslySetInnerHTML={{ __html: question.trim().replace(/\n/g, '<br />') }} />
   ));
+  const resultAudio = useMemo(() => new Audio(mp3Sound), []);
+
+
+  useEffect(() => {
+    // Check if the tab is active
+    const handleVisibilityChange = () => {
+      setIsTabActive(!document.hidden);
+    };
+
+    document.addEventListener('visibilitychange', handleVisibilityChange);
+
+    return () => {
+      document.removeEventListener('visibilitychange', handleVisibilityChange);
+    };
+  }, []);
+
+  useEffect(() => {
+    console.log('generatedData', generatedData)
+    if (generatedData !== undefined && !isTabActive && !audioPlayed) {
+      resultAudio.play();
+      setAudioPlayed(true);
+    }
+    if (generatedData !== undefined && isTabActive) {
+      setAudioPlayed(true);
+    }
+  }, [generatedData, isTabActive, audioPlayed, resultAudio]);
+
   const handleCopyData = () => {
     alert('Result data copied and ready to paste')
     const textArea = document.createElement('textarea');
@@ -30,12 +61,23 @@ const Result = () => {
     document.execCommand('copy');
     document.body.removeChild(textArea);
   };
-  
-  
+
+
   return (
     <>
       <div className="result-section">
-        {generatedData ? <>{questionElements} <button className='copyClipboard' title="Copy Content" onClick={handleCopyData}><img src={CopyClipboard} /></button> </> : <div className='noDataFoundImage'> <img src={NoDataFoundImage} /></div>}
+        {generatedData ? (
+          <>
+            {questionElements}
+            <button className='copyClipboard' title="Copy Content" onClick={handleCopyData}>
+              <img src={CopyClipboard} alt="Copy to Clipboard" />
+            </button>
+          </>
+        ) : (
+          <div className='noDataFoundImage'>
+            <img src={NoDataFoundImage} alt="No Data Found" />
+          </div>
+        )}
       </div>
     </>
   )
