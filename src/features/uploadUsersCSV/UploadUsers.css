@@ -1,0 +1,19 @@
+.uploadForm{
+    max-width: 500px;
+    background-color: #ffffff;
+    margin:3rem auto 0 auto;
+    padding: 3rem;
+    text-align: left;
+}
+.uploadForm h2{
+    font-size: 20px;
+    margin-top: 0;
+}
+.uploadForm .form-group{
+    margin: 3rem 0;
+    border: 1px  solid #ddd;
+    padding: 1rem;
+}
+.uploadForm button{
+    margin-right: 2rem;
+}

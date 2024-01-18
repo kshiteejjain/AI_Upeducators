@@ -1,6 +1,6 @@
 @import "../../index.css";
 
-.chipList{
+.chipList {
     display: flex;
     flex-direction: column;
     list-style: none;
@@ -9,28 +9,73 @@
     background-color: var(--white);
     border-radius: 1rem;
     box-shadow: 0 0 5px var(--gray);
-    width: 15%;
+    width: 20%;
     min-height: 500px;
     margin-bottom: 2rem;
 }
-.chipList li{
+
+.chipList li {
     cursor: pointer;
-    padding: 1rem 1.5rem;
     border-bottom: 1px solid var(--gray);
     font-size: calc(var(--baseFontSize) - 2px);
     display: flex;
     align-items: center;
+    flex-wrap: wrap;
 }
-.chipList li.active{
-    background-color:var(--lightBlue);
+
+.chipList li strong {
+    padding: 1rem 1rem;
+    display: flex;
+    font-weight: normal;
+    width: 100%;
+    text-align: left;
 }
-.chipList li:hover{
+
+.chipList li.active {
     background-color: var(--lightBlue);
 }
-.chipList li:last-child{
+
+.chipList li:hover {
+    background-color: var(--lightBlue);
+}
+
+.chipList li:last-child {
     border-bottom: none;
 }
-.category-icon{
+
+.category-icon {
     max-width: 20px;
     margin-right: 5px;
+}
+
+.subCategories {
+    display: block;
+    text-align: left;
+    width: 100%;
+    margin: 0 10px 10px 28px;
+    border-radius: 5px 5px 0 0;
+}
+
+.subCategories span {
+    display: block;
+    font-size: calc(var(--baseFontSize) - 3px);
+    padding: 0 4px 4px 4px;
+    align-items: center;
+    -webkit-transition: all 0.1s ease;
+    transition: all 0.1s ease;
+}
+
+.subCategories span:hover {
+    padding-left: 10px;
+    -webkit-transition: all 0.3s ease;
+    transition: all 0.3s ease;
+}
+
+.subCategories span:last-child {
+    border-bottom: none;
+}
+
+.chevronRight {
+    width: 15px;
+    margin-right: 2px;
 }

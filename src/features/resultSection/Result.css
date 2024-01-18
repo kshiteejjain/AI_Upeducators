@@ -12,7 +12,8 @@
     padding: 2rem;
     box-sizing: border-box;
     text-align: left;
-    max-height: calc(100vh - 150px);
+    max-height: calc(100vh - 180px);
+    min-height: calc(100vh - 180px);
     overflow-y: auto;
     position: relative;
     border: 1px solid var(--primary);
@@ -51,4 +52,14 @@
 
 .copyClipboard img {
     max-width: 20px;
+}
+.generatedImage {
+    width: 100%;
+    text-align: center;
+}
+@media(max-width:767px){
+    .result-section{
+        width: 100%;
+        margin-top: 1rem;
+      }
 }

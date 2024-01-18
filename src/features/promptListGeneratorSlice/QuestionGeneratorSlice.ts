@@ -1,6 +1,9 @@
-// GeneratorSlice.ts
 import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
 import axios from 'axios';
+import { handleCreditDecrement } from '../../utils/firebaseUtils';
+import { RootState } from 'react-redux';
+import { addDoc, collection, getDocs, getFirestore, query, updateDoc, where } from 'firebase/firestore';
+
 
 interface GeneratorState {
   data?: string | number | null; // Define the type based on your API response
@@ -14,23 +17,49 @@ const initialState: GeneratorState = {
   status: 'idle',
 };
 
+const creditValue = Number(import.meta.env.VITE_TEXT_GENERATOR_CREDITS);
 
 // Define the async thunk
-export const generatorPrompt = createAsyncThunk('generator/generatorPrompt', async (prompt: string) => {
+export const generatorPrompt = createAsyncThunk('generator/generatorPrompt', async (prompt: string, { getState }) => {
+  await handleCreditDecrement(creditValue);
   try {
+    const state = getState() as RootState; // Cast to RootState
+      const selectedCategory = state.selectedCategory.selectedCategory;
+
+    const firestore = getFirestore();
+
+    const abcCollection = collection(firestore, 'CategoryStats');
+
+    const q = query(abcCollection, where('selectedCategory', '==', selectedCategory));
+    const existingDocs = await getDocs(q);
+
+    if (!existingDocs.empty) {
+      existingDocs.forEach(async (doc) => {
+        const docRef = doc.ref;
+        const currentCount = doc.data().count || 0;
+
+        // Update count field
+        await updateDoc(docRef, { count: currentCount + 1 });
+        console.log('Document updated for selectedCategory:', selectedCategory);
+      });
+    } else {
+      await addDoc(abcCollection, { selectedCategory, count: 1 });
+      console.log('Document added for selectedCategory:', selectedCategory);
+    }
+
+
     const response = await axios.post(`${import.meta.env.VITE_OPEN_AI_API_URL}`, {
       model: 'gpt-3.5-turbo-instruct',
       prompt,
       max_tokens: 1000,
       temperature: 0.7,
     },
-    {
+      {
         headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${import.meta.env.VITE_OPEN_AI_KEY}`
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${import.meta.env.VITE_OPEN_AI_KEY}`
         },
-    });
-console.log(response.data)
+      });
     return response.data;
   } catch (error: unknown) {
     if (error instanceof Error) {
@@ -41,10 +70,18 @@ console.log(response.data)
   }
 });
 
+
 const generatorSlice = createSlice({
   name: 'generator',
   initialState,
-  reducers: {},
+  reducers: {
+    resetGeneratedData: (state) => {
+      // Reset the state to its initial value
+      state.data = null;
+      state.error = null;
+      state.status = 'idle';
+    },
+  },
   extraReducers: (builder) => {
     builder
       .addCase(generatorPrompt.pending, (state) => {
@@ -58,8 +95,9 @@ const generatorSlice = createSlice({
       .addCase(generatorPrompt.rejected, (state, action) => {
         state.status = 'failed';
         state.error = action.error.message as string;
-      });
+      })
   },
 });
 
+export const { resetGeneratedData } = generatorSlice.actions; // Export the action creator
 export default generatorSlice.reducer;

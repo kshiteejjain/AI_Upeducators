@@ -1,0 +1,43 @@
+@import "../../../index.css";
+
+.wrapper{
+    width: 98%;
+    margin: 0 auto;
+}
+.section{
+    background-color: var(--white);
+    padding: 1rem;
+    margin: 2rem 0;
+    border-radius: 8px;
+    border: 1px solid var(--grayBlue);
+}
+.section h1{
+    font-size: var(--baseFontSize);
+    text-align: left;
+    margin: 0 0 17px 0;
+}
+.tableWrapper{
+    overflow: auto;
+    width: 100%;
+}
+.sectionHeader{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+.sectionHeaderWithSearch{
+    display: flex;
+    white-space: nowrap;
+}
+.sectionHeaderWithSearch .form-control{
+    margin-right: 1rem;
+    width: 300px;
+}
+.sectionHeader h1{
+    margin: 0;
+}
+.cardsFlex{
+    display: flex;
+    justify-content: space-between;
+}

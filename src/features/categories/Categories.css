@@ -1,5 +1,25 @@
+.category-listing-wrapper{
+    width: 84%;
+}
 .category-listing {
     display: flex;
     flex-wrap: wrap;
-    width: 84%;
-};
+    width: 100%;
+}
+.search-wrapper{
+    padding: 0 1rem 1.5rem 1rem;
+    text-align: left;
+}
+.search-wrapper label{
+    font-size: calc(var(--baseFontSize) - 2px);
+    margin-bottom: 0.5rem;
+    display: block;
+}
+@media(max-width:767px){
+    .category-listing-wrapper {
+        width: 100%;
+    }
+    .search-wrapper{
+        padding: 0 0 1rem 0;
+    }
+}

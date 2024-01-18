@@ -10,6 +10,9 @@
     box-shadow: 0 0 2px var(--white);
     transition: all .3s;
     margin: 0 1% 2% 1%;
+    position: relative;
+    text-align: left;
+    width: 33%;
 }
 .tiles:hover{
     box-shadow: 0 0 7px var(--mediumGray);
@@ -19,7 +22,8 @@
     font-size: 1rem;
     font-weight: bold;
     text-align: left;
-    margin: 0 0 0.6rem 0;
+    word-break: break-all;
+    text-transform: capitalize;
 }
 .tiles p{
     font-size: 0.95rem;
@@ -28,13 +32,24 @@
 }
 .tiles-icon{
     display: flex;
-    justify-content: space-between;
     align-items: center;
-    margin: 0 0 1rem 0;
 }
 .tilesIcon{
     max-width: 1.5rem;
 }
-.bookmarkIcon{
+.bookmarkIcon {
     max-width: 1.5rem;
+    position: absolute;
+    right: 18px;
+    top: 20px;
+    z-index: 9;
+}
+.clickSection{
+    height: 100%;
+    width: 100%;
+}
+@media(max-width:767px){
+    .tiles{
+        max-width: 100%;
+    }
 }

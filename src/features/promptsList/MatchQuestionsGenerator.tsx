@@ -58,7 +58,7 @@ const MatchQuestionsGenerator = () => {
       setShowPromptMsg(promptMessage);
       dispatchThunk(generatorPrompt(promptMessage));
     } catch (error) {
-      console.error('Error fetching data:', error);
+      alert.error('Error fetching data:', error);
     }
   };
 
