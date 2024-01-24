@@ -57,6 +57,15 @@
     width: 100%;
     text-align: center;
 }
+.followUpPrompt{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+.followUpPrompt .form-group{
+    width: 78%;
+    margin: 0;
+}
 @media(max-width:767px){
     .result-section{
         width: 100%;

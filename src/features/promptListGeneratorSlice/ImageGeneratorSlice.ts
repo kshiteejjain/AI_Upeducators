@@ -16,8 +16,6 @@ const initialState: GeneratorState = {
 
 const creditValue = Number(import.meta.env.VITE_IMAGE_GENERATOR_CREDITS);
 
-console.log('fetchTotalCredits', fetchTotalCredits)
-
 // Define the async thunk
 export const generatorPrompt = createAsyncThunk('generator/generatorPrompt', async (prompt: string) => {
   await handleCreditDecrement(creditValue);

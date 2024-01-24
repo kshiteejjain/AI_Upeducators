@@ -93,7 +93,6 @@ export const fetchAllCategories = async (): Promise<any> => {
     const querySnapshot = await getDocs(collectionRef);
 
     if (querySnapshot.empty) {
-      console.log('No categories found in Firestore');
       return [];
     }
 
@@ -116,7 +115,6 @@ export const fetchAllForms = async (): Promise<any> => {
     const querySnapshot = await getDocs(collectionRef);
 
     if (querySnapshot.empty) {
-      console.log('No categories found in Firestore');
       return [];
     }
 
@@ -143,7 +141,6 @@ export const fetchAllUserData = async (firestore: Firestore): Promise<UserDocume
     const querySnapshot = await getDocs(collectionRef);
 
     if (querySnapshot.empty) {
-      console.log('No users found in Firestore');
       return [];
     }
 
@@ -175,7 +172,6 @@ export const freeTrialUsers = async (firestore: Firestore): Promise<UserDocument
     const querySnapshot = await getDocs(collectionRef);
 
     if (querySnapshot.empty) {
-      console.log('No users found in Firestore');
       return [];
     }
 
@@ -204,7 +200,6 @@ export const categoryStats = async (firestore: Firestore): Promise<UserDocumentD
     const querySnapshot = await getDocs(collectionRef);
 
     if (querySnapshot.empty) {
-      console.log('No data found in Firestore');
       return [];
     }
 

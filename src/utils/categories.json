@@ -511,7 +511,7 @@
       "id": 51,
       "isBookmarked": false,
       "name": "Facebook ad: Carousel",
-      "description": "Facebook ad: Carousel",
+      "description": "Create dynamic and appealing content for Facebook ad carousels, tailored to captivate your audience and drive interaction.",
       "iconPath": "digitalMarketing",
       "categoryName": "Digital Marketing",
       "redirect": "FacebookAdCarousel"
@@ -520,7 +520,7 @@
       "id": 52,
       "isBookmarked": false,
       "name": "Text Expander",
-      "description": "Tone is optional so Professional option should not be displayed",
+      "description": "Quickly generate more detailed and comprehensive content with ease.",
       "iconPath": "digitalMarketing",
       "categoryName": "DM_Website & Blog",
       "redirect": "TextExpander"

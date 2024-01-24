@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
+import { resetGeneratedData } from '../promptListGeneratorSlice/QuestionGeneratorSlice';
 import { setCategory } from './CategoriesSlice';
 import CategoryTiles from '../../components/categoryTiles/CategoryTiles';
 import Header from '../../components/header/Header';
@@ -80,6 +81,8 @@ const Categories = () => {
     const handleTile = (redirect?: string) => {
         if (redirect) {
             dispatch(setCategory(redirect));
+            dispatch(resetGeneratedData());
+            localStorage.removeItem('prompts')
             navigate('/GeneratorAndResult')
         }
     };

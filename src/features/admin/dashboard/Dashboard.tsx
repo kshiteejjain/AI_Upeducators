@@ -33,7 +33,6 @@ const Dashboard = () => {
                 setCategoryStatsData(usedCategoryStats);
 
                 // Move the console.log here
-                console.log('categoryStats', usedCategoryStats);
             } catch (error) {
                 console.error('Error fetching data:', error);
             }
