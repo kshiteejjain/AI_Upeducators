@@ -6,12 +6,14 @@ import { addDoc, collection, getDocs, getFirestore, query, updateDoc, where } fr
 
 
 interface GeneratorState {
+  responses: string[];
   data?: string | number | null; // Define the type based on your API response
   error?: string | null;
   status?: 'idle' | 'loading' | 'succeeded' | 'failed';
 }
 
 const initialState: GeneratorState = {
+  responses: [],
   data: null,
   error: null,
   status: 'idle',
@@ -21,10 +23,22 @@ const creditValue = Number(import.meta.env.VITE_TEXT_GENERATOR_CREDITS);
 
 // Define the async thunk
 export const generatorPrompt = createAsyncThunk('generator/generatorPrompt', async (prompt: string, { getState }) => {
+  
+  const promptList = JSON.parse(localStorage.getItem('prompts') || '[]'); // Get existing prompts or initialize as empty array
+
+  promptList.push({
+    role: 'user',
+    content: prompt
+  });
+
+  localStorage.setItem('prompts', JSON.stringify(promptList));
+  
+  
   await handleCreditDecrement(creditValue);
+
   try {
     const state = getState() as RootState; // Cast to RootState
-      const selectedCategory = state.selectedCategory.selectedCategory;
+    const selectedCategory = state.selectedCategory.selectedCategory;
 
     const firestore = getFirestore();
 
@@ -40,19 +54,15 @@ export const generatorPrompt = createAsyncThunk('generator/generatorPrompt', asy
 
         // Update count field
         await updateDoc(docRef, { count: currentCount + 1 });
-        console.log('Document updated for selectedCategory:', selectedCategory);
       });
     } else {
       await addDoc(abcCollection, { selectedCategory, count: 1 });
-      console.log('Document added for selectedCategory:', selectedCategory);
     }
 
 
-    const response = await axios.post(`${import.meta.env.VITE_OPEN_AI_API_URL}`, {
-      model: 'gpt-3.5-turbo-instruct',
-      prompt,
-      max_tokens: 1000,
-      temperature: 0.7,
+    const response = await axios.post(`${import.meta.env.VITE_OPEN_AI_CHAT_COMPLETION_API_URL}`, {
+      model: "gpt-3.5-turbo",
+      messages: JSON.parse(localStorage.getItem('prompts') || '[]')
     },
       {
         headers: {
@@ -60,7 +70,8 @@ export const generatorPrompt = createAsyncThunk('generator/generatorPrompt', asy
           'Authorization': `Bearer ${import.meta.env.VITE_OPEN_AI_KEY}`
         },
       });
-    return response.data;
+      console.log('gpt response', response)
+      return response;
   } catch (error: unknown) {
     if (error instanceof Error) {
       throw error.message;
@@ -77,7 +88,7 @@ const generatorSlice = createSlice({
   reducers: {
     resetGeneratedData: (state) => {
       // Reset the state to its initial value
-      state.data = null;
+      state.responses = [];
       state.error = null;
       state.status = 'idle';
     },
@@ -89,7 +100,7 @@ const generatorSlice = createSlice({
       })
       .addCase(generatorPrompt.fulfilled, (state, action: PayloadAction<any>) => {
         state.status = 'succeeded';
-        state.data = action.payload;
+        state.responses.push(action.payload);
         state.error = null;
       })
       .addCase(generatorPrompt.rejected, (state, action) => {

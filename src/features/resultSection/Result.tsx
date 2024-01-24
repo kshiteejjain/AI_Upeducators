@@ -1,5 +1,8 @@
-import { useEffect, useMemo } from 'react';
-import { useSelector } from 'react-redux';
+import { ChangeEvent, useEffect, useMemo, useState } from 'react'
+import { ThunkDispatch } from 'redux-thunk';
+import { generatorPrompt } from '../promptListGeneratorSlice/QuestionGeneratorSlice';
+import { AnyAction } from '@reduxjs/toolkit';
+import { useDispatch, useSelector } from 'react-redux';
 import Button from '../../components/buttons/Button';
 import NoDataFoundImage from '../../assets/no-data-found.svg';
 import CopyClipboard from '../../assets/copyClipboard.svg';
@@ -19,18 +22,19 @@ type RootState = {
 };
 
 const Result = () => {
-  const generatedData = useSelector((state: RootState) => state?.generatorData?.data?.choices?.[0]?.text);
+  const generatedData = useSelector((state: RootState) => state?.generatorData?.responses);
+  
   const generatedImage = useSelector((state: RootState) => state?.generatorData?.data?.data?.[0]?.url);
-
-  const questions = generatedData?.split(/\n\n\d+\) /).filter(Boolean);
-  const questionElements = questions?.map((question, index) => (
-    <div key={index} className="resultQuestions" dangerouslySetInnerHTML={{ __html: question.trim().replace(/\n/g, '<br />') }} />
-  ));
-
+  const dispatchThunk = useDispatch<ThunkDispatch<RootState, undefined, AnyAction>>();
   const resultAudio = useMemo(() => new Audio(mp3Sound), []);
 
+  const questions = generatedData?.map(response => response?.data?.choices[0]?.message?.content);
+  const questionElements = questions?.map((question, index) => (
+    <div key={index} className="resultQuestions" dangerouslySetInnerHTML={{ __html: question?.trim()?.replace(/\n/g, '<br />') }} />
+  ));
+
   useEffect(() => {
-    if (generatedData !== undefined || generatedImage !== undefined) {
+    if (generatedData.length !== 0) {
       resultAudio.play();
     }
   }, [generatedData, generatedImage, resultAudio]);
@@ -57,10 +61,37 @@ const Result = () => {
     }
   };
 
+  const [formData, setFormData] = useState({
+    additionalData: '',
+  });
+
+
+  const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setFormData((prevData) => ({
+      ...prevData,
+      [name]: value,
+    }));
+  };
+
+  const sendPrompt = async (event: React.SyntheticEvent<HTMLFormElement>) => {
+    event.preventDefault();
+
+    try {
+      const promptMessage = `${formData.additionalData}`
+      dispatchThunk(generatorPrompt(promptMessage));
+      setFormData({
+        additionalData: '',
+      });
+    } catch (error) {
+      alert('Error fetching data:', error);
+    }
+  };
+
   return (
     <>
       <div className="result-section">
-        {generatedData ? (
+        {generatedData.length !== 0 ? (
           <>
             {questionElements}
             <button className='copyClipboard' title="Copy Content" onClick={handleCopyData}>
@@ -68,13 +99,20 @@ const Result = () => {
             </button>
           </>
         ) : (
-          generatedImage &&<div className='generatedImage'> <img src={generatedImage} alt="Generated Image" /> </div>
+          generatedImage && <div className='generatedImage'> <img src={generatedImage} alt="Generated Image" /> </div>
         ) || (
           <div className='noDataFoundImage'>
             <img src={NoDataFoundImage} alt="No Data Found" />
           </div>
         )}
         {generatedImage && <Button title='Download Image' onClick={downloadImage} />}
+
+       {generatedData.length !== 0 ? <form onSubmit={sendPrompt} className='followUpPrompt'>
+          <div className='form-group'>
+            <input name="additionalData" required className='form-control' onChange={handleInputChange} value={formData.additionalData} autoComplete="off" placeholder="Ask Follow Up Questions..." />
+          </div>
+          <Button title='Submit' type="submit" />
+        </form> : null} 
       </div>
 
     </>
