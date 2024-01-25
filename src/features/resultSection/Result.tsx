@@ -19,7 +19,7 @@ type RootState = {
 };
 
 const Result = () => {
-  const generatedData = useSelector((state: RootState) => state?.generatorData?.data?.choices?.[0]?.text);
+  const generatedData = useSelector((state: RootState) => state?.generatorData?.data?.choices[0]?.text);
   const generatedImage = useSelector((state: RootState) => state?.generatorData?.data?.data?.[0]?.url);
 
   const questions = generatedData?.split(/\n\n\d+\) /).filter(Boolean);
