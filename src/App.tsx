@@ -9,6 +9,7 @@ import FreeTrial from './features/freeTrial/FreeTrial';
 import ForgotPassword from './features/forgotPassword/ForgotPassword';
 import Dashboard from './features/admin/dashboard/Dashboard';
 import Register from './features/register/Register';
+import Chat from './features/chat/Index';
 
 import './App.css';
 
@@ -29,6 +30,7 @@ function App() {
           <Route path="/Register" element={<Register />} />
           <Route path="/ForgotPassword" element={<ForgotPassword />} />
           <Route path="/*" element={<MainApp isLoggedIn={isLoggedIn} />} />
+          <Route path="/Chat" element={<Chat />} />
         </Routes>
       </Router>
     </React.StrictMode>
