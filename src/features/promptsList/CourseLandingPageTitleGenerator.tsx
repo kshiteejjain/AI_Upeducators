@@ -1,43 +1,17 @@
-import React, { useEffect, useState, ChangeEvent } from 'react';
+import React, { useState, ChangeEvent } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { ThunkDispatch } from 'redux-thunk';
 import { generatorPrompt } from '../promptListGeneratorSlice/QuestionGeneratorSlice';
 import Button from '../../components/buttons/Button';
-import Loader from '../../components/loader/Loader';
-import { AnyAction } from '@reduxjs/toolkit';
-
-type GeneratorData = {
-    status: string;
-};
-
-type RootState = {
-    target: { name: string; value: string; };
-    generatorData: GeneratorData;
-    status: string;
-    e: Event;
-    onChange: () => void;
-};
-
-
+import { sendPrompt } from '../../utils/sendPrompt';
 const CourseLandingPageTitleGenerator = () => {
-    const loadingStatus = useSelector((state: RootState) => state.generatorData?.status);
-    const [isLoading, setIsLoading] = useState(false);
-    const [showPromptMsg, setShowPromptMsg] = useState('');
-
-
-    useEffect(() => {
-        setIsLoading(loadingStatus === 'loading');
-    }, [loadingStatus]);
-
-
+    const { generatorData: { messages, input } } = useSelector((state) => state);
+    const dispatch = useDispatch();
     const [formData, setFormData] = useState({
         courseName: '',
         targetAudience: '',
         keyBenefit: '',
         courseLevel: 'Beginner',
     });
-
-
     const handleInputChange = (e: ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
         const { name, value } = e.target;
         setFormData((prevData) => ({
@@ -45,28 +19,20 @@ const CourseLandingPageTitleGenerator = () => {
             [name]: value,
         }));
     };
-
-    const dispatchThunk = useDispatch<ThunkDispatch<RootState, undefined, AnyAction>>();
-
-    const sendPrompt = async (event: React.SyntheticEvent<HTMLFormElement>) => {
+    const promptMessage = `Generate 5 engaging and descriptive titles for the course landing page. The title should include ${formData.courseName}, and may also incorporate ${formData.targetAudience}, focusing on ${formData.keyBenefit}, suitable for ${formData.courseLevel} learners if these fields are provided. The title should be clear, concise, and appealing to the target audience.            `
+    const handleSubmit = (event: React.SyntheticEvent<HTMLFormElement>) => {
         event.preventDefault();
-
-        try {
-            const promptMessage = `Generate 5 engaging and descriptive titles for the course landing page. The title should include ${formData.courseName}, and may also incorporate ${formData.targetAudience}, focusing on ${formData.keyBenefit}, suitable for ${formData.courseLevel} learners if these fields are provided. The title should be clear, concise, and appealing to the target audience.            `
-
-            setShowPromptMsg(promptMessage);
-            dispatchThunk(generatorPrompt(promptMessage));
-        } catch (error) {
-            alert.error('Error fetching data:', error);
-        }
+        sendPrompt(dispatch, { input, messages, generatorPrompt, promptMessage });
+        setFormData(prevState => ({
+            ...prevState,
+            enterData: '',
+        }));
     };
-
     return (
         <div className="generator-section">
-            {isLoading ? <Loader /> : null}
             <h2>Course Landing Page Title Generator</h2>
             <h3>Create compelling and descriptive titles for course landing pages, tailored to attract the target audience and clearly communicate the course's value.</h3>
-            <form onSubmit={sendPrompt}>
+            <form onSubmit={handleSubmit}>
                 <div className='form-group'>
                     <label htmlFor='courseName'>Course Name <span className='asterisk'>*</span></label>
                     <input required className='form-control' name='courseName' onChange={handleInputChange} value={formData.courseName} placeholder='Enter the name of the course, e.g., "Advanced Python Programming.' />
@@ -88,13 +54,9 @@ const CourseLandingPageTitleGenerator = () => {
                         <option value="AllLevels">All Levels</option>
                     </select>
                 </div>
-
                 <Button title='Generate' type="submit" />
-
-                <div className='promptMessage'> Your Prompt Message: <br /> <strong>{showPromptMsg}</strong></div>
             </form>
         </div>
     )
 };
-
 export default CourseLandingPageTitleGenerator;

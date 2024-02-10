@@ -1,33 +1,13 @@
-import React, { useEffect, useState, ChangeEvent } from 'react';
+import React, { useState, ChangeEvent } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { ThunkDispatch } from 'redux-thunk';
 import { generatorPrompt } from '../promptListGeneratorSlice/QuestionGeneratorSlice';
 import Button from '../../components/buttons/Button';
-import Loader from '../../components/loader/Loader';
-import { AnyAction } from '@reduxjs/toolkit';
-
-type GeneratorData = {
-    status: string;
-};
-
-type RootState = {
-    target: { name: string; value: string; };
-    generatorData: GeneratorData;
-    status: string;
-    e: Event;
-    onChange: () => void;
-};
+import { sendPrompt } from '../../utils/sendPrompt';
 
 const WorkshopOutlineGenerator = () => {
-    const loadingStatus = useSelector((state: RootState) => state.generatorData?.status);
-    const [isLoading, setIsLoading] = useState(false);
-    const [showPromptMsg, setShowPromptMsg] = useState('');
-
-    useEffect(() => {
-        setIsLoading(loadingStatus === 'loading');
-    }, [loadingStatus]);
-
-    const [formData, setFormData] = useState({
+    const { generatorData: { messages, input } } = useSelector((state) => state);
+    const dispatch = useDispatch();
+    const getInitialFormData = () => ({
         workshopTitle: '',
         targetAudience: '',
         workshopDuration: '',
@@ -35,7 +15,7 @@ const WorkshopOutlineGenerator = () => {
         workshopGoals: '',
         specialInstructions: '',
     });
-
+    const [formData, setFormData] = useState(getInitialFormData);
     const handleInputChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
         const { name, value } = e.target;
         setFormData((prevData) => ({
@@ -43,28 +23,17 @@ const WorkshopOutlineGenerator = () => {
             [name]: value,
         }));
     };
-
-    const dispatchThunk = useDispatch<ThunkDispatch<RootState, undefined, AnyAction>>();
-
-    const sendPrompt = async (event: React.SyntheticEvent<HTMLFormElement>) => {
+    const promptMessage = `Create a workshop outline for "${formData.workshopTitle}" targeted at ${formData.targetAudience}. The workshop will last for ${formData.workshopDuration}. Key topics include: ${formData.mainTopics}. The goals of the workshop are ${formData.workshopGoals}. Special instructions: ${formData.specialInstructions}.`;
+    const handleSubmit = (event: React.SyntheticEvent<HTMLFormElement>) => {
         event.preventDefault();
-
-        try {
-            const promptMessage = `Create a workshop outline for "${formData.workshopTitle}" targeted at ${formData.targetAudience}. The workshop will last for ${formData.workshopDuration}. Key topics include: ${formData.mainTopics}. The goals of the workshop are ${formData.workshopGoals}. Special instructions: ${formData.specialInstructions}.`;
-
-            setShowPromptMsg(promptMessage);
-            dispatchThunk(generatorPrompt(promptMessage));
-        } catch (error) {
-            alert('Error fetching data:', error);
-        }
+        sendPrompt(dispatch, { input, messages, generatorPrompt, promptMessage });
+        setFormData(getInitialFormData);
     };
-
     return (
         <div className="generator-section">
-            {isLoading ? <Loader /> : null}
             <h2>Workshop Outline Generator</h2>
             <h3>This tool helps in designing detailed outlines for various types of workshops.</h3>
-            <form onSubmit={sendPrompt}>
+            <form onSubmit={handleSubmit}>
                 <div className='form-group'>
                     <label htmlFor='workshopTitle'> Workshop Title <span className='asterisk'>*</span> </label>
                     <input required className='form-control' name='workshopTitle' onChange={handleInputChange} value={formData.workshopTitle} placeholder='Enter the title of the workshop.' />
@@ -89,13 +58,9 @@ const WorkshopOutlineGenerator = () => {
                     <label htmlFor='specialInstructions'> Special Instructions </label>
                     <textarea className='form-control' name='specialInstructions' onChange={handleInputChange} rows={5} value={formData.specialInstructions} placeholder='Include any special instructions or prerequisites for attendees.'> </textarea>
                 </div>
-
                 <Button title='Generate' type="submit" />
-
-                <div className='promptMessage'> Your Prompt Message: <br /> <strong>{showPromptMsg}</strong></div>
             </form>
         </div>
     )
 };
-
 export default WorkshopOutlineGenerator;

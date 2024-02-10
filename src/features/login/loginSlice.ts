@@ -2,7 +2,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { usersCollectionData } from "../../utils/firebase";
 import { query, where, getDocs } from 'firebase/firestore';
-
 export const loginSlice = createSlice({
   name: "login",
   initialState: {
@@ -23,14 +22,11 @@ export const loginSlice = createSlice({
     },
   },
 });
-
 export const { LOGIN_SUCCESS, LOGIN_FAILURE } = loginSlice.actions;
-
 export const loginAsync = (email, password) => async (dispatch) => {
   try {
     const usersCollection = usersCollectionData;
     const querySnapshot = await getDocs(query(usersCollection, where("email", "==", email)));
-
     if (querySnapshot.docs.length > 0) {
       const user = querySnapshot.docs[0].data();
       if (user.password === password) {
@@ -45,7 +41,5 @@ export const loginAsync = (email, password) => async (dispatch) => {
     dispatch(LOGIN_FAILURE({ error: error.message }));
   }
 };
-
 export const selectLogin = (state) => state.login;
-
 export default loginSlice.reducer;

@@ -1,42 +1,18 @@
-import { useState, ChangeEvent, FormEvent, useEffect } from 'react';
+import React, { useState, ChangeEvent } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { ThunkDispatch } from 'redux-thunk';
 import { generatorPrompt } from '../promptListGeneratorSlice/QuestionGeneratorSlice';
 import Button from '../../components/buttons/Button';
-import Loader from '../../components/loader/Loader';
-import { AnyAction } from '@reduxjs/toolkit';
-
-type GeneratorData = {
-    status: string;
-};
-
-type RootState = {
-    target: { name: string; value: string; };
-    generatorData: GeneratorData;
-    status: string;
-    e: Event;
-    onChange: () => void;
-};
+import { sendPrompt } from '../../utils/sendPrompt';
 
 const WebinarContentStories = () => {
-    const loadingStatus = useSelector((state: RootState) => state.generatorData?.status);
-    const [isLoading, setIsLoading] = useState(false);
-    const [showPromptMsg, setShowPromptMsg] = useState('');
-
-
-    useEffect(() => {
-        setIsLoading(loadingStatus === 'loading');
-    }, [loadingStatus]);
-
-    
-    const [formData, setFormData] = useState({
+    const { generatorData: { messages, input } } = useSelector((state) => state);
+    const dispatch = useDispatch();
+    const getInitialFormData = () => ({
         webinarTitle: '',
         audience: '',
         contentType: 'Stories'
     });
-
-    const dispatchThunk = useDispatch<ThunkDispatch<RootState, undefined, AnyAction>>();
-
+    const [formData, setFormData] = useState(getInitialFormData);
     const handleInputChange = (e: ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
         const { name, value } = e.target;
         setFormData((prevData) => ({
@@ -44,26 +20,17 @@ const WebinarContentStories = () => {
             [name]: value,
         }));
     };
-
-    const sendPrompt = async (event: FormEvent<HTMLFormElement>) => {
+    const promptMessage = `I am conducting a webinar on ${formData.webinarTitle}. The audience of the webinar is ${formData.audience}.  Duration is 90 minutes. Pls suggest me 5 interesting ${formData.contentType} that i can refer in the webinar.`;
+    const handleSubmit = (event: React.SyntheticEvent<HTMLFormElement>) => {
         event.preventDefault();
-
-        try {
-            const promptMessage = `I am conducting a webinar on ${formData.webinarTitle}. The audience of the webinar is ${formData.audience}.  Duration is 90 minutes. Pls suggest me 5 interesting ${formData.contentType} that i can refer in the webinar.`;
-
-            setShowPromptMsg(promptMessage);
-            dispatchThunk(generatorPrompt(promptMessage));
-        } catch (error) {
-            alert('Error fetching data:', error);
-        }
+        sendPrompt(dispatch, { input, messages, generatorPrompt, promptMessage });
+        setFormData(getInitialFormData);
     };
-
     return (
         <div className="generator-section">
-            {isLoading ? <Loader /> : null}
             <h2>Webinar Content: Stories/Example/Stats/Activities</h2>
             <h3>Generate engaging and informative webinar content like Stories /Example/Stats/Activities.</h3>
-            <form onSubmit={sendPrompt}>
+            <form onSubmit={handleSubmit}>
                 <div className='form-group'>
                     <label htmlFor='webinarTitle'>Webinar Title<span className='asterisk'>*</span></label>
                     <input
@@ -97,13 +64,10 @@ const WebinarContentStories = () => {
                         <option value="Activities">Activities</option>
                     </select>
                 </div>
-
                 <Button title='Generate' type="submit" />
 
-                <div className='promptMessage'>Your Prompt Message: <br /><strong>{showPromptMsg}</strong></div>
             </form>
         </div>
     )
 };
-
 export default WebinarContentStories;

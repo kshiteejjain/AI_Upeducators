@@ -1,43 +1,20 @@
-import React, { useEffect, useState, ChangeEvent } from 'react';
+import React, { useState, ChangeEvent } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { ThunkDispatch } from 'redux-thunk';
 import { generatorPrompt } from '../promptListGeneratorSlice/QuestionGeneratorSlice';
 import Button from '../../components/buttons/Button';
-import Loader from '../../components/loader/Loader';
-import { AnyAction } from '@reduxjs/toolkit';
-
-type GeneratorData = {
-    status: string;
-};
-
-type RootState = {
-    target: { name: string; value: string; };
-    generatorData: GeneratorData;
-    status: string;
-    e: Event;
-    onChange: () => void;
-};
-
+import { sendPrompt } from '../../utils/sendPrompt';
 
 const FacebookReelsTitleIdeaGenerator = () => {
-    const loadingStatus = useSelector((state: RootState) => state.generatorData?.status);
-    const [isLoading, setIsLoading] = useState(false);
-    const [showPromptMsg, setShowPromptMsg] = useState('');
-
-
-    useEffect(() => {
-        setIsLoading(loadingStatus === 'loading');
-    }, [loadingStatus]);
-
-
-    const [formData, setFormData] = useState({
+    const { generatorData: { messages, input } } = useSelector((state) => state);
+    const dispatch = useDispatch();
+    const getInitialFormData = () => ({
         number: '',
         audience: '',
         interestArea: '',
         duration: 'seconds',
         purpose: 'educational'
     });
-
+    const [formData, setFormData] = useState(getInitialFormData);
 
     const handleInputChange = (e: ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
         const { name, value } = e.target;
@@ -46,28 +23,17 @@ const FacebookReelsTitleIdeaGenerator = () => {
             [name]: value,
         }));
     };
-
-    const dispatchThunk = useDispatch<ThunkDispatch<RootState, undefined, AnyAction>>();
-
-    const sendPrompt = async (event: React.SyntheticEvent<HTMLFormElement>) => {
+    const promptMessage = `Generate ${formData.number} creative title ideas for Facebook Reels aimed at ${formData.audience} with an interest in ${formData.interestArea}. The title should suit a ${formData.duration} long reel and be [purpose] in nature, engaging the audience effectively.`
+    const handleSubmit = (event: React.SyntheticEvent<HTMLFormElement>) => {
         event.preventDefault();
-
-        try {
-            const promptMessage = `Generate ${formData.number} creative title ideas for Facebook Reels aimed at ${formData.audience} with an interest in ${formData.interestArea}. The title should suit a ${formData.duration} long reel and be [purpose] in nature, engaging the audience effectively.`
-
-            setShowPromptMsg(promptMessage);
-            dispatchThunk(generatorPrompt(promptMessage));
-        } catch (error) {
-            alert.error('Error fetching data:', error);
-        }
+        sendPrompt(dispatch, { input, messages, generatorPrompt, promptMessage });
+        setFormData(getInitialFormData);
     };
-
     return (
         <div className="generator-section">
-            {isLoading ? <Loader /> : null}
             <h2>Facebook Reels Title Idea Generator</h2>
             <h3>Generate creative and engaging title ideas for Facebook Reels, tailored to your specific audience and goals.</h3>
-            <form onSubmit={sendPrompt}>
+            <form onSubmit={handleSubmit}>
                 <div className='form-group'>
                     <label htmlFor='number'>Number</label>
                     <input className='form-control' name='number' onChange={handleInputChange} value={formData.number} placeholder='Specify how many reel ideas you want to generate.' />
@@ -96,13 +62,9 @@ const FacebookReelsTitleIdeaGenerator = () => {
                         <option value="inspirational">Inspirational</option>
                     </select>
                 </div>
-
                 <Button title='Generate' type="submit" />
-
-                <div className='promptMessage'> Your Prompt Message: <br /> <strong>{showPromptMsg}</strong></div>
             </form>
         </div>
     )
 };
-
 export default FacebookReelsTitleIdeaGenerator;

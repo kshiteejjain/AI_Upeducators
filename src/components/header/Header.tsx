@@ -6,42 +6,34 @@ import Button from '../buttons/Button';
 import Strings from '../../utils/en';
 import logo from '../../assets/Upeducator-logo.png';
 import defaultProfile from '../../assets/defaultProfile.svg';
-
 import './Header.css';
-
 type Props = {
   isLoginPage?: boolean;
   onClick?: () => void;
 };
-
 const Header = ({ isLoginPage }: Props) => {
   const [username, setUsername] = useState('');
   const [remainingCredits, setRemainingCredits] = useState<number | undefined>(undefined);
   const [showCreditDetails, setShowCreditDetails] = useState(false);
   const [isAdmin, setIsAdmin] = useState(false);
   const navigate = useNavigate();
-
   const showUsername = (name: string) => {
     const email = name.split('@');
     return email[0];
   };
-
   const toggleCreditDetails = () => {
     setShowCreditDetails(!showCreditDetails);
   };
-
   const handleLogout = () => {
     navigate('/');
     sessionStorage.clear();
     localStorage.clear();
   };
-
   useEffect(() => {
     const fetchData = async () => {
       try {
         const storedUsername = sessionStorage.getItem('username') ?? 'User';
         setUsername(showUsername(storedUsername));
-
         // Fetch only setRemainingCredits
         await fetchTotalCredits(storedUsername, undefined, setRemainingCredits, setIsAdmin);
       } catch (error) {
@@ -49,14 +41,11 @@ const Header = ({ isLoginPage }: Props) => {
         // Handle errors as needed
       }
     };
-
     fetchData();
-
     if (remainingCredits !== undefined && remainingCredits <= 0) {
       navigate('/ContactUs');
     }
   }, [remainingCredits, navigate]);
-
   return (
     <header className="header">
       <div className="container">
@@ -86,9 +75,7 @@ const Header = ({ isLoginPage }: Props) => {
     </header>
   );
 };
-
 export default Header;
-
 Header.propTypes = {
   isLoginPage: PropTypes.bool,
 };

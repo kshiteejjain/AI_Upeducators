@@ -5,9 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import Button from '../../components/buttons/Button';
 import LoginImages from '../../components/loginImages/loginImages';
 import Strings from '../../utils/en';
-
 import './FreeTrial.css';
-
 const FreeTrial = () => {
     const currentDateTime = new Date();
     const formattedDateTime = currentDateTime.toLocaleString();
@@ -24,11 +22,9 @@ const FreeTrial = () => {
     })
     // const [isPasswordCorrect, setIsPasswordCorrect] = useState(false);
     const navigate = useNavigate();
-
     // useEffect(() => {
     //     const checkPassword = async () => {
     //         const enteredPassword = window.prompt('Enter Code:');
-
     //         if (enteredPassword === 'aiweb*@$%growth') {
     //             setIsPasswordCorrect(true);
     //         } else {
@@ -36,10 +32,8 @@ const FreeTrial = () => {
     //             // Redirect or handle unauthorized access
     //         }
     //     };
-
     //     checkPassword();
     // }, []);
-
     const handleInputChange = (e: ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
         const { name, value } = e.target;
         setFormData((prevData) => ({
@@ -48,29 +42,23 @@ const FreeTrial = () => {
             [name]: name === 'phone' ? Number(value) : value,
         }));
     };
-
     const handleForgotPassword = () => {
         navigate('/ForgotPassword')
     }
-
     const formSubmit = async (e: FormEvent) => {
         e.preventDefault();
-
         try {
             const querySnapshot = await getDocs(
                 query(collection(firestore, 'FreeTrialUsers'), where('email', '==', formData.email))
             );
-
             if (!querySnapshot.empty) {
                 // Email already exists, show alert or handle accordingly
                 alert('Email is already registered!');
                 return;
             }
             const FreeTrialedUsersCollection = collection(firestore, 'FreeTrialUsers');
-
             // Adding the form data to the Firestore collection
             await addDoc(FreeTrialedUsersCollection, formData);
-
             // Optional: Clear the form after submission
             setFormData({
                 name: '',
@@ -83,14 +71,12 @@ const FreeTrial = () => {
                 FreeTrialed: true,
                 register_timestamp: formattedDateTime
             });
-
             alert('Registration Successful, Redirecting to login.');
             navigate('/')
         } catch (error) {
             alert('An error occurred:', error);
         }
     };
-
     return (
         <div className='login-wrapper'>
             <LoginImages />
@@ -121,7 +107,6 @@ const FreeTrial = () => {
                             <option value="Owner">Owner</option>
                         </select>
                     </div>
-
                     <Button title='Register' type="submit" />
                 </form>
                 <div className='text-center'>
@@ -131,5 +116,4 @@ const FreeTrial = () => {
         </div>
     )
 };
-
 export default FreeTrial;

@@ -1,8 +1,6 @@
 import Header from "../../components/header/Header";
 import ContactImage from "../../assets/contactUs.jpg";
-
 import './ContactUs.css';
-
 
 const ContactUs = () => {
  

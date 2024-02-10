@@ -3,14 +3,12 @@ import {
   BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend,
   ResponsiveContainer,
 } from 'recharts';
-
 interface CustomLineChartProps {
   data: any[];
   legendKey: string;
   xKey: string;
   yKey: string;
 }
-
 const CustomLineChart: React.FC<CustomLineChartProps> = ({
   data,
   xKey,
@@ -42,5 +40,4 @@ const CustomLineChart: React.FC<CustomLineChartProps> = ({
     </div>
   );
 };
-
 export default CustomLineChart;

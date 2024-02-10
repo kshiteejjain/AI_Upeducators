@@ -1,63 +1,56 @@
 // src/components/Chat.js
 import { useState } from 'react';
-import axios from 'axios';
-
+import { useDispatch, useSelector } from 'react-redux';
+import {
+  setMessages,
+  setInput,
+  generatorPrompt,
+} from './chatSlice';
+import './Index.css';
 const Chat = () => {
-  const [messages, setMessages] = useState([]);
-  const [input, setInput] = useState('');
+  const dispatchThunk = useDispatch<ThunkDispatch<RootState, undefined, AnyAction>>();
+  const { generatorData: { messages, input, status, error } } = useSelector((state) => state);
+  const [formData, setFormData] = useState({ input: '' });
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    // Update the state when the input changes
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
+  console.log('Messages:', messages);
 
-  const sendMessage = async () => {
-    if (input.trim() === '') {
+  const sendPrompt = async (event: React.SyntheticEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    if (input?.trim() === '') {
       return; // Skip sending empty messages
     }
-  
-    const newMessages = [...messages, { role: 'user', content: input }];
-    setMessages(newMessages);
-    setInput('');
-  
+    const prompt = [...messages, { role: 'user', content: formData.input }];
+    dispatchThunk(setMessages(prompt));
     try {
-      const response = await axios.post(
-        'https://api.openai.com/v1/chat/completions',
-        {
-          model: 'gpt-3.5-turbo',
-          messages: newMessages.map((msg) => ({ role: msg.role, content: msg.content })),
-        },
-        {
-          headers: {
-            'Content-Type': 'application/json',
-            'Authorization': 'Bearer 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',
-          },
-        }
-      );
-  
-      const aiMessage = { role: 'assistant', content: response.data.choices[0].message.content.trim() };
-      setMessages([...newMessages, aiMessage]);
+      await dispatchThunk(generatorPrompt(prompt));
     } catch (error) {
-      console.error('Error sending message to OpenAI API:', error);
+      console.error('Error dispatching generatorPrompt:', error);
     }
   };
-  
-
   return (
-    <div>
+    <div className="msgWrapper">
       <div>
-        {messages.map((msg, index) => (
+        {messages?.map((msg, index) => (
           <div key={index} className={msg.role}>
             {msg.content}
           </div>
         ))}
       </div>
-      <div>
-        <input
+      <form onSubmit={sendPrompt} className="userInput">
+      <input
           type="text"
-          value={input}
-          onChange={(e) => setInput(e.target.value)}
+          name="input"
+          value={formData.input}
+          onChange={handleChange}
           placeholder="Type your message..."
         />
-        <button onClick={sendMessage}>Send</button>
-      </div>
+        <button type='submit'>Send</button>
+      </form>
+      {status === 'failed' && <div>Error: {error}</div>}
     </div>
   );
 };
-
 export default Chat;

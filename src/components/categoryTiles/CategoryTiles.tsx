@@ -1,9 +1,7 @@
 import PropTypes from 'prop-types';
 import Strings from '../../utils/en';
 import bookmarkIcon from '../../assets/bookmark.svg'
-
 import './CategoryTiles.css';
-
 type Props = {
     title?: string;
     onClick?: () => void;
@@ -12,9 +10,7 @@ type Props = {
     categoryAlt?: string;
     onBookmarkClick?: () => void;
 }
-
 const CategoryTiles = ({ title, onClick, tilesIcon, categoryAlt, description }: Props) => {
-
     return (
         <div className='tiles'>
             <img src={bookmarkIcon} className='bookmarkIcon' title={Strings.categories.Favorite} alt={Strings.categories.Favorite} />
@@ -28,9 +24,7 @@ const CategoryTiles = ({ title, onClick, tilesIcon, categoryAlt, description }: 
         </div>
     )
 };
-
 export default CategoryTiles;
-
 CategoryTiles.propTypes = {
     title: PropTypes.string,
     onBookmarkClick: PropTypes.func,

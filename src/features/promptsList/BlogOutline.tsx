@@ -1,40 +1,19 @@
-import { useState, ChangeEvent, FormEvent, useEffect } from 'react';
+import React, { useState, ChangeEvent } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { ThunkDispatch } from 'redux-thunk';
 import { generatorPrompt } from '../promptListGeneratorSlice/QuestionGeneratorSlice';
 import Button from '../../components/buttons/Button';
-import Loader from '../../components/loader/Loader';
-import { AnyAction } from '@reduxjs/toolkit';
-
-type GeneratorData = {
-    status: string;
-};
-
-type RootState = {
-    target: { name: string; value: string; };
-    generatorData: GeneratorData;
-    status: string;
-    e: Event;
-    onChange: () => void;
-};
+import { sendPrompt } from '../../utils/sendPrompt';
 
 const BlogOutline = () => {
-    const loadingStatus = useSelector((state: RootState) => state.generatorData?.status);
-    const [isLoading, setIsLoading] = useState(false);
-    const [showPromptMsg, setShowPromptMsg] = useState('');
-
-
-    useEffect(() => {
-        setIsLoading(loadingStatus === 'loading');
-    }, [loadingStatus]);
-
-
-    const [formData, setFormData] = useState({
+    const { generatorData: { messages, input } } = useSelector((state) => state);
+    const dispatch = useDispatch();
+    
+    const getInitialFormData = () => ({
         blogTitle: '',
         audience: '',
     });
 
-    const dispatchThunk = useDispatch<ThunkDispatch<RootState, undefined, AnyAction>>();
+    const [formData, setFormData] = useState(getInitialFormData);
 
     const handleInputChange = (e: ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
         const { name, value } = e.target;
@@ -43,26 +22,17 @@ const BlogOutline = () => {
             [name]: value,
         }));
     };
-
-    const sendPrompt = async (event: FormEvent<HTMLFormElement>) => {
+    const promptMessage = `I want to write a blog on ${formData.blogTitle}, the audience of my blog is ${formData.audience}. Please give me the outline of the blog which will help me in writing an engaging blog.`;
+    const handleSubmit = (event: React.SyntheticEvent<HTMLFormElement>) => {
         event.preventDefault();
-
-        try {
-            const promptMessage = `I want to write a blog on ${formData.blogTitle}, the audience of my blog is ${formData.audience}. Please give me the outline of the blog which will help me in writing an engaging blog.`;
-
-            setShowPromptMsg(promptMessage);
-            dispatchThunk(generatorPrompt(promptMessage));
-        } catch (error) {
-            alert('Error fetching data:', error);
-        }
+        sendPrompt(dispatch, { input, messages, generatorPrompt, promptMessage });
+       setFormData(getInitialFormData);
     };
-
     return (
-        <div className="generator-section">
-            {isLoading ? <Loader /> : null}
+         <div className="generator-section">
             <h2>Blog Outline</h2>
             <h3>Generate the detailed outline for your blog title.</h3>
-            <form onSubmit={sendPrompt}>
+            <form onSubmit={handleSubmit}>
                 <div className='form-group'>
                     <label htmlFor='blogTitle'>Blog Title<span className='asterisk'>*</span></label>
                     <input
@@ -87,13 +57,10 @@ const BlogOutline = () => {
                         placeholder='Identify the target audience for your ad, such as Parents, Teenagers'
                     />
                 </div>
-
                 <Button title='Generate' type="submit" />
 
-                <div className='promptMessage'>Your Prompt Message: <br /><strong>{showPromptMsg}</strong></div>
             </form>
         </div>
     )
 };
-
 export default BlogOutline;

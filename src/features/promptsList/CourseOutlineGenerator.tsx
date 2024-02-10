@@ -1,39 +1,19 @@
-import React, { useEffect, useState, ChangeEvent } from 'react';
+import React, { useState, ChangeEvent } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { ThunkDispatch } from 'redux-thunk';
 import { generatorPrompt } from '../promptListGeneratorSlice/QuestionGeneratorSlice';
 import Button from '../../components/buttons/Button';
-import Loader from '../../components/loader/Loader';
-import { AnyAction } from '@reduxjs/toolkit';
-
-type GeneratorData = {
-    status: string;
-};
-
-type RootState = {
-    target: { name: string; value: string; };
-    generatorData: GeneratorData;
-    status: string;
-    e: Event;
-    onChange: () => void;
-};
+import { sendPrompt } from '../../utils/sendPrompt';
 
 const CourseOutlineGenerator = () => {
-    const loadingStatus = useSelector((state: RootState) => state.generatorData?.status);
-    const [isLoading, setIsLoading] = useState(false);
-    const [showPromptMsg, setShowPromptMsg] = useState('');
-
-    useEffect(() => {
-        setIsLoading(loadingStatus === 'loading');
-    }, [loadingStatus]);
-
-    const [formData, setFormData] = useState({
+    const { generatorData: { messages, input } } = useSelector((state) => state);
+    const dispatch = useDispatch();
+    const getInitialFormData = () => ({
         courseTitle: '',
         audience: 'General',
         courseDuration: '',
         contentDeliveryMode: 'Online',
     });
-
+    const [formData, setFormData] = useState(getInitialFormData);
     const handleInputChange = (e: ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
         const { name, value } = e.target;
         setFormData((prevData) => ({
@@ -41,28 +21,17 @@ const CourseOutlineGenerator = () => {
             [name]: value,
         }));
     };
-
-    const dispatchThunk = useDispatch<ThunkDispatch<RootState, undefined, AnyAction>>();
-
-    const sendPrompt = async (event: React.SyntheticEvent<HTMLFormElement>) => {
+    const promptMessage = `Create a course outline for "${formData.courseTitle}" for ${formData.audience}. The course duration is ${formData.courseDuration}. Content will be delivered through ${formData.contentDeliveryMode}.`;
+    const handleSubmit = (event: React.SyntheticEvent<HTMLFormElement>) => {
         event.preventDefault();
-
-        try {
-            const promptMessage = `Create a course outline for "${formData.courseTitle}" for ${formData.audience}. The course duration is ${formData.courseDuration}. Content will be delivered through ${formData.contentDeliveryMode}.`;
-
-            setShowPromptMsg(promptMessage);
-            dispatchThunk(generatorPrompt(promptMessage));
-        } catch (error) {
-            alert('Error fetching data:', error);
-        }
+        sendPrompt(dispatch, { input, messages, generatorPrompt, promptMessage });
+        setFormData(getInitialFormData);
     };
-
     return (
         <div className="generator-section">
-            {isLoading ? <Loader /> : null}
             <h2>Course Outline Generator</h2>
             <h3>This tool assists in creating detailed outlines for academic or training courses, planning course content and delivery.</h3>
-            <form onSubmit={sendPrompt}>
+            <form onSubmit={handleSubmit}>
                 <div className='form-group'>
                     <label htmlFor='courseTitle'> Course Title <span className='asterisk'>*</span> </label>
                     <input required className='form-control' name='courseTitle' onChange={handleInputChange} value={formData.courseTitle} placeholder='Enter the title of the course.' />
@@ -91,13 +60,9 @@ const CourseOutlineGenerator = () => {
                         <option value="Instructor-led">Instructor-led</option>
                     </select>
                 </div>
-
                 <Button title='Generate' type="submit" />
-
-                <div className='promptMessage'> Your Prompt Message: <br /> <strong>{showPromptMsg}</strong></div>
             </form>
         </div>
     );
 };
-
 export default CourseOutlineGenerator;

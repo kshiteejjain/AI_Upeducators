@@ -1,15 +1,12 @@
 @import '../../index.css';
-
 .result-section h2 {
     font-size: 1.2rem;
     margin: 0;
 }
-
 .result-section {
     background-color: var(--white);
     width: 49%;
     border-radius: 0.5rem;
-    padding: 2rem;
     box-sizing: border-box;
     text-align: left;
     max-height: calc(100vh - 180px);
@@ -18,6 +15,10 @@
     position: relative;
     border: 1px solid var(--primary);
     line-height: 28px;
+}
+.result-section-inner{
+    padding: 2rem;
+    min-height: inherit;
 }
 .resultQuestions:empty {
     border: none;
@@ -34,7 +35,6 @@
 .resultQuestions:last-child {
     border: none;
 }
-
 .copyClipboard {
     border-radius: 40px;
     background-color: var(--white);
@@ -49,7 +49,6 @@
     align-items: center;
     justify-content: center;
 }
-
 .copyClipboard img {
     max-width: 20px;
 }
@@ -57,14 +56,32 @@
     width: 100%;
     text-align: center;
 }
-.followUpPrompt{
+.followUpPrompt {
     display: flex;
     align-items: center;
     justify-content: space-between;
+    position: sticky;
+    padding: 1rem;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background-color: var(--white);
+    border-top: 1px solid var(--mediumGray);;
 }
 .followUpPrompt .form-group{
-    width: 78%;
+    width: 82%;
     margin: 0;
+}
+.user{
+    text-align: right;
+    font-weight: bold;
+    margin: 2rem 0;
+}
+.user div {
+    background-color: #dee7fb;
+    display: inline-block;
+    padding: 0.5rem 2rem;
+    border-radius: 35px 3px 35px 35px;
 }
 @media(max-width:767px){
     .result-section{

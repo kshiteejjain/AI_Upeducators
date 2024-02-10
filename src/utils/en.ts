@@ -1,6 +1,5 @@
 /* eslint-disable max-len */
 /* eslint-disable max-lines */
-
 const Strings = {
     login: {
         title: 'Login to The AI Experience',
@@ -39,5 +38,4 @@ const Strings = {
         searchCategories: 'Search Category'
     },
 }
-
 export default Strings

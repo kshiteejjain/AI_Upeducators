@@ -5,9 +5,7 @@ import { firestore } from '../../../utils/firebase';
 import Button from '../../../components/buttons/Button';
 import { collection, deleteDoc, getDocs, query, updateDoc, where } from 'firebase/firestore';
 import Loader from '../../../components/loader/Loader';
-
 import '../dashboard/Dashboard.css';
-
 
 type UserDocumentData = {
     name: string;
@@ -24,16 +22,13 @@ type UserDocumentData = {
     register_timestamp: string;
 };
 
-
 const RegisteredUsers = () => {
-
     const [userData, setUserData] = useState<UserDocumentData[]>([]);
     const [isAdmin, setIsAdmin] = useState(false);
     const [loader, setLoader] = useState(true);
     const [editingUser, setEditingUser] = useState<UserDocumentData | null>(null);
     const [editedData, setEditedData] = useState<UserDocumentData | null>(null);
     const [searchTerm, setSearchTerm] = useState('');
-
     useEffect(() => {
         const fetchUserData = async () => {
             try {
@@ -46,29 +41,23 @@ const RegisteredUsers = () => {
                 console.error('Error fetching user data:', error);
             }
         };
-
         fetchUserData();
     }, []);
-
     const handleEditClick = (user: UserDocumentData) => {
         setEditingUser(user);
         setEditedData({ ...user });
     };
-
     const handleSaveClick = async () => {
         if (editingUser && editedData) {
             try {
                 const collectionRef = collection(firestore, 'RegisteredUsers');
-
                 // Use a query to find the document based on email
                 const q = query(collectionRef, where('email', '==', editingUser.email));
                 const querySnapshot = await getDocs(q);
-
                 if (!querySnapshot.empty) {
                     // Document found, proceed with the update
                     const userDocRef = querySnapshot.docs[0].ref;
                     await updateDoc(userDocRef, editedData);
-
                     // Fetch updated user data
                     const updatedUserData = await fetchAllUserData(firestore);
                     setUserData(updatedUserData);
@@ -83,21 +72,17 @@ const RegisteredUsers = () => {
             }
         }
     };
-
     const handleDeleteClick = async (user: UserDocumentData) => {
         if (window.confirm(`Are you sure you want to delete the user ${user.name}?`)) {
             try {
                 const collectionRef = collection(firestore, 'RegisteredUsers');
-
                 // Use a query to find the document based on email
                 const q = query(collectionRef, where('email', '==', user.email));
                 const querySnapshot = await getDocs(q);
-
                 if (!querySnapshot.empty) {
                     // Document found, proceed with the delete
                     const userDocRef = querySnapshot.docs[0].ref;
                     await deleteDoc(userDocRef);
-
                     // Fetch updated user data
                     const updatedUserData = await fetchAllUserData(firestore);
                     setUserData(updatedUserData);
@@ -110,7 +95,6 @@ const RegisteredUsers = () => {
             }
         }
     };
-
     const handleExportClick = () => {
         try {
             // Flatten user data for better export
@@ -128,13 +112,10 @@ const RegisteredUsers = () => {
                 'Is Admin': user.isAdmin ? 'Yes' : 'No',
                 'Date of Registration': user.register_timestamp,
             }));
-
             const ws = XLSX.utils.json_to_sheet(flattenedUserData, { header: Object.keys(flattenedUserData[0]) });
-
             // Auto-size columns
             const wscols = flattenedUserData.map(user => Object.values(user).map(value => ({ width: value.toString().length + 15 })));
             ws['!cols'] = wscols[0];
-
             const wb = XLSX.utils.book_new();
             XLSX.utils.book_append_sheet(wb, ws, 'All_Registered_Users');
             XLSX.writeFile(wb, 'All_Registered_Users.xlsx');
@@ -145,7 +126,6 @@ const RegisteredUsers = () => {
     const handleSearchChange = (e) => {
         setSearchTerm(e.target.value);
     };
-
 
     return (
         <>
@@ -352,5 +332,4 @@ const RegisteredUsers = () => {
         </>
     );
 };
-
 export default RegisteredUsers;

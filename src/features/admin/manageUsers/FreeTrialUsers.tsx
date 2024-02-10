@@ -5,10 +5,7 @@ import { firestore } from '../../../utils/firebase';
 import { collection, deleteDoc, getDocs, query, where } from 'firebase/firestore';
 import Loader from '../../../components/loader/Loader';
 import Button from '../../../components/buttons/Button';
-
 import '../dashboard/Dashboard.css';
-
-
 
 type UserDocumentData = {
     name: string;
@@ -24,14 +21,11 @@ type UserDocumentData = {
     role: string;
 };
 
-
 const FreeTrialUsers = () => {
-
     const [userData, setUserData] = useState<UserDocumentData[]>([]);
     const [isAdmin, setIsAdmin] = useState(false);
     const [loader, setLoader] = useState(true);
     const [searchTerm, setSearchTerm] = useState('');
-
     useEffect(() => {
         const checkAdminStatus = async () => {
             try {
@@ -44,24 +38,19 @@ const FreeTrialUsers = () => {
                 console.error('Error fetching user data:', error);
             }
         };
-
         checkAdminStatus();
     }, []);
-
     const handleDeleteClick = async (user: UserDocumentData) => {
         if (window.confirm(`Are you sure you want to delete the user ${user.name}?`)) {
             try {
                 const collectionRef = collection(firestore, 'FreeTrialUsers');
-
                 // Use a query to find the document based on email
                 const q = query(collectionRef, where('email', '==', user.email));
                 const querySnapshot = await getDocs(q);
-
                 if (!querySnapshot.empty) {
                     // Document found, proceed with the delete
                     const userDocRef = querySnapshot.docs[0].ref;
                     await deleteDoc(userDocRef);
-
                     // Fetch updated user data
                     const updatedUserData = await freeTrialUsers(firestore);
                     setUserData(updatedUserData);
@@ -74,7 +63,6 @@ const FreeTrialUsers = () => {
             }
         }
     };
-
     const handleExportClick = () => {
         try {
             // Flatten user data for better export
@@ -89,13 +77,10 @@ const FreeTrialUsers = () => {
                 FreeTrial: user.freeTrial,
                 Register_timestamp: user.register_timestamp,
             }));
-
             const ws = XLSX.utils.json_to_sheet(flattenedUserData, { header: Object.keys(flattenedUserData[0]) });
-
             // Auto-size columns
             const wscols = flattenedUserData.map(user => Object.values(user).map(value => ({ width: value.toString().length + 10 })));
             ws['!cols'] = wscols[0];
-
             const wb = XLSX.utils.book_new();
             XLSX.utils.book_append_sheet(wb, ws, 'Free_Trial_Users');
             XLSX.writeFile(wb, 'Free_Trial_Users.xlsx');
@@ -106,7 +91,6 @@ const FreeTrialUsers = () => {
     const handleSearchChange = (e) => {
         setSearchTerm(e.target.value);
     };
-
 
     return (
         <>
@@ -172,5 +156,4 @@ const FreeTrialUsers = () => {
         </>
     );
 };
-
 export default FreeTrialUsers;

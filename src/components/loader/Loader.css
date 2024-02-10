@@ -16,6 +16,12 @@
     top: 0;
     bottom: 0;
     z-index: 9;
+    flex-direction: column;
+}
+.swipe-text{
+  text-align: center;
+  color: var(--white);
+  font-size: calc(var(--baseFontSize) + 2px);
 }
 .ldio-oolped4bh9m > div > div {
   transform-origin: 50px 50px;

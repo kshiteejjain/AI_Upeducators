@@ -1,36 +1,13 @@
-import React, { useEffect, useState, ChangeEvent } from 'react';
+import React, { useState, ChangeEvent } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { ThunkDispatch } from 'redux-thunk';
 import { generatorPrompt } from '../promptListGeneratorSlice/QuestionGeneratorSlice';
 import Button from '../../components/buttons/Button';
-import Loader from '../../components/loader/Loader';
-import { AnyAction } from '@reduxjs/toolkit';
-
-type GeneratorData = {
-  status: string;
-};
-
-type RootState = {
-  target: { name: string; value: string; };
-  generatorData: GeneratorData;
-  status: string;
-  e: Event;
-  onChange: () => void;
-};
-
+import { sendPrompt } from '../../utils/sendPrompt';
 
 const SocialMediaMemeIdeasGenerator = () => {
-  const loadingStatus = useSelector((state: RootState) => state.generatorData?.status);
-  const [isLoading, setIsLoading] = useState(false);
-  const [showPromptMsg, setShowPromptMsg] = useState('');
-  
-
-  useEffect(() => {
-    setIsLoading(loadingStatus === 'loading');
-  }, [loadingStatus]);
- 
-
-  const [formData, setFormData] = useState({
+  const { generatorData: { messages, input } } = useSelector((state) => state);
+  const dispatch = useDispatch();
+  const getInitialFormData = () => ({
     audience: '',
     platform: 'Facebook',
     contentType: 'Single Image Post',
@@ -38,7 +15,7 @@ const SocialMediaMemeIdeasGenerator = () => {
     numberOfIdeas: '5',
     tone: 'Humorous'
   });
-
+  const [formData, setFormData] = useState(getInitialFormData);
 
   const handleInputChange = (e: ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
@@ -47,31 +24,21 @@ const SocialMediaMemeIdeasGenerator = () => {
       [name]: value,
     }));
   };
-
-  const dispatchThunk = useDispatch<ThunkDispatch<RootState, undefined, AnyAction>>();
-
-  const sendPrompt = async (event: React.SyntheticEvent<HTMLFormElement>) => {
+  const promptMessage = `Generate ${formData.numberOfIdeas} meme ideas for ${formData.audience} on ${formData.platform} in a ${formData.contentType} format. The memes should ideally explore '${formData.memeTheme}' and maintain a ${formData.tone} tone, ensuring they are original, relatable, and shareable on social media.`
+  const handleSubmit = (event: React.SyntheticEvent<HTMLFormElement>) => {
     event.preventDefault();
-
-    try {
-      const promptMessage = `Generate ${formData.numberOfIdeas} meme ideas for ${formData.audience} on ${formData.platform} in a ${formData.contentType} format. The memes should ideally explore '${formData.memeTheme}' and maintain a ${formData.tone} tone, ensuring they are original, relatable, and shareable on social media.`
-
-      setShowPromptMsg(promptMessage);
-      dispatchThunk(generatorPrompt(promptMessage));
-    } catch (error) {
-      alert.error('Error fetching data:', error);
-    }
+    sendPrompt(dispatch, { input, messages, generatorPrompt, promptMessage });
+    setFormData(getInitialFormData);
   };
-
   return (
     <div className="generator-section">
-      {isLoading ? <Loader /> : null}
+
       <h2>Social Media Meme Ideas Generator</h2>
       <h3>Generate creative and engaging meme ideas that resonate with your target audience and are suitable for various social media platforms.</h3>
-      <form onSubmit={sendPrompt}>
+      <form onSubmit={handleSubmit}>
         <div className='form-group'>
-            <label htmlFor='audience'>Audience <span className='asterisk'>*</span></label>
-            <input required className='form-control' name='audience' onChange={handleInputChange} value={formData.audience} placeholder='Specify your target audience, e.g., College Students, Fitness Enthusiasts, Gaming Fans' />
+          <label htmlFor='audience'>Audience <span className='asterisk'>*</span></label>
+          <input required className='form-control' name='audience' onChange={handleInputChange} value={formData.audience} placeholder='Specify your target audience, e.g., College Students, Fitness Enthusiasts, Gaming Fans' />
         </div>
         <div className='form-group'>
           <label htmlFor='platform'>Platform <span className='asterisk'>*</span> </label>
@@ -101,9 +68,9 @@ const SocialMediaMemeIdeasGenerator = () => {
           <label htmlFor='contentType'> Content Type <span className='asterisk'>*</span> </label>
           <select required className='form-control' name="contentType" onChange={handleInputChange} value={formData.contentType}>
             <option value="SingleImage">Single Image</option>
-             <option value="Video">Video</option>
-             <option value="GIF">GIF</option>
-             <option value="TextBased">Text-based</option>
+            <option value="Video">Video</option>
+            <option value="GIF">GIF</option>
+            <option value="TextBased">Text-based</option>
           </select>
         </div>
         <div className='form-group'>
@@ -116,13 +83,10 @@ const SocialMediaMemeIdeasGenerator = () => {
             <option value="Satirical">Satirical</option>
           </select>
         </div>
-
         <Button title='Generate' type="submit" />
 
-        <div className='promptMessage'> Your Prompt Message: <br /> <strong>{showPromptMsg}</strong></div>
       </form>
     </div>
   )
 };
-
 export default SocialMediaMemeIdeasGenerator;

@@ -8,9 +8,7 @@ import LoginImages from "../../components/loginImages/loginImages";
 import Loader from "../../components/loader/Loader";
 import ShowPassword from '../../assets/showPassword.svg';
 import HidePassword from '../../assets/hidePassword.svg'
-
 import './Login.css';
-
 
 const Login = () => {
     const [userDetails, setUserDetails] = useState({
@@ -20,20 +18,17 @@ const Login = () => {
     const [loader, setLoader] = useState(false);
     const [showPassword, setShowPassword] = useState(false);
     const navigate = useNavigate();
-
     const handleForgotPassword = () => {
         navigate('/ForgotPassword')
     }
     const handleTogglePasswordVisibility = () => {
         setShowPassword(!showPassword);
     };
-
     const uploadDataToFirestore = async (e) => {
         e.preventDefault();
         setLoader(true);
         try {
             const collectionRef = collection(firestore, 'RegisteredUsers');
-
             // Check if a document with the given email and password exists
             const q = query(
                 collectionRef,
@@ -41,7 +36,6 @@ const Login = () => {
                 where('password', '==', userDetails.password)
             );
             const querySnapshot = await getDocs(q);
-
             if (!querySnapshot.empty) {
                 // Document with this email and password exists
                 querySnapshot.forEach((doc) => {
@@ -67,7 +61,6 @@ const Login = () => {
             setLoader(false);
         }
     };
-
     return (
         <div className='login-wrapper'>
             <LoginImages />
@@ -111,5 +104,4 @@ const Login = () => {
         </div>
     )
 };
-
 export default Login;

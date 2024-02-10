@@ -1,15 +1,12 @@
 import PropTypes from 'prop-types';
 import CircleImg from '../../assets/circle.svg';
 
-
 import './AdminCards.css';
-
 type Props = {
     title?: string;
     value?: string;
     bgColor?: string;
 }
-
 const AdminCards = ({ title, value, bgColor }: Props) => {
     const getGradientClass = (bgColor) => {
         switch (bgColor) {
@@ -23,9 +20,7 @@ const AdminCards = ({ title, value, bgColor }: Props) => {
                 return '';
         }
     };
-
     const gradientClass = getGradientClass(bgColor);
-
     return (
         <div className='sectionCards'>
             <div className={`card card-img-holder ${gradientClass}`}>
@@ -38,11 +33,9 @@ const AdminCards = ({ title, value, bgColor }: Props) => {
         </div>
     );
 };
-
 AdminCards.propTypes = {
     title: PropTypes.string.isRequired,
     value: PropTypes.string.isRequired,
     bgColor: PropTypes.oneOf(['one', 'two', 'three']).isRequired,
 };
-
 export default AdminCards;

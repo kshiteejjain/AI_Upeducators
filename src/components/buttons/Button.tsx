@@ -1,7 +1,5 @@
 import PropTypes from 'prop-types';
-
 import './Button.css';
-
 type Props = {
     title?: string;
     onClick?: () => void;
@@ -9,9 +7,7 @@ type Props = {
     isSecondary?: boolean;
     isDangerous?: boolean;
     isGoBack?: boolean;
-
 }
-
 const Button = ({ title, onClick, isSecondary, isDangerous }: Props) => {
     const buttonClass = isDangerous
         ? 'buttonDangerous'

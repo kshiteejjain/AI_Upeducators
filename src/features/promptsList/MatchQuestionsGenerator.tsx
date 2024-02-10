@@ -1,43 +1,19 @@
-import React, { useEffect, useState, ChangeEvent } from 'react';
+import React, { useState, ChangeEvent } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { ThunkDispatch } from 'redux-thunk';
 import { generatorPrompt } from '../promptListGeneratorSlice/QuestionGeneratorSlice';
 import Button from '../../components/buttons/Button';
-import Loader from '../../components/loader/Loader';
-import { AnyAction } from '@reduxjs/toolkit';
-
-type GeneratorData = {
-  status: string;
-};
-
-type RootState = {
-  target: { name: string; value: string; };
-  generatorData: GeneratorData;
-  status: string;
-  e: Event;
-  onChange: () => void;
-};
-
-
+import { sendPrompt } from '../../utils/sendPrompt';
 const MatchQuestionsGenerator = () => {
-  const loadingStatus = useSelector((state: RootState) => state.generatorData?.status);
-  const [isLoading, setIsLoading] = useState(false);
-  const [showPromptMsg, setShowPromptMsg] = useState('');
-  
-
-  useEffect(() => {
-    setIsLoading(loadingStatus === 'loading');
-  }, [loadingStatus]);
- 
-
-  const [formData, setFormData] = useState({
+  const { generatorData: { messages, input } } = useSelector((state) => state);
+  const dispatch = useDispatch();
+  const getInitialFormData = () => ({
     gradeLevel: 'Nursery',
     numberOfQuestions: '5',
     topic: '',
     board: 'CBSE',
     difficultyLevel: 'High'
   });
-
+  const [formData, setFormData] = useState(getInitialFormData);
 
   const handleInputChange = (e: ChangeEvent<HTMLSelectElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
@@ -47,27 +23,18 @@ const MatchQuestionsGenerator = () => {
     }));
   };
 
-  const dispatchThunk = useDispatch<ThunkDispatch<RootState, undefined, AnyAction>>();
-
-  const sendPrompt = async (event: React.SyntheticEvent<HTMLFormElement>) => {
+  const promptMessage = `Generate  ${formData.numberOfQuestions} Match the following Questions for ${formData.gradeLevel} on ${formData.topic} for ${formData.board} board with ${formData.difficultyLevel} difficulty level. Also, provide the correct options for each question.`
+  const handleSubmit = (event: React.SyntheticEvent<HTMLFormElement>) => {
     event.preventDefault();
-
-    try {
-      const promptMessage = `Generate  ${formData.numberOfQuestions} Match the following Questions for ${formData.gradeLevel} on ${formData.topic} for ${formData.board} board with ${formData.difficultyLevel} difficulty level. Also, provide the correct options for each question.`
-
-      setShowPromptMsg(promptMessage);
-      dispatchThunk(generatorPrompt(promptMessage));
-    } catch (error) {
-      alert.error('Error fetching data:', error);
-    }
+    sendPrompt(dispatch, { input, messages, generatorPrompt, promptMessage });
+    setFormData(getInitialFormData);
   };
 
   return (
     <div className="generator-section">
-      {isLoading ? <Loader /> : null}
       <h2>Match the following Questions Generator</h2>
       <h3>Create a Match the following  assessment on any topic, grade, diagnostic assessment, and any other kind you can imagine.</h3>
-      <form onSubmit={sendPrompt}>
+      <form onSubmit={handleSubmit}>
         <div className='form-group'>
           <label htmlFor='gradeLevel'>Grade Level <span className='asterisk'>*</span> </label>
           <select required className='form-control' name="gradeLevel" onChange={handleInputChange} value={formData.gradeLevel}>
@@ -121,11 +88,8 @@ const MatchQuestionsGenerator = () => {
           </select>
         </div>
         <Button title='Generate' type="submit" />
-
-        <div className='promptMessage'> Your Prompt Message: <br /> <strong>{showPromptMsg}</strong></div>
       </form>
     </div>
   )
 };
-
 export default MatchQuestionsGenerator;

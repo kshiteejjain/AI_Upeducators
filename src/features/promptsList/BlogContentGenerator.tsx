@@ -1,43 +1,21 @@
-import React, { useEffect, useState, ChangeEvent } from 'react';
+import React, { useState, ChangeEvent } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { ThunkDispatch } from 'redux-thunk';
 import { generatorPrompt } from '../promptListGeneratorSlice/QuestionGeneratorSlice';
 import Button from '../../components/buttons/Button';
-import Loader from '../../components/loader/Loader';
-import { AnyAction } from '@reduxjs/toolkit';
-
-type GeneratorData = {
-    status: string;
-};
-
-type RootState = {
-    target: { name: string; value: string; };
-    generatorData: GeneratorData;
-    status: string;
-    e: Event;
-    onChange: () => void;
-};
-
+import { sendPrompt } from '../../utils/sendPrompt';
 
 const BlogContentGenerator = () => {
-    const loadingStatus = useSelector((state: RootState) => state.generatorData?.status);
-    const [isLoading, setIsLoading] = useState(false);
-    const [showPromptMsg, setShowPromptMsg] = useState('');
+    const { generatorData: { messages, input } } = useSelector((state) => state);
+    const dispatch = useDispatch();
 
-
-    useEffect(() => {
-        setIsLoading(loadingStatus === 'loading');
-    }, [loadingStatus]);
-
-
-    const [formData, setFormData] = useState({
+    const getInitialFormData = () => ({
         audience: '',
         topic: '',
         tone: 'Informative',
         wordCount: '100 words',
         keyPoints: ''
     });
-
+    const [formData, setFormData] = useState(getInitialFormData);
 
     const handleInputChange = (e: ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
         const { name, value } = e.target;
@@ -46,28 +24,18 @@ const BlogContentGenerator = () => {
             [name]: value,
         }));
     };
-
-    const dispatchThunk = useDispatch<ThunkDispatch<RootState, undefined, AnyAction>>();
-
-    const sendPrompt = async (event: React.SyntheticEvent<HTMLFormElement>) => {
+    const promptMessage = `Create a ${formData.wordCount} word blog post for ${formData.audience} on the topic of ${formData.topic}. The blog should have a ${formData.tone} tone and cover the following key points: ${formData.keyPoints}. The content should be engaging, informative, and relevant to the target audience. If some fields are left blank, the AI will make default choices to complete the blog.`
+    const handleSubmit = (event: React.SyntheticEvent<HTMLFormElement>) => {
         event.preventDefault();
-
-        try {
-            const promptMessage = `Create a ${formData.wordCount} word blog post for ${formData.audience} on the topic of ${formData.topic}. The blog should have a ${formData.tone} tone and cover the following key points: ${formData.keyPoints}. The content should be engaging, informative, and relevant to the target audience. If some fields are left blank, the AI will make default choices to complete the blog.`
-
-            setShowPromptMsg(promptMessage);
-            dispatchThunk(generatorPrompt(promptMessage));
-        } catch (error) {
-            alert('Error fetching data:', error);
-        }
+        sendPrompt(dispatch, { input, messages, generatorPrompt, promptMessage });
+       setFormData(getInitialFormData);
     };
-
+   
     return (
         <div className="generator-section">
-            {isLoading ? <Loader /> : null}
             <h2>Blog Content Generator</h2>
             <h3>Create engaging and informative blog content for a specific audience on a chosen topic.</h3>
-            <form onSubmit={sendPrompt}>
+            <form onSubmit={handleSubmit}>
                 <div className='form-group'>
                     <label htmlFor='audience'>Audience <span className='asterisk'>*</span></label>
                     <input required className='form-control' name='audience' onChange={handleInputChange} value={formData.audience} placeholder='Specify the target audience, such as educators, students, parents, tech enthusiasts, etc.' />
@@ -98,13 +66,9 @@ const BlogContentGenerator = () => {
                     <label htmlFor='keyPoints'>Key Points</label>
                     <input required className='form-control' name='keyPoints' onChange={handleInputChange} value={formData.keyPoints} placeholder='List key points or subtopics to cover in the blog, separated by commas. If left blank, general content based on the topic will be generated.' />
                 </div>
-
                 <Button title='Generate' type="submit" />
-
-                <div className='promptMessage'> Your Prompt Message: <br /> <strong>{showPromptMsg}</strong></div>
             </form>
         </div>
     )
 };
-
 export default BlogContentGenerator;

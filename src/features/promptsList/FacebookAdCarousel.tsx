@@ -1,42 +1,18 @@
-import { useState, ChangeEvent, FormEvent, useEffect } from 'react';
+import React, { useState, ChangeEvent } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { ThunkDispatch } from 'redux-thunk';
 import { generatorPrompt } from '../promptListGeneratorSlice/QuestionGeneratorSlice';
 import Button from '../../components/buttons/Button';
-import Loader from '../../components/loader/Loader';
-import { AnyAction } from '@reduxjs/toolkit';
-
-type GeneratorData = {
-    status: string;
-};
-
-type RootState = {
-    target: { name: string; value: string; };
-    generatorData: GeneratorData;
-    status: string;
-    e: Event;
-    onChange: () => void;
-};
+import { sendPrompt } from '../../utils/sendPrompt';
 
 const FacebookAdCarousel = () => {
-    const loadingStatus = useSelector((state: RootState) => state.generatorData?.status);
-    const [isLoading, setIsLoading] = useState(false);
-    const [showPromptMsg, setShowPromptMsg] = useState('');
-
-
-    useEffect(() => {
-        setIsLoading(loadingStatus === 'loading');
-    }, [loadingStatus]);
-
-    
-    const [formData, setFormData] = useState({
+    const { generatorData: { messages, input } } = useSelector((state) => state);
+    const dispatch = useDispatch();
+    const getInitialFormData = () => ({
         courseName: '',
         audience: '',
         cta: ''
     });
-
-    const dispatchThunk = useDispatch<ThunkDispatch<RootState, undefined, AnyAction>>();
-
+    const [formData, setFormData] = useState(getInitialFormData);
     const handleInputChange = (e: ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
         const { name, value } = e.target;
         setFormData((prevData) => ({
@@ -44,13 +20,7 @@ const FacebookAdCarousel = () => {
             [name]: value,
         }));
     };
-
-    const sendPrompt = async (event: FormEvent<HTMLFormElement>) => {
-        event.preventDefault();
-
-        try {
-            const promptMessage = `I need help to create carousel ads. Topic is ${formData.courseName}. Audience is ${formData.audience}. Call to Action is ${formData.cta}
-
+    const promptMessage = `I need help to create carousel ads. Topic is ${formData.courseName}. Audience is ${formData.audience}. Call to Action is ${formData.cta}
             Each slide in this carousel ad has one headline and one description.
             
             Slide 1 Should make people curious, shock or provocate them into swiping right
@@ -82,20 +52,16 @@ const FacebookAdCarousel = () => {
             The headlines should connect like as if it were a story
             
             The content should spur people into action`;
-
-            setShowPromptMsg(promptMessage);
-            dispatchThunk(generatorPrompt(promptMessage));
-        } catch (error) {
-            alert('Error fetching data:', error);
-        }
+    const handleSubmit = (event: React.SyntheticEvent<HTMLFormElement>) => {
+        event.preventDefault();
+        sendPrompt(dispatch, { input, messages, generatorPrompt, promptMessage });
+        setFormData(getInitialFormData);
     };
-
     return (
         <div className="generator-section">
-            {isLoading ? <Loader /> : null}
             <h2>Facebook Ad: Carousel</h2>
             <h3>Create dynamic and appealing content for Facebook ad carousels, tailored to captivate your audience and drive interaction.</h3>
-            <form onSubmit={sendPrompt}>
+            <form onSubmit={handleSubmit}>
                 <div className='form-group'>
                     <label htmlFor='courseName'>Course/Skill name<span className='asterisk'>*</span></label>
                     <input
@@ -131,13 +97,10 @@ const FacebookAdCarousel = () => {
                         placeholder='Enter CTA like Register, Sign up, Join, Apply'
                     />
                 </div>
-
                 <Button title='Generate' type="submit" />
 
-                <div className='promptMessage'>Your Prompt Message: <br /><strong>{showPromptMsg}</strong></div>
             </form>
         </div>
     )
 };
-
 export default FacebookAdCarousel;

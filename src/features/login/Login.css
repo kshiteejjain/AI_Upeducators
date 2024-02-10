@@ -4,16 +4,13 @@
     width: 100%;
     height: 100vh;
 }
-
 .rsis-container {
     height: 100dvh !important;
 }
-
 .rsis-image {
     background-size: cover !important;
     background-position: center !important;
 }
-
 .login-form {
     width: 50%;
     align-items: center;
@@ -25,7 +22,6 @@
     text-align: left;
     position: relative;
 }
-
 .login-form form {
     width: 50%;
     background: #ffffff;
@@ -34,18 +30,15 @@
     box-shadow: 0 0 13px #dedede;
     margin-bottom: 1rem;
 }
-
 .login-form .form-group {
     width: 100%;
 }
-
 .login-form h1 {
     font-size: 1.5rem;
     color: var(--primary);
     margin-bottom: 3rem;
     text-align: center;
 }
-
 .login-logo {
     position: absolute;
     left: 10px;
@@ -57,12 +50,10 @@
 .additional-actions button{
     margin: 0 1rem;
 }
-
 @media(max-width:767px) {
     .login-wrapper {
         flex-direction: column-reverse;
     }
-
     .login-form {
         width: 100%;
         padding: 1rem;

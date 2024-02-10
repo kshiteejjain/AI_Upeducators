@@ -1,11 +1,8 @@
 import { useEffect, useState } from "react";
 import logo from '../../assets/Upeducator-logo.png';
-
 import './loginImages.css';
-
 const LoginImages = () => {
     const [image, setImage] = useState('');
-
     useEffect(() => {
         // Fetch images or use any logic to get a list of image URLs
         const imageList = [
@@ -17,7 +14,6 @@ const LoginImages = () => {
         const randomIndex = Math.floor(Math.random() * imageList.length);
         setImage(imageList[randomIndex]);
     }, []);
-
     return (
         <>
             <img src={logo} alt="Logo" className="login-logo" />
@@ -26,5 +22,4 @@ const LoginImages = () => {
         </>
     )
 };
-
 export default LoginImages;

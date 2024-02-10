@@ -1,16 +1,14 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
-import { resetGeneratedData } from '../promptListGeneratorSlice/QuestionGeneratorSlice';
 import { setCategory } from './CategoriesSlice';
+import { resetGeneratedData } from '../../features/promptListGeneratorSlice/QuestionGeneratorSlice';
 import CategoryTiles from '../../components/categoryTiles/CategoryTiles';
 import Header from '../../components/header/Header';
 import { fetchAllForms } from '../../utils/firebaseUtils';
 import CategoriesFilter from '../categoriesFilter/CategoriesFilter';
 import Strings from '../../utils/en';
-
 import './Categories.css';
-
 
 type Props = {
     name: string;
@@ -20,18 +18,14 @@ type Props = {
     redirect?: string;
     onClick?: () => void;
 };
-
 const Categories = () => {
-
     const [categories, setCategories] = useState<Props[]>([]);
     const [filterCategory, setFilterCategory] = useState(() => {
         return localStorage.getItem('filterCategory') || 'All';
     });
     const [searchTerm, setSearchTerm] = useState('');
-
     const navigate = useNavigate();
     const dispatch = useDispatch();
-
     const getIconPath = async (iconPath: string) => {
         try {
             const iconModule = await import(`../../assets/${iconPath}.svg`);
@@ -42,19 +36,15 @@ const Categories = () => {
         }
     };
 
-
     useEffect(() => {
         const fetchData = async () => {
             try {
                 const categoryData = await fetchAllForms();
-
                 const iconPathsData = await Promise.all(categoryData.map(async (category: Prop) => {
                     const path = category.iconPath ? await getIconPath(category.iconPath) : null;
                     return { [category.name]: path };
                 }));
-
                 const iconPathsObject = Object.assign({}, ...iconPathsData);
-
                 const formattedCategories = categoryData.map((category) => ({
                     name: category?.name,
                     IconComponent: iconPathsObject[category?.name],
@@ -64,37 +54,28 @@ const Categories = () => {
                     redirect: category?.redirect,
                     isBookmarked: category?.isBookmarked,
                 }));
-
                 setCategories(formattedCategories);
             } catch (error) {
                 alert('Error fetching categories:', error);
             }
         };
-
         fetchData();
-
         localStorage.setItem('filterCategory', filterCategory);
         setFilterCategory(localStorage.getItem('filterCategory') || 'All');
     }, [filterCategory]);
 
-
     const handleTile = (redirect?: string) => {
         if (redirect) {
             dispatch(setCategory(redirect));
-            dispatch(resetGeneratedData());
-            localStorage.removeItem('prompts')
             navigate('/GeneratorAndResult')
         }
     };
-
     const handleCategorySelect = (selectedCategory: string) => {
         setFilterCategory(selectedCategory)
     };
-
     const handleSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
         setSearchTerm(event.target.value);
     };
-
     return (
         <>
             <Header />
@@ -120,7 +101,6 @@ const Categories = () => {
                                         searchTerm === '' ||
                                         (item && item.name && item.name.toLowerCase().includes(searchTerm.toLowerCase())) ||
                                         (item && item.description && item.description.toLowerCase().includes(searchTerm.toLowerCase()));
-
                                     return isMatchingCategory && isMatchingSearchTerm;
                                 })
                                 .map((item, index) => (
@@ -140,5 +120,4 @@ const Categories = () => {
         </>
     )
 };
-
 export default Categories;

@@ -1,33 +1,13 @@
-import React, { useEffect, useState, ChangeEvent } from 'react';
+import React, { useState, ChangeEvent } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { ThunkDispatch } from 'redux-thunk';
 import { generatorPrompt } from '../promptListGeneratorSlice/QuestionGeneratorSlice';
 import Button from '../../components/buttons/Button';
-import Loader from '../../components/loader/Loader';
-import { AnyAction } from '@reduxjs/toolkit';
-
-type GeneratorData = {
-    status: string;
-};
-
-type RootState = {
-    target: { name: string; value: string; };
-    generatorData: GeneratorData;
-    status: string;
-    e: Event;
-    onChange: () => void;
-};
+import { sendPrompt } from '../../utils/sendPrompt';
 
 const TwentyFirstCenturyCLDForm = () => {
-    const loadingStatus = useSelector((state: RootState) => state.generatorData?.status);
-    const [isLoading, setIsLoading] = useState(false);
-    const [showPromptMsg, setShowPromptMsg] = useState('');
-
-    useEffect(() => {
-        setIsLoading(loadingStatus === 'loading');
-    }, [loadingStatus]);
-
-    const [formData, setFormData] = useState({
+    const { generatorData: { messages, input } } = useSelector((state) => state);
+    const dispatch = useDispatch();
+    const getInitialFormData = () => ({
         gradeLevel: 'Nursery',
         subject: '',
         topic: '',
@@ -38,7 +18,7 @@ const TwentyFirstCenturyCLDForm = () => {
         assessmentType: '',
         additionalNotes: '',
     });
-
+    const [formData, setFormData] = useState(getInitialFormData);
     const handleInputChange = (e: ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
         const { name, value } = e.target;
         setFormData((prevData) => ({
@@ -46,7 +26,6 @@ const TwentyFirstCenturyCLDForm = () => {
             [name]: value,
         }));
     };
-
     const handleCheckboxChange = (e: ChangeEvent<HTMLInputElement>) => {
         const { value } = e.target;
         setFormData((prevData) => ({
@@ -56,29 +35,18 @@ const TwentyFirstCenturyCLDForm = () => {
                 : [...prevData.twentyFirstCenturySkills, value],
         }));
     };
-
-    const dispatchThunk = useDispatch<ThunkDispatch<RootState, undefined, AnyAction>>();
-
-    const sendPrompt = async (event: React.SyntheticEvent<HTMLFormElement>) => {
+    const skillsText = formData.twentyFirstCenturySkills.join(', ');
+    const promptMessage = `Generate a detailed lesson plan for ${formData.gradeLevel} on ${formData.subject}, covering the topic of ${formData.topic}. This lesson focuses on ${skillsText} and aims to achieve ${formData.learningObjectives}. The lesson will last ${formData.duration}, and will use ${formData.teachingMethod} to engage students. Assessment will be through ${formData.assessmentType}, ${formData.additionalNotes}.`;
+    const handleSubmit = (event: React.SyntheticEvent<HTMLFormElement>) => {
         event.preventDefault();
-
-        try {
-            const skillsText = formData.twentyFirstCenturySkills.join(', ');
-            const promptMessage = `Generate a detailed lesson plan for ${formData.gradeLevel} on ${formData.subject}, covering the topic of ${formData.topic}. This lesson focuses on ${skillsText} and aims to achieve ${formData.learningObjectives}. The lesson will last ${formData.duration}, and will use ${formData.teachingMethod} to engage students. Assessment will be through ${formData.assessmentType}, ${formData.additionalNotes}.`;
-
-            setShowPromptMsg(promptMessage);
-            dispatchThunk(generatorPrompt(promptMessage));
-        } catch (error) {
-            alert('Error fetching data:', error);
-        }
+        sendPrompt(dispatch, { input, messages, generatorPrompt, promptMessage });
+        setFormData(getInitialFormData);
     };
-
     return (
         <div className="generator-section">
-            {isLoading ? <Loader /> : null}
             <h2>21st Century CLD based Lesson Plan</h2>
             <h3>This form is designed to help educators create lesson plans that integrate 21st Century Competencies, focusing on fostering critical thinking, creativity, collaboration, and communication among students.</h3>
-            <form onSubmit={sendPrompt}>
+            <form onSubmit={handleSubmit}>
                 <div className='form-group'>
                     <label htmlFor='gradeLevel'> Grade Level <span className='asterisk'>*</span> </label>
                     <select required className='form-control' name="gradeLevel" onChange={handleInputChange} value={formData.gradeLevel}>
@@ -163,13 +131,9 @@ const TwentyFirstCenturyCLDForm = () => {
                     <label htmlFor='additionalNotes'> Additional Notes (Optional) </label>
                     <textarea className='form-control' name='additionalNotes' onChange={handleInputChange} rows={5} value={formData.additionalNotes} placeholder='Any additional instructions or notes relevant to the lesson plan.'> </textarea>
                 </div>
-
                 <Button title='Generate' type="submit" />
-
-                <div className='promptMessage'> Your Prompt Message: <br /> <strong>{showPromptMsg}</strong></div>
             </form>
         </div>
     )
 };
-
 export default TwentyFirstCenturyCLDForm;

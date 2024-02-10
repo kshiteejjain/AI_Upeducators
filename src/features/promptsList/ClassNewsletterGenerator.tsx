@@ -1,33 +1,13 @@
-import React, { useEffect, useState, ChangeEvent } from 'react';
+import React, { useState, ChangeEvent } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { ThunkDispatch } from 'redux-thunk';
 import { generatorPrompt } from '../promptListGeneratorSlice/QuestionGeneratorSlice';
 import Button from '../../components/buttons/Button';
-import Loader from '../../components/loader/Loader';
-import { AnyAction } from '@reduxjs/toolkit';
-
-type GeneratorData = {
-    status: string;
-};
-
-type RootState = {
-    target: { name: string; value: string; };
-    generatorData: GeneratorData;
-    status: string;
-    e: Event;
-    onChange: () => void;
-};
+import { sendPrompt } from '../../utils/sendPrompt';
 
 const ClassNewsletterGenerator = () => {
-    const loadingStatus = useSelector((state: RootState) => state.generatorData?.status);
-    const [isLoading, setIsLoading] = useState(false);
-    const [showPromptMsg, setShowPromptMsg] = useState('');
-
-    useEffect(() => {
-        setIsLoading(loadingStatus === 'loading');
-    }, [loadingStatus]);
-
-    const [formData, setFormData] = useState({
+    const { generatorData: { messages, input } } = useSelector((state) => state);
+    const dispatch = useDispatch();
+    const getInitialFormData = () => ({
         classLevel: 'Nursery',
         newsletterDate: '',
         mainEvents: '',
@@ -38,7 +18,7 @@ const ClassNewsletterGenerator = () => {
         teachersNote: '',
         length: '',
     });
-
+    const [formData, setFormData] = useState(getInitialFormData);
     const handleInputChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
         const { name, value } = e.target;
         setFormData((prevData) => ({
@@ -46,28 +26,17 @@ const ClassNewsletterGenerator = () => {
             [name]: value,
         }));
     };
-
-    const dispatchThunk = useDispatch<ThunkDispatch<RootState, undefined, AnyAction>>();
-
-    const sendPrompt = async (event: React.SyntheticEvent<HTMLFormElement>) => {
+    const promptMessage = `Generate a class newsletter for ${formData.classLevel}, dated ${formData.newsletterDate}, including main events ${formData.mainEvents}, upcoming events ${formData.upcomingEvents}, and special announcements ${formData.specialAnnouncements}. Optionally, include student achievements ${formData.studentAchievements}, parent reminders ${formData.parentReminders}. The letter should be ${formData.length}.`;
+    const handleSubmit = (event: React.SyntheticEvent<HTMLFormElement>) => {
         event.preventDefault();
-
-        try {
-            const promptMessage = `Generate a class newsletter for ${formData.classLevel}, dated ${formData.newsletterDate}, including main events ${formData.mainEvents}, upcoming events ${formData.upcomingEvents}, and special announcements ${formData.specialAnnouncements}. Optionally, include student achievements ${formData.studentAchievements}, parent reminders ${formData.parentReminders}. The letter should be ${formData.length}.`;
-
-            setShowPromptMsg(promptMessage);
-            dispatchThunk(generatorPrompt(promptMessage));
-        } catch (error) {
-            alert('Error fetching data:', error);
-        }
+        sendPrompt(dispatch, { input, messages, generatorPrompt, promptMessage });
+        setFormData(getInitialFormData);
     };
-
     return (
-        <div className="generator-section">
-            {isLoading ? <Loader /> : null}
+         <div className="generator-section">
             <h2>Class Newsletter Generator</h2>
             <h3>Create a customized newsletter for your class, highlighting recent activities, achievements, and upcoming events.</h3>
-            <form onSubmit={sendPrompt}>
+            <form onSubmit={handleSubmit}>
                 <div className='form-group'>
                     <label htmlFor='classLevel'> Class Level <span className='asterisk'>*</span> </label>
                     <select required className='form-control' name="classLevel" onChange={handleInputChange} value={formData.classLevel}>
@@ -112,13 +81,9 @@ const ClassNewsletterGenerator = () => {
                     <label htmlFor='length'> Length of the letter </label>
                     <input className='form-control' name='length' onChange={handleInputChange} value={formData.length} placeholder='Specify the desired length of the News Letter (e.g., 50 words, 100 words)' />
                 </div>
-
                 <Button title='Generate' type="submit" />
-
-                <div className='promptMessage'> Your Prompt Message: <br /> <strong>{showPromptMsg}</strong></div>
             </form>
         </div>
     )
 };
-
 export default ClassNewsletterGenerator;

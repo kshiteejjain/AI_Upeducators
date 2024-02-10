@@ -57,6 +57,7 @@
   }
   nav button{
     padding: 0;
+    margin-top: 0;
     background: transparent;
     font-size: calc(var(--baseFontSize) - 2px);
     border: none;

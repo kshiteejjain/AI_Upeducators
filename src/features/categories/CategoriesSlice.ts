@@ -1,14 +1,11 @@
 // CategoriesSlice.ts
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-
 interface CategoriesState {
   selectedCategory: string;
 }
-
 const initialState: CategoriesState = {
   selectedCategory: 'All', // Set default category
 };
-
 const categoriesSlice = createSlice({
   name: 'categories',
   initialState,
@@ -18,7 +15,6 @@ const categoriesSlice = createSlice({
     },
   },
 });
-
 export const { setCategory } = categoriesSlice.actions;
 export const selectCategory = (state: { categories: CategoriesState }) => state.categories.selectedCategory;
 export default categoriesSlice.reducer;

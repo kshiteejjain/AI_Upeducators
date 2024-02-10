@@ -1,33 +1,13 @@
-import React, { useEffect, useState, ChangeEvent } from 'react';
+import React, { useState, ChangeEvent } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { ThunkDispatch } from 'redux-thunk';
 import { generatorPrompt } from '../promptListGeneratorSlice/QuestionGeneratorSlice';
 import Button from '../../components/buttons/Button';
-import Loader from '../../components/loader/Loader';
-import { AnyAction } from '@reduxjs/toolkit';
-
-type GeneratorData = {
-    status: string;
-};
-
-type RootState = {
-    target: { name: string; value: string; };
-    generatorData: GeneratorData;
-    status: string;
-    e: Event;
-    onChange: () => void;
-};
+import { sendPrompt } from '../../utils/sendPrompt';
 
 const CustomQuestionGenerator = () => {
-    const loadingStatus = useSelector((state: RootState) => state.generatorData?.status);
-    const [isLoading, setIsLoading] = useState(false);
-    const [showPromptMsg, setShowPromptMsg] = useState('');
-
-    useEffect(() => {
-        setIsLoading(loadingStatus === 'loading');
-    }, [loadingStatus]);
-
-    const [formData, setFormData] = useState({
+    const { generatorData: { messages, input } } = useSelector((state) => state);
+    const dispatch = useDispatch();
+    const getInitialFormData = () => ({
         questionType: 'Multiple Choice',
         subjectArea: '',
         gradeLevel: 'Nursery',
@@ -36,7 +16,7 @@ const CustomQuestionGenerator = () => {
         numberOfQuestions: 1,
         specificFormatRequirements: '',
     });
-
+    const [formData, setFormData] = useState(getInitialFormData);
     const handleInputChange = (e: ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
         const { name, value } = e.target;
         setFormData((prevData) => ({
@@ -44,28 +24,17 @@ const CustomQuestionGenerator = () => {
             [name]: value,
         }));
     };
-
-    const dispatchThunk = useDispatch<ThunkDispatch<RootState, undefined, AnyAction>>();
-
-    const sendPrompt = async (event: React.SyntheticEvent<HTMLFormElement>) => {
+    const promptMessage = `Generate ${formData.numberOfQuestions} ${formData.questionType} questions in ${formData.subjectArea} for ${formData.gradeLevel} for ${formData.topic} at a ${formData.difficultyLevel} difficulty. ${formData.specificFormatRequirements ? `(${formData.specificFormatRequirements})` : ''}`;
+    const handleSubmit = (event: React.SyntheticEvent<HTMLFormElement>) => {
         event.preventDefault();
-
-        try {
-            const promptMessage = `Generate ${formData.numberOfQuestions} ${formData.questionType} questions in ${formData.subjectArea} for ${formData.gradeLevel} for ${formData.topic} at a ${formData.difficultyLevel} difficulty. ${formData.specificFormatRequirements ? `(${formData.specificFormatRequirements})` : ''}`;
-
-            setShowPromptMsg(promptMessage);
-            dispatchThunk(generatorPrompt(promptMessage));
-        } catch (error) {
-            alert('Error fetching data:', error);
-        }
+        sendPrompt(dispatch, { input, messages, generatorPrompt, promptMessage });
+        setFormData(getInitialFormData);
     };
-
     return (
         <div className="generator-section">
-            {isLoading ? <Loader /> : null}
             <h2>Custom Question Generator</h2>
             <h3>This form helps create tailored questions for educational or training purposes.</h3>
-            <form onSubmit={sendPrompt}>
+            <form onSubmit={handleSubmit}>
                 {/* Field 1: Question Type */}
                 <div className='form-group'>
                     <label htmlFor='questionType'> Question Type <span className='asterisk'>*</span> </label>
@@ -78,13 +47,11 @@ const CustomQuestionGenerator = () => {
                         <option value="Match the Following">Match the Following</option>
                     </select>
                 </div>
-
                 {/* Field 2: Subject Area */}
                 <div className='form-group'>
                     <label htmlFor='subjectArea'>Subject Area <span className='asterisk'>*</span></label>
                     <input required className='form-control' name='subjectArea' onChange={handleInputChange} value={formData.subjectArea} placeholder='Specify the subject or topic for the question (e.g., Mathematics, History).' />
                 </div>
-
                 {/* Field 3: Grade Level */}
                 <div className='form-group'>
                     <label htmlFor='gradeLevel'> Grade Level <span className='asterisk'>*</span> </label>
@@ -106,13 +73,11 @@ const CustomQuestionGenerator = () => {
                         <option value="College-Level">College Level</option>
                     </select>
                 </div>
-
                 {/* Field 4: Topic */}
                 <div className='form-group'>
                     <label htmlFor='topic'>Topic <span className='asterisk'>*</span></label>
                     <input required className='form-control' name='topic' onChange={handleInputChange} value={formData.topic} placeholder='Mention the topic' />
                 </div>
-
                 {/* Field 5: Difficulty Level */}
                 <div className='form-group'>
                     <label htmlFor='difficultyLevel'> Difficulty Level <span className='asterisk'>*</span> </label>
@@ -122,25 +87,19 @@ const CustomQuestionGenerator = () => {
                         <option value="Hard">Hard</option>
                     </select>
                 </div>
-
                 {/* Field 6: Number of Questions */}
                 <div className='form-group'>
                     <label htmlFor='numberOfQuestions'> Number of Questions<span className='asterisk'>*</span> </label>
                     <input required type="number" className='form-control' name='numberOfQuestions' onChange={handleInputChange} value={formData.numberOfQuestions} placeholder='Enter the number of questions you want to generate.' />
                 </div>
-
                 {/* Field 7: Specific Format Requirements */}
                 <div className='form-group'>
                     <label htmlFor='specificFormatRequirements'> Specific Format Requirements</label>
                     <textarea className='form-control' name='specificFormatRequirements' onChange={handleInputChange} rows={5} value={formData.specificFormatRequirements} placeholder='Describe any specific formatting requirements (e.g., word limit for essay questions, structure for multiple-choice options).'></textarea>
                 </div>
-
                 <Button title='Generate' type="submit" />
-
-                <div className='promptMessage'> Your Prompt Message: <br /> <strong>{showPromptMsg}</strong></div>
             </form>
         </div>
     )
 };
-
 export default CustomQuestionGenerator;

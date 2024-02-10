@@ -1,21 +1,17 @@
 import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
 import axios from 'axios';
 import { handleCreditDecrement, fetchTotalCredits } from '../../utils/firebaseUtils';
-
 interface GeneratorState {
   data?: string | number | null; // Define the type based on your API response
   error?: string | null;
   status?: 'idle' | 'loading' | 'succeeded' | 'failed';
 }
-
 const initialState: GeneratorState = {
   data: null,
   error: null,
   status: 'idle',
 };
-
 const creditValue = Number(import.meta.env.VITE_IMAGE_GENERATOR_CREDITS);
-
 // Define the async thunk
 export const generatorPrompt = createAsyncThunk('generator/generatorPrompt', async (prompt: string) => {
   await handleCreditDecrement(creditValue);
@@ -34,14 +30,12 @@ export const generatorPrompt = createAsyncThunk('generator/generatorPrompt', asy
         },
       }
     );
-
     return response.data;
   } catch (error) {
     alert('Error in generatorPrompt:', error);
     throw error;
   }
 });
-
 const generatorSlice = createSlice({
   name: 'generator',
   initialState,
@@ -69,6 +63,5 @@ const generatorSlice = createSlice({
       });
   },
 });
-
 export const { resetGeneratedData } = generatorSlice.actions; // Export the action creator
 export default generatorSlice.reducer;

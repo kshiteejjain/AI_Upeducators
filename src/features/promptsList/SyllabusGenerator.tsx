@@ -1,33 +1,13 @@
-import React, { useEffect, useState, ChangeEvent } from 'react';
+import React, { useState, ChangeEvent } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { ThunkDispatch } from 'redux-thunk';
 import { generatorPrompt } from '../promptListGeneratorSlice/QuestionGeneratorSlice';
 import Button from '../../components/buttons/Button';
-import Loader from '../../components/loader/Loader';
-import { AnyAction } from '@reduxjs/toolkit';
-
-type GeneratorData = {
-    status: string;
-};
-
-type RootState = {
-    target: { name: string; value: string; };
-    generatorData: GeneratorData;
-    status: string;
-    e: Event;
-    onChange: () => void;
-};
+import { sendPrompt } from '../../utils/sendPrompt';
 
 const SyllabusGenerator = () => {
-    const loadingStatus = useSelector((state: RootState) => state.generatorData?.status);
-    const [isLoading, setIsLoading] = useState(false);
-    const [showPromptMsg, setShowPromptMsg] = useState('');
-
-    useEffect(() => {
-        setIsLoading(loadingStatus === 'loading');
-    }, [loadingStatus]);
-
-    const [formData, setFormData] = useState({
+    const { generatorData: { messages, input } } = useSelector((state) => state);
+    const dispatch = useDispatch();
+    const getInitialFormData = () => ({
         courseName: '',
         gradeLevel: 'Nursery',
         educationalBoard: 'CBSE',
@@ -37,7 +17,7 @@ const SyllabusGenerator = () => {
         assessmentMethods: '',
         additionalResources: '',
     });
-
+    const [formData, setFormData] = useState(getInitialFormData);
     const handleInputChange = (e: ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
         const { name, value } = e.target;
         setFormData((prevData) => ({
@@ -45,28 +25,17 @@ const SyllabusGenerator = () => {
             [name]: value,
         }));
     };
-
-    const dispatchThunk = useDispatch<ThunkDispatch<RootState, undefined, AnyAction>>();
-
-    const sendPrompt = async (event: React.SyntheticEvent<HTMLFormElement>) => {
+    const promptMessage = `Generate a syllabus for the course "${formData.courseName}" for ${formData.gradeLevel} under the ${formData.educationalBoard}. The course duration is ${formData.courseDuration}. Main topics include: ${formData.mainTopics}. Learning objectives: ${formData.learningObjectives}. Assessment methods: ${formData.assessmentMethods}. Additional resources: ${formData.additionalResources}.`;
+    const handleSubmit = (event: React.SyntheticEvent<HTMLFormElement>) => {
         event.preventDefault();
-
-        try {
-            const promptMessage = `Generate a syllabus for the course "${formData.courseName}" for ${formData.gradeLevel} under the ${formData.educationalBoard}. The course duration is ${formData.courseDuration}. Main topics include: ${formData.mainTopics}. Learning objectives: ${formData.learningObjectives}. Assessment methods: ${formData.assessmentMethods}. Additional resources: ${formData.additionalResources}.`;
-
-            setShowPromptMsg(promptMessage);
-            dispatchThunk(generatorPrompt(promptMessage));
-        } catch (error) {
-            alert('Error fetching data:', error);
-        }
+        sendPrompt(dispatch, { input, messages, generatorPrompt, promptMessage });
+        setFormData(getInitialFormData);
     };
-
     return (
-        <div className="generator-section">
-            {isLoading ? <Loader /> : null}
+         <div className="generator-section">
             <h2>Syllabus Generator</h2>
             <h3>This tool assists in creating detailed syllabi for various courses and subjects.</h3>
-            <form onSubmit={sendPrompt}>
+            <form onSubmit={handleSubmit}>
                 <div className='form-group'>
                     <label htmlFor='courseName'> Course Name <span className='asterisk'>*</span> </label>
                     <input required className='form-control' name='courseName' onChange={handleInputChange} value={formData.courseName} placeholder='Enter the name of the course (e.g., Introduction to Biology, Advanced Mathematics).' />
@@ -122,13 +91,9 @@ const SyllabusGenerator = () => {
                     <label htmlFor='additionalResources'> Additional Resources </label>
                     <textarea className='form-control' name='additionalResources' onChange={handleInputChange} rows={5} value={formData.additionalResources} placeholder='Include any additional resources (e.g., textbooks, websites, software).'> </textarea>
                 </div>
-
                 <Button title='Generate' type="submit" />
-
-                <div className='promptMessage'> Your Prompt Message: <br /> <strong>{showPromptMsg}</strong></div>
             </form>
         </div>
     )
 };
-
 export default SyllabusGenerator;

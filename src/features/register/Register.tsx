@@ -9,9 +9,7 @@ import LoginImages from '../../components/loginImages/loginImages';
 import Strings from '../../utils/en';
 import ShowPassword from '../../assets/showPassword.svg';
 import HidePassword from '../../assets/hidePassword.svg'
-
 import './Register.css';
-
 const Register = () => {
     const currentDateTime = new Date();
     const formattedDateTime = currentDateTime.toLocaleString();
@@ -52,11 +50,9 @@ const Register = () => {
             [name]: name === 'phone' ? Number(value) : value,
         }));
     };
-
     const handleForgotPassword = () => {
         navigate('/ForgotPassword')
     }
-
     const generateRandomOTP = () => {
         const otp = Math.floor(100000 + Math.random() * 900000);
         setFormData((prevData) => ({
@@ -66,7 +62,6 @@ const Register = () => {
         return otp.toString();
     };
 
-
     const formSubmit = async (e: FormEvent) => {
         e.preventDefault();
         setLoading(true)
@@ -74,7 +69,6 @@ const Register = () => {
             const querySnapshot = await getDocs(
                 query(collection(firestore, 'RegisteredUsers'), where('email', '==', formData.email))
             );
-
             if (!querySnapshot.empty) {
                 // Email already exists, show alert or handle accordingly
                 alert('Email is already registered!');
@@ -82,7 +76,6 @@ const Register = () => {
             }
             const otp = generateRandomOTP();
             const selfRegisteredUsersCollection = collection(firestore, 'RegisteredUsers');
-
             // Adding the form data to the Firestore collection
             await addDoc(selfRegisteredUsersCollection, {
                 ...formData,
@@ -107,7 +100,6 @@ const Register = () => {
                 register_timestamp: formattedDateTime,
                 otp: otp,
             });
-
             emailjs.send(import.meta.env.VITE_EMAILJS_SERVICE_ID, import.meta.env.VITE_EMAILJS_TEMPLATE_REGISTER, {
                 ...formData,
                 message: otp,
@@ -118,12 +110,10 @@ const Register = () => {
                 }, error => {
                     console.log('FAILED...', error);
                 });
-
         } catch (error) {
             alert('An error occurred:', error);
         }
     };
-
     const handleInputChangeOTP = (e: ChangeEvent<HTMLInputElement>) => {
         const enteredValue = e.target.value;
         if (/^\d{0,6}$/.test(enteredValue)) {
@@ -133,22 +123,17 @@ const Register = () => {
         }
         setEnteredOTP(enteredValue);
     };
-
     const logEmailAndOTP = async (e: FormEvent) => {
         e.preventDefault();
         setLoading(true);
         const usersCollection = collection(firestore, 'RegisteredUsers');
-
         if (!enteredEmail || !enteredOTP) {
             console.error('Email or OTP is undefined');
             return;
         }
-
         const q = query(usersCollection, where('email', '==', enteredEmail), where('otp', '==', Number(enteredOTP)));
-
         try {
             const querySnapshot = await getDocs(q);
-
             if (!querySnapshot.empty) {
                 alert('Registration Successful, Redirecting to login.');
                 setLoading(false)
@@ -160,7 +145,6 @@ const Register = () => {
             console.error('Error fetching documents: ', error);
         }
     };
-
     return (
         <div className='login-wrapper'>
             <LoginImages />
@@ -168,7 +152,6 @@ const Register = () => {
                 <h1>
                     {!isOTPScreen ? Strings.register.title :<> {Strings.otp.title} <span className='otpSent'>{Strings.otp.emailSent}</span> </>}
                 </h1>
-
                 {isOTPScreen ?
                     <form onSubmit={logEmailAndOTP}>
                         <div className='form-group'>
@@ -209,7 +192,6 @@ const Register = () => {
                                     {showPassword ? <img src={HidePassword} /> : <img src={ShowPassword} />}
                                 </div>
                             </div>
-
                             <Button title='Register' type="submit" />
                         </form>
                         <div className="additional-actions">
@@ -223,5 +205,4 @@ const Register = () => {
         </div>
     )
 };
-
 export default Register;

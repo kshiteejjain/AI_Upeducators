@@ -1,18 +1,17 @@
-import { ChangeEvent, useEffect, useMemo, useState } from 'react'
-import { ThunkDispatch } from 'redux-thunk';
-import { generatorPrompt } from '../promptListGeneratorSlice/QuestionGeneratorSlice';
-import { AnyAction } from '@reduxjs/toolkit';
+import { ChangeEvent, useEffect, useMemo, useRef, useState } from 'react'
+import { generatorPrompt, } from '../promptListGeneratorSlice/QuestionGeneratorSlice';
 import { useDispatch, useSelector } from 'react-redux';
+import { sendPrompt } from '../../utils/sendPrompt';
 import Button from '../../components/buttons/Button';
 import NoDataFoundImage from '../../assets/no-data-found.svg';
 import CopyClipboard from '../../assets/copyClipboard.svg';
 import mp3Sound from '../../assets/result-audio.mp3';
-
+import Loader from '../../components/loader/Loader';
 import './Result.css';
-
 
 type RootState = {
   generatorData: {
+    isFollowUpPrompt: boolean;
     data: {
       choices: {
         text: string;
@@ -20,52 +19,75 @@ type RootState = {
     };
   };
 };
-
 const Result = () => {
-  const generatedData = useSelector((state: RootState) => state?.generatorData?.responses);
-  
+  const { generatorData: { messages, input } } = useSelector((state) => state);
+  const generatedData = useSelector((state: RootState) => state?.generatorData?.messages);
   const generatedImage = useSelector((state: RootState) => state?.generatorData?.data?.data?.[0]?.url);
-  const dispatchThunk = useDispatch<ThunkDispatch<RootState, undefined, AnyAction>>();
   const resultAudio = useMemo(() => new Audio(mp3Sound), []);
+  const loadingStatus = useSelector((state: RootState) => state.generatorData?.status);
+  const [isLoading, setIsLoading] = useState(false);
+  const [isSubmitClicked, setIsSubmitClicked] = useState(false);
+  const dispatch = useDispatch();
+  const resultRef = useRef<HTMLDivElement | null>(null);
+  const isFollowUpPrompt = useSelector((state: RootState) => state.generatorData?.isFollowUpPrompt)
+  const generatedDataOption = isFollowUpPrompt ? generatedData : generatedData?.slice(-2);
 
-  const questions = generatedData?.map(response => response?.data?.choices[0]?.message?.content);
-  const questionElements = questions?.map((question, index) => (
-    <div key={index} className="resultQuestions" dangerouslySetInnerHTML={{ __html: question?.trim()?.replace(/\n/g, '<br />') }} />
-  ));
+  const content = generatedDataOption?.map((msg, index) => {
+    if (msg.role === 'user' && (msg.isVisible === false || msg.isVisible === undefined)) {
+      return null;
+  }
+
+    return (
+        <div className='response-data' key={index}>
+            <div className={msg.role}>
+                {msg.role === 'user' ? (
+                    <div dangerouslySetInnerHTML={{ __html: msg.content?.trim()?.replace(/\n/g, '<br />') }} />
+                ) : (
+                    // Splitting the content into lines
+                    msg?.content?.split('\n').map((line, lineIndex) => (
+                        <div key={lineIndex}>
+                            {/* Checking if the line ends with a question mark */}
+                            {line.trim().endsWith('?') ? (
+                                <strong>{line}</strong> // Boldening the question line
+                            ) : (
+                                line // Otherwise, render the line as is
+                            )}
+                            <br />
+                        </div>
+                    ))
+                )}
+            </div>
+        </div>
+    );
+});
+
 
   useEffect(() => {
-    if (generatedData.length !== 0) {
-      resultAudio.play();
-    }
+    isSubmitClicked ? null : setIsLoading(loadingStatus === 'loading');
+    generatedData?.length === 2 && resultAudio.play();
   }, [generatedData, generatedImage, resultAudio]);
-
   const handleCopyData = () => {
-    alert('Result data copied and ready to paste.')
+    alert('Result data copied and ready to paste.');
     const textArea = document.createElement('textarea');
-    textArea.value = generatedData || '';
+    textArea.value = generatedData?.map(msg => msg.content).join('\n') || '';
     document.body.appendChild(textArea);
     textArea.select();
     document.execCommand('copy');
     document.body.removeChild(textArea);
   };
-
   const downloadImage = () => {
     if (generatedImage) {
-      // Create a temporary link element
       const link = document.createElement('a');
       link.href = generatedImage;
-      link.download = 'generated_image.png'; // You can customize the file name
+      link.download = 'generated_image.png';
       document.body.appendChild(link);
       link.click();
       document.body.removeChild(link);
     }
   };
-
   const [formData, setFormData] = useState({
-    additionalData: '',
+    followUpPromptInput: '',
   });
-
-
   const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setFormData((prevData) => ({
@@ -73,50 +95,74 @@ const Result = () => {
       [name]: value,
     }));
   };
+  const promptMessage = `${formData.followUpPromptInput}`;
 
-  const sendPrompt = async (event: React.SyntheticEvent<HTMLFormElement>) => {
+  const handleSubmit = async (event: React.SyntheticEvent<HTMLFormElement>) => {
     event.preventDefault();
-
-    try {
-      const promptMessage = `${formData.additionalData}`
-      dispatchThunk(generatorPrompt(promptMessage));
-      setFormData({
-        additionalData: '',
-      });
-    } catch (error) {
-      alert('Error fetching data:', error);
+    setIsSubmitClicked(true);
+    sendPrompt(dispatch, { input, messages, generatorPrompt, promptMessage, isFollowUpPrompt: true });
+    setFormData({
+      followUpPromptInput: '',
+    });
+    setTimeout(() => {
+      setIsSubmitClicked(false);
+    }, 2000)
+  };
+  const scrollResultToBottom = () => {
+    if (resultRef.current) {
+      const resultDiv = resultRef.current;
+      resultDiv.scrollTop = resultDiv.scrollHeight;
     }
   };
 
+  // Use a timeout to scroll to the bottom after rendering changes
+  useEffect(() => {
+    setTimeout(() => {
+      scrollResultToBottom();
+    }, 0);
+  }, [content]);
+
   return (
-    <>
-      <div className="result-section">
-        {generatedData.length !== 0 ? (
+    <div className="result-section" ref={resultRef}>
+      {isLoading && <Loader isSwipeText />}
+      <div className="result-section-inner">
+        {content}
+        {generatedData?.length !== 0 && (
           <>
-            {questionElements}
             <button className='copyClipboard' title="Copy Content" onClick={handleCopyData}>
               <img src={CopyClipboard} alt="Copy to Clipboard" />
             </button>
           </>
-        ) : (
-          generatedImage && <div className='generatedImage'> <img src={generatedImage} alt="Generated Image" /> </div>
-        ) || (
+        )}
+        {generatedImage && (
+          <div className='generatedImage'>
+            <img src={generatedImage} alt="Generated Image" />
+          </div>
+        )}
+        {!generatedData?.length && !generatedImage && (
           <div className='noDataFoundImage'>
             <img src={NoDataFoundImage} alt="No Data Found" />
           </div>
         )}
         {generatedImage && <Button title='Download Image' onClick={downloadImage} />}
-
-       {generatedData.length !== 0 ? <form onSubmit={sendPrompt} className='followUpPrompt'>
-          <div className='form-group'>
-            <input name="additionalData" required className='form-control' onChange={handleInputChange} value={formData.additionalData} autoComplete="off" placeholder="Ask Follow Up Questions..." />
-          </div>
-          <Button title='Submit' type="submit" />
-        </form> : null} 
       </div>
-
-    </>
-  )
+      {generatedData?.length >= 2 && (
+        <form onSubmit={handleSubmit} className='followUpPrompt'>
+          <div className='form-group'>
+            <input
+              name="followUpPromptInput"
+              required
+              className='form-control'
+              onChange={handleInputChange}
+              value={formData.followUpPromptInput}
+              autoComplete="off"
+              placeholder="Ask Follow Up Questions..."
+            />
+          </div>
+          <Button title='Send' type="submit" />
+        </form>
+      )}
+    </div>
+  );
 };
-
 export default Result;

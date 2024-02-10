@@ -5,35 +5,26 @@ import { firestore } from '../../utils/firebase';
 import CSVReader from 'react-csv-reader';
 import Header from '../../components/header/Header';
 import Button from '../../components/buttons/Button';
-
 import './UploadUsers.css';
-
 type UploadUsersCSVProps = {};
-
 const UploadUsersCSV: React.FC<UploadUsersCSVProps> = (): ReactElement => {
     const [csvData, setCsvData] = useState<string[][] | undefined>();
     const navigate = useNavigate();
-
     const goHome = () => {
         navigate('/Categories');
     };
-
     const handleCSVRead = (data: string[][]) => {
         // Process the CSV data as needed
         setCsvData(data);
     };
-
     const uploadDataToFirestore = async () => {
         if (!csvData) {
             alert('No CSV data available.');
             return;
         }
-
         const headers = csvData[0];
-
         // Assuming each subsequent row contains data
         const dataRows = csvData?.slice(1);
-
         const formattedData = dataRows?.map((row) => {
             const document: Record<string, string | number> = {};
             row.forEach((value, index) => {
@@ -52,12 +43,10 @@ const UploadUsersCSV: React.FC<UploadUsersCSVProps> = (): ReactElement => {
         try {
             const collectionRef = collection(firestore, 'ExistingUsersBulkUploaded');
             const existingUsers = await getDocs(collectionRef);
-
             // Check if any uploaded email matches an existing user's email
             const duplicateEmails = formattedData
                 .map((item) => item['email'])
                 .filter((email) => existingUsers.docs.some((doc) => doc.data().email === email));
-
             if (duplicateEmails.length > 0) {
                 alert(`Duplicate users found with emails: ${duplicateEmails.join(', ')}`);
                 return;
@@ -73,7 +62,6 @@ const UploadUsersCSV: React.FC<UploadUsersCSVProps> = (): ReactElement => {
             alert('Error uploading data to Firestore:', error);
         }
     };
-
     return (
         <>
             <Header />
@@ -91,5 +79,4 @@ const UploadUsersCSV: React.FC<UploadUsersCSVProps> = (): ReactElement => {
         </>
     );
 };
-
 export default UploadUsersCSV;

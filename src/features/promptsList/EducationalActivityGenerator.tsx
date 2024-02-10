@@ -1,35 +1,14 @@
-import { useState, ChangeEvent, FormEvent, useEffect } from 'react';
+import React, { useState, ChangeEvent } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { ThunkDispatch } from 'redux-thunk';
 import { generatorPrompt } from '../promptListGeneratorSlice/QuestionGeneratorSlice';
 import Button from '../../components/buttons/Button';
-import Loader from '../../components/loader/Loader';
-import { AnyAction } from '@reduxjs/toolkit';
-
-type GeneratorData = {
-    status: string;
-};
-
-type RootState = {
-    target: { name: string; value: string; };
-    generatorData: GeneratorData;
-    status: string;
-    e: Event;
-    onChange: () => void;
-};
+import { sendPrompt } from '../../utils/sendPrompt';
 
 const EducationalActivityGenerator = () => {
-    const loadingStatus = useSelector((state: RootState) => state.generatorData?.status);
-    const [isLoading, setIsLoading] = useState(false);
-    const [showPromptMsg, setShowPromptMsg] = useState('');
+    const { generatorData: { messages, input } } = useSelector((state) => state);
+    const dispatch = useDispatch();
 
-
-    useEffect(() => {
-        setIsLoading(loadingStatus === 'loading');
-    }, [loadingStatus]);
-
-    
-    const [formData, setFormData] = useState({
+    const getInitialFormData = () => ({
         numberOfActivities: '',
         ageGroup: 'Toddlers',
         subject: '',
@@ -37,9 +16,7 @@ const EducationalActivityGenerator = () => {
         learningObjective: '',
         duration: '15 minutes',
     });
-
-    const dispatchThunk = useDispatch<ThunkDispatch<RootState, undefined, AnyAction>>();
-
+    const [formData, setFormData] = useState(getInitialFormData);
     const handleInputChange = (e: ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
         const { name, value } = e.target;
         setFormData((prevData) => ({
@@ -47,26 +24,18 @@ const EducationalActivityGenerator = () => {
             [name]: value,
         }));
     };
-
-    const sendPrompt = async (event: FormEvent<HTMLFormElement>) => {
+    const promptMessage = `Generate ${formData.numberOfActivities} educational activity for ${formData.ageGroup} on ${formData.subject} focusing on ${formData.learningObjective}. The activity type is ${formData.activityType} and should last approximately ${formData.duration}.`;
+    const handleSubmit = (event: React.SyntheticEvent<HTMLFormElement>) => {
         event.preventDefault();
-
-        try {
-            const promptMessage = `Generate ${formData.numberOfActivities} educational activity for ${formData.ageGroup} on ${formData.subject} focusing on ${formData.learningObjective}. The activity type is ${formData.activityType} and should last approximately ${formData.duration}.`;
-
-            setShowPromptMsg(promptMessage);
-            dispatchThunk(generatorPrompt(promptMessage));
-        } catch (error) {
-            alert('Error fetching data:', error);
-        }
+        sendPrompt(dispatch, { input, messages, generatorPrompt, promptMessage });
+        setFormData(getInitialFormData);
     };
 
     return (
         <div className="generator-section">
-            {isLoading ? <Loader /> : null}
             <h2>Educational Activity Generator</h2>
             <h3>Create customized educational activities suitable for various educational settings and objectives.</h3>
-            <form onSubmit={sendPrompt}>
+            <form onSubmit={handleSubmit}>
                 <div className='form-group'>
                     <label htmlFor='numberOfActivities'>No. of Activities <span className='asterisk'>*</span></label>
                     <input
@@ -163,13 +132,10 @@ const EducationalActivityGenerator = () => {
                         <option value="Full-day">Full-day</option>
                     </select>
                 </div>
-
                 <Button title='Generate' type="submit" />
 
-                <div className='promptMessage'>Your Prompt Message: <br /><strong>{showPromptMsg}</strong></div>
             </form>
         </div>
     )
 };
-
 export default EducationalActivityGenerator;

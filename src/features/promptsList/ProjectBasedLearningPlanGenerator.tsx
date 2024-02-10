@@ -1,33 +1,13 @@
-import React, { useEffect, useState, ChangeEvent } from 'react';
+import React, { useState, ChangeEvent } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { ThunkDispatch } from 'redux-thunk';
 import { generatorPrompt } from '../promptListGeneratorSlice/QuestionGeneratorSlice';
 import Button from '../../components/buttons/Button';
-import Loader from '../../components/loader/Loader';
-import { AnyAction } from '@reduxjs/toolkit';
-
-type GeneratorData = {
-    status: string;
-};
-
-type RootState = {
-    target: { name: string; value: string; };
-    generatorData: GeneratorData;
-    status: string;
-    e: Event;
-    onChange: () => void;
-};
+import { sendPrompt } from '../../utils/sendPrompt';
 
 const ProjectBasedLearningPlanGenerator = () => {
-    const loadingStatus = useSelector((state: RootState) => state.generatorData?.status);
-    const [isLoading, setIsLoading] = useState(false);
-    const [showPromptMsg, setShowPromptMsg] = useState('');
-
-    useEffect(() => {
-        setIsLoading(loadingStatus === 'loading');
-    }, [loadingStatus]);
-
-    const [formData, setFormData] = useState({
+    const { generatorData: { messages, input } } = useSelector((state) => state);
+    const dispatch = useDispatch();
+    const getInitialFormData = () => ({
         projectTitle: '',
         gradeLevel: 'Nursery',
         subjectArea: 'Mathematics',
@@ -36,7 +16,7 @@ const ProjectBasedLearningPlanGenerator = () => {
         keyResourcesNeeded: '',
         assessmentCriteria: '',
     });
-
+    const [formData, setFormData] = useState(getInitialFormData);
     const handleInputChange = (e: ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
         const { name, value } = e.target;
         setFormData((prevData) => ({
@@ -44,28 +24,17 @@ const ProjectBasedLearningPlanGenerator = () => {
             [name]: value,
         }));
     };
-
-    const dispatchThunk = useDispatch<ThunkDispatch<RootState, undefined, AnyAction>>();
-
-    const sendPrompt = async (event: React.SyntheticEvent<HTMLFormElement>) => {
+    const promptMessage = `Develop a PBL plan for "${formData.projectTitle}" for ${formData.gradeLevel} students in ${formData.subjectArea}. The project will last ${formData.projectDuration}. Learning objectives include: ${formData.learningObjectives}. Key resources needed: ${formData.keyResourcesNeeded}. Assessment criteria: ${formData.assessmentCriteria}`;
+    const handleSubmit = (event: React.SyntheticEvent<HTMLFormElement>) => {
         event.preventDefault();
-
-        try {
-            const promptMessage = `Develop a PBL plan for "${formData.projectTitle}" for ${formData.gradeLevel} students in ${formData.subjectArea}. The project will last ${formData.projectDuration}. Learning objectives include: ${formData.learningObjectives}. Key resources needed: ${formData.keyResourcesNeeded}. Assessment criteria: ${formData.assessmentCriteria}`;
-
-            setShowPromptMsg(promptMessage);
-            dispatchThunk(generatorPrompt(promptMessage));
-        } catch (error) {
-            alert('Error fetching data:', error);
-        }
+        sendPrompt(dispatch, { input, messages, generatorPrompt, promptMessage });
+        setFormData(getInitialFormData);
     };
-
     return (
         <div className="generator-section">
-            {isLoading ? <Loader /> : null}
             <h2>Project-Based Learning Plan Generator</h2>
             <h3>Create structured plans for project-based learning activities.</h3>
-            <form onSubmit={sendPrompt}>
+            <form onSubmit={handleSubmit}>
                 <div className='form-group'>
                     <label htmlFor='projectTitle'> Project Title <span className='asterisk'>*</span> </label>
                     <input required className='form-control' name='projectTitle' onChange={handleInputChange} value={formData.projectTitle} placeholder='Enter a brief title for the project.' />
@@ -114,13 +83,9 @@ const ProjectBasedLearningPlanGenerator = () => {
                     <label htmlFor='assessmentCriteria'> Assessment Criteria </label>
                     <textarea className='form-control' name='assessmentCriteria' onChange={handleInputChange} rows={5} value={formData.assessmentCriteria} placeholder='Specify how the students’ work will be evaluated.'></textarea>
                 </div>
-
                 <Button title='Generate' type="submit" />
-
-                <div className='promptMessage'> Your Prompt Message: <br /> <strong>{showPromptMsg}</strong></div>
             </form>
         </div>
     )
 };
-
 export default ProjectBasedLearningPlanGenerator;

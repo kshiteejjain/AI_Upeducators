@@ -1,18 +1,13 @@
 import React, { useState, ChangeEvent } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { generatorPrompt } from '../promptListGeneratorSlice/QuestionGeneratorSlice';
 import Button from '../../components/buttons/Button';
-
-type EmailFormData = {
-    recipientName: string;
-    recipientPosition: string;
-    senderName: string;
-    subjectLine: string;
-    purposeOfEmail: string;
-    toneAndStyle: string;
-    lengthAndDetail: string;
-};
+import { sendPrompt } from '../../utils/sendPrompt';
 
 const ProfessionalEmailGenerator = () => {
-    const [formData, setFormData] = useState<EmailFormData>({
+    const { generatorData: { messages, input } } = useSelector((state) => state);
+    const dispatch = useDispatch();
+    const getInitialFormData = () => ({
         recipientName: '',
         recipientPosition: '',
         senderName: '',
@@ -21,7 +16,7 @@ const ProfessionalEmailGenerator = () => {
         toneAndStyle: 'Formal',
         lengthAndDetail: '',
     });
-
+    const [formData, setFormData] = useState(getInitialFormData);
     const handleInputChange = (e: ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
         const { name, value } = e.target;
         setFormData((prevData) => ({
@@ -29,20 +24,17 @@ const ProfessionalEmailGenerator = () => {
             [name]: value,
         }));
     };
-
-    const sendPrompt = (event: React.SyntheticEvent<HTMLFormElement>) => {
+    const promptMessage = `Compose a professional email addressed to ${formData.recipientName}, ${formData.recipientPosition}, from ${formData.senderName}. The subject line should read "${formData.subjectLine}," and the email's purpose is ${formData.purposeOfEmail}. The tone and style should be ${formData.toneAndStyle}, and the email should be ${formData.lengthAndDetail}.`;
+    const handleSubmit = (event: React.SyntheticEvent<HTMLFormElement>) => {
         event.preventDefault();
-
-        const promptMessage = `Compose a professional email addressed to ${formData.recipientName}, ${formData.recipientPosition}, from ${formData.senderName}. The subject line should read "${formData.subjectLine}," and the email's purpose is ${formData.purposeOfEmail}. The tone and style should be ${formData.toneAndStyle}, and the email should be ${formData.lengthAndDetail}.`;
-
-        alert(promptMessage);
+        sendPrompt(dispatch, { input, messages, generatorPrompt, promptMessage });
+        setFormData(getInitialFormData);
     };
-
     return (
         <div className="generator-section">
             <h2>Professional Email Generator</h2>
             <h3>Create professional emails tailored to specific needs and contexts.</h3>
-            <form onSubmit={sendPrompt}>
+            <form onSubmit={handleSubmit}>
                 {/* Recipient Information */}
                 <div className="form-group">
                     <label htmlFor="recipientName">Recipient's Name<span className="asterisk">*</span></label>
@@ -65,7 +57,6 @@ const ProfessionalEmailGenerator = () => {
                         placeholder="Enter the position or title of the recipient if relevant"
                     />
                 </div>
-
                 {/* Sender Information */}
                 <div className="form-group">
                     <label htmlFor="senderName">Sender's Name<span className="asterisk">*</span></label>
@@ -78,7 +69,6 @@ const ProfessionalEmailGenerator = () => {
                         placeholder="Enter your full name or the name of the person sending the email"
                     />
                 </div>
-
                 {/* Email Subject */}
                 <div className="form-group">
                     <label htmlFor="subjectLine">Subject Line<span className="asterisk">*</span></label>
@@ -91,7 +81,6 @@ const ProfessionalEmailGenerator = () => {
                         placeholder="Enter a concise and clear subject line for the email"
                     />
                 </div>
-
                 {/* Email Purpose */}
                 <div className="form-group">
                     <label htmlFor="purposeOfEmail">Purpose of Email<span className="asterisk">*</span></label>
@@ -105,7 +94,6 @@ const ProfessionalEmailGenerator = () => {
                         placeholder="Briefly describe the main purpose or objective of the email"
                     />
                 </div>
-
                 {/* Tone and Style */}
                 <div className="form-group">
                     <label htmlFor="toneAndStyle">Tone and Style</label>
@@ -125,7 +113,6 @@ const ProfessionalEmailGenerator = () => {
                         <option value="Requesting">Requesting</option>
                     </select>
                 </div>
-
                 {/* Length and Detail */}
                 <div className="form-group">
                     <label htmlFor="lengthAndDetail">Length and Detail</label>
@@ -137,12 +124,9 @@ const ProfessionalEmailGenerator = () => {
                         placeholder="Specify the desired length and level of detail for the email"
                     />
                 </div>
-
                 <Button title="Generate" type="submit" />
-
             </form>
         </div>
     );
 };
-
 export default ProfessionalEmailGenerator;

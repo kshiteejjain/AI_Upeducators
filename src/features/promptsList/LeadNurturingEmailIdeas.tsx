@@ -1,41 +1,17 @@
-import { useState, ChangeEvent, FormEvent, useEffect } from 'react';
+import React, { useState, ChangeEvent } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { ThunkDispatch } from 'redux-thunk';
 import { generatorPrompt } from '../promptListGeneratorSlice/QuestionGeneratorSlice';
 import Button from '../../components/buttons/Button';
-import Loader from '../../components/loader/Loader';
-import { AnyAction } from '@reduxjs/toolkit';
-
-type GeneratorData = {
-    status: string;
-};
-
-type RootState = {
-    target: { name: string; value: string; };
-    generatorData: GeneratorData;
-    status: string;
-    e: Event;
-    onChange: () => void;
-};
+import { sendPrompt } from '../../utils/sendPrompt';
 
 const LeadNurturingEmailIdeas = () => {
-    const loadingStatus = useSelector((state: RootState) => state.generatorData?.status);
-    const [isLoading, setIsLoading] = useState(false);
-    const [showPromptMsg, setShowPromptMsg] = useState('');
-
-
-    useEffect(() => {
-        setIsLoading(loadingStatus === 'loading');
-    }, [loadingStatus]);
-
-    
-    const [formData, setFormData] = useState({
+    const { generatorData: { messages, input } } = useSelector((state) => state);
+    const dispatch = useDispatch();
+    const getInitialFormData = () => ({
         topic: '',
         audience: ''
     });
-
-    const dispatchThunk = useDispatch<ThunkDispatch<RootState, undefined, AnyAction>>();
-
+    const [formData, setFormData] = useState(getInitialFormData);
     const handleInputChange = (e: ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
         const { name, value } = e.target;
         setFormData((prevData) => ({
@@ -43,12 +19,7 @@ const LeadNurturingEmailIdeas = () => {
             [name]: value,
         }));
     };
-
-    const sendPrompt = async (event: FormEvent<HTMLFormElement>) => {
-        event.preventDefault();
-
-        try {
-            const promptMessage = `Topic is ${formData.topic}
+    const promptMessage = `Topic is ${formData.topic}
             I want to add leads for the topic into an email drip campaign. Audience is ${formData.audience}
             
             Give me a 6 month plan, with weekly emails, using catchy email headlines, that will turn a cold lead into a warm prospect.
@@ -69,22 +40,17 @@ const LeadNurturingEmailIdeas = () => {
             - Heartfelt message Why I decided to coach on "topic"
             - Make something easier - It's not difficult to do "this". Here is why
             - Create a villain - Why someone hate me
-            - Be witty - My mom asked me to share this with you
-            `;
-
-            setShowPromptMsg(promptMessage);
-            dispatchThunk(generatorPrompt(promptMessage));
-        } catch (error) {
-            alert('Error fetching data:', error);
-        }
+            - Be witty - My mom asked me to share this with you`;
+    const handleSubmit = (event: React.SyntheticEvent<HTMLFormElement>) => {
+        event.preventDefault();
+        sendPrompt(dispatch, { input, messages, generatorPrompt, promptMessage });
+        setFormData(getInitialFormData);
     };
-
     return (
         <div className="generator-section">
-            {isLoading ? <Loader /> : null}
             <h2>Lead Nurturing Email Ideas</h2>
             <h3>Generate innovative and engaging email ideas for lead nurturing campaigns.</h3>
-            <form onSubmit={sendPrompt}>
+            <form onSubmit={handleSubmit}>
                 <div className='form-group'>
                     <label htmlFor='topic'>Topic<span className='asterisk'>*</span></label>
                     <input
@@ -109,13 +75,10 @@ const LeadNurturingEmailIdeas = () => {
                         placeholder='Enter the target audience, such as Parents, Teenagers'
                     />
                 </div>
-
                 <Button title='Generate' type="submit" />
 
-                <div className='promptMessage'>Your Prompt Message: <br /><strong>{showPromptMsg}</strong></div>
             </form>
         </div>
     )
 };
-
 export default LeadNurturingEmailIdeas;

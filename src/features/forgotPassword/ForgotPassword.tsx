@@ -7,15 +7,12 @@ import emailjs from '@emailjs/browser';
 import Button from '../../components/buttons/Button';
 import Strings from '../../utils/en';
 import LoginImages from '../../components/loginImages/loginImages';
-
 import './ForgotPassword.css';
-
 const ForgotPassword = () => {
     const [userDetails, setUserDetails] = useState({
         email: '',
     });
     const navigate = useNavigate();
-
     const generateRandomPassword =  () => {
         const upEducators = "upEducators";
         const alphanumericChars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
@@ -35,30 +32,24 @@ const ForgotPassword = () => {
     
     // Example usage
     const randomPassword = generateRandomPassword();
-
     const handleResetPassword = async (e) => {
         e.preventDefault();
         try {
             const collectionRef = collection(firestore, 'RegisteredUsers');
-
             // Check if a document with the given email exists
             const q = query(
                 collectionRef,
                 where('email', '==', userDetails.email)
             );
             const querySnapshot = await getDocs(q);
-
             if (!querySnapshot.empty) {
                 // Document with this email exists
                 const docRef = querySnapshot.docs[0].ref;
-
                 // Update the password field in the document
                 await updateDoc(docRef, {
                     password: randomPassword
                 });
-
                 alert('Password changed successfully, Redirecting to Login.');
-
                 emailjs.send(import.meta.env.VITE_EMAILJS_SERVICE_ID, import.meta.env.VITE_EMAILJS_TEMPLATE_FORGOT_PASSWORD, {
                     to_email: userDetails.email,
                     message: randomPassword,
@@ -69,7 +60,6 @@ const ForgotPassword = () => {
                         console.log('FAILED...', error);
                     });
                 navigate('/')
-
                 // Now you can redirect or perform any other actions
             } else {
                 // No document with this email found
@@ -79,7 +69,6 @@ const ForgotPassword = () => {
             alert('Error updating password in Firestore: ' + error);
         }
     };
-
     return (
         <div className='login-wrapper'>
             <LoginImages />
@@ -98,12 +87,10 @@ const ForgotPassword = () => {
                             onChange={(e) => setUserDetails({ ...userDetails, email: e.target.value })}
                         />
                     </div>
-
                     <Button title='Reset Password' type='submit' />
                 </form>
             </div>
         </div>
     );
 };
-
 export default ForgotPassword;

@@ -1,36 +1,14 @@
-import React, { useEffect, useState, ChangeEvent } from 'react';
+import React, { useState, ChangeEvent } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { ThunkDispatch } from 'redux-thunk';
 import { generatorPrompt } from '../promptListGeneratorSlice/QuestionGeneratorSlice';
 import Button from '../../components/buttons/Button';
-import Loader from '../../components/loader/Loader';
-import { AnyAction } from '@reduxjs/toolkit';
-
-type GeneratorData = {
-    status: string;
-};
-
-type RootState = {
-    target: { name: string; value: string; };
-    generatorData: GeneratorData;
-    status: string;
-    e: Event;
-    onChange: () => void;
-};
-
+import { sendPrompt } from '../../utils/sendPrompt';
 
 const AutomatedCourseLandingPageContentGeneratorWithSeo = () => {
-    const loadingStatus = useSelector((state: RootState) => state.generatorData?.status);
-    const [isLoading, setIsLoading] = useState(false);
-    const [showPromptMsg, setShowPromptMsg] = useState('');
+    const { generatorData: { messages, input } } = useSelector((state) => state);
+    const dispatch = useDispatch();
 
-
-    useEffect(() => {
-        setIsLoading(loadingStatus === 'loading');
-    }, [loadingStatus]);
-
-
-    const [formData, setFormData] = useState({
+    const getInitialFormData = () => ({
         courseTitle: '',
         SEOKeywords: '',
         keyBenefit: '',
@@ -44,6 +22,7 @@ const AutomatedCourseLandingPageContentGeneratorWithSeo = () => {
         specialOffersDiscounts: ''
     });
 
+    const [formData, setFormData] = useState(getInitialFormData);
 
     const handleInputChange = (e: ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
         const { name, value } = e.target;
@@ -52,28 +31,17 @@ const AutomatedCourseLandingPageContentGeneratorWithSeo = () => {
             [name]: value,
         }));
     };
-
-    const dispatchThunk = useDispatch<ThunkDispatch<RootState, undefined, AnyAction>>();
-
-    const sendPrompt = async (event: React.SyntheticEvent<HTMLFormElement>) => {
+    const promptMessage = `Generate a comprehensive, detailed, and engaging course landing page titled ${formData.courseTitle}. The content will cover a captivating course description ${formData.courseDescription}, in-depth learning outcomes ${formData.learningOutcomes}, a clear depiction of the target audience ${formData.targetAudience}, a vivid description of the course format ${formData.courseFormat}, precise duration details ${formData.duration}, an engaging introduction to the instructor(s) ${formData.instructorDetails}, transparent pricing information ${formData.pricing}, and enticing special offers or discounts ${formData.specialOffersDiscounts}. Throughout the content, strategically placed and aptly phrased CTA buttons will be included to guide potential students towards engagement and action. SEO keywords ${formData.SEOKeywords} will be seamlessly integrated for enhanced online visibility.`
+    const handleSubmit = (event: React.SyntheticEvent<HTMLFormElement>) => {
         event.preventDefault();
-
-        try {
-            const promptMessage = `Generate a comprehensive, detailed, and engaging course landing page titled ${formData.courseTitle}. The content will cover a captivating course description ${formData.courseDescription}, in-depth learning outcomes ${formData.learningOutcomes}, a clear depiction of the target audience ${formData.targetAudience}, a vivid description of the course format ${formData.courseFormat}, precise duration details ${formData.duration}, an engaging introduction to the instructor(s) ${formData.instructorDetails}, transparent pricing information ${formData.pricing}, and enticing special offers or discounts ${formData.specialOffersDiscounts}. Throughout the content, strategically placed and aptly phrased CTA buttons will be included to guide potential students towards engagement and action. SEO keywords ${formData.SEOKeywords} will be seamlessly integrated for enhanced online visibility.`
-
-            setShowPromptMsg(promptMessage);
-            dispatchThunk(generatorPrompt(promptMessage));
-        } catch (error) {
-            alert('Error fetching data:', error);
-        }
+        sendPrompt(dispatch, { input, messages, generatorPrompt, promptMessage });
+        setFormData(getInitialFormData);
     };
-
     return (
         <div className="generator-section">
-            {isLoading ? <Loader /> : null}
             <h2>Automated Course Landing Page Content Generator with SEO</h2>
             <h3>Create an informative and engaging course landing page. The generated content will automatically include strategically placed and appropriately worded CTA buttons for optimal engagement and conversion.</h3>
-            <form onSubmit={sendPrompt}>
+            <form onSubmit={handleSubmit}>
                 <div className='form-group'>
                     <label htmlFor='courseTitle'>Course Title <span className='asterisk'>*</span></label>
                     <input required className='form-control' name='courseTitle' onChange={handleInputChange} value={formData.courseTitle} placeholder='Enter the full title of the course.' />
@@ -112,23 +80,19 @@ const AutomatedCourseLandingPageContentGeneratorWithSeo = () => {
                 <div className='form-group'>
                     <label htmlFor='instructorDetails'>Instructor Details <span className='asterisk'>*</span></label>
                     <input required className='form-control' name='instructorDetails' onChange={handleInputChange} value={formData.instructorDetails} placeholder='Provide background information on the instructor(s).' />
-                </div>  
+                </div>
                 <div className='form-group'>
                     <label htmlFor='pricing'>Pricing <span className='asterisk'>*</span></label>
                     <input required className='form-control' name='pricing' onChange={handleInputChange} value={formData.pricing} placeholder='Provide detailed pricing information.' />
-                </div>  
+                </div>
                 <div className='form-group'>
                     <label htmlFor='specialOffersDiscounts'>Special Offers or Discounts <span className='asterisk'>*</span></label>
                     <input required className='form-control' name='specialOffersDiscounts' onChange={handleInputChange} value={formData.specialOffersDiscounts} placeholder='Describe any current promotions or discounts.' />
-                </div>  
-                
+                </div>
 
                 <Button title='Generate' type="submit" />
-
-                <div className='promptMessage'> Your Prompt Message: <br /> <strong>{showPromptMsg}</strong></div>
             </form>
         </div>
     )
 };
-
 export default AutomatedCourseLandingPageContentGeneratorWithSeo;

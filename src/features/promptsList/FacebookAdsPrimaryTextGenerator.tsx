@@ -1,15 +1,11 @@
-import React, { useEffect, useState, ChangeEvent } from 'react';
+import React, { useState, ChangeEvent } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { ThunkDispatch } from 'redux-thunk';
 import { generatorPrompt } from '../promptListGeneratorSlice/QuestionGeneratorSlice';
 import Button from '../../components/buttons/Button';
-import Loader from '../../components/loader/Loader';
-import { AnyAction } from '@reduxjs/toolkit';
-
+import { sendPrompt } from '../../utils/sendPrompt';
 type GeneratorData = {
   status: string;
 };
-
 type RootState = {
   target: { name: string; value: string; };
   generatorData: GeneratorData;
@@ -18,23 +14,15 @@ type RootState = {
   onChange: () => void;
 };
 
-
 const FacebookAdsPrimaryTextGenerator = () => {
-  const loadingStatus = useSelector((state: RootState) => state.generatorData?.status);
-  const [isLoading, setIsLoading] = useState(false);
-  const [showPromptMsg, setShowPromptMsg] = useState('');
-  
-
-  useEffect(() => {
-    setIsLoading(loadingStatus === 'loading');
-  }, [loadingStatus]);
- 
-
-  const [formData, setFormData] = useState({
+  const { generatorData: { messages, input } } = useSelector((state) => state);
+  const dispatch = useDispatch();
+  const getInitialFormData = () => ({
     service: '',
     audience: ''
   });
 
+  const [formData, setFormData] = useState(getInitialFormData);
 
   const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -43,28 +31,17 @@ const FacebookAdsPrimaryTextGenerator = () => {
       [name]: value,
     }));
   };
-
-  const dispatchThunk = useDispatch<ThunkDispatch<RootState, undefined, AnyAction>>();
-
-  const sendPrompt = async (event: React.SyntheticEvent<HTMLFormElement>) => {
+  const promptMessage = `Generate engaging primary text for a Facebook ad promoting ${formData.audience}. Craft a concise yet compelling message that highlights the key benefits or unique selling points of ${formData.service}. Create a sense of urgency or curiosity, include a clear call-to-action, and ensure the content resonates with the interests or needs of the target audience.`
+  const handleSubmit = (event: React.SyntheticEvent<HTMLFormElement>) => {
     event.preventDefault();
-
-    try {
-      const promptMessage = `Generate engaging primary text for a Facebook ad promoting ${formData.audience}. Craft a concise yet compelling message that highlights the key benefits or unique selling points of ${formData.service}. Create a sense of urgency or curiosity, include a clear call-to-action, and ensure the content resonates with the interests or needs of the target audience.`
-
-      setShowPromptMsg(promptMessage);
-      dispatchThunk(generatorPrompt(promptMessage));
-    } catch (error) {
-      alert.error('Error fetching data:', error);
-    }
+    sendPrompt(dispatch, { input, messages, generatorPrompt, promptMessage });
+    setFormData(getInitialFormData);
   };
-
   return (
     <div className="generator-section">
-      {isLoading ? <Loader /> : null}
       <h2>Facebook Ads Primary Text Generator</h2>
       <h3>Craft compelling primary text for your Facebook ads, designed to resonate with your audience and enhance engagement on your campaigns.</h3>
-      <form onSubmit={sendPrompt}>
+      <form onSubmit={handleSubmit}>
         <div className='form-group'>
           <label htmlFor='service:'>Service/Skill <span className='asterisk'>*</span></label>
           <input name="service" required className='form-control' onChange={handleInputChange} value={formData.service} placeholder="Write your service/skill name and describe briefly" />
@@ -73,13 +50,10 @@ const FacebookAdsPrimaryTextGenerator = () => {
           <label htmlFor='audience:'>Audience <span className='asterisk'>*</span></label>
           <input name="audience" required className='form-control' onChange={handleInputChange} value={formData.audience} placeholder="Identify the target audience for your ad, such as Teenagers, College Students" />
         </div>
-
         <Button title='Generate' type="submit" />
 
-        <div className='promptMessage'> Your Prompt Message: <br /> <strong>{showPromptMsg}</strong></div>
       </form>
     </div>
   )
 };
-
 export default FacebookAdsPrimaryTextGenerator;

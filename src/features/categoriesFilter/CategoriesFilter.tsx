@@ -1,9 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { fetchAllCategories } from '../../utils/firebaseUtils';
 import ChevronRight from '../../assets/chevron-right.svg';
-
 import './CategoriesFilter.css';
-
 type Prop = {
   IconComponent?: string | undefined;
   name?: string;
@@ -12,7 +10,6 @@ type Prop = {
   onSelect?: (category: string) => void;
   showIcon?: boolean;
 };
-
 const CategoriesFilter: React.FC<Prop> = ({ onSelect, showIcon }) => {
   const [categories, setCategories] = useState<Prop[]>([]);
   const [selectedCategory, setSelectedCategory] = useState<string>(() => {
@@ -23,7 +20,6 @@ const CategoriesFilter: React.FC<Prop> = ({ onSelect, showIcon }) => {
   });
   const [showSubcategories, setShowSubcategories] = useState(false);
 
-
   const getIconPath = async (iconPath: string) => {
     try {
       const iconModule = await import(`../../assets/${iconPath}.svg`);
@@ -33,19 +29,15 @@ const CategoriesFilter: React.FC<Prop> = ({ onSelect, showIcon }) => {
       return null;
     }
   };
-
   useEffect(() => {
     const fetchData = async () => {
       try {
         const categoryData = await fetchAllCategories();
-
         const iconPathsData = await Promise.all(categoryData.map(async (category: Prop) => {
           const path = category.iconPath ? await getIconPath(category.iconPath) : null;
           return { [category.name]: path };
         }));
-
         const iconPathsObject = Object.assign({}, ...iconPathsData);
-
         const formattedCategories = categoryData.map((category) => ({
           name: category.name,
           IconComponent: iconPathsObject[category.name],
@@ -56,28 +48,23 @@ const CategoriesFilter: React.FC<Prop> = ({ onSelect, showIcon }) => {
           const allCategory = formattedCategories.splice(allCategoryIndex, 1)[0];
           formattedCategories.unshift(allCategory);
         }
-
         setCategories(formattedCategories);
       } catch (error) {
         alert('Error fetching categories:', error);
       }
     };
-
     fetchData();
   }, []);
-
   const handleClickTarget = (clickedCategory: string, clickedSubcategory?: string) => {
     setSelectedCategory(clickedCategory);
     setSelectedSubcategory(clickedSubcategory || ''); // If subcategory is provided, set it; otherwise, set an empty string
     onSelect(clickedCategory);
     const categoryWithSubcategories = categories.find((category) => category.name === clickedCategory);
-
     setSelectedCategory(clickedCategory);
     setSelectedSubcategory(clickedSubcategory || '');
     if (categoryWithSubcategories && categoryWithSubcategories.subCategories.length > 0) {
       setShowSubcategories((prev) => !prev);
     }
-
     localStorage.setItem('selectedCategory', clickedCategory);
     if (clickedSubcategory) {
       localStorage.setItem('selectedSubcategory', clickedSubcategory);
@@ -85,7 +72,6 @@ const CategoriesFilter: React.FC<Prop> = ({ onSelect, showIcon }) => {
       localStorage.removeItem('selectedSubcategory'); // Clear the subcategory if not provided
     }
   };
-
   return (
     <ul className="chipList">
       {categories.map((item, index) => (
@@ -109,5 +95,4 @@ const CategoriesFilter: React.FC<Prop> = ({ onSelect, showIcon }) => {
     </ul>
   );
 };
-
 export default CategoriesFilter;

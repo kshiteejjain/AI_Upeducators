@@ -1,34 +1,13 @@
-import React, { useEffect, useState, ChangeEvent } from 'react';
+import React, { useState, ChangeEvent } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { ThunkDispatch } from 'redux-thunk';
 import { generatorPrompt } from '../promptListGeneratorSlice/QuestionGeneratorSlice';
 import Button from '../../components/buttons/Button';
-import Loader from '../../components/loader/Loader';
-import { AnyAction } from '@reduxjs/toolkit';
-
-type GeneratorData = {
-    status: string;
-};
-
-type RootState = {
-    target: { name: string; value: string; };
-    generatorData: GeneratorData;
-    status: string;
-    e: Event;
-    onChange: () => void;
-};
-
+import { sendPrompt } from '../../utils/sendPrompt';
 
 const StoryCreationGenerator = () => {
-    const loadingStatus = useSelector((state: RootState) => state.generatorData?.status);
-    const [isLoading, setIsLoading] = useState(false);
-    const [showPromptMsg, setShowPromptMsg] = useState('');
-
-    useEffect(() => {
-        setIsLoading(loadingStatus === 'loading');
-    }, [loadingStatus]);
-
-    const [formData, setFormData] = useState({
+    const { generatorData: { messages, input } } = useSelector((state) => state);
+    const dispatch = useDispatch();
+    const getInitialFormData = () => ({
         storyTitle: '',
         setting: 'Modern City',
         plotOutline: '',
@@ -38,7 +17,7 @@ const StoryCreationGenerator = () => {
         additionalCharacters: '',
         additionalNotes: '',
     });
-
+    const [formData, setFormData] = useState(getInitialFormData);
     const handleInputChange = (e: ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
         const { name, value } = e.target;
         setFormData((prevData) => ({
@@ -46,28 +25,17 @@ const StoryCreationGenerator = () => {
             [name]: value,
         }));
     };
-
-    const dispatchThunk = useDispatch<ThunkDispatch<RootState, undefined, AnyAction>>();
-
-    const sendPrompt = async (event: React.SyntheticEvent<HTMLFormElement>) => {
+    const promptMessage = `Generate a story titled "${formData.storyTitle}". Setting: ${formData.setting}. The plot involves ${formData.plotOutline}. The main character is ${formData.mainCharacter}, facing a conflict of ${formData.conflict}. The central theme of the story is ${formData.theme}. Additional characters include ${formData.additionalCharacters}. ${formData.additionalNotes}.`;
+    const handleSubmit = (event: React.SyntheticEvent<HTMLFormElement>) => {
         event.preventDefault();
-
-        try {
-            const promptMessage = `Generate a story titled "${formData.storyTitle}". Setting: ${formData.setting}. The plot involves ${formData.plotOutline}. The main character is ${formData.mainCharacter}, facing a conflict of ${formData.conflict}. The central theme of the story is ${formData.theme}. Additional characters include ${formData.additionalCharacters}. ${formData.additionalNotes}.`;
-
-            setShowPromptMsg(promptMessage);
-            dispatchThunk(generatorPrompt(promptMessage));
-        } catch (error) {
-            alert('Error fetching data:', error);
-        }
+        sendPrompt(dispatch, { input, messages, generatorPrompt, promptMessage });
+        setFormData(getInitialFormData);
     };
-
     return (
         <div className="generator-section">
-            {isLoading ? <Loader /> : null}
             <h2>Story Creation Generator</h2>
             <h3>This form is structured to assist in crafting a story by outlining key narrative elements such as setting, plot, conflict, character, and theme.</h3>
-            <form onSubmit={sendPrompt}>
+            <form onSubmit={handleSubmit}>
                 <div className='form-group'>
                     <label htmlFor='storyTitle'>Story Title <span className='asterisk'>*</span></label>
                     <input required className='form-control' name='storyTitle' onChange={handleInputChange} value={formData.storyTitle} placeholder='Enter a title or a central idea for your story.' />
@@ -129,10 +97,9 @@ const StoryCreationGenerator = () => {
                     <textarea className='form-control' name='additionalNotes' onChange={handleInputChange} rows={5} value={formData.additionalNotes} placeholder='Include any other relevant details or elements you wish to add to your story.'> </textarea>
                 </div>
                 <Button title='Generate' type="submit" />
-                <div className='promptMessage'> Your Prompt Message: <br /> <strong>{showPromptMsg}</strong></div>
+
             </form>
         </div>
     )
 };
-
 export default StoryCreationGenerator;
