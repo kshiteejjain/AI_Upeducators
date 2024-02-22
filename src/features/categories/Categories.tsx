@@ -2,12 +2,13 @@ import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { setCategory } from './CategoriesSlice';
-import { resetGeneratedData } from '../../features/promptListGeneratorSlice/QuestionGeneratorSlice';
 import CategoryTiles from '../../components/categoryTiles/CategoryTiles';
 import Header from '../../components/header/Header';
 import { fetchAllForms } from '../../utils/firebaseUtils';
 import CategoriesFilter from '../categoriesFilter/CategoriesFilter';
 import Strings from '../../utils/en';
+import BannerCarousel from '../../components/bannerCarousel/bannerCarousel';
+
 import './Categories.css';
 
 type Props = {
@@ -24,6 +25,7 @@ const Categories = () => {
         return localStorage.getItem('filterCategory') || 'All';
     });
     const [searchTerm, setSearchTerm] = useState('');
+    const [isSearchFocused, setIsSearchFocused] = useState(false);
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const getIconPath = async (iconPath: string) => {
@@ -76,31 +78,44 @@ const Categories = () => {
     const handleSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
         setSearchTerm(event.target.value);
     };
+    const handleSearchFocus = () => {
+        setIsSearchFocused(true);
+        setFilterCategory('All');
+        setSearchTerm('');
+    };
+
+    const handleSearchBlur = () => {
+        setIsSearchFocused(false);
+    };
+
     return (
         <>
             <Header />
             <div className='page-wrapper'>
+                <BannerCarousel />
                 <div className='container'>
                     <CategoriesFilter onSelect={handleCategorySelect} />
                     <div className='category-listing-wrapper'>
                         <div className='search-wrapper'>
                             <label>{Strings.categories.searchCategories}</label>
                             <input
-                                type="text"
-                                placeholder="Search Categories..."
+                                type="search"
+                                placeholder="Type your search..."
                                 value={searchTerm}
                                 onChange={handleSearch}
+                                onFocus={handleSearchFocus}
+                                onBlur={handleSearchBlur}
                                 className='form-control'
                             />
                         </div>
                         <div className='category-listing'>
-                            {categories
+                        {categories
                                 .filter(item => {
                                     const isMatchingCategory = filterCategory === 'All' || (item && item?.categoryName?.toLowerCase() === filterCategory?.toLowerCase());
                                     const isMatchingSearchTerm =
-                                        searchTerm === '' ||
-                                        (item && item.name && item.name.toLowerCase().includes(searchTerm.toLowerCase())) ||
-                                        (item && item.description && item.description.toLowerCase().includes(searchTerm.toLowerCase()));
+                                        isSearchFocused && searchTerm === '' ||
+                                        (!isSearchFocused && searchTerm === '') ||
+                                        (item && item.name && item.name.toLowerCase().includes(searchTerm.toLowerCase()));
                                     return isMatchingCategory && isMatchingSearchTerm;
                                 })
                                 .map((item, index) => (

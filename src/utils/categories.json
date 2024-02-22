@@ -64,7 +64,8 @@
       "description": "Create a multiple choice assessment on any topic, grade, diagnostic assessment, and any other kind you can imagine.",
       "iconPath": "questionCreator",
       "categoryName": "Questions",
-      "redirect": "MultipleChoiceQuestionsGenerator"
+      "redirect": "MultipleChoiceQuestionsGenerator",
+      "followupPrompts": ["Prompt 1", "Prompt 2"]
     },
     {
       "id": 2,

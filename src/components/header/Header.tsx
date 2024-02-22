@@ -26,13 +26,12 @@ const Header = ({ isLoginPage }: Props) => {
   };
   const handleLogout = () => {
     navigate('/');
-    sessionStorage.clear();
     localStorage.clear();
   };
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const storedUsername = sessionStorage.getItem('username') ?? 'User';
+        const storedUsername = localStorage.getItem('username') ?? 'User';
         setUsername(showUsername(storedUsername));
         // Fetch only setRemainingCredits
         await fetchTotalCredits(storedUsername, undefined, setRemainingCredits, setIsAdmin);
@@ -46,6 +45,7 @@ const Header = ({ isLoginPage }: Props) => {
       navigate('/ContactUs');
     }
   }, [remainingCredits, navigate]);
+  
   return (
     <header className="header">
       <div className="container">
@@ -58,8 +58,6 @@ const Header = ({ isLoginPage }: Props) => {
             <span className='defaultProfile'><img src={defaultProfile} /> </span>
           </div>
           <div className={`creditDetails ${showCreditDetails ? 'visible' : 'hidden'}`}>
-            <p>{Strings.header.email}: {sessionStorage.getItem('username')}</p>
-            <p>{Strings.header.remainingCredits} {remainingCredits}</p>
             {remainingCredits !== undefined && remainingCredits > 0
               ? (
                 <p>
@@ -68,6 +66,7 @@ const Header = ({ isLoginPage }: Props) => {
               )
               : null
             }
+            <p><Button title={Strings.header.myProfile} isSecondary onClick={() => navigate('/Profile')} /></p>
             {isLoginPage ?? <Button title={Strings.header.signOut} isSecondary onClick={handleLogout} />}
           </div>
         </div>

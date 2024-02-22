@@ -47,7 +47,7 @@ export const fetchTotalCredits = async (
       }
     } else {
       // Handle the case when no document is found
-      alert('No document found for the current user');
+      console.warn('No document found for the current user');
     }
   } catch (error) {
     alert('Error querying data from Firestore: ' + error);
@@ -58,7 +58,7 @@ export const handleCreditDecrement = async (creditValue: number) => {
     const collectionRef = collection(firestore, 'RegisteredUsers');
     const q = query(
       collectionRef,
-      where('email', '==', sessionStorage.getItem("username"))
+      where('email', '==', localStorage.getItem("username"))
     );
     const querySnapshot = await getDocs(q);
     if (!querySnapshot.empty) {
@@ -179,6 +179,9 @@ export const categoryStats = async (firestore: Firestore): Promise<UserDocumentD
     const categoryData = querySnapshot.docs.map((doc) => ({
       categoryName: doc.data().selectedCategory,
       count: doc.data().count,
+      baseCount: doc.data().baseCount,
+      user: doc.data().user,
+      timeStamp: doc.data().timeStamp
     }));
     return categoryData;
   } catch (error) {

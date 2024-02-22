@@ -83,6 +83,30 @@
     padding: 0.5rem 2rem;
     border-radius: 35px 3px 35px 35px;
 }
+.followup-prompts{
+    list-style: none;
+    display: flex;
+    justify-content: space-between;
+    margin: 0 0 20px 0;
+    padding: 0 1rem;
+}
+.followup-prompts li {
+    width: 49%;
+    border: 1px solid var(--gray);
+    padding: 5px 15px;
+    box-sizing: border-box;
+    font-size: calc(var(--baseFontSize) - 2px);
+    color: var(--darkGray);
+    cursor: pointer;
+    border-radius: 3px;
+    display: flex;
+    align-items: center;
+    line-height: normal;
+}
+.followup-prompts li:hover {
+    background-color: var(--lightBlue);
+    color: var(--primary);
+}
 @media(max-width:767px){
     .result-section{
         width: 100%;

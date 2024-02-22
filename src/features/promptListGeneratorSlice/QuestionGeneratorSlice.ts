@@ -27,7 +27,7 @@ export const generatorPrompt = createAsyncThunk('generator/generatorPrompt', asy
     isFollowUpPrompt : false
   });
   localStorage.setItem('prompts', JSON.stringify(promptList));
-  
+  // alert(JSON.stringify(promptList))
   
   await handleCreditDecrement(creditValue);
   try {

@@ -1,0 +1,12 @@
+.carousel {
+    overflow: hidden;
+    margin: 1rem 0 2rem 0;
+  }
+  .carousel__container {
+    display: flex;
+  }
+  .carousel__slide {
+    flex: 0 0 100%;
+    min-width: 0;
+  }
+  

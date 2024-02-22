@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Button from '../../components/buttons/Button';
 import Strings from '../../utils/en';
@@ -42,8 +42,8 @@ const Login = () => {
                     const data = doc.data();
                     const remainCredits = data?.remain_credits;
                     const isActiveUser = data?.isActiveUser;
-                    sessionStorage.setItem("isLoggedIn", String(true));
-                    sessionStorage.setItem("username", data?.email);
+                    localStorage.setItem("isLoggedIn", String(true));
+                    localStorage.setItem("username", data?.email);
                     setLoader(false);
                     if (remainCredits <= 0 || isActiveUser === false) {
                         navigate("/ContactUs");
@@ -61,6 +61,11 @@ const Login = () => {
             setLoader(false);
         }
     };
+    useEffect(() => {
+        if (localStorage.getItem('isLoggedIn') === 'true') {
+          navigate('/Categories');
+        }
+      }, [navigate]);
     return (
         <div className='login-wrapper'>
             <LoginImages />

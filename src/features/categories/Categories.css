@@ -5,6 +5,8 @@
     display: flex;
     flex-wrap: wrap;
     width: 100%;
+    padding: 0 1rem 1.5rem 1rem;
+    box-sizing: border-box;
 }
 .search-wrapper{
     padding: 0 1rem 1.5rem 1rem;
@@ -14,6 +16,14 @@
     font-size: calc(var(--baseFontSize) - 2px);
     margin-bottom: 0.5rem;
     display: block;
+}
+.search-wrapper .form-control{
+    font-size: calc(var(--baseFontSize) - 2px);
+    background-image: url(/src/assets/search.svg);
+    background-repeat: no-repeat;
+    background-size: 18px;
+    background-position: 8px 7px;
+    padding-left: 30px;
 }
 @media(max-width:767px){
     .category-listing-wrapper {

@@ -31,11 +31,15 @@ const Strings = {
         welcome: 'Welcome',
         email: 'Email',
         goToCategory: 'Go To Categories',
+        history: 'Search History',
+        myProfile: 'My Profile',
         dashboard: 'Dashboard'
     },
     categories: {
         Favorite: 'Bookmark',
-        searchCategories: 'Search Category'
+        searchCategories: 'Search Forms',
+        usedBy: 'Used By:',
+        people: 'People'
     },
 }
 export default Strings

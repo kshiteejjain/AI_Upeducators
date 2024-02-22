@@ -1,33 +1,49 @@
 @import "../../index.css";
-.tiles{
+
+.tiles-group{
     border-radius: 0.4rem;
     background-color: var(--white);
-    max-width: 23%;
-    padding: 1.5rem;
+    padding: 1rem;
     box-sizing: border-box;
     cursor: pointer;
     box-shadow: 0 0 2px var(--white);
     transition: all .3s;
-    margin: 0 1% 2% 1%;
+    margin: 0 1.5% 1.5% 0;
     position: relative;
     text-align: left;
-    width: 33%;
+    width: 32%;
+    display: flex;
+    align-items: flex-start;
+    flex-direction: column;
 }
-.tiles:hover{
+.tiles-group:nth-child(3n){
+    margin-right: 0;
+}
+.tiles-group:hover{
     box-shadow: 0 0 7px var(--mediumGray);
     transition: all .3s;
+}
+.tiles{
+    display: flex;
+}
+.list-img{
+    max-width: 90px;
+    border-radius: 5px;
+    margin-right: 1rem;
 }
 .tiles h1{
     font-size: 1rem;
     font-weight: bold;
     text-align: left;
-    word-break: break-all;
     text-transform: capitalize;
+    margin: 0 0 5px 0;
+    line-height: 25px;
 }
 .tiles p{
-    font-size: 0.95rem;
+    font-size: 0.9rem;
     text-align: left;
     margin: 0;
+    color: var(--darkGray);
 }
 .tiles-icon{
     display: flex;
@@ -44,8 +60,20 @@
     z-index: 9;
 }
 .clickSection{
-    height: 100%;
     width: 100%;
+}
+.tiles-group .usedBy{
+    font-size: calc(var(--baseFontSize) - 3px);
+    margin: 10px 0 0 0;
+    display: flex;
+    align-items: center;
+}
+.tiles-group .usedBy .graph{
+    max-width: 20px;
+    margin-right: 10px;
+}
+.tiles-group .usedBy strong{
+    margin: 0 2px;
 }
 @media(max-width:767px){
     .tiles{

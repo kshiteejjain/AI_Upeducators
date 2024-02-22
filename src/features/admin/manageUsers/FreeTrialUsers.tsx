@@ -31,7 +31,7 @@ const FreeTrialUsers = () => {
             try {
                 const usersData = await freeTrialUsers(firestore);
                 setUserData(usersData);
-                const adminExists = usersData.some(user => user.email === sessionStorage.getItem('username') && user.isAdmin);
+                const adminExists = usersData.some(user => user.email === localStorage.getItem('username') && user.isAdmin);
                 setIsAdmin(adminExists);
                 setLoader(false);
             } catch (error) {

@@ -9,12 +9,14 @@ import FreeTrial from './features/freeTrial/FreeTrial';
 import ForgotPassword from './features/forgotPassword/ForgotPassword';
 import Dashboard from './features/admin/dashboard/Dashboard';
 import Register from './features/register/Register';
+import Profile from './features/profile/Profile';
+
 import './App.css';
 
 type Props = {
   isLoggedIn: boolean
 };
-const isLoggedIn = JSON.parse(sessionStorage.getItem('isLoggedIn') || 'true');
+const isLoggedIn = JSON.parse(localStorage.getItem('isLoggedIn') || 'true');
 function App() {
   return (
     <React.StrictMode>
@@ -32,7 +34,7 @@ function App() {
 function MainApp({ isLoggedIn }: Props) {
   const navigate = useNavigate();
   useEffect(() => {
-    if (sessionStorage.length <= 0) {
+    if (localStorage.length <= 0 || localStorage.getItem('isLoggedIn') === null || localStorage.getItem('isLoggedIn') === undefined) {
       navigate('/');
     }
   }, [navigate]);
@@ -46,6 +48,7 @@ function MainApp({ isLoggedIn }: Props) {
           <Route path="/UploadUsersCSV" element={<UploadUsersCSV />} />
           <Route path="/ContactUs" element={<ContactUs />} />
           <Route path="/Dashboard" element={<Dashboard />} />
+          <Route path="/Profile" element={<Profile />} />
         </>
       ) : (
         <>

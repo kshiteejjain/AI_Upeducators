@@ -4,6 +4,8 @@ import { useNavigate } from 'react-router-dom';
 import Header from '../../components/header/Header';
 import Button from '../../components/buttons/Button';
 import { resetGeneratedData } from '../promptListGeneratorSlice/QuestionGeneratorSlice';
+import BannerCarousel from '../../components/bannerCarousel/bannerCarousel';
+
 const GeneratorAndResult = () => {
     const pathName = useSelector((state) => state?.selectedCategory?.selectedCategory);
     const EmailContentGenerator = React.lazy(() => import(`../promptsList/${pathName}.tsx`));
@@ -22,6 +24,7 @@ const GeneratorAndResult = () => {
         <>
             <Header />
             <div className='page-wrapper'>
+                <BannerCarousel />
                 <div className='backButton'>
                     <div className='container'>
                         <Button isSecondary title="Go Back" type="button" onClick={goBack} />

@@ -7,6 +7,8 @@ import NoDataFoundImage from '../../assets/no-data-found.svg';
 import CopyClipboard from '../../assets/copyClipboard.svg';
 import mp3Sound from '../../assets/result-audio.mp3';
 import Loader from '../../components/loader/Loader';
+import { getFollowupPrompts } from '../../utils/followupPromptsService'; // Importing the function
+
 import './Result.css';
 
 type RootState = {
@@ -23,49 +25,59 @@ const Result = () => {
   const { generatorData: { messages, input } } = useSelector((state) => state);
   const generatedData = useSelector((state: RootState) => state?.generatorData?.messages);
   const generatedImage = useSelector((state: RootState) => state?.generatorData?.data?.data?.[0]?.url);
+  const isFollowUpPrompt = useSelector((state: RootState) => state.generatorData?.isFollowUpPrompt)
+  const getFormName = useSelector((state: RootState) => state?.selectedCategory)
   const resultAudio = useMemo(() => new Audio(mp3Sound), []);
   const loadingStatus = useSelector((state: RootState) => state.generatorData?.status);
   const [isLoading, setIsLoading] = useState(false);
   const [isSubmitClicked, setIsSubmitClicked] = useState(false);
+  const [getFollowPrompt, setGetFollowPrompt] = useState<string[]>([]);
   const dispatch = useDispatch();
-  const resultRef = useRef<HTMLDivElement | null>(null);
-  const isFollowUpPrompt = useSelector((state: RootState) => state.generatorData?.isFollowUpPrompt)
+  const resultRef = useRef<HTMLDivElement | null>(null)
   const generatedDataOption = isFollowUpPrompt ? generatedData : generatedData?.slice(-2);
 
   const content = generatedDataOption?.map((msg, index) => {
     if (msg.role === 'user' && (msg.isVisible === false || msg.isVisible === undefined)) {
       return null;
-  }
+    }
+
 
     return (
-        <div className='response-data' key={index}>
-            <div className={msg.role}>
-                {msg.role === 'user' ? (
-                    <div dangerouslySetInnerHTML={{ __html: msg.content?.trim()?.replace(/\n/g, '<br />') }} />
+      <div className='response-data' key={index}>
+        <div className={msg.role}>
+          {msg.role === 'user' ? (
+            <div dangerouslySetInnerHTML={{ __html: msg.content?.trim()?.replace(/\n/g, '<br />') }} />
+          ) : (
+            // Splitting the content into lines
+            msg?.content?.split('\n').map((line, lineIndex) => (
+              <div key={lineIndex}>
+                {/* Checking if the line ends with a question mark */}
+                {line.trim().endsWith('?') || line.trim().endsWith(':') || line.trim().endsWith('!') ? (
+                  <strong>{line}</strong> // Boldening the question line
                 ) : (
-                    // Splitting the content into lines
-                    msg?.content?.split('\n').map((line, lineIndex) => (
-                        <div key={lineIndex}>
-                            {/* Checking if the line ends with a question mark */}
-                            {line.trim().endsWith('?') ? (
-                                <strong>{line}</strong> // Boldening the question line
-                            ) : (
-                                line // Otherwise, render the line as is
-                            )}
-                            <br />
-                        </div>
-                    ))
+                  line // Otherwise, render the line as is
                 )}
-            </div>
+                <br />
+              </div>
+            ))
+          )}
         </div>
+      </div>
     );
-});
+  });
 
 
   useEffect(() => {
     isSubmitClicked ? null : setIsLoading(loadingStatus === 'loading');
-    generatedData?.length === 2 && resultAudio.play();
+    generatedData?.length === 2 ? (resultAudio.play(), fetchFollowupPrompts()) : null;
+
   }, [generatedData, generatedImage, resultAudio]);
+
+  async function fetchFollowupPrompts() {
+    const followupPrompts = await getFollowupPrompts(getFormName?.selectedCategory);
+    setGetFollowPrompt(followupPrompts);
+  }
+
   const handleCopyData = () => {
     alert('Result data copied and ready to paste.');
     const textArea = document.createElement('textarea');
@@ -75,6 +87,7 @@ const Result = () => {
     document.execCommand('copy');
     document.body.removeChild(textArea);
   };
+
   const downloadImage = () => {
     if (generatedImage) {
       const link = document.createElement('a');
@@ -122,9 +135,11 @@ const Result = () => {
     }, 0);
   }, [content]);
 
+
   return (
     <div className="result-section" ref={resultRef}>
       {isLoading && <Loader isSwipeText />}
+
       <div className="result-section-inner">
         {content}
         {generatedData?.length !== 0 && (
@@ -146,6 +161,16 @@ const Result = () => {
         )}
         {generatedImage && <Button title='Download Image' onClick={downloadImage} />}
       </div>
+      {getFollowPrompt && getFollowPrompt[0] !== undefined && (
+          <ul className="followup-prompts">
+            {getFollowPrompt.map((prompt, index) => (
+              <li key={index} onClick={() => setFormData({ followUpPromptInput: prompt })}>
+                {prompt}
+              </li>
+            ))}
+          </ul>
+      )}
+
       {generatedData?.length >= 2 && (
         <form onSubmit={handleSubmit} className='followUpPrompt'>
           <div className='form-group'>
