@@ -6,13 +6,15 @@ const Strings = {
         buttonLogin: 'Login',
         email: 'Email',
         password: 'Password',
-        register: 'Register'
+        register: 'Register',
+        googleLogin: 'Login With Google'
     },
     FreeTrial: {
         title: 'Free Trial to The AI Experience',
     },
     register: {
         title: 'Register to The AI Experience',
+        googleRegister: 'Register With Google'
     },
     otp: {
         title: 'Enter Your 6 Digit OTP',

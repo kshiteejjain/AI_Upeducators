@@ -162,13 +162,16 @@ const Result = () => {
         {generatedImage && <Button title='Download Image' onClick={downloadImage} />}
       </div>
       {getFollowPrompt && getFollowPrompt[0] !== undefined && (
-          <ul className="followup-prompts">
+        <div className="followup-prompts">
+          <h2>Followup Query?</h2>
+          <ul>
             {getFollowPrompt.map((prompt, index) => (
               <li key={index} onClick={() => setFormData({ followUpPromptInput: prompt })}>
                 {prompt}
               </li>
             ))}
           </ul>
+        </div>
       )}
 
       {generatedData?.length >= 2 && (

@@ -36,31 +36,31 @@ const CategoryTiles = ({ title, onClick, tilesIcon, categoryAlt, description }: 
 
     return (
         <div className='tiles-group'>
-        <div className='tiles' onClick={onClick}>
-            <img src="https://images.pexels.com/photos/8617961/pexels-photo-8617961.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2" className='list-img' />
-            {/* <img src={bookmarkIcon} className='bookmarkIcon' title={Strings.categories.Favorite} alt={Strings.categories.Favorite} /> */}
-            {/* <img src={tilesIcon} className='tilesIcon' alt='Category Name' title={categoryAlt} /> */}
-            <div className='clickSection'>
-                <div className='tiles-icon'>
-                    <h1>{title}</h1>
+            <div className='tiles' onClick={onClick}>
+                <img src="https://images.pexels.com/photos/8617961/pexels-photo-8617961.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2" className='list-img' />
+                {/* <img src={bookmarkIcon} className='bookmarkIcon' title={Strings.categories.Favorite} alt={Strings.categories.Favorite} /> */}
+                {/* <img src={tilesIcon} className='tilesIcon' alt='Category Name' title={categoryAlt} /> */}
+                <div className='clickSection'>
+                    <div className='tiles-icon'>
+                        <h1 title={title}>{title}</h1>
+                    </div>
+                    <p title={truncatedStory}>{truncatedStory}</p>
+                    <p className='usedBy'>
+                        <img src={graph} className='graph' />
+                        {Strings.categories.usedBy}
+                        <strong>
+                            {statsData
+                                .filter((item) => item?.categoryName.toLowerCase().replace(/\s/g, '') === (title ? title.toLowerCase().replace(/\s/g, '') : ''))
+                                .map((item, index) => (
+                                    <span key={index}>
+                                        {item?.baseCount + item?.count}
+                                    </span>
+                                ))} &nbsp;
+                            {Strings.categories.people}
+                        </strong>
+                    </p>
                 </div>
-                <p>{truncatedStory}</p>
             </div>
-        </div>
-        <p className='usedBy'>
-                    <img src={graph} className='graph' />
-                    {Strings.categories.usedBy}
-                    <strong>
-                        {statsData
-                            .filter((item) => item?.categoryName.toLowerCase().replace(/\s/g, '') === (title ? title.toLowerCase().replace(/\s/g, '') : ''))
-                            .map((item, index) => (
-                                <span key={index}>
-                                    {item?.baseCount + item?.count}
-                                </span>
-                            ))} &nbsp;
-                        {Strings.categories.people}
-                    </strong>
-                </p>
         </div>
     )
 };

@@ -1,7 +1,12 @@
 import { useEffect, useState } from 'react';
+
 import './Loader.css';
 
-const Loader = ({isSwipeText}) => {
+type Props = {
+    isSwipeText? : boolean;
+}
+
+const Loader = ({isSwipeText} : Props) => {
     const [currentIndex, setCurrentIndex] = useState(0);
     const textArray = [
         "Let me think...",

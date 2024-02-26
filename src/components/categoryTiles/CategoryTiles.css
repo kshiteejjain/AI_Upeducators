@@ -3,7 +3,7 @@
 .tiles-group{
     border-radius: 0.4rem;
     background-color: var(--white);
-    padding: 1rem;
+    padding: 0.7rem;
     box-sizing: border-box;
     cursor: pointer;
     box-shadow: 0 0 2px var(--white);
@@ -15,6 +15,7 @@
     display: flex;
     align-items: flex-start;
     flex-direction: column;
+    border: 1px solid var(--gray);
 }
 .tiles-group:nth-child(3n){
     margin-right: 0;
@@ -25,6 +26,8 @@
 }
 .tiles{
     display: flex;
+    align-items: flex-start;
+    width: 100%;
 }
 .list-img{
     max-width: 90px;
@@ -32,15 +35,20 @@
     margin-right: 1rem;
 }
 .tiles h1{
-    font-size: 1rem;
+    font-size: calc(var(--baseFontSize) - 2px);
     font-weight: bold;
     text-align: left;
     text-transform: capitalize;
-    margin: 0 0 5px 0;
+    margin: 0 0 0px 0;
     line-height: 25px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    width: 88%;
+    box-sizing: border-box;
 }
 .tiles p{
-    font-size: 0.9rem;
+    font-size: calc(var(--baseFontSize) - 2px);
     text-align: left;
     margin: 0;
     color: var(--darkGray);
@@ -60,11 +68,13 @@
     z-index: 9;
 }
 .clickSection{
-    width: 100%;
+    width: calc(100% - 90px);
+    padding-right:10px;
+    box-sizing: border-box;
 }
 .tiles-group .usedBy{
     font-size: calc(var(--baseFontSize) - 3px);
-    margin: 10px 0 0 0;
+    margin: 5px 0 0 0;
     display: flex;
     align-items: center;
 }

@@ -9,16 +9,14 @@
     border-radius: 0.5rem;
     box-sizing: border-box;
     text-align: left;
-    max-height: calc(100vh - 180px);
-    min-height: calc(100vh - 180px);
-    overflow-y: auto;
     position: relative;
     border: 1px solid var(--primary);
     line-height: 28px;
+    min-height: 400px;
+    margin-bottom: 1rem;
 }
 .result-section-inner{
     padding: 2rem;
-    min-height: inherit;
 }
 .resultQuestions:empty {
     border: none;
@@ -60,12 +58,7 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    position: sticky;
     padding: 1rem;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    background-color: var(--white);
     border-top: 1px solid var(--mediumGray);;
 }
 .followUpPrompt .form-group{
@@ -84,11 +77,20 @@
     border-radius: 35px 3px 35px 35px;
 }
 .followup-prompts{
+    margin: 0 0 20px 0;
+    padding: 0 1rem;
+}
+.followup-prompts h2{
+    font-size: calc(var(--baseFontSize));
+    margin-bottom: 0.5rem;
+}
+.followup-prompts ul{
     list-style: none;
     display: flex;
     justify-content: space-between;
     margin: 0 0 20px 0;
-    padding: 0 1rem;
+    padding: 0;
+    flex-wrap: wrap;
 }
 .followup-prompts li {
     width: 49%;
@@ -102,6 +104,7 @@
     display: flex;
     align-items: center;
     line-height: normal;
+    margin-bottom: 5px;
 }
 .followup-prompts li:hover {
     background-color: var(--lightBlue);

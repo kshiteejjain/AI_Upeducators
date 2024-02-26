@@ -42,3 +42,20 @@
     color: #0e75be;
     outline: 0;
 }
+.buttonSocial{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    border: 1px solid var(--lightBlue);
+    background-color: var(--white);
+    border-radius: 2px;
+    font-size: calc(var(--baseFontSize) - 3px);
+    margin-bottom: 15px;
+    color: var(--black);
+    cursor: pointer;
+}
+  .buttonSocial img {
+    max-height: 25px;
+    margin-right: 10px;
+  }

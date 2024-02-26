@@ -34,7 +34,6 @@ const AssignmentCreationTool = () => {
             <h2>Assignment Creation Tool</h2>
             <h3>Create a customized assignment in various formats for different educational levels and subjects.</h3>
             <form onSubmit={handleSubmit}>
-                {/* ... Other form groups ... */}
                 <div className='form-group'>
                     <label htmlFor='assignmentType'>Assignment Type <span className='asterisk'>*</span></label>
                     <select required className='form-control' name="assignmentType" onChange={handleInputChange} value={formData.assignmentType}>

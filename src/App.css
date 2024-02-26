@@ -20,6 +20,13 @@
 img {
   max-width: 100%;
 }
+.form-group-flex{
+  display: flex;
+}
+.form-group-flex .field1{
+  max-width: 120px;
+  margin-right: 10px;
+}
 .form-group {
   margin-bottom: 1.5rem;
   position: relative;
@@ -29,6 +36,7 @@ img {
   font-size: calc(var(--baseFontSize) - 3px);
   margin-bottom: 0.2rem;
   display: block;
+  text-align: left;
 }
 .form-control {
   padding: 0.5rem;
@@ -155,6 +163,40 @@ img {
   font-size: calc(var(--baseFontSize) - 3px);
   font-weight: bold;
   margin-bottom: 20px;
+}
+.separator {
+  margin: 18px 0 24px;
+  position: relative;
+  text-align: center;
+  -webkit-user-select: none;
+  user-select: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.separator:before {
+  background-color: var(--gray);
+  content: "";
+  display: block;
+  height: 1px;
+  left: 0;
+  position: absolute;
+  right: 0;
+  top: 14px;
+}
+.separator-text {
+  border: 1px solid var(--gray);
+  background-color:var(--white);
+  border-radius: 50%;
+  color: #6a6d78;
+  width: 30px;
+  position: relative;
+  line-height: normal;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(var(--baseFontSize) - 2px);
 }
 @media (prefers-color-scheme: dark) {
   ::-webkit-calendar-picker-indicator {

@@ -1,6 +1,6 @@
 import { useState, ChangeEvent, FormEvent } from 'react';
-import { firestore } from '../../utils/firebase';
-import { collection, addDoc, getDocs, where, query } from 'firebase/firestore';
+import { firestore, signInWithGooglePopup } from '../../utils/firebase';
+import { collection, addDoc, getDocs, where, query, doc, setDoc } from 'firebase/firestore';
 import { useNavigate } from 'react-router-dom';
 import emailjs from '@emailjs/browser';
 import Loader from '../../components/loader/Loader';
@@ -9,7 +9,10 @@ import LoginImages from '../../components/loginImages/loginImages';
 import Strings from '../../utils/en';
 import ShowPassword from '../../assets/showPassword.svg';
 import HidePassword from '../../assets/hidePassword.svg'
+import googleLogo from '../../assets/google.svg';
+
 import './Register.css';
+
 const Register = () => {
     const currentDateTime = new Date();
     const formattedDateTime = currentDateTime.toLocaleString();
@@ -145,12 +148,73 @@ const Register = () => {
             console.error('Error fetching documents: ', error);
         }
     };
+    const logGoogleUser = async () => {
+        try {
+            const response = await signInWithGooglePopup();
+            const user = response?.user;
+            console.log('user', user);
+    
+            const querySnapshot = await getDocs(
+                query(collection(firestore, 'RegisteredUsers'), where('email', '==', user?.email))
+            );
+            if (!querySnapshot.empty) {
+                // Email already exists, show alert or handle accordingly
+                alert('Email is already registered!');
+                return;
+            }
+            const otp = generateRandomOTP();
+            setEnteredEmail(user?.email); // Use extracted email
+            setIsOTPScreen(true);
+            setLoading(false);
+            // Optional: Clear the form after submission
+            const updatedFormData = {
+                name: user?.displayName,
+                email: user?.email, // Use user's email here instead of enteredEmail
+                phone: '',
+                password: '',
+                total_credits: 1000,
+                remain_credits: 10,
+                access_duration_days: 365,
+                expire_date: 0,
+                credits_limit_perday: 50,
+                isActiveUser: true,
+                isAdmin: false,
+                register_timestamp: formattedDateTime,
+                otp: otp,
+            };
+            setFormData(updatedFormData);
+            const selfRegisteredUsersCollection = collection(firestore, 'RegisteredUsers');
+            const userDocRef = doc(selfRegisteredUsersCollection, user?.email); // Use user's email as document ID
+            await setDoc(userDocRef, {
+                ...updatedFormData,
+                otp: Number(otp),
+            });
+            // Adding the form data to the Firestore collection
+            console.log('register', formData);
+    
+            emailjs.send(import.meta.env.VITE_EMAILJS_SERVICE_ID, import.meta.env.VITE_EMAILJS_TEMPLATE_REGISTER, {
+                ...formData,
+                message: otp,
+                to_email: user?.email,
+            }, import.meta.env.VITE_EMAILJS_API_KEY)
+                .then(response => {
+                    console.log('SUCCESS!', response);
+                }, error => {
+                    console.log('FAILED...', error);
+                });
+        } catch (error) {
+            alert(`Error: ${error}`);
+        }
+    };
+    
+
+
     return (
         <div className='login-wrapper'>
             <LoginImages />
             <div className='login-form'>
                 <h1>
-                    {!isOTPScreen ? Strings.register.title :<> {Strings.otp.title} <span className='otpSent'>{Strings.otp.emailSent}</span> </>}
+                    {!isOTPScreen ? Strings.register.title : <> {Strings.otp.title} <span className='otpSent'>{Strings.otp.emailSent}</span> </>}
                 </h1>
                 {isOTPScreen ?
                     <form onSubmit={logEmailAndOTP}>
@@ -168,7 +232,7 @@ const Register = () => {
                         {error && <div className="errorMessage">{error}</div>}
                         <div className="additional-actions">
                             <Button title={Strings.otp.button} type="submit" />
-                            <Button isSecondary title={Strings.login.register} type="button" onClick={() => navigate('/')} />
+                            <Button isSecondary title={Strings.login.register} type="button" onClick={() => setIsOTPScreen(false)} />
                         </div>
                     </form> :
                     <>
@@ -193,11 +257,14 @@ const Register = () => {
                                 </div>
                             </div>
                             <Button title='Register' type="submit" />
+                            <div className="separator"><div className="separator-text">or</div></div>
+                            <Button title={Strings.register.googleRegister} onClick={logGoogleUser} isSocial isImage imagePath={googleLogo} />
                         </form>
                         <div className="additional-actions">
                             <Button title={Strings.ForgotPassword.title} isSecondary type="button" onClick={handleForgotPassword} />
                             <Button isSecondary title={Strings.login.buttonLogin} type="button" onClick={() => navigate('/')} />
                         </div>
+
                     </>
                 }
             </div>

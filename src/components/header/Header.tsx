@@ -6,12 +6,16 @@ import Button from '../buttons/Button';
 import Strings from '../../utils/en';
 import logo from '../../assets/Upeducator-logo.png';
 import defaultProfile from '../../assets/defaultProfile.svg';
+
 import './Header.css';
+
 type Props = {
   isLoginPage?: boolean;
   onClick?: () => void;
+  moreOptions?: boolean;
 };
-const Header = ({ isLoginPage }: Props) => {
+
+const Header = ({ isLoginPage, moreOptions = true }: Props) => {
   const [username, setUsername] = useState('');
   const [remainingCredits, setRemainingCredits] = useState<number | undefined>(undefined);
   const [showCreditDetails, setShowCreditDetails] = useState(false);
@@ -45,28 +49,31 @@ const Header = ({ isLoginPage }: Props) => {
       navigate('/ContactUs');
     }
   }, [remainingCredits, navigate]);
-  
+
   return (
     <header className="header">
       <div className="container">
         <img src={logo} alt={Strings.header.metaTitle} title={Strings.header.metaTitle} />
         <div className="headerRight">
           {isAdmin && <nav>
-            <button onClick={()=> navigate('/Dashboard')}>{Strings.header.dashboard}</button>
-          </nav> }
+            <button onClick={() => navigate('/Dashboard')}>{Strings.header.dashboard}</button>
+          </nav>}
           <div className="username" onClick={toggleCreditDetails}> {Strings.header.welcome} &nbsp; <span> {username} </span>
             <span className='defaultProfile'><img src={defaultProfile} /> </span>
           </div>
           <div className={`creditDetails ${showCreditDetails ? 'visible' : 'hidden'}`}>
-            {remainingCredits !== undefined && remainingCredits > 0
-              ? (
-                <p>
-                  <Button title={Strings.header.goToCategory} isSecondary onClick={() => navigate('/Categories')} />
-                </p>
-              )
-              : null
-            }
-            <p><Button title={Strings.header.myProfile} isSecondary onClick={() => navigate('/Profile')} /></p>
+            {moreOptions && <>
+              {remainingCredits !== undefined && remainingCredits > 0
+                ? (
+                  <p>
+                    <Button title={Strings.header.goToCategory} isSecondary onClick={() => navigate('/Categories')} />
+                  </p>
+                )
+                : null
+              }
+              <p><Button title={Strings.header.myProfile} isSecondary onClick={() => navigate('/Profile')} /></p>
+            </>}
+
             {isLoginPage ?? <Button title={Strings.header.signOut} isSecondary onClick={handleLogout} />}
           </div>
         </div>

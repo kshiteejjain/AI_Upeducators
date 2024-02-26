@@ -10,6 +10,7 @@ import ForgotPassword from './features/forgotPassword/ForgotPassword';
 import Dashboard from './features/admin/dashboard/Dashboard';
 import Register from './features/register/Register';
 import Profile from './features/profile/Profile';
+import OnBoardingQuestions from './features/OnboardingQuestions/OnboardingQuestions'
 
 import './App.css';
 
@@ -49,6 +50,7 @@ function MainApp({ isLoggedIn }: Props) {
           <Route path="/ContactUs" element={<ContactUs />} />
           <Route path="/Dashboard" element={<Dashboard />} />
           <Route path="/Profile" element={<Profile />} />
+          <Route path="/OnBoardingQuestions" element={<OnBoardingQuestions />} />
         </>
       ) : (
         <>

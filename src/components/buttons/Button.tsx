@@ -6,16 +6,23 @@ type Props = {
     type?: string;
     isSecondary?: boolean;
     isDangerous?: boolean;
+    isSocial?: boolean;
     isGoBack?: boolean;
+    isImage?: boolean;
+    imagePath?: string
 }
-const Button = ({ title, onClick, isSecondary, isDangerous }: Props) => {
+const Button = ({ title, onClick, isSecondary, isDangerous, isImage, imagePath, isSocial }: Props) => {
     const buttonClass = isDangerous
         ? 'buttonDangerous'
         : isSecondary
             ? 'buttonSecondary'
-            : 'button';
+            : isSocial
+                ? 'buttonSocial'
+                : 'button';
+
     return (
         <button className={buttonClass} onClick={onClick}>
+            {isImage && <img src={imagePath} />}
             {title}
         </button>
     )
