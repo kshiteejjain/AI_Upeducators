@@ -79,8 +79,8 @@ const Register = () => {
             }
             const otp = generateRandomOTP();
             const selfRegisteredUsersCollection = collection(firestore, 'RegisteredUsers');
-            // Adding the form data to the Firestore collection
-            await addDoc(selfRegisteredUsersCollection, {
+            const userDocRef = doc(selfRegisteredUsersCollection, formData?.email); 
+            await setDoc(userDocRef, {
                 ...formData,
                 otp: Number(otp),
             });
@@ -151,9 +151,7 @@ const Register = () => {
     const logGoogleUser = async () => {
         try {
             const response = await signInWithGooglePopup();
-            const user = response?.user;
-            console.log('user', user);
-    
+            const user = response?.user;    
             const querySnapshot = await getDocs(
                 query(collection(firestore, 'RegisteredUsers'), where('email', '==', user?.email))
             );
@@ -190,7 +188,6 @@ const Register = () => {
                 otp: Number(otp),
             });
             // Adding the form data to the Firestore collection
-            console.log('register', formData);
     
             emailjs.send(import.meta.env.VITE_EMAILJS_SERVICE_ID, import.meta.env.VITE_EMAILJS_TEMPLATE_REGISTER, {
                 ...formData,

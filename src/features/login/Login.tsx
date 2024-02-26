@@ -26,7 +26,7 @@ const Login = () => {
     const handleTogglePasswordVisibility = () => {
         setShowPassword(!showPassword);
     };
-    const uploadDataToFirestore = async (e) => {
+    const uploadDataToFirestore = async (e: any) => {
         e.preventDefault();
         setLoader(true);
         try {
@@ -34,13 +34,13 @@ const Login = () => {
             // Check if a document with the given email and password exists
             const q = query(
                 collectionRef,
-                where('email', '==', userDetails.email),
-                where('password', '==', userDetails.password)
+                where('email', '==', userDetails?.email),
+                where('password', '==', userDetails?.password)
             );
             const querySnapshot = await getDocs(q);
             if (!querySnapshot.empty) {
                 // Document with this email and password exists
-                querySnapshot.forEach((doc) => {
+                querySnapshot.forEach(async (doc) => {
                     const data = doc.data();
                     const remainCredits = data?.remain_credits;
                     const isActiveUser = data?.isActiveUser;
@@ -50,7 +50,16 @@ const Login = () => {
                     if (remainCredits <= 0 || isActiveUser === false) {
                         navigate("/ContactUs");
                     } else {
-                        navigate("/Categories");
+                        const onboardingUserSnapshot = await getDocs(
+                            query(collection(firestore, 'onboardingQuestions'), where('email', '==', userDetails?.email))
+                        );
+                        if (!onboardingUserSnapshot.empty) {
+                            // User exists in OnBoardingQuestions collection
+                            navigate("/Categories");
+                        } else {
+                            // User does not exist in OnBoardingQuestions collection
+                            navigate("/OnBoardingQuestions");
+                        }
                     }
                 });
             } else {
@@ -63,6 +72,7 @@ const Login = () => {
             setLoader(false);
         }
     };
+
     useEffect(() => {
         if (localStorage.getItem('isLoggedIn') === 'true') {
             navigate('/Categories');
