@@ -1,6 +1,6 @@
 import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
 import axios from 'axios';
-import { handleCreditDecrement, fetchTotalCredits } from '../../utils/firebaseUtils';
+import { handleCreditDecrement } from '../../utils/firebaseUtils';
 interface GeneratorState {
   data?: string | number | null; // Define the type based on your API response
   error?: string | null;

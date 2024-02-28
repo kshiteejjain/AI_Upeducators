@@ -10,7 +10,7 @@ const MarketingCampaignDataAnalysis = () => {
         enterData: '',
     });
     const [formData, setFormData] = useState(getInitialFormData);
-    const handleInputChange = (e: ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+    const handleInputChange = (e: ChangeEvent<HTMLTextAreaElement | HTMLSelectElement>) => {
         const { name, value } = e.target;
         setFormData((prevData) => ({
             ...prevData,
@@ -32,7 +32,6 @@ const MarketingCampaignDataAnalysis = () => {
                     <label htmlFor='enterData'>Enter Your Data <span className='asterisk'>*</span></label>
                     <textarea
                         required
-                        type='text'
                         className='form-control'
                         name='enterData'
                         onChange={handleInputChange}

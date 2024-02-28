@@ -24,11 +24,6 @@ const FacebookAdsCreativeContentCreatorImage = () => {
   const handleSubmit = (event: React.SyntheticEvent<HTMLFormElement>) => {
     event.preventDefault();
     sendPrompt(dispatch, { input, messages, generatorPrompt, promptMessage });
-    setFormData(prevState => ({
-      ...prevState,
-      service: '',
-      audience: ''
-    }));
   };
 
   return (

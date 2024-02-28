@@ -56,7 +56,7 @@ const Header = ({ isLoginPage, moreOptions = true }: Props) => {
         <img src={logo} alt={Strings.header.metaTitle} title={Strings.header.metaTitle} />
         <div className="headerRight">
           {isAdmin && <nav>
-            <button onClick={() => navigate('/Dashboard')}>{Strings.header.dashboard}</button>
+            <button onClick={() => navigate('/Dashboard')}>{Strings.header.admin}</button>
           </nav>}
           <div className="username" onClick={toggleCreditDetails}> {Strings.header.welcome} &nbsp; <span> {username} </span>
             <span className='defaultProfile'><img src={defaultProfile} /> </span>

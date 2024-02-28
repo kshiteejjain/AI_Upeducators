@@ -6,6 +6,8 @@ import RegisteredUsers from '../manageUsers/RegisteredUsers';
 import FreeTrialUsers from '../manageUsers/FreeTrialUsers';
 import AdminCards from '../../../components/adminCards/AdminCards';
 import CustomLineChart from '../../../components/CustomCharts/CustomCharts';
+import OnBoardingProfileQuestions from '../onBoardingProfileQuestions/OnBoardingProfileQuestions';
+import FormsList from '../formsList/FormsList';
 
 
 const Dashboard = () => {
@@ -65,6 +67,8 @@ const Dashboard = () => {
             />
             <RegisteredUsers />
             <FreeTrialUsers />
+            <OnBoardingProfileQuestions />
+            <FormsList />
         </div>
         </div>
     );

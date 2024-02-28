@@ -109,7 +109,9 @@ export const fetchAllForms = async (): Promise<any> => {
       description: doc.data().description,
       id: doc.data().id,
       redirect: doc.data().redirect,
-      isBookmarked: doc.data().isBookmarked
+      isBookmarked: doc.data().isBookmarked,
+      followupPrompts: doc.data().followupPrompts,
+      keyword: doc.data().keyword
     }));
     return categoryData;
   } catch (error) {
@@ -186,6 +188,34 @@ export const categoryStats = async (firestore: Firestore): Promise<UserDocumentD
     return categoryData;
   } catch (error) {
     console.error('Error querying data from Firestore:', error);
+    return [];
+  }
+};
+
+export const OnBoardingProfile = async (firestore: Firestore): Promise<UserDocumentData[]> => {
+  try {
+    const collectionRef = collection(firestore, 'onboardingQuestions');
+    const querySnapshot = await getDocs(collectionRef);
+    if (querySnapshot.empty) {
+      return [];
+    }
+    const OnBoardingProfileData = querySnapshot.docs.map((doc) => ({
+      name: doc?.data()?.name,
+      email: doc?.data()?.email,
+      mobileCountryCode: doc?.data()?.mobileCountryCode,
+      mobile: doc?.data()?.mobile,
+      city: doc?.data()?.city,
+      country: "Afghanistan",
+      role: doc?.data()?.role,
+      otherRole: doc?.data()?.otherRole,
+      subjects: doc?.data()?.subjects,
+      otherSubject: doc?.data()?.otherSubject,
+      board: doc?.data()?.board,
+      organization: doc?.data()?.organization,
+    }));
+    return OnBoardingProfileData;
+  } catch (error) {
+    console.error('Error querying OnBoarding Profile Data from Firestore:', error);
     return [];
   }
 };

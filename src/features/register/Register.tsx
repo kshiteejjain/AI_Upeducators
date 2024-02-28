@@ -1,6 +1,6 @@
 import { useState, ChangeEvent, FormEvent } from 'react';
 import { firestore, signInWithGooglePopup } from '../../utils/firebase';
-import { collection, addDoc, getDocs, where, query, doc, setDoc } from 'firebase/firestore';
+import { collection, getDocs, where, query, doc, setDoc } from 'firebase/firestore';
 import { useNavigate } from 'react-router-dom';
 import emailjs from '@emailjs/browser';
 import Loader from '../../components/loader/Loader';
@@ -27,8 +27,8 @@ const Register = () => {
         email: '',
         phone: '',
         password: '',
-        total_credits: 10,
-        remain_credits: 10,
+        total_credits: 1000,
+        remain_credits: 1000,
         access_duration_days: 365,
         expire_date: 0,
         credits_limit_perday: 10,
@@ -94,7 +94,7 @@ const Register = () => {
                 phone: '',
                 password: '',
                 total_credits: 1000,
-                remain_credits: 10,
+                remain_credits: 1000,
                 access_duration_days: 365,
                 expire_date: 0,
                 credits_limit_perday: 50,
@@ -171,7 +171,7 @@ const Register = () => {
                 phone: '',
                 password: '',
                 total_credits: 1000,
-                remain_credits: 10,
+                remain_credits: 1000,
                 access_duration_days: 365,
                 expire_date: 0,
                 credits_limit_perday: 50,

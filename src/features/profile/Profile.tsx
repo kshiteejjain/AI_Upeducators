@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { firestore } from '../../utils/firebase';
-import { categoryStats, fetchTotalCredits } from '../../utils/firebaseUtils';
+import { categoryStats, fetchTotalCredits, OnBoardingProfile } from '../../utils/firebaseUtils';
 import { setCategory } from '../categories/CategoriesSlice';
 import Header from '../../components/header/Header';
 import Strings from '../../utils/en';
@@ -14,6 +14,7 @@ import './Profile.css';
 const Profile = () => {
     const [username, setUsername] = useState('');
     const [statsData, setStatsData] = useState([]);
+    const [isOnboardingData, setIsOnboardingData] = useState([]);
     const [remainingCredits, setRemainingCredits] = useState<number | undefined>(undefined);
     const [isAdmin, setIsAdmin] = useState(false);
     const showUsername = (name: string) => {
@@ -42,6 +43,9 @@ const Profile = () => {
                 setUsername(showUsername(storedUsername));
                 // Fetch only setRemainingCredits
                 await fetchTotalCredits(storedUsername, undefined, setRemainingCredits, setIsAdmin);
+                // Fetch data from OnBoardingProfileData
+                const profileData = await OnBoardingProfile(firestore, storedUsername);
+                setIsOnboardingData(profileData);
             } catch (error) {
                 console.error("Error fetching data:", error);
                 // Handle errors as needed
@@ -93,6 +97,52 @@ const Profile = () => {
                                                     <td>{item.count}</td>
                                                     <td>{item.timeStamp}</td>
                                                 </tr>
+                                            );
+                                        })}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <div className='profile-flex'>
+                    <div className='profile-cards'>
+                        <h2> Your Profile </h2>
+                        <div className='tableWrapper'>
+                            <table className='table'>
+                                <tbody>
+                                    {isOnboardingData
+                                        .filter((item) =>
+                                            item.email === localStorage.getItem('username') ?? 'User')
+                                        .map((item, index) => {
+                                            return (
+                                                <><tr key={index}>
+                                                    <th>Name</th>
+                                                    <td>{item?.name}</td>
+                                                </tr><tr>
+                                                        <th>Email</th>
+                                                        <td>{item?.email}</td>
+                                                    </tr><tr>
+                                                        <th>Mobile</th>
+                                                        <td>{item?.mobileCountryCode} - {item?.mobile}</td>
+                                                    </tr><tr>
+                                                        <th>City</th>
+                                                        <td>{item?.city}</td>
+                                                    </tr><tr>
+                                                        <th>Country</th>
+                                                        <td>{item?.country}</td>
+                                                    </tr><tr>
+                                                        <th>Role</th>
+                                                        <td>{item?.role} {item?.otherRole}</td>
+                                                    </tr><tr>
+                                                        <th>Subjects</th>
+                                                        <td>{item?.subjects} {item?.otherSubject}</td>
+                                                    </tr><tr>
+                                                        <th>Board</th>
+                                                        <td>{item?.board}</td>
+                                                    </tr><tr>
+                                                        <th>Organization</th>
+                                                        <td>{item?.organization}</td>
+                                                    </tr></>
                                             );
                                         })}
                                 </tbody>

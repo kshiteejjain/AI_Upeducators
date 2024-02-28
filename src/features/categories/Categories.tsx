@@ -109,7 +109,7 @@ const Categories = () => {
                             />
                         </div>
                         <div className='category-listing'>
-                        {categories
+                            {categories
                                 .filter(item => {
                                     const isMatchingCategory = filterCategory === 'All' || (item && item?.categoryName?.toLowerCase() === filterCategory?.toLowerCase());
                                     const isMatchingSearchTerm =

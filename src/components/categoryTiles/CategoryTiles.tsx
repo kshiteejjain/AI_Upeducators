@@ -9,18 +9,21 @@ import './CategoryTiles.css';
 
 type Props = {
     title?: string;
+    categoryName?: string;
     onClick?: () => void;
     tilesIcon?: string;
     description?: string;
     categoryAlt?: string;
+    baseCount?: number;
+    count?: number;
     onBookmarkClick?: () => void;
 }
 const CategoryTiles = ({ title, onClick, tilesIcon, categoryAlt, description }: Props) => {
-    const [statsData, setStatsData] = useState([]);
+    const [statsData, setStatsData] = useState<Props[]>([]);
     const truncatedStory = description ?
         (description.length > 10 ? description.split(' ').slice(0, 8).join(' ') + '...' : description)
         : '';
-    console.log(statsData)
+
     useEffect(() => {
         const fetchData = async () => {
             try {
@@ -50,12 +53,13 @@ const CategoryTiles = ({ title, onClick, tilesIcon, categoryAlt, description }: 
                         {Strings.categories.usedBy}
                         <strong>
                             {statsData
-                                .filter((item) => item?.categoryName.toLowerCase().replace(/\s/g, '') === (title ? title.toLowerCase().replace(/\s/g, '') : ''))
+                                .filter((item) => item?.categoryName?.toLowerCase()?.replace(/\s/g, '') === (title ? title.toLowerCase().replace(/\s/g, '') : ''))
                                 .map((item, index) => (
                                     <span key={index}>
-                                        {item?.baseCount + item?.count}
+                                        {typeof item?.baseCount === 'number' && typeof item?.count === 'number' ? item.baseCount + item.count : ''}
                                     </span>
-                                ))} &nbsp;
+                                ))}
+                            &nbsp;
                             {Strings.categories.people}
                         </strong>
                     </p>

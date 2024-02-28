@@ -35,7 +35,7 @@ const Strings = {
         goToCategory: 'Go To Categories',
         history: 'Search History',
         myProfile: 'My Profile',
-        dashboard: 'Dashboard'
+        admin: 'Admin'
     },
     categories: {
         Favorite: 'Bookmark',

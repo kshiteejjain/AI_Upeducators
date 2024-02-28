@@ -23,10 +23,6 @@ const CourseLandingPageTitleGenerator = () => {
     const handleSubmit = (event: React.SyntheticEvent<HTMLFormElement>) => {
         event.preventDefault();
         sendPrompt(dispatch, { input, messages, generatorPrompt, promptMessage });
-        setFormData(prevState => ({
-            ...prevState,
-            enterData: '',
-        }));
     };
     return (
         <div className="generator-section">

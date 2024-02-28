@@ -29,7 +29,6 @@ const SyllabusGenerator = () => {
     const handleSubmit = (event: React.SyntheticEvent<HTMLFormElement>) => {
         event.preventDefault();
         sendPrompt(dispatch, { input, messages, generatorPrompt, promptMessage });
-        setFormData(getInitialFormData);
     };
     return (
          <div className="generator-section">

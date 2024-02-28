@@ -36,3 +36,10 @@
     display: flex;
     justify-content: space-between;
 }
+.section .tableWrapper {
+    max-height: 450px;
+    overflow-y: auto;
+}
+.table th, .table td.wrapWord{
+    white-space: normal;
+}
