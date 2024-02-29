@@ -90,6 +90,42 @@
 .onBoardingQuestions form{
     width: 100%;
 }
+.selected-subjects {
+    text-align: left;
+    border: 1px solid var(--gray);
+    padding: 15px 10px 8px 10px;
+    border-top-width: 0;
+    margin-top: -5px;
+    display: flex;
+    flex-wrap: wrap;
+}
+.selected-subjects .subjects-list{
+    font-size: calc(var(--baseFontSize) - 4px);
+    background-color: var(--grayBlue);
+    font-weight: bold;
+    margin-right: 5px;
+    padding: 5px 0 5px 15px;
+    display: inline-block;
+    box-sizing: border-box;
+    border-radius: 18px;
+    margin-bottom: 5px;
+    display: flex;
+}
+.selected-subjects .remove-subject{
+    background-color: var(--gray);
+    padding: 5px;
+    display: flex;
+    margin: 0 3px 0 7px;
+    border-radius: 10px;
+    width: 8px;
+    height: 8px;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+}
+.selected-subjects .remove-subject:hover{
+    background-color: var(--lightGray);
+}
 
 @keyframes slide{
     from{

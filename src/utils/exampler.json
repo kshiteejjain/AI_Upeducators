@@ -1,0 +1,24 @@
+[
+    {
+        "formName": "FacebookAdsCreativeContentCreatorImage",
+        "formFields": {
+            "Service Skill": "Custom Service/Skill",
+            "Audience": "Custom Audience"
+        }
+    },
+    {
+        "formName": "AssignmentCreationTool",
+        "formFields": {
+            "Assignment Type": "Custom Type",
+            "Difficulty Level": "Easy",
+            "Additional Instructions": "Additional Instructions Custom"
+        }
+    },
+    {
+        "formName": "EmailContentNurturing",
+        "formFields": {
+            "Assignment Type": "Email Subject Custom",
+            "Difficulty Level": "Audience Custom"
+        }
+    }
+]

@@ -1,3 +1,4 @@
+import React from 'react';
 import { useEffect, useState } from 'react';
 import { firestore } from '../../utils/firebase';
 import { categoryStats, fetchTotalCredits, OnBoardingProfile } from '../../utils/firebaseUtils';
@@ -115,7 +116,7 @@ const Profile = () => {
                                             item.email === localStorage.getItem('username') ?? 'User')
                                         .map((item, index) => {
                                             return (
-                                                <><tr key={index}>
+                                                <React.Fragment key={index}><tr>
                                                     <th>Name</th>
                                                     <td>{item?.name}</td>
                                                 </tr><tr>
@@ -142,7 +143,7 @@ const Profile = () => {
                                                     </tr><tr>
                                                         <th>Organization</th>
                                                         <td>{item?.organization}</td>
-                                                    </tr></>
+                                                    </tr></React.Fragment>
                                             );
                                         })}
                                 </tbody>

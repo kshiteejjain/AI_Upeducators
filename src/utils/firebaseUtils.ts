@@ -205,7 +205,7 @@ export const OnBoardingProfile = async (firestore: Firestore): Promise<UserDocum
       mobileCountryCode: doc?.data()?.mobileCountryCode,
       mobile: doc?.data()?.mobile,
       city: doc?.data()?.city,
-      country: "Afghanistan",
+      country: doc?.data()?.country,
       role: doc?.data()?.role,
       otherRole: doc?.data()?.otherRole,
       subjects: doc?.data()?.subjects,

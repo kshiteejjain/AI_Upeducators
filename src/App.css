@@ -1,36 +1,45 @@
 @import "./index.css";
+
 #root {
   margin: 0 auto;
   text-align: center;
   font-family: 'Lato', sans-serif;
 }
+
 .container {
   max-width: 90%;
   margin: 0 auto;
 }
+
 .page-wrapper {
   margin: 2rem 0;
 }
+
 .page-wrapper .container {
   display: flex;
   width: 100%;
   justify-content: space-between;
   align-items: flex-start;
 }
+
 img {
   max-width: 100%;
 }
-.form-group-flex{
+
+.form-group-flex {
   display: flex;
 }
-.form-group-flex .field1{
+
+.form-group-flex .field1 {
   max-width: 120px;
   margin-right: 10px;
 }
+
 .form-group {
   margin-bottom: 1.5rem;
   position: relative;
 }
+
 .form-group label {
   font-weight: bold;
   font-size: calc(var(--baseFontSize) - 3px);
@@ -38,6 +47,7 @@ img {
   display: block;
   text-align: left;
 }
+
 .form-control {
   padding: 0.5rem;
   border-radius: 0.3rem;
@@ -50,15 +60,18 @@ img {
   font-family: 'Lato', sans-serif;
   resize: none;
 }
-.checkbox-option{
+
+.checkbox-option {
   display: flex;
 }
+
 .asterisk {
   color: var(--error);
   font-size: var(--baseFontSize);
   line-height: 10px;
 }
-.togglePassword{
+
+.togglePassword {
   position: absolute;
   font-size: calc(var(--baseFontSize) - 5px);
   right: 8px;
@@ -66,23 +79,28 @@ img {
   cursor: pointer;
   opacity: 0.4;
 }
-.togglePassword img{
+
+.togglePassword img {
   width: 20px;
 }
+
 .noDataFoundImage {
   max-width: 60%;
   margin: 100px auto;
 }
+
 .generator-section h2 {
   font-size: 1.2rem;
   margin: 0.5rem 0;
   text-transform: capitalize;
 }
+
 .generator-section h3 {
   font-size: var(--baseFontSize);
   margin: 0 0 2rem 0;
   font-weight: normal;
 }
+
 .generator-section {
   background-color: var(--white);
   width: 49%;
@@ -92,10 +110,12 @@ img {
   text-align: left;
   min-height: calc(100vh - 180px);
 }
+
 .backButton {
   text-align: left;
   margin-bottom: 13px;
 }
+
 .uploadForm {
   max-width: 500px;
   background-color: #ffffff;
@@ -103,67 +123,83 @@ img {
   padding: 3rem;
   text-align: left;
 }
+
 .uploadForm h2 {
   font-size: 20px;
   margin-top: 0;
 }
+
 .uploadForm .form-group {
   margin: 3rem 0;
   border: 1px solid #ddd;
   padding: 1rem;
 }
+
 .uploadForm button {
   margin-right: 2rem;
 }
-.tableWrapper{
+
+.tableWrapper {
   overflow: auto;
   width: 100%;
 }
-.table{
+
+.table {
   border-collapse: collapse;
   width: 100%;
 }
-.table tr:hover{
+
+.table tr:hover {
   background-color: var(--lightGray);
 }
-.table th, .table td{
+
+.table th,
+.table td {
   text-align: left;
   padding: 0.3rem;
   border: 1px solid var(--grayBlue);
   font-size: calc(var(--baseFontSize) - 2px);
   white-space: nowrap;
 }
-.table td button{
+
+.table td button {
   margin-left: 1rem;
 }
-.table td button:first-child{
+
+.table td button:first-child {
   margin-left: 0;
 }
-.table td .cellHighlight{
-    padding: 2px 5px;
-    box-sizing: border-box;
-    display: block;
-    width: 100%;
-    border-radius: 2px;
-    font-size: calc(var(--baseFontSize) - 4px);
+
+.table td .cellHighlight {
+  padding: 2px 5px;
+  box-sizing: border-box;
+  display: block;
+  width: 100%;
+  border-radius: 2px;
+  font-size: calc(var(--baseFontSize) - 4px);
 }
-.table td .cellHighlight.blue{
+
+.table td .cellHighlight.blue {
   background-color: var(--primary);
   color: var(--white);
 }
-.table td .cellHighlight.red{
+
+.table td .cellHighlight.red {
   background-color: var(--error);
   color: var(--white);
 }
-.table td input{
+
+.table td input {
   width: auto;
 }
-.errorMessage{
+
+.errorMessage {
   color: var(--error);
   font-size: calc(var(--baseFontSize) - 3px);
   font-weight: bold;
   margin-bottom: 20px;
 }
+
 .separator {
   margin: 18px 0 24px;
   position: relative;
@@ -174,6 +210,7 @@ img {
   align-items: center;
   justify-content: center;
 }
+
 .separator:before {
   background-color: var(--gray);
   content: "";
@@ -184,9 +221,10 @@ img {
   right: 0;
   top: 14px;
 }
+
 .separator-text {
   border: 1px solid var(--gray);
-  background-color:var(--white);
+  background-color: var(--white);
   border-radius: 50%;
   color: #6a6d78;
   width: 30px;
@@ -198,18 +236,72 @@ img {
   justify-content: center;
   font-size: calc(var(--baseFontSize) - 2px);
 }
+
+.card-popup .overlay {
+  content: '';
+  background-color: rgba(0, 0, 0, 0.7);
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+}
+
+.card-popup {
+  position: fixed;
+  width: 100%;
+  left: 0;
+  right: 0;
+  top: 0;
+  z-index: 9;
+  height: 100%;
+}
+
+.card-popup-content {
+  position: relative;
+  width: 50%;
+  background-color: var(--white);
+  z-index: 9;
+  margin: 2rem auto 0 auto;
+  padding: 2rem;
+  box-sizing: border-box;
+  border-radius: 10px;
+  box-shadow: 0 0 5px var(--black);
+}
+
+.card-popup-content h1 {
+  font-size: calc(var(--baseFontSize) + 4px);
+  margin: 0 0 10px 0;
+}
+.card-popup .close{
+  max-width: 20px;
+  position: absolute;
+  right: 10px;
+  top: 10px;
+  cursor: pointer;
+  opacity: 0.5;
+}
+.card-popup .close:hover{
+  opacity: 1;
+}
+
 @media (prefers-color-scheme: dark) {
   ::-webkit-calendar-picker-indicator {
     filter: invert(1);
+  }
+
+  button {
+    margin: 0;
+  }
 }
-button{
-  margin: 0;
-}
-}
+
 @media(max-width:767px) {
   .page-wrapper .container {
     flex-direction: column;
   }
+
   .chipList {
     width: 100%;
     min-height: auto;
@@ -217,12 +309,14 @@ button{
     white-space: nowrap;
     overflow-x: auto;
   }
+
   .chipList li {
     display: inline-block;
     border-right: 1px solid var(--gray);
     padding: 0.4rem 1rem;
   }
-  .generator-section{
+
+  .generator-section {
     width: 100%;
   }
 }

@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { collection, serverTimestamp, getFirestore, query, where, getDocs, setDoc, doc } from 'firebase/firestore';
 import Header from '../../components/header/Header';
@@ -7,35 +7,46 @@ import Button from '../../components/buttons/Button';
 
 import './OnboardingQuestions.css';
 
+type Props = {
+    itemName: () => void;
+}
+
 
 const OnboardingQuestions = () => {
     const [formData, setFormData] = useState({
         name: "",
         email: "",
-        mobileCountryCode: "+213",
+        mobileCountryCode: "91",
         mobile: "",
         city: "",
-        country: "Afghanistan",
+        country: "India",
         role: "Pre-Primary or Primary Teacher",
         otherRole: "",
         subjects: ["Elementary (all subjects)"],
         otherSubject: "",
         board: "CBSE",
-        organization: ""
+        organization: "",
     });
     const [isLoader, setIsLoader] = useState(false);
+    const [selectedSubjects, setSelectedSubjects] = useState([]);
     const navigate = useNavigate();
 
     const username = localStorage.getItem('username') || "";
     const { email } = username;
 
-    const handleInputChange = (e) => {
+    const handleRemove = (itemName: Props) => {
+        setSelectedSubjects(selectedSubjects.filter(item => item !== itemName));
+    }
+
+    const handleInputChange = (e: any) => {
         const { name, value } = e.target;
         if (name === 'subjects') {
             const selectedOptions = Array.from(e.target.selectedOptions, (option) => option.value);
+            const newSelectedSubjects = new Set([...selectedSubjects, ...selectedOptions])
+            setSelectedSubjects(Array.from(newSelectedSubjects));
             setFormData(prevState => ({
                 ...prevState,
-                subjects: selectedOptions
+                subjects: Array.from(newSelectedSubjects)
             }));
         } else if (name === 'role' && value === 'Other') {
             setFormData(prevState => ({
@@ -114,7 +125,7 @@ const OnboardingQuestions = () => {
                         <div className='form-group'>
                             <label htmlFor='mobile'>Mobile Number<span className='asterisk'>*</span></label>
                             <div className='form-group-flex'>
-                                <select name="mobileCountryCode" className='field1 form-control' onChange={handleInputChange} >
+                                <select name="mobileCountryCode" className='field1 form-control' defaultValue="91" onChange={handleInputChange} >
                                     <optgroup label="Other countries">
                                         <option value="213">(+213)</option>
                                         <option value="376">(+376)</option>
@@ -201,7 +212,7 @@ const OnboardingQuestions = () => {
                                         <option value="852">(+852)</option>
                                         <option value="36">(+36)</option>
                                         <option value="354">(+354)</option>
-                                        <option value="91" selected>(+91)</option>
+                                        <option value="91">(+91)</option>
                                         <option value="62">(+62)</option>
                                         <option value="98">(+98)</option>
                                         <option value="964">(+964)</option>
@@ -335,7 +346,7 @@ const OnboardingQuestions = () => {
                                 </select>
                                 <input
                                     required
-                                    type='tel'
+                                    type='number'
                                     className='form-control'
                                     name='mobile'
                                     pattern='[0-9]{10,14}'
@@ -359,7 +370,7 @@ const OnboardingQuestions = () => {
 
                         <div className='form-group'>
                             <label htmlFor='country'>Country<span className='asterisk'>*</span></label>
-                            <select name="country" className="form-control" onChange={handleInputChange}>
+                            <select name="country" className="form-control" defaultValue="India" onChange={handleInputChange}>
                                 <option value="Afghanistan">Afghanistan</option>
                                 <option value="Åland Islands">Åland Islands</option>
                                 <option value="Albania">Albania</option>
@@ -460,7 +471,7 @@ const OnboardingQuestions = () => {
                                 <option value="Hong Kong">Hong Kong</option>
                                 <option value="Hungary">Hungary</option>
                                 <option value="Iceland">Iceland</option>
-                                <option value="India" selected>India</option>
+                                <option value="India" defaultValue>India</option>
                                 <option value="Indonesia">Indonesia</option>
                                 <option value="Iran, Islamic Republic of">Iran, Islamic Republic of</option>
                                 <option value="Iraq">Iraq</option>
@@ -632,7 +643,7 @@ const OnboardingQuestions = () => {
                         <div className='form-group'>
 
                             <label htmlFor="subjects">Subjects<span>*</span></label>
-                            <select name="subjects" multiple onChange={handleInputChange} className='form-control'>
+                            <select name="subjects" onChange={handleInputChange} className='form-control'>
                                 <option value="Elementary">Elementary (all subjects)</option>
                                 <option value="Electives">Electives</option>
                                 <option value="Art & Music">Art & Music</option>
@@ -651,6 +662,15 @@ const OnboardingQuestions = () => {
                                 <option value="Head of Department (HOD)">Head of Department (HOD)</option>
                                 <option value="Other">Other</option>
                             </select>
+                            {selectedSubjects.length !== 0 && <div className='selected-subjects'>
+                                {selectedSubjects.map((item, index) => (
+                                    <span key={index} className='subjects-list'>
+                                        <span>{item}</span>
+                                        <span className='remove-subject' onClick={() => handleRemove(item)}>x</span>
+                                    </span>
+                                ))}
+                            </div>
+                            }
                         </div>
                         {formData.subjects.includes("Other") && (
                             <div className='form-group'>
