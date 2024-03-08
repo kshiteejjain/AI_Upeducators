@@ -27,7 +27,6 @@ const Dashboard = () => {
                 setFormsLength(forms.length);
                 const usedCategoryStats = await categoryStats(firestore);
                 setCategoryStatsData(usedCategoryStats);
-                // Move the console.log here
             } catch (error) {
                 console.error('Error fetching data:', error);
             }

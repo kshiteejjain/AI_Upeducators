@@ -1,11 +1,11 @@
 import { setMessages, isFollowUpPrompt } from '../features/promptListGeneratorSlice/QuestionGeneratorSlice';
 export const sendPrompt = (dispatch, props) => {
   dispatch(isFollowUpPrompt(props.isFollowUpPrompt))
-  const { messages, generatorPrompt, promptMessage } = props;
+  const { messages, generatorPrompt, promptMessage, isGPT4 } = props;
   const prompt = [...(messages || []), { role: 'user', content: promptMessage, isVisible: props.isFollowUpPrompt }];
-  dispatch(setMessages(prompt));
+  dispatch(setMessages(prompt, isGPT4));
   try {
-    dispatch(generatorPrompt(prompt));
+    dispatch(generatorPrompt({ prompt: promptMessage, isGPT4 }));
   } catch (error) {
     alert('Error dispatching generatorPrompt:', error);
   }

@@ -47,7 +47,7 @@
     align-items: center;
     justify-content: center;
     width: 100%;
-    border: 1px solid var(--lightBlue);
+    border: 1px solid var(--gray);
     background-color: var(--white);
     border-radius: 2px;
     font-size: calc(var(--baseFontSize) - 3px);

@@ -57,7 +57,7 @@ const ForgotPassword = () => {
                     .then(response => {
                         console.log('SUCCESS!', response);
                     }, error => {
-                        console.log('FAILED...', error);
+                        alert(`FAILED...', ${error}`);
                     });
                 navigate('/')
                 // Now you can redirect or perform any other actions

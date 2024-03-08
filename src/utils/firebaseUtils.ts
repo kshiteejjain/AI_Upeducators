@@ -111,7 +111,10 @@ export const fetchAllForms = async (): Promise<any> => {
       redirect: doc.data().redirect,
       isBookmarked: doc.data().isBookmarked,
       followupPrompts: doc.data().followupPrompts,
-      keyword: doc.data().keyword
+      keyword: doc.data().keyword,
+      usageCount: doc.data().usageCount,
+      usageCountBase: doc.data().usageCountBase,
+      timeStamp: doc.data().timeStamp
     }));
     return categoryData;
   } catch (error) {

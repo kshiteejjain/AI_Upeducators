@@ -111,10 +111,10 @@ const Register = () => {
                 .then(response => {
                     console.log('SUCCESS!', response);
                 }, error => {
-                    console.log('FAILED...', error);
+                    alert(`FAILED...', ${error}`);
                 });
         } catch (error) {
-            alert('An error occurred:', error);
+            alert(`An error occurred:', ${error}`);
         }
     };
     const handleInputChangeOTP = (e: ChangeEvent<HTMLInputElement>) => {
@@ -142,7 +142,7 @@ const Register = () => {
                 setLoading(false)
                 navigate('/')
             } else {
-                console.log('Email and OTP do not match');
+                alert('Email and OTP do not match');
             }
         } catch (error) {
             console.error('Error fetching documents: ', error);
@@ -197,7 +197,7 @@ const Register = () => {
                 .then(response => {
                     console.log('SUCCESS!', response);
                 }, error => {
-                    console.log('FAILED...', error);
+                    alert(`FAILED...', ${error}`);
                 });
         } catch (error) {
             alert(`Error: ${error}`);

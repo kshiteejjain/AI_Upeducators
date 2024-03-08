@@ -9,4 +9,10 @@
     flex: 0 0 100%;
     min-width: 0;
   }
+
+@media(max-width:1366px){
+  .carousel{
+    margin:0 0 1rem 0;
+  }
+}
   

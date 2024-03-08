@@ -2,8 +2,9 @@
     {
         "formName": "FacebookAdsCreativeContentCreatorImage",
         "formFields": {
-            "Service Skill": "Custom Service/Skill",
-            "Audience": "Custom Audience"
+            "Service Skill": "Engineer",
+            "Audience": "Custom Audience",
+            "Subject": "\n\nChanges to Basketball Schedule\n\nHello [Colleague Name],\n\nI hope this email finds you well. I wanted to bring to your attention some changes to the basketball schedule for this season. It's important that we have one administrator present at each home game to ensure everything runs smoothly. To help organize this, I will start a Google form where we can all sign up to be present at one or two games. This way, we can ensure that the games are adequately covered and that our students have a positive experience. Thank you for your attention to this matter, and I appreciate your cooperation in ensuring the success of the basketball season.\nBest regards,\n[Your Name]"
         }
     },
     {
@@ -19,6 +20,17 @@
         "formFields": {
             "Assignment Type": "Email Subject Custom",
             "Difficulty Level": "Audience Custom"
+        }
+    },
+    {
+        "formName": "BlogContentGenerator",
+        "formFields": {
+            "Audience": "Email Subject Custom",
+            "Topic": "Audience Custom",
+            "Word Count": "Audience Custom",
+            "Key Points": "Audience Custom",
+            "Reference Output": "\n\nChanges to Basketball Schedule\n\nHello [Colleague Name],\n\nI hope this email finds you well. I wanted to bring to your attention some changes to the basketball schedule for this season. It's important that we have one administrator present at each home game to ensure everything runs smoothly. To help organize this, I will start a Google form where we can all sign up to be present at one or two games. This way, we can ensure that the games are adequately covered and that our students have a positive experience. Thank you for your attention to this matter, and I appreciate your cooperation in ensuring the success of the basketball season.\nBest regards,\n[Your Name]"
+
         }
     }
 ]

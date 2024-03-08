@@ -4,9 +4,11 @@ import { combineReducers } from 'redux';
 import { persistReducer } from 'redux-persist';
 import thunk from 'redux-thunk';
 import generatorSlice from '../features/promptListGeneratorSlice/QuestionGeneratorSlice'
+import imageSlice from '../features/promptListGeneratorSlice/ImageGeneratorSlice'
 import categoriesSlice from '../features/categories/CategoriesSlice'
 const reducers = combineReducers({
   generatorData: generatorSlice,
+  imageData: imageSlice,
   selectedCategory: categoriesSlice,
 });
 const persistConfig = {

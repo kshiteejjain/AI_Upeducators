@@ -1,4 +1,4 @@
-import React, { useState, ChangeEvent } from 'react';
+import React, { useState, ChangeEvent, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { generatorPrompt } from '../promptListGeneratorSlice/ImageGeneratorSlice';
@@ -17,6 +17,8 @@ type RootState = {
 };
 
 const ImageGenerator = () => {
+  const { generatorData: { messages, input } } = useSelector((state) => state);
+  const dispatch = useDispatch();
   const loadingStatus = useSelector((state: RootState) => state.generatorData?.status);
   const [isLoading, setIsLoading] = useState(false);
   const [showPromptMsg, setShowPromptMsg] = useState('');
@@ -43,10 +45,7 @@ const ImageGenerator = () => {
   }, [loadingStatus]);
 
   const [formData, setFormData] = useState({
-      audience: '',
       topic: '',
-      tone: 'Informative',
-      keywords: ''
   });
 
   const handleInputChange = (e: ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
@@ -56,17 +55,13 @@ const ImageGenerator = () => {
           [name]: value,
       }));
   };
-  const dispatchThunk = useDispatch<ThunkDispatch<RootState, undefined, AnyAction>>();
-  const sendPrompt = async (event: React.SyntheticEvent<HTMLFormElement>) => {
-      event.preventDefault();
-      try {
-          const promptMessage = `Generate images for the topic ${formData.topic}.`
-          setShowPromptMsg(promptMessage);
-          dispatchThunk(generatorPrompt(promptMessage));
-      } catch (error) {
-          alert.error('Error fetching data:', error);
-      }
-  };
+
+  const promptMessage = `Generate an image on ${formData.topic}`;
+    const handleSubmit = (event: React.SyntheticEvent<HTMLFormElement>) => {
+        event.preventDefault();
+        sendPrompt(dispatch, { input, messages, generatorPrompt, promptMessage });
+    };
+    
   return (
     <div className="generator-section">
 

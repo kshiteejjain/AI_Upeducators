@@ -1,27 +1,31 @@
 import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
 import axios from 'axios';
 import { handleCreditDecrement } from '../../utils/firebaseUtils';
+
 interface GeneratorState {
   data?: string | number | null; // Define the type based on your API response
   error?: string | null;
   status?: 'idle' | 'loading' | 'succeeded' | 'failed';
 }
+
 const initialState: GeneratorState = {
   data: null,
   error: null,
   status: 'idle',
 };
+
 const creditValue = Number(import.meta.env.VITE_IMAGE_GENERATOR_CREDITS);
-// Define the async thunk
+
 export const generatorPrompt = createAsyncThunk('generator/generatorPrompt', async (prompt: string) => {
   await handleCreditDecrement(creditValue);
   try {
     const response = await axios.post(
       import.meta.env.VITE_OPEN_AI_GENERATION_API_URL,
       {
-        "prompt": prompt,
-        "n":1,
-        "size":"512x512",
+        model: "dall-e-3",
+        prompt: prompt.prompt,
+        n: 1,
+        size: "1024x1024"
       },
       {
         headers: {
@@ -32,10 +36,13 @@ export const generatorPrompt = createAsyncThunk('generator/generatorPrompt', asy
     );
     return response.data;
   } catch (error) {
-    alert('Error in generatorPrompt:', error);
+    console.error('Error in generatorPrompt:', error.response?.data);
     throw error;
   }
 });
+
+
+
 const generatorSlice = createSlice({
   name: 'generator',
   initialState,
@@ -63,5 +70,6 @@ const generatorSlice = createSlice({
       });
   },
 });
+
 export const { resetGeneratedData } = generatorSlice.actions; // Export the action creator
 export default generatorSlice.reducer;

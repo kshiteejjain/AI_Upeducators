@@ -50,12 +50,13 @@ const GeneratorAndResult = () => {
                             <div className='card-popup' key={index}>
                                 <div className='card-popup-content'>
                                     <h1>{item.formName}</h1>
-                                    <img src={Close} onClick={()=>  setShowExampler([])} className='close'/>
-                                    {typeof item.formFields === 'object' && Object.keys(item.formFields).map((key: string, index: number) => (
-                                        <div key={index}>
-                                            {key} : {item?.formFields && item?.formFields[key]}
-                                        </div>
+                                    <img src={Close} onClick={() => setShowExampler([])} className='close' />
+                                    {Object.keys(item?.formFields).map((key, index) => (
+                                        <p key={index}>
+                                        <strong>{key}</strong> : <span dangerouslySetInnerHTML={{ __html: item?.formFields[key].replace(/\n\n/g, '<br /><br />').replace(/\n/g, '<br />').replace(/\./g, '.<br />') }} />
+                                        </p>
                                     ))}
+
                                 </div>
                                 <div className='overlay'></div>
                             </div>

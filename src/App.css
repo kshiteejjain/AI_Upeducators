@@ -269,22 +269,53 @@ img {
   box-sizing: border-box;
   border-radius: 10px;
   box-shadow: 0 0 5px var(--black);
+  max-height: 85%;
+  overflow-y: auto;
 }
 
 .card-popup-content h1 {
   font-size: calc(var(--baseFontSize) + 4px);
-  margin: 0 0 10px 0;
+  margin: 0 0 20px 0;
+}
+.card-popup-content p {
+  margin: 0 0 9px 0;
+  font-size: calc(var(--baseFontSize) - 1px);
+  line-height: 28px;
 }
 .card-popup .close{
-  max-width: 20px;
+  max-width: 25px;
   position: absolute;
-  right: 10px;
-  top: 10px;
+  right: 15px;
+  top: 15px;
   cursor: pointer;
   opacity: 0.5;
 }
 .card-popup .close:hover{
   opacity: 1;
+}
+.recording-options{
+  display: inline-block;
+}
+.recording-options-items{
+  display: flex;
+  align-items: center;
+}
+.recording-options-items p {
+  margin-left: 1rem;
+  font-weight: bold;
+  font-size: calc(var(--baseFontSize) - 1px);
+}
+.record{
+  background-color: var(--lightGray);
+  margin-left: 1rem;
+  border-radius: 100%;
+  height: 45px;
+  width: 45px;
+  box-sizing: border-box;
+  padding: 0;
+}
+.record img{
+  max-width:20px;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -318,5 +349,10 @@ img {
 
   .generator-section {
     width: 100%;
+  }
+}
+@media(max-width:1366px) {
+  .page-wrapper{
+    margin-top: 1rem;
   }
 }

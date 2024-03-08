@@ -11,9 +11,7 @@ const BannerCarousel = () => {
     const [emblaRef, emblaApi] = carousel({ loop: true }, [Autoplay()]);
 
     useEffect(() => {
-        if (emblaApi) {
-          console.log(emblaApi.slideNodes()) // Access API
-        }
+        
       }, [emblaApi])
 
     return (

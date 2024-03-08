@@ -114,7 +114,7 @@ const RegisteredUsers = () => {
             }));
             const ws = XLSX.utils.json_to_sheet(flattenedUserData, { header: Object.keys(flattenedUserData[0]) });
             // Auto-size columns
-            const wscols = flattenedUserData.map(user => Object.values(user).map(value => ({ width: value.toString().length + 15 })));
+            const wscols = flattenedUserData.map(user => Object.values(user).map(value => ({ width: value?.toString().length + 15 })));
             ws['!cols'] = wscols[0];
             const wb = XLSX.utils.book_new();
             XLSX.utils.book_append_sheet(wb, ws, 'All_Registered_Users');

@@ -9,7 +9,7 @@ const SyllabusGenerator = () => {
     const dispatch = useDispatch();
     const getInitialFormData = () => ({
         courseName: '',
-        gradeLevel: 'Nursery',
+        gradeLevel: '',
         educationalBoard: 'CBSE',
         courseDuration: '',
         mainTopics: '',

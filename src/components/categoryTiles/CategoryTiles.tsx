@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react';
-import PropTypes from 'prop-types';
 import { firestore } from '../../utils/firebase';
-import { categoryStats } from '../../utils/firebaseUtils';
+import { fetchAllForms } from '../../utils/firebaseUtils';
 import Strings from '../../utils/en';
 import bookmarkIcon from '../../assets/bookmark.svg'
 import graph from '../../assets/graph.svg'
@@ -15,11 +14,13 @@ type Props = {
     description?: string;
     categoryAlt?: string;
     baseCount?: number;
-    count?: number;
+    usageCountBase?: number;
+    usageCount? : number,
+    name? : string
     onBookmarkClick?: () => void;
 }
-const CategoryTiles = ({ title, onClick, tilesIcon, categoryAlt, description }: Props) => {
-    const [statsData, setStatsData] = useState<Props[]>([]);
+const CategoryTiles = ({ title, onClick, categoryAlt, description }: Props) => {
+    const [formCount, setFormCount] = useState<Props[]>([]);
     const truncatedStory = description ?
         (description.length > 10 ? description.split(' ').slice(0, 8).join(' ') + '...' : description)
         : '';
@@ -27,8 +28,9 @@ const CategoryTiles = ({ title, onClick, tilesIcon, categoryAlt, description }: 
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const data = await categoryStats(firestore); // Fetch data from categoryStats function
-                setStatsData(data);
+
+                const formData = await fetchAllForms(firestore);
+                setFormCount(formData);
             } catch (error) {
                 console.error('Error fetching category stats:', error);
             }
@@ -42,7 +44,6 @@ const CategoryTiles = ({ title, onClick, tilesIcon, categoryAlt, description }: 
             <div className='tiles' onClick={onClick}>
                 <img src="https://images.pexels.com/photos/8617961/pexels-photo-8617961.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2" className='list-img' />
                 {/* <img src={bookmarkIcon} className='bookmarkIcon' title={Strings.categories.Favorite} alt={Strings.categories.Favorite} /> */}
-                {/* <img src={tilesIcon} className='tilesIcon' alt='Category Name' title={categoryAlt} /> */}
                 <div className='clickSection'>
                     <div className='tiles-icon'>
                         <h1 title={title}>{title}</h1>
@@ -52,13 +53,14 @@ const CategoryTiles = ({ title, onClick, tilesIcon, categoryAlt, description }: 
                         <img src={graph} className='graph' />
                         {Strings.categories.usedBy}
                         <strong>
-                            {statsData
-                                .filter((item) => item?.categoryName?.toLowerCase()?.replace(/\s/g, '') === (title ? title.toLowerCase().replace(/\s/g, '') : ''))
+                            {formCount
+                                .filter((item) => item && item.name && item.name.toLowerCase().replace(/\s/g, '') === (title ? title.toLowerCase().replace(/\s/g, '') : ''))
                                 .map((item, index) => (
                                     <span key={index}>
-                                        {typeof item?.baseCount === 'number' && typeof item?.count === 'number' ? item.baseCount + item.count : ''}
+                                        {item && item.usageCountBase && item.usageCount && (item.usageCountBase + item.usageCount)}
                                     </span>
                                 ))}
+
                             &nbsp;
                             {Strings.categories.people}
                         </strong>
@@ -69,7 +71,3 @@ const CategoryTiles = ({ title, onClick, tilesIcon, categoryAlt, description }: 
     )
 };
 export default CategoryTiles;
-CategoryTiles.propTypes = {
-    title: PropTypes.string,
-    onBookmarkClick: PropTypes.func,
-};
