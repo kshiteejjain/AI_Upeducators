@@ -63,7 +63,7 @@ const BlogContentGenerator = () => {
                     </select>
                 </div>
                 <div className='form-group'>
-                    <label htmlFor='keyPoints'>Key Points</label>
+                    <label htmlFor='keyPoints'>Key Points <span className='asterisk'>*</span></label>
                     <input required className='form-control' name='keyPoints' onChange={handleInputChange} value={formData.keyPoints} placeholder='List key points or subtopics to cover in the blog, separated by commas. If left blank, general content based on the topic will be generated.' />
                 </div>
                 <Button title='Generate' type="submit" />

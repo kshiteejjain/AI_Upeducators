@@ -7,7 +7,7 @@ import NoDataFoundImage from '../../assets/no-data-found.svg';
 import CopyClipboard from '../../assets/copyClipboard.svg';
 import mp3Sound from '../../assets/result-audio.mp3';
 import Loader from '../../components/loader/Loader';
-import { getFollowupPrompts } from '../../utils/followupPromptsService'; // Importing the function
+import { getFollowupPrompts } from '../../utils/followupPromptsService';
 
 import './Result.css';
 
@@ -24,7 +24,9 @@ type RootState = {
 const Result = () => {
   const { generatorData: { messages, input } } = useSelector((state) => state);
   const generatedData = useSelector((state: RootState) => state?.generatorData?.messages);
-  const generatedImage = useSelector((state: RootState) => state?.generatorData?.data?.data?.[0]?.url);
+
+  const generatedImage = useSelector((state: RootState) => state?.imageData?.data?.data?.[0]?.url);
+
   const isFollowUpPrompt = useSelector((state: RootState) => state.generatorData?.isFollowUpPrompt)
   const getFormName = useSelector((state: RootState) => state?.selectedCategory)
   const resultAudio = useMemo(() => new Audio(mp3Sound), []);
@@ -37,34 +39,42 @@ const Result = () => {
   const generatedDataOption = isFollowUpPrompt ? generatedData : generatedData?.slice(-2);
 
   const content = generatedDataOption?.map((msg, index) => {
+    if (!msg || !msg.content || typeof msg.content !== 'string') {
+      return null; // Skip rendering if msg or msg.content is not valid
+    }
+  
     if (msg.role === 'user' && (msg.isVisible === false || msg.isVisible === undefined)) {
       return null;
     }
-
-
+  
     return (
       <div className='response-data' key={index}>
         <div className={msg.role}>
           {msg.role === 'user' ? (
             <div dangerouslySetInnerHTML={{ __html: msg.content?.trim()?.replace(/\n/g, '<br />') }} />
           ) : (
-            // Splitting the content into lines
-            msg?.content?.split('\n').map((line, lineIndex) => (
-              <div key={lineIndex}>
-                {/* Checking if the line ends with a question mark */}
-                {line.trim().endsWith('?') || line.trim().endsWith(':') || line.trim().endsWith('!') ? (
-                  <strong>{line}</strong> // Boldening the question line
-                ) : (
-                  line // Otherwise, render the line as is
-                )}
-                <br />
-              </div>
-            ))
+            // Check if msg.content is a string before splitting
+            typeof msg.content === 'string' ? (
+              // Splitting the content into lines
+              msg.content.split('\n').map((line, lineIndex) => (
+                <div key={lineIndex}>
+                  {line.trim().endsWith('?') || line.trim().endsWith(':') || line.trim().endsWith('!') ? (
+                    <strong>{line}</strong>
+                  ) : (
+                    line
+                  )}
+                  <br />
+                </div>
+              ))
+            ) : (
+              <div>{msg.content}</div> // Render the content as is if it's not a string
+            )
           )}
         </div>
       </div>
     );
   });
+  
 
 
   useEffect(() => {
@@ -142,39 +152,41 @@ const Result = () => {
 
       <div className="result-section-inner">
         {content}
-        {generatedData?.length !== 0 && (
+        {generatedData?.length !== 0 && !generatedImage && (
           <>
             <button className='copyClipboard' title="Copy Content" onClick={handleCopyData}>
               <img src={CopyClipboard} alt="Copy to Clipboard" />
             </button>
           </>
         )}
-        {generatedImage && (
+       
           <div className='generatedImage'>
-            <img src={generatedImage} alt="Generated Image" />
+            {generatedImage && <img src={generatedImage} alt="Generated Image" />}
+            {generatedImage && <Button title='Download Image' onClick={downloadImage} />}
           </div>
-        )}
+        
+
         {!generatedData?.length && !generatedImage && (
           <div className='noDataFoundImage'>
             <img src={NoDataFoundImage} alt="No Data Found" />
           </div>
         )}
-        {generatedImage && <Button title='Download Image' onClick={downloadImage} />}
+        
       </div>
-      {getFollowPrompt && getFollowPrompt[0] !== undefined && (
+      {generatedData && getFollowPrompt.length !== 0 && !generatedImage && (
         <div className="followup-prompts">
           <h2>Followup Query?</h2>
           <ul>
             {getFollowPrompt.map((prompt, index) => (
               <li key={index} onClick={() => setFormData({ followUpPromptInput: prompt })}>
-                {prompt}
+                {prompt} {getFollowPrompt.length}
               </li>
             ))}
           </ul>
         </div>
       )}
 
-      {generatedData?.length >= 2 && (
+      {generatedData?.length >= 2 && !generatedImage && (
         <form onSubmit={handleSubmit} className='followUpPrompt'>
           <div className='form-group'>
             <input

@@ -1,74 +1,84 @@
-import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
+import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
 import { handleCreditDecrement } from '../../utils/firebaseUtils';
 import { RootState } from 'react-redux';
-import { addDoc, collection, getDocs, getFirestore, query, updateDoc, where } from 'firebase/firestore';
+import { addDoc, collection, doc, getDocs, getFirestore, query, setDoc, updateDoc, where } from 'firebase/firestore';
 
-interface GeneratorState {
-  responses: string[];
-  data?: string | number | null; // Define the type based on your API response
-  error?: string | null;
-  status?: 'idle' | 'loading' | 'succeeded' | 'failed';
-}
-const initialState: GeneratorState = {
-  responses: [],
-  data: null,
-  error: null,
-  status: 'idle',
-};
 const creditValue = Number(import.meta.env.VITE_TEXT_GENERATOR_CREDITS);
-// Define the async thunk
-export const generatorPrompt = createAsyncThunk('generator/generatorPrompt', async (prompt: string, { getState }) => {
 
-  const promptList = JSON.parse(localStorage.getItem('prompts') || '[]'); // Get existing prompts or initialize as empty array
-  promptList.push({
-    role: 'user',
-    content: prompt,
-    isFollowUpPrompt: false
-  });
-  localStorage.setItem('prompts', JSON.stringify(promptList));
-  // alert(JSON.stringify(promptList))
-
-  await handleCreditDecrement(creditValue);
+export const generatorPrompt = createAsyncThunk('generator/generatorPrompt', async (props: { prompt: string; isGPT4: boolean }, { getState, rejectWithValue }) => {
   try {
-    const state = getState() as RootState; // Cast to RootState
+    const { prompt, isGPT4 } = props;
+    alert(prompt);
+    console.log('isGPT4->', isGPT4);
+
+    const arrayPrompt = prompt.split(' ');
+
+    const promptList = JSON.parse(localStorage.getItem('prompts') || '[]');
+    promptList.push({
+      role: 'user',
+      content: arrayPrompt,
+      isFollowUpPrompt: false
+    });
+    localStorage.setItem('prompts', JSON.stringify(promptList));
+
+    await handleCreditDecrement(creditValue);
+
+    const state = getState() as RootState;
     const selectedCategory = state.selectedCategory.selectedCategory;
     const firestore = getFirestore();
-    const abcCollection = collection(firestore, 'FormsList');
-    const q = query(abcCollection, where('redirect', '==', selectedCategory));
-    const existingDocs = await getDocs(q);
-    if (!existingDocs.empty) {
-      existingDocs.forEach(async (doc) => {
+
+    const formListCollection = collection(firestore, 'FormsList');
+    const formListQuery = query(formListCollection, where('redirect', '==', selectedCategory));
+    const formListExistingDocs = await getDocs(formListQuery);
+
+    if (!formListExistingDocs.empty) {
+      formListExistingDocs.forEach(async (doc) => {
         const docRef = doc.ref;
         const currentCount = doc.data().usageCount || 0;
-        // Update count field
-        await updateDoc(docRef, { usageCount: currentCount + 1 });
+        await updateDoc(docRef, { usageCount: currentCount + 1, timeStamp: new Date().toLocaleString() });
       });
     } else {
-      await addDoc(abcCollection, { selectedCategory, usageCount: 1 });
+      await addDoc(formListCollection, { selectedCategory, usageCount: 1 });
     }
+
+    const categoryStatsCollection = collection(firestore, 'CategoryStats');
+    const categoryStatsQuery = query(categoryStatsCollection, where('selectedCategory', '==', selectedCategory));
+    const categoryStatsExistingDocs = await getDocs(categoryStatsQuery);
+
+    if (!categoryStatsExistingDocs.empty) {
+      categoryStatsExistingDocs.forEach(async (doc) => {
+          const docRef = doc.ref;
+          const currentCount = doc.data().count || 0;
+          await updateDoc(docRef, { count: currentCount + 1, timeStamp: new Date().toLocaleString(), user: localStorage.getItem('username') });
+      });
+  } else {
+      const docRef = doc(categoryStatsCollection, selectedCategory);
+      await setDoc(docRef, { selectedCategory, count: 1, timeStamp: new Date().toLocaleString(), user: localStorage.getItem('username') });
+  }
+  
 
     const response = await axios.post(
       `${import.meta.env.VITE_OPEN_AI_CHAT_COMPLETION_API_URL}`,
       {
-        model: 'gpt-3.5-turbo',
-        messages: prompt.map((msg) => ({
-          role: msg.role,
-          content: msg.content,
+        model: isGPT4 ? 'gpt-4': 'gpt-3.5-turbo',
+        messages: arrayPrompt.map((msg) => ({
+          role: 'user',
+          content: msg,
         })),
       },
       {
         headers: {
           'Content-Type': 'application/json',
-          Authorization:
-            `Bearer ${import.meta.env.VITE_OPEN_AI_KEY}`,
+          Authorization: `Bearer ${import.meta.env.VITE_OPEN_AI_KEY}`,
         },
       }
     );
+    console.log(`Using model: ${isGPT4 ? 'gpt-4-0125-preview': 'gpt-3.5-turbo'}`);
     return response?.data?.choices[0]?.message?.content?.trim();
   } catch (error) {
-    alert('Error sending message to OpenAI API:', error);
-    throw error;
+    console.error('Error sending message to OpenAI API:', error);
+    return rejectWithValue(error.message || 'Failed to fetch data');
   }
 });
 
@@ -91,7 +101,7 @@ const generatorSlice = createSlice({
       state.messages.push(action.payload);
     },
     resetGeneratedData: (state) => {
-      state.messages = null;
+      state.messages = [];
       state.error = null;
       state.status = 'idle';
     },
@@ -104,13 +114,15 @@ const generatorSlice = createSlice({
       .addCase(generatorPrompt.fulfilled, (state, action) => {
         state.status = 'succeeded';
         const aiMessage = { role: 'assistant', content: action.payload };
-        state.messages?.push(aiMessage);
+        state.messages.push(aiMessage);
       })
       .addCase(generatorPrompt.rejected, (state, action) => {
         state.status = 'failed';
-        state.error = action.error.message;
+        state.error = action.payload || 'Failed to fetch data';
       });
   },
 });
-export const { resetGeneratedData, setMessages, addMessage, isFollowUpPrompt } = generatorSlice.actions; // Export the action creator
+
+export const { resetGeneratedData, setMessages, addMessage, isFollowUpPrompt } = generatorSlice.actions;
 export default generatorSlice.reducer;
+
