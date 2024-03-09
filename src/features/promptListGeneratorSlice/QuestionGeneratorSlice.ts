@@ -9,7 +9,6 @@ const creditValue = Number(import.meta.env.VITE_TEXT_GENERATOR_CREDITS);
 export const generatorPrompt = createAsyncThunk('generator/generatorPrompt', async (props: { prompt: string; isGPT4: boolean }, { getState, rejectWithValue }) => {
   try {
     const { prompt, isGPT4 } = props;
-    alert(prompt);
     console.log('isGPT4->', isGPT4);
 
     const arrayPrompt = prompt.split(' ');
@@ -42,6 +41,20 @@ export const generatorPrompt = createAsyncThunk('generator/generatorPrompt', asy
       await addDoc(formListCollection, { selectedCategory, usageCount: 1 });
     }
 
+    const RegisteredUsersCollection = collection(firestore, 'RegisteredUsers');
+    const RegisteredUsersQuery = query(RegisteredUsersCollection, where('email', '==', localStorage.getItem('username')));
+    const RegisteredUsersExistingDocs = await getDocs(RegisteredUsersQuery);
+    
+    if (!RegisteredUsersExistingDocs.empty) {
+      RegisteredUsersExistingDocs.forEach(doc => {
+          const isAdmin = doc.data().isAdmin;
+          if (isAdmin === true) {
+              alert(prompt);
+          }
+      });
+  }
+
+
     const categoryStatsCollection = collection(firestore, 'CategoryStats');
     const categoryStatsQuery = query(categoryStatsCollection, where('selectedCategory', '==', selectedCategory));
     const categoryStatsExistingDocs = await getDocs(categoryStatsQuery);
@@ -58,22 +71,25 @@ export const generatorPrompt = createAsyncThunk('generator/generatorPrompt', asy
   }
   
 
-    const response = await axios.post(
-      `${import.meta.env.VITE_OPEN_AI_CHAT_COMPLETION_API_URL}`,
-      {
-        model: isGPT4 ? 'gpt-4': 'gpt-3.5-turbo',
-        messages: arrayPrompt.map((msg) => ({
+  const response = await axios.post(
+    `${import.meta.env.VITE_OPEN_AI_CHAT_COMPLETION_API_URL}`,
+    {
+      model: isGPT4 ? 'gpt-4': 'gpt-3.5-turbo',
+      messages: [
+        {
           role: 'user',
-          content: msg,
-        })),
+          content: arrayPrompt.join(' ') 
+        }
+      ],
+    },
+    {
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${import.meta.env.VITE_OPEN_AI_KEY}`,
       },
-      {
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${import.meta.env.VITE_OPEN_AI_KEY}`,
-        },
-      }
-    );
+    }
+  );
+  
     console.log(`Using model: ${isGPT4 ? 'gpt-4-0125-preview': 'gpt-3.5-turbo'}`);
     return response?.data?.choices[0]?.message?.content?.trim();
   } catch (error) {

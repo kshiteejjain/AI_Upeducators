@@ -51,7 +51,7 @@ const BlogTitleGenerator = () => {
                     </select>
                 </div>
                 <div className='form-group'>
-                    <label htmlFor='keywords'>Keywords</label>
+                    <label htmlFor='keywords'>Keywords <span className='asterisk'>*</span></label>
                     <input required className='form-control' name='keywords' onChange={handleInputChange} value={formData.keywords} placeholder=' Include specific keywords or phrases to be featured in the blog title for SEO purposes.' />
                 </div>
                 <Button title='Generate' type="submit" />
