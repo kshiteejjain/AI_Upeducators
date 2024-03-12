@@ -22,7 +22,8 @@ const KeywordSearch = () => {
     const promptMessage = `Generate a list of keywords with high searches about ${formData.mainKeyword}. Give only list of keywords. Do not give any description`
     const handleSubmit = (event: React.SyntheticEvent<HTMLFormElement>) => {
         event.preventDefault();
-        sendPrompt(dispatch, { input, messages, generatorPrompt, promptMessage, isGPT4: true });
+        localStorage.setItem('isGPT4', 'true');
+        sendPrompt(dispatch, { input, messages, generatorPrompt, promptMessage });
     };
     return (
         <div className="generator-section">

@@ -4,35 +4,24 @@ import { handleCreditDecrement } from '../../utils/firebaseUtils';
 import { RootState } from 'react-redux';
 import { addDoc, collection, getDocs, getFirestore, query, updateDoc, where } from 'firebase/firestore';
 
-interface GeneratorState {
-  responses: string[];
-  data?: string | number | null; // Define the type based on your API response
-  error?: string | null;
-  status?: 'idle' | 'loading' | 'succeeded' | 'failed';
-}
-const initialState: GeneratorState = {
-  responses: [],
-  data: null,
-  error: null,
-  status: 'idle',
-};
 const creditValue = Number(import.meta.env.VITE_TEXT_GENERATOR_CREDITS);
 // Define the async thunk
-export const generatorPrompt = createAsyncThunk('generator/generatorPrompt', async (prompt: string, { getState }) => {
-  
+export const generatorPrompt = createAsyncThunk('generator/generatorPrompt', async (prompt, { getState }) => {
+  const isGPT4 = localStorage.getItem('isGPT4');
+
   const promptList = JSON.parse(localStorage.getItem('prompts') || '[]'); // Get existing prompts or initialize as empty array
   promptList.push({
     role: 'user',
     content: prompt,
-    isFollowUpPrompt : false
+    isFollowUpPrompt: false
   });
   localStorage.setItem('prompts', JSON.stringify(promptList));
-  
-  
+
+
   await handleCreditDecrement(creditValue);
   try {
     const state = getState() as RootState; // Cast to RootState
-      const selectedCategory = state.selectedCategory.selectedCategory;
+    const selectedCategory = state.selectedCategory.selectedCategory;
     const firestore = getFirestore();
     const abcCollection = collection(firestore, 'CategoryStats');
     const q = query(abcCollection, where('selectedCategory', '==', selectedCategory));
@@ -47,24 +36,25 @@ export const generatorPrompt = createAsyncThunk('generator/generatorPrompt', asy
     } else {
       await addDoc(abcCollection, { selectedCategory, count: 1 });
     }
-      const response = await axios.post(
-        `${import.meta.env.VITE_OPEN_AI_CHAT_COMPLETION_API_URL}`,
-        {
-          model: 'gpt-3.5-turbo',
-          messages: prompt.map((msg) => ({
-            role: msg.role,
-            content: msg.content,
-          })),
+    const response = await axios.post(
+      `${import.meta.env.VITE_OPEN_AI_CHAT_COMPLETION_API_URL}`,
+      {
+        model: `${isGPT4 === 'true' ? 'gpt-4-0125-preview' : 'gpt-3.5-turbo'}`,
+        messages: prompt.map((msg) => ({
+          role: msg.role,
+          content: msg.content,
+        })),
+      },
+      {
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization:
+            `Bearer ${import.meta.env.VITE_OPEN_AI_KEY}`,
         },
-        {
-          headers: {
-            'Content-Type': 'application/json',
-            Authorization:
-              `Bearer ${import.meta.env.VITE_OPEN_AI_KEY}`,
-          },
-        }
-      );
-      return response?.data?.choices[0]?.message?.content?.trim();
+      }
+    );
+
+    return response?.data?.choices[0]?.message?.content?.trim();
   } catch (error) {
     alert('Error sending message to OpenAI API:', error);
     throw error;
@@ -104,6 +94,7 @@ const generatorSlice = createSlice({
         state.status = 'succeeded';
         const aiMessage = { role: 'assistant', content: action.payload };
         state.messages?.push(aiMessage);
+        localStorage.removeItem('isGPT4');
       })
       .addCase(generatorPrompt.rejected, (state, action) => {
         state.status = 'failed';
@@ -111,5 +102,5 @@ const generatorSlice = createSlice({
       });
   },
 });
-export const { resetGeneratedData, setMessages, addMessage, isFollowUpPrompt  } = generatorSlice.actions; // Export the action creator
+export const { resetGeneratedData, setMessages, addMessage, isFollowUpPrompt } = generatorSlice.actions; // Export the action creator
 export default generatorSlice.reducer;
