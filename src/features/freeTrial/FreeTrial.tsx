@@ -97,7 +97,7 @@ const FreeTrial = () => {
                 remain_credits: 1000,
                 access_duration_days: 365,
                 expire_date: 0,
-                credits_limit_perday: 50,
+                credits_limit_perday: 20,
                 isActiveUser: true,
                 isAdmin: false,
                 register_timestamp: formattedDateTime,
@@ -143,9 +143,11 @@ const FreeTrial = () => {
                 navigate('/')
             } else {
                 alert('Email and OTP do not match');
+                setLoading(false)
             }
         } catch (error) {
             console.error('Error fetching documents: ', error);
+            setLoading(false)
         }
     };
     const logGoogleUser = async () => {
@@ -170,11 +172,11 @@ const FreeTrial = () => {
                 email: user?.email, // Use user's email here instead of enteredEmail
                 phone: '',
                 password: '',
-                total_credits: 1000,
-                remain_credits: 1000,
-                access_duration_days: 365,
+                total_credits: 100,
+                remain_credits: 100,
+                access_duration_days: 30,
                 expire_date: 0,
-                credits_limit_perday: 50,
+                credits_limit_perday: 20,
                 isActiveUser: true,
                 isAdmin: false,
                 register_timestamp: formattedDateTime,

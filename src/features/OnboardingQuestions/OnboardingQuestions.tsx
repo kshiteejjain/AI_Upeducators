@@ -68,7 +68,7 @@ const OnboardingQuestions = () => {
             const email = formData.email;
 
             const db = getFirestore();
-            const onboardingQuestionsCollection = collection(db, 'onboardingQuestions');
+            const onboardingQuestionsCollection = collection(db, 'OnboardingQuestions');
             const q = query(onboardingQuestionsCollection, where("email", "==", email));
             const querySnapshot = await getDocs(q);
             const userDocRef = doc(onboardingQuestionsCollection, email);
