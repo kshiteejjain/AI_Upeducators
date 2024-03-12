@@ -198,7 +198,7 @@ export const categoryStats = async (firestore: Firestore): Promise<UserDocumentD
 
 export const OnBoardingProfile = async (firestore: Firestore): Promise<UserDocumentData[]> => {
   try {
-    const collectionRef = collection(firestore, 'onboardingQuestions');
+    const collectionRef = collection(firestore, 'OnboardingQuestions');
     const querySnapshot = await getDocs(collectionRef);
     if (querySnapshot.empty) {
       return [];

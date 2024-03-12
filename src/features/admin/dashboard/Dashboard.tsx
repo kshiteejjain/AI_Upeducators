@@ -3,7 +3,6 @@ import { firestore } from '../../../utils/firebase';
 import { fetchAllCategories, fetchAllForms, categoryStats } from '../../../utils/firebaseUtils';
 import Header from '../../../components/header/Header';
 import RegisteredUsers from '../manageUsers/RegisteredUsers';
-import FreeTrialUsers from '../manageUsers/FreeTrialUsers';
 import AdminCards from '../../../components/adminCards/AdminCards';
 import CustomLineChart from '../../../components/CustomCharts/CustomCharts';
 import OnBoardingProfileQuestions from '../onBoardingProfileQuestions/OnBoardingProfileQuestions';
@@ -65,7 +64,6 @@ const Dashboard = () => {
                 yKey="Count"
             />
             <RegisteredUsers />
-            <FreeTrialUsers />
             <OnBoardingProfileQuestions />
             <FormsList />
         </div>

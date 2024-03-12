@@ -16,13 +16,7 @@ import './FreeTrial.css';
 const FreeTrial = () => {
     const currentDateTime = new Date();
     const formattedDateTime = currentDateTime.toLocaleString();
-    const [showPassword, setShowPassword] = useState(false);
-    const [enteredEmail, setEnteredEmail] = useState('');
-    const [enteredOTP, setEnteredOTP] = useState('');
-    const [isOTPScreen, setIsOTPScreen] = useState(false)
-    const [error, setError] = useState('');
-    const [loading, setLoading] = useState(false);
-    const [formData, setFormData] = useState({
+    const initialFormData = {
         name: '',
         email: '',
         phone: '',
@@ -31,12 +25,24 @@ const FreeTrial = () => {
         remain_credits: 100,
         access_duration_days: 30,
         expire_date: 0,
-        credits_limit_perday: 10,
+        credits_limit_perday: 20,
         isActiveUser: true,
         isAdmin: false,
         register_timestamp: formattedDateTime,
         otp: '',
-    })
+        isFreeUser: true,
+        isPrePaidUser: false,
+        campaignName: '',
+        campaignSource: '',
+        campaignMedium: ''
+    };
+    const [showPassword, setShowPassword] = useState(false);
+    const [enteredEmail, setEnteredEmail] = useState('');
+    const [enteredOTP, setEnteredOTP] = useState('');
+    const [isOTPScreen, setIsOTPScreen] = useState(false)
+    const [error, setError] = useState('');
+    const [loading, setLoading] = useState(false);
+    const [formData, setFormData] = useState(initialFormData)
     const navigate = useNavigate();
     const handleTogglePasswordVisibility = () => {
         setShowPassword(!showPassword);
@@ -88,21 +94,7 @@ const FreeTrial = () => {
             setIsOTPScreen(true);
             setLoading(false)
             // Optional: Clear the form after submission
-            setFormData({
-                name: '',
-                email: '',
-                phone: '',
-                password: '',
-                total_credits: 1000,
-                remain_credits: 1000,
-                access_duration_days: 365,
-                expire_date: 0,
-                credits_limit_perday: 20,
-                isActiveUser: true,
-                isAdmin: false,
-                register_timestamp: formattedDateTime,
-                otp: otp,
-            });
+            setFormData(initialFormData);
             emailjs.send(import.meta.env.VITE_EMAILJS_SERVICE_ID, import.meta.env.VITE_EMAILJS_TEMPLATE_REGISTER, {
                 ...formData,
                 message: otp,
@@ -181,6 +173,11 @@ const FreeTrial = () => {
                 isAdmin: false,
                 register_timestamp: formattedDateTime,
                 otp: otp,
+                isFreeUser: true,
+                isPrePaidUser: false,
+                campaignName: '',
+                campaignSource: '',
+                campaignMedium: ''
             };
             setFormData(updatedFormData);
             const selfRegisteredUsersCollection = collection(firestore, 'RegisteredUsers');
