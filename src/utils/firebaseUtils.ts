@@ -114,7 +114,8 @@ export const fetchAllForms = async (): Promise<any> => {
       keyword: doc.data().keyword,
       usageCount: doc.data().usageCount,
       usageCountBase: doc.data().usageCountBase,
-      timeStamp: doc.data().timeStamp
+      timeStamp: doc.data().timeStamp,
+      thumbnailPath: doc.data().name
     }));
     return categoryData;
   } catch (error) {

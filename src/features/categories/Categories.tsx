@@ -50,15 +50,17 @@ const Categories = () => {
                 const formattedCategories = categoryData.map((category) => ({
                     name: category?.name,
                     IconComponent: iconPathsObject[category?.name],
+                    thumbnailPath: category?.thumbnailPath,
                     categoryName: category?.categoryName,
                     description: category?.description,
                     id: category?.id,
                     redirect: category?.redirect,
                     isBookmarked: category?.isBookmarked,
                 }));
+                console.log(formattedCategories)
                 setCategories(formattedCategories);
             } catch (error) {
-                alert('Error fetching categories:', error);
+                console.warn('Error fetching categories:', error);
             }
         };
         fetchData();
@@ -126,6 +128,7 @@ const Categories = () => {
                                         tilesIcon={item && item.IconComponent}
                                         categoryAlt={item && item.name}
                                         description={item && item.description}
+                                        thumbnailPath={item && `/assets/${item.name.replace(/\s+/g, '-')}.png`}
                                     />
                                 ))}
                         </div>

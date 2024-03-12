@@ -15,13 +15,13 @@ type Props = {
     categoryAlt?: string;
     baseCount?: number;
     usageCountBase?: number;
-    usageCount? : number,
-    name? : string
+    usageCount?: number,
+    name?: string
     onBookmarkClick?: () => void;
+    thumbnailPath?: string;
 }
-const CategoryTiles = ({ title, onClick, categoryAlt, description }: Props) => {
+const CategoryTiles = ({ title, onClick, thumbnailPath = '/src/assets/Upeducator-logo.png', description }: Props) => {
     const [formCount, setFormCount] = useState<Props[]>([]);
-    const [thumbnailSrc, setThumbnailSrc] = useState(null);
     const truncatedStory = description ?
         (description.length > 10 ? description.split(' ').slice(0, 8).join(' ') + '...' : description)
         : '';
@@ -40,30 +40,10 @@ const CategoryTiles = ({ title, onClick, categoryAlt, description }: Props) => {
         fetchData(); // Call fetchData function on component mount
     }, []);
 
-    useEffect(() => {
-        const fetchThumbnail = async () => {
-            try {
-                const imagePath = `../../../../public/assets/${title?.split(' ').join('-')}.png`;
-                const { default: thumbnail } = await import(imagePath);
-                setThumbnailSrc(thumbnail);
-            } catch (error) {
-                console.error('Error fetching thumbnail:', error);
-            }
-        };
-
-        fetchThumbnail();
-
-        // Cleanup function
-        return () => {
-            setThumbnailSrc(null); // Clear thumbnail source on component unmount
-        };
-    }, [title]); 
-    
-
     return (
         <div className='tiles-group'>
             <div className='tiles' onClick={onClick}>
-            {thumbnailSrc && <img src={thumbnailSrc} className='list-img' />}
+            <img src={thumbnailPath} className='list-img' alt={title} />
                 {/* <img src={bookmarkIcon} className='bookmarkIcon' title={Strings.categories.Favorite} alt={Strings.categories.Favorite} /> */}
                 <div className='clickSection'>
                     <div className='tiles-icon'>
