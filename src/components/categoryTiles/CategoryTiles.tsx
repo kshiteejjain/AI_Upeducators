@@ -43,7 +43,7 @@ const CategoryTiles = ({ title, onClick, thumbnailPath = '/src/assets/Upeducator
     return (
         <div className='tiles-group'>
             <div className='tiles' onClick={onClick}>
-                <img src={thumbnailPath} className='list-img' alt={title} />
+                <img src={thumbnailPath} className='list-img' />
                 {/* <img src={bookmarkIcon} className='bookmarkIcon' title={Strings.categories.Favorite} alt={Strings.categories.Favorite} /> */}
                 <div className='clickSection'>
                     <div className='tiles-icon'>

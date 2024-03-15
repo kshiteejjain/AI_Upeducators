@@ -11,6 +11,7 @@ const ContactUs = () => {
                 <div className="contactImage"> <img src={ContactImage} alt="Contact Us" title="Contact Us" /> </div>
                 <div className="contactDetails">
                     <h1>Contact Us</h1>
+                    <h2>Account Expired</h2>
                     <p>Should you require <strong>additional credits</strong>, please do not hesitate to contact our support team through the provided channels. 
                     <br />We are here to assist you and discuss any options available to meet your credit needs. 
                     <br /> Thank you for choosing our services."</p>

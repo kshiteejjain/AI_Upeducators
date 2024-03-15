@@ -2,7 +2,7 @@ import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
 import axios from 'axios';
 import { handleCreditDecrement } from '../../utils/firebaseUtils';
 import { RootState } from 'react-redux';
-import { addDoc, collection, getDocs, getFirestore, query, updateDoc, where } from 'firebase/firestore';
+import { addDoc, collection, doc, getDocs, getFirestore, query, setDoc, updateDoc, where } from 'firebase/firestore';
 
 const creditValue = Number(import.meta.env.VITE_TEXT_GENERATOR_CREDITS);
 // Define the async thunk
@@ -22,10 +22,13 @@ export const generatorPrompt = createAsyncThunk('generator/generatorPrompt', asy
   try {
     const state = getState() as RootState; // Cast to RootState
     const selectedCategory = state.selectedCategory.selectedCategory;
+
     const firestore = getFirestore();
     const abcCollection = collection(firestore, 'CategoryStats');
     const q = query(abcCollection, where('selectedCategory', '==', selectedCategory));
     const existingDocs = await getDocs(q);
+    const timestamp = new Date().toLocaleString();
+
     if (!existingDocs.empty) {
       existingDocs.forEach(async (doc) => {
         const docRef = doc.ref;
@@ -34,8 +37,12 @@ export const generatorPrompt = createAsyncThunk('generator/generatorPrompt', asy
         await updateDoc(docRef, { count: currentCount + 1 });
       });
     } else {
-      await addDoc(abcCollection, { selectedCategory, count: 1 });
+      // Add new document with selectedCategory as document ID and timestamp
+      const docRef = doc(abcCollection, selectedCategory);
+      await setDoc(docRef, { selectedCategory, count: 1, timestamp, user: localStorage.getItem('username') });
     }
+
+
     const response = await axios.post(
       `${import.meta.env.VITE_OPEN_AI_CHAT_COMPLETION_API_URL}`,
       {
@@ -56,7 +63,7 @@ export const generatorPrompt = createAsyncThunk('generator/generatorPrompt', asy
 
     return response?.data?.choices[0]?.message?.content?.trim();
   } catch (error) {
-    alert('Error sending message to OpenAI API:', error);
+    alert(`Error sending message to OpenAI API:', ${error}`);
     throw error;
   }
 });

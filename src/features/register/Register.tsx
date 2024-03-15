@@ -15,7 +15,7 @@ import './Register.css';
 
 const Register = () => {
     const currentDateTime = new Date();
-    const formattedDateTime = currentDateTime.toLocaleString();
+    const formattedDateTime = currentDateTime.toISOString().split('T')[0];
     const initialFormData = {
         name: '',
         email: '',
@@ -24,7 +24,6 @@ const Register = () => {
         total_credits: 1000,
         remain_credits: 1000,
         access_duration_days: 365,
-        expire_date: 0,
         credits_limit_perday: 50,
         isActiveUser: true,
         isAdmin: false,
@@ -165,7 +164,6 @@ const Register = () => {
                 total_credits: 1000,
                 remain_credits: 1000,
                 access_duration_days: 365,
-                expire_date: 0,
                 credits_limit_perday: 50,
                 isActiveUser: true,
                 isAdmin: false,

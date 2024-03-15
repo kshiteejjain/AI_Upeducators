@@ -12,7 +12,6 @@ type UserDocumentData = {
   redirect?: string,
   isBookmarked?: boolean,
   email?: string,
-  expire_date?: string,
   isActiveUser?: boolean,
   isAdmin?: boolean,
   password?: string
@@ -137,7 +136,6 @@ export const fetchAllUserData = async (firestore: Firestore): Promise<UserDocume
       name: doc.data().name,
       email: doc.data().email,
       phone: doc.data().phone,
-      expire_date: doc.data().expire_date,
       isActiveUser: doc.data().isActiveUser,
       isAdmin: doc.data().isAdmin,
       register_timestamp: doc.data().register_timestamp,
@@ -185,9 +183,8 @@ export const categoryStats = async (firestore: Firestore): Promise<UserDocumentD
     const categoryData = querySnapshot.docs.map((doc) => ({
       categoryName: doc.data().selectedCategory,
       count: doc.data().count,
-      baseCount: doc.data().baseCount,
       user: doc.data().user,
-      timeStamp: doc.data().timeStamp
+      timeStamp: doc.data().timestamp
     }));
     return categoryData;
   } catch (error) {

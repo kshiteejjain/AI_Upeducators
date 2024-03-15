@@ -15,7 +15,6 @@ type UserDocumentData = {
     total_credits: number;
     remain_credits: number;
     access_duration_days: number;
-    expire_date: string;
     credits_limit_perday: number;
     isActiveUser: boolean;
     isAdmin: boolean;
@@ -106,7 +105,6 @@ const RegisteredUsers = () => {
                 'Total Credits': user.total_credits,
                 'Remaining Credits': user.remain_credits,
                 'Access Duration': user.access_duration_days,
-                'Expiry Date': user.expire_date,
                 'Credits Limit Perday': user.credits_limit_perday,
                 'Is Active User': user.isActiveUser ? 'Yes' : 'No',
                 'Is Admin': user.isAdmin ? 'Yes' : 'No',
@@ -262,7 +260,6 @@ const RegisteredUsers = () => {
                                             ) : (
                                                 user.access_duration_days
                                             )}</td>
-                                            <td>{user.expire_date}</td>
                                             <td>{editingUser && editingUser.email === user.email ? (
                                                 <input
                                                     type="text"

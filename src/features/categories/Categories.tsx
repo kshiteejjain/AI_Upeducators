@@ -57,7 +57,6 @@ const Categories = () => {
                     redirect: category?.redirect,
                     isBookmarked: category?.isBookmarked,
                 }));
-                console.log(formattedCategories)
                 setCategories(formattedCategories);
             } catch (error) {
                 console.warn('Error fetching categories:', error);

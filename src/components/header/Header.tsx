@@ -1,13 +1,15 @@
 import { useNavigate } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { useEffect, useState } from 'react';
-import { fetchTotalCredits } from '../../utils/firebaseUtils';
+import { firestore } from '../../utils/firebase';
+import { fetchAllUserData, fetchTotalCredits } from '../../utils/firebaseUtils';
 import Button from '../buttons/Button';
 import Strings from '../../utils/en';
 import logo from '../../assets/Upeducator-logo.png';
 import defaultProfile from '../../assets/defaultProfile.svg';
 
 import './Header.css';
+
 
 type Props = {
   isLoginPage?: boolean;
@@ -16,6 +18,7 @@ type Props = {
 };
 
 const Header = ({ isLoginPage, moreOptions = true }: Props) => {
+  const [isExpire, setIsExpire] = useState(false);
   const [username, setUsername] = useState('');
   const [remainingCredits, setRemainingCredits] = useState<number | undefined>(undefined);
   const [showCreditDetails, setShowCreditDetails] = useState(false);
@@ -45,10 +48,40 @@ const Header = ({ isLoginPage, moreOptions = true }: Props) => {
       }
     };
     fetchData();
+  
+    const fetchUserData = async () => {
+      try {
+        const usersData = await fetchAllUserData(firestore);
+        const loggedInUserEmail = localStorage.getItem('username');
+        const loggedInUser = usersData.find(user => user.email === loggedInUserEmail);
+  
+        const registrationTimestamp = loggedInUser?.register_timestamp;
+  
+        if (registrationTimestamp) {
+          const registrationDate = new Date(registrationTimestamp);
+          const currentDate = new Date();
+  
+          // Set isExpire state
+          setIsExpire(!(currentDate < registrationDate));
+        } else {
+          console.log('Registration timestamp not available.');
+        }
+      } catch (error) {
+        console.error('Error fetching user data:', error);
+      }
+    };
+  
+    fetchUserData();
+  
+    if (isExpire) {
+      navigate('/ContactUs');
+    }
+  
     if (remainingCredits !== undefined && remainingCredits <= 0) {
       navigate('/ContactUs');
     }
-  }, [remainingCredits, navigate]);
+  }, [remainingCredits, navigate, isExpire]);
+  
 
   return (
     <header className="header">
@@ -62,17 +95,18 @@ const Header = ({ isLoginPage, moreOptions = true }: Props) => {
             <span className='defaultProfile'><img src={defaultProfile} /> </span>
           </div>
           <div className={`creditDetails ${showCreditDetails ? 'visible' : 'hidden'}`}>
-            {moreOptions && <>
-              {remainingCredits !== undefined && remainingCredits > 0
-                ? (
-                  <p>
-                    <Button title={Strings.header.goToCategory} isSecondary onClick={() => navigate('/Categories')} />
-                  </p>
-                )
-                : null
-              }
-              <p><Button title={Strings.header.myProfile} isSecondary onClick={() => navigate('/Profile')} /></p>
-            </>}
+            {moreOptions && !isExpire &&
+              <>
+                {remainingCredits !== undefined && remainingCredits > 0
+                  ? (
+                    <p>
+                      <Button title={Strings.header.goToCategory} isSecondary onClick={() => navigate('/Categories')} />
+                    </p>
+                  )
+                  : null
+                }
+                <p><Button title={Strings.header.myProfile} isSecondary onClick={() => navigate('/Profile')} /></p>
+              </>}
 
             {isLoginPage ?? <Button title={Strings.header.signOut} isSecondary onClick={handleLogout} />}
           </div>
