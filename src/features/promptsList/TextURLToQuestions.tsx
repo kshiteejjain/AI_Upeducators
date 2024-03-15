@@ -4,12 +4,12 @@ import { generatorPrompt } from '../promptListGeneratorSlice/QuestionGeneratorSl
 import Button from '../../components/buttons/Button';
 import { sendPrompt } from '../../utils/sendPrompt';
 
-const SocialMediaCalendarGenerator = () => {
+const TextURLToQuestions = () => {
     const { generatorData: { messages, input } } = useSelector((state) => state);
     const dispatch = useDispatch();
     const getInitialFormData = () => ({
-        themesTopics: '',
-        audience: '',
+        textInputUrl: '',
+        questionType: '',
     });
     const [formData, setFormData] = useState(getInitialFormData);
     const handleInputChange = (e: ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
@@ -19,36 +19,42 @@ const SocialMediaCalendarGenerator = () => {
             [name]: value,
         }));
     };
-    const promptMessage = `Create a social media calendar for 15 days in a table. My audience is ${formData.audience}. Theme is ${formData.themesTopics}. Content ideas should be engaging so that posts get more likes, comments, saves and shares and also promote follows and should cover all popular formats mentioning the format. Table should have Serial number, Content idea and Format.`;
+    const promptMessage = `Generate 10 ${formData.questionType} questions based on the following text or link: ${formData.textInputUrl}. 
+    The questions should be relevant to the key themes and ideas in the text or URL 
+    `;
     const handleSubmit = (event: React.SyntheticEvent<HTMLFormElement>) => {
         event.preventDefault();
         sendPrompt(dispatch, { input, messages, generatorPrompt, promptMessage });
     };
     return (
         <div className="generator-section">
-            <h2>Social Media Calendar Generator</h2>
-            <h3>Generate a daily social media posting calendar.</h3>
+            <h2>Text URL To Questions</h2>
+            <h3>Generate questions based on text or web page/URL.</h3>
             <form onSubmit={handleSubmit}>
-                <div className="form-group">
-                    <label htmlFor="audience"> Audience <span className="asterisk">*</span></label>
-                    <input
+                <div className='form-group'>
+                    <label htmlFor='textInputUrl'> Text Input / URL
+                        <span className="asterisk">*</span></label>
+                    <textarea
                         required
-                        className="form-control"
-                        name="audience"
+                        className='form-control'
+                        name='textInputUrl'
                         onChange={handleInputChange}
-                        value={formData.audience}
-                        placeholder="Eg. students, parents, or educators."
-                    />
+                        rows={5}
+                        value={formData.textInputUrl}
+                        placeholder='Paste the text / URL you want to analyse.'>
+                    </textarea>
                 </div>
 
                 <div className="form-group">
-                    <label htmlFor="themesTopics"> Themes/Topics </label>
+                    <label htmlFor="questionType"> Question Type
+                        <span className="asterisk">*</span></label>
                     <input
+                        required
                         className="form-control"
-                        name="themesTopics"
+                        name="questionType"
                         onChange={handleInputChange}
-                        value={formData.themesTopics}
-                        placeholder="Eg. yoga tips for kids, teaching tips"
+                        value={formData.questionType}
+                        placeholder="e.g., Multiple Choice, Fill in the blanks, True/False, Comprehension, Open-Ended"
                     />
                 </div>
 
@@ -57,4 +63,4 @@ const SocialMediaCalendarGenerator = () => {
         </div>
     );
 };
-export default SocialMediaCalendarGenerator;
+export default TextURLToQuestions;

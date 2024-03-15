@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { sendPrompt } from '../../utils/sendPrompt';
 import Button from '../../components/buttons/Button';
 import NoDataFoundImage from '../../assets/no-data-found.svg';
+import ThumbsUp from '../../assets/thumb-up.svg';
 import CopyClipboard from '../../assets/copyClipboard.svg';
 import mp3Sound from '../../assets/result-audio.mp3';
 import Loader from '../../components/loader/Loader';
@@ -42,11 +43,11 @@ const Result = () => {
     if (!msg || !msg.content || typeof msg.content !== 'string') {
       return null; // Skip rendering if msg or msg.content is not valid
     }
-  
+
     if (msg.role === 'user' && (msg.isVisible === false || msg.isVisible === undefined)) {
       return null;
     }
-  
+
     return (
       <div className='response-data' key={index}>
         <div className={msg.role}>
@@ -74,7 +75,7 @@ const Result = () => {
       </div>
     );
   });
-  
+
 
 
   useEffect(() => {
@@ -159,27 +160,33 @@ const Result = () => {
             </button>
           </>
         )}
-       
-          <div className='generatedImage'>
-            {generatedImage && <img src={generatedImage} alt="Generated Image" />}
-            {generatedImage && <Button title='Download Image' onClick={downloadImage} />}
-          </div>
-        
+
+        <div className='generatedImage'>
+          {generatedImage && <img src={generatedImage} alt="Generated Image" />}
+          {generatedImage && <Button title='Download Image' onClick={downloadImage} />}
+        </div>
+
 
         {!generatedData?.length && !generatedImage && (
           <div className='noDataFoundImage'>
             <img src={NoDataFoundImage} alt="No Data Found" />
           </div>
         )}
-        
+
       </div>
+      {generatedData && getFollowPrompt.length !== 0 && !generatedImage && (
+        <div className="response-feedback">
+          <img src={ThumbsUp} alt='Like Response' title='Like Response' />
+          <img src={ThumbsUp} alt='Need Improvement' title='Need Improvement' />
+        </div>
+      )}
       {generatedData && getFollowPrompt.length !== 0 && !generatedImage && (
         <div className="followup-prompts">
           <h2>Followup Query?</h2>
           <ul>
             {getFollowPrompt.map((prompt, index) => (
               <li key={index} onClick={() => setFormData({ followUpPromptInput: prompt })}>
-                {prompt} {getFollowPrompt.length}
+                {prompt}
               </li>
             ))}
           </ul>

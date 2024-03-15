@@ -33,7 +33,7 @@ const Categories = () => {
             const iconModule = await import(`../../assets/${iconPath}.svg`);
             return iconModule.default;
         } catch (error) {
-            alert(`Error loading icon ${iconPath}:`, error);
+            alert(`Error loading icon ${iconPath}:, ${error}`);
             return null;
         }
     };

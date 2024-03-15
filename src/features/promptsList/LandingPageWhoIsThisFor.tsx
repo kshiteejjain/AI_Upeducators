@@ -4,14 +4,13 @@ import { generatorPrompt } from '../promptListGeneratorSlice/QuestionGeneratorSl
 import Button from '../../components/buttons/Button';
 import { sendPrompt } from '../../utils/sendPrompt';
 
-const SocialMediaCalendarGenerator = () => {
+const LandingPageWhoIsThisFor = () => {
     const { generatorData: { messages, input } } = useSelector((state) => state);
     const dispatch = useDispatch();
-    const getInitialFormData = () => ({
-        themesTopics: '',
+    const [formData, setFormData] = useState({
+        topicLandingPage: '',
         audience: '',
     });
-    const [formData, setFormData] = useState(getInitialFormData);
     const handleInputChange = (e: ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
         const { name, value } = e.target;
         setFormData((prevData) => ({
@@ -19,16 +18,31 @@ const SocialMediaCalendarGenerator = () => {
             [name]: value,
         }));
     };
-    const promptMessage = `Create a social media calendar for 15 days in a table. My audience is ${formData.audience}. Theme is ${formData.themesTopics}. Content ideas should be engaging so that posts get more likes, comments, saves and shares and also promote follows and should cover all popular formats mentioning the format. Table should have Serial number, Content idea and Format.`;
+    const promptMessage = `I want to create a Who is this for section on my website.
+
+    List 5 types of people I can list there.
+    Generate 2 outputs: In 1 output, only list them and in 1 output, add a brief description of what my training can help them with in under 140 characters. Give headings on the output as 'List without description' and 'List with description'. Don't give me a summary or an intro. Topic is ${formData.topicLandingPage}. Audience is ${formData.audience}.`
     const handleSubmit = (event: React.SyntheticEvent<HTMLFormElement>) => {
         event.preventDefault();
         sendPrompt(dispatch, { input, messages, generatorPrompt, promptMessage });
     };
     return (
         <div className="generator-section">
-            <h2>Social Media Calendar Generator</h2>
-            <h3>Generate a daily social media posting calendar.</h3>
+            <h2>Landing Page: Who is this for</h2>
+            <h3>Generate Content for ‘Who is this for’ section on landing page.</h3>
             <form onSubmit={handleSubmit}>
+                <div className="form-group">
+                    <label htmlFor="topicLandingPage"> Topic of the Landing Page <span className="asterisk">*</span></label>
+                    <input
+                        required
+                        className="form-control"
+                        name="topicLandingPage"
+                        onChange={handleInputChange}
+                        value={formData.topicLandingPage}
+                        placeholder="Eg. Become a Chess Pro: Learn Strategies from the Masters"
+                    />
+                </div>
+
                 <div className="form-group">
                     <label htmlFor="audience"> Audience <span className="asterisk">*</span></label>
                     <input
@@ -37,24 +51,14 @@ const SocialMediaCalendarGenerator = () => {
                         name="audience"
                         onChange={handleInputChange}
                         value={formData.audience}
-                        placeholder="Eg. students, parents, or educators."
+                        placeholder="Eg. Students"
                     />
                 </div>
 
-                <div className="form-group">
-                    <label htmlFor="themesTopics"> Themes/Topics </label>
-                    <input
-                        className="form-control"
-                        name="themesTopics"
-                        onChange={handleInputChange}
-                        value={formData.themesTopics}
-                        placeholder="Eg. yoga tips for kids, teaching tips"
-                    />
-                </div>
 
                 <Button title='Generate' type="submit" />
             </form>
         </div>
-    );
+    )
 };
-export default SocialMediaCalendarGenerator;
+export default LandingPageWhoIsThisFor;

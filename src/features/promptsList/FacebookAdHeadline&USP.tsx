@@ -4,64 +4,41 @@ import { generatorPrompt } from '../promptListGeneratorSlice/QuestionGeneratorSl
 import Button from '../../components/buttons/Button';
 import { sendPrompt } from '../../utils/sendPrompt';
 
-const FacebookAdCarousel = () => {
+const FacebookAdHeadlineUSP = () => {
     const { generatorData: { messages, input } } = useSelector((state) => state);
     const dispatch = useDispatch();
     const getInitialFormData = () => ({
         courseSkillName: '',
         audience: '',
-        callToAction: ''
     });
     const [formData, setFormData] = useState(getInitialFormData);
-    const handleInputChange = (e: ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+
+    const handleInputChange = (e: ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
         const { name, value } = e.target;
         setFormData((prevData) => ({
             ...prevData,
             [name]: value,
         }));
     };
-    const promptMessage = `I need help to create carousel ads. Topic is ${formData.courseSkillName}. Audience is ${formData.audience}. Call to Action is [Call to Action]
-
-    Each slide in this carousel ad has one headline and one description.
+    const promptMessage = `Prompt Output:
+    Need to generate a facebook ad for ${formData.courseSkillName}, and the audience is ${formData.audience}
     
-    Slide 1 Should make people curious, shock or provocate them into swiping right
+    The format of the ad is as follows:
+    1. A compelling and attractive headline
+    Eg: Best Certification for Students after 12th
     
-    Slide 2 should be a hook that builds on Slide 1 talks about the problem or about a myth
+    2. A Unique selling point.
+    Eg: Live classes by Experts on Weekends
     
-    Slide 3 Should empathise with their problem or debunk the myth with the truth
-    
-    Slide 4 List one or two myths they believe and tell them why
-    
-    Slide 5: Introduce a "What if" there was an easy solution
-    
-    Slide 6: Introduce the coach and their credentials on why they are best suited to help "Hi I'm "
-    
-    Slide 7: Say what the coach will help you achieve or become "I will help you become a"
-    
-    Slide 8: Talk about the USPs of the membership program "With our unique programs"
-    
-    Slide 9: Stress benefits they want as clear goals of the membership " If you want to be able to..."
-    
-    Slide 10: Call to action
-    
-    Each headline can be 10 words max
-    
-    Each description can be upto 15 words
-    
-    Can you give me slides that reads like a story from one slide to another each with a headline and a description. 
-    
-    The headlines should connect like as if it were a story
-    
-    The content should spur people into action`;
-
+    The word limit for the headline and the Unique selling points should not be more than 20 words. Don't generate anything else apart from Headline and USP. Generate 5 outputs.`
     const handleSubmit = (event: React.SyntheticEvent<HTMLFormElement>) => {
         event.preventDefault();
         sendPrompt(dispatch, { input, messages, generatorPrompt, promptMessage });
     };
     return (
         <div className="generator-section">
-            <h2>Facebook Ad: Carousel</h2>
-            <h3>Create content for Facebook ad carousels, tailored to captivate your audience</h3>
+            <h2>Facebook ad: Headline & USP</h2>
+            <h3>Craft Facebook ad headlines & unique selling propositions (USP) effortlessly</h3>
             <form onSubmit={handleSubmit}>
                 <div className="form-group">
                     <label htmlFor="courseSkillName"> Course/Skill Name <span className="asterisk">*</span></label>
@@ -87,21 +64,9 @@ const FacebookAdCarousel = () => {
                     />
                 </div>
 
-                <div className='form-group'>
-                    <label htmlFor='callToAction'> Call to Action </label>
-                    <input
-                        className='form-control'
-                        name='callToAction'
-                        onChange={handleInputChange}
-                        value={formData.callToAction}
-                        placeholder='Eg. Register, Sign up, Join, Apply'
-                    />
-                </div>
-
                 <Button title='Generate' type="submit" />
-
             </form>
         </div>
     )
 };
-export default FacebookAdCarousel;
+export default FacebookAdHeadlineUSP;

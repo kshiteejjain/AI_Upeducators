@@ -4,13 +4,14 @@ import { generatorPrompt } from '../promptListGeneratorSlice/QuestionGeneratorSl
 import Button from '../../components/buttons/Button';
 import { sendPrompt } from '../../utils/sendPrompt';
 
-const WebinarTitleGenerator = () => {
+const AddEmojiInWhatsAppAndEmail = () => {
     const { generatorData: { messages, input } } = useSelector((state) => state);
     const dispatch = useDispatch();
+
     const getInitialFormData = () => ({
-        topic: '',
-        audience: '',
+        addYourContent: '',
     });
+
     const [formData, setFormData] = useState(getInitialFormData);
 
     const handleInputChange = (e: ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
@@ -20,27 +21,37 @@ const WebinarTitleGenerator = () => {
             [name]: value,
         }));
     };
-    const promptMessage = `Generate 5 engaging webinar titles for a topic on ${formData.topic} aimed at ${formData.audience}. The titles should be catchy and appealing to grab the audience's attention.`
+    const promptMessage = `Add emojis to this content wherever feels necessary and increase conversion. Emoji placement should be at the beginning of a sentence generally. ${formData.addYourContent}`;
     const handleSubmit = (event: React.SyntheticEvent<HTMLFormElement>) => {
         event.preventDefault();
         sendPrompt(dispatch, { input, messages, generatorPrompt, promptMessage });
+        setFormData(getInitialFormData);
     };
     return (
         <div className="generator-section">
-            <h2>Webinar Title Generator</h2>
-            <h3>Generate innovative and captivating titles for your webinars, tailored to engage your target audience and reflect the theme of your presentation.</h3>
+            <h2>Add Emoji in WhatsApp and Email</h2>
+            <h3> Add relevant emojis to your content</h3>
             <form onSubmit={handleSubmit}>
                 <div className='form-group'>
-                    <label htmlFor='topic'>Topic <span className='asterisk'>*</span></label>
-                    <input required className='form-control' name='topic' onChange={handleInputChange} value={formData.topic} placeholder='Describe the theme or topic, e.g., Careers after 12th, Technology Trends.' />
+                    <label htmlFor='addYourContent'> Add Your Content
+                        <span className="asterisk">*</span>
+                    </label>
+                    <textarea
+                        required
+                        className='form-control'
+                        name='addYourContent'
+                        onChange={handleInputChange}
+                        value={formData.addYourContent}
+                        rows={5}
+                        placeholder='Paste the content here'>
+                    </textarea>
                 </div>
-                <div className='form-group'>
-                    <label htmlFor='audience'>Audience <span className='asterisk'>*</span></label>
-                    <input required className='form-control' name='audience' onChange={handleInputChange} value={formData.audience} placeholder='Specify your target audience, e.g., College Students, Fitness Enthusiasts, Gaming Fans.' />
-                </div>
+
+
                 <Button title='Generate' type="submit" />
+
             </form>
         </div>
     )
 };
-export default WebinarTitleGenerator;
+export default AddEmojiInWhatsAppAndEmail;

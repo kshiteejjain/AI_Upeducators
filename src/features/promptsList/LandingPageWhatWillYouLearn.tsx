@@ -4,46 +4,46 @@ import { generatorPrompt } from '../promptListGeneratorSlice/QuestionGeneratorSl
 import Button from '../../components/buttons/Button';
 import { sendPrompt } from '../../utils/sendPrompt';
 
-const BlogOutline = () => {
+const LandingPageWhatWillYouLearn = () => {
     const { generatorData: { messages, input } } = useSelector((state) => state);
     const dispatch = useDispatch();
-
-    const getInitialFormData = () => ({
-        blogTitle: '',
+    const [formData, setFormData] = useState({
+        topicOfLandingPage: '',
         audience: '',
     });
-
-    const [formData, setFormData] = useState(getInitialFormData);
-
-    const handleInputChange = (e: ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+    const handleInputChange = (e: ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
         const { name, value } = e.target;
         setFormData((prevData) => ({
             ...prevData,
             [name]: value,
         }));
     };
-    const promptMessage = `I want to write a blog on ${formData.blogTitle}, the audience of my blog is ${formData.audience}. Please give me the outline of the blog which will help me in writing an engaging blog.     `;
+    const promptMessage = `List 12 different points that I can add to the "What you will learn" section. It should persuade people to want to learn it.
+    Each point should seem logical and represent a module in the customer learning journey
+    Give me the list without an intro or summary.
+    Generate 2 outputs: 1 output without a description and 1 output with a description in each point less than 150 characters long.
+    Make it persuasive and use powerful words while describing what they will learn from me, make it quantifiable if possible.
+    Give some a powerful formula name to make it look like I have a unique method. Topic is ${formData.topicOfLandingPage}. Audience is ${formData.audience}.`
     const handleSubmit = (event: React.SyntheticEvent<HTMLFormElement>) => {
         event.preventDefault();
         sendPrompt(dispatch, { input, messages, generatorPrompt, promptMessage });
-        setFormData(getInitialFormData);
     };
     return (
         <div className="generator-section">
-            <h2>Blog Outline</h2>
-            <h3>Generate the detailed outline for your blog title</h3>
+            <h2>Landing Page: What will you learn</h2>
+            <h3>Generate Content for ‘What will you learn’ section on your landing page.</h3>
             <form onSubmit={handleSubmit}>
                 <div className="form-group">
-                    <label htmlFor="blogTitle"> Blog Title
+                    <label htmlFor="topicOfLandingPage"> Topic of the Landing Page
                         <span className="asterisk">*</span>
                     </label>
                     <input
                         required
                         className="form-control"
-                        name="blogTitle"
+                        name="topicOfLandingPage"
                         onChange={handleInputChange}
-                        value={formData.blogTitle}
-                        placeholder="Eg. Mastering Public Speaking: Tips and Tricks for College Students"
+                        value={formData.topicOfLandingPage}
+                        placeholder="yoga classes for kids, dance classes for kids"
                     />
                 </div>
 
@@ -57,14 +57,15 @@ const BlogOutline = () => {
                         name="audience"
                         onChange={handleInputChange}
                         value={formData.audience}
-                        placeholder="Eg. College students, Parents, Students, Professionals"
+                        placeholder="students, parents"
                     />
                 </div>
 
-                <Button title='Generate' type="submit" />
 
+
+                <Button title='Generate' type="submit" />
             </form>
         </div>
     )
 };
-export default BlogOutline;
+export default LandingPageWhatWillYouLearn;

@@ -43,7 +43,7 @@ const CategoryTiles = ({ title, onClick, thumbnailPath = '/src/assets/Upeducator
     return (
         <div className='tiles-group'>
             <div className='tiles' onClick={onClick}>
-            <img src={thumbnailPath} className='list-img' alt={title} />
+                <img src={thumbnailPath} className='list-img' alt={title} />
                 {/* <img src={bookmarkIcon} className='bookmarkIcon' title={Strings.categories.Favorite} alt={Strings.categories.Favorite} /> */}
                 <div className='clickSection'>
                     <div className='tiles-icon'>
@@ -58,8 +58,9 @@ const CategoryTiles = ({ title, onClick, thumbnailPath = '/src/assets/Upeducator
                                 .filter((item) => item && item.name && item.name.toLowerCase().replace(/\s/g, '') === (title ? title.toLowerCase().replace(/\s/g, '') : ''))
                                 .map((item, index) => (
                                     <span key={index}>
-                                        {item && item.usageCountBase && item.usageCount && (item.usageCountBase + item.usageCount)}
+                                        {item && item.usageCountBase && item.usageCount !== 0 ? (item?.usageCountBase + item?.usageCount) : item.usageCountBase}
                                     </span>
+
                                 ))}
 
                             &nbsp;

@@ -148,6 +148,7 @@ const UploadUsersCSV: React.FC<UploadUsersCSVProps> = (): ReactElement => {
             alert('Data uploaded to Firestore successfully!');
         } catch (error) {
             console.error('Error uploading data:', error);
+            alert(error)
             // Handle error
         }
         

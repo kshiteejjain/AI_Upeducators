@@ -4,81 +4,75 @@ import { generatorPrompt } from '../promptListGeneratorSlice/QuestionGeneratorSl
 import Button from '../../components/buttons/Button';
 import { sendPrompt } from '../../utils/sendPrompt';
 
-const LeadNurturingEmailIdeas = () => {
+const QuoteOfTheDay = () => {
     const { generatorData: { messages, input } } = useSelector((state) => state);
     const dispatch = useDispatch();
     const getInitialFormData = () => ({
         topic: '',
+        tone: '',
         audience: ''
     });
     const [formData, setFormData] = useState(getInitialFormData);
-    const handleInputChange = (e: ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+    const handleInputChange = (e: ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
         const { name, value } = e.target;
         setFormData((prevData) => ({
             ...prevData,
             [name]: value,
         }));
     };
-    const promptMessage = `Topic is ${formData.topic}
-    I want to add leads for the topic into an email drip campaign. Audience is ${formData.audience}
-    
-    Give me a 6 month plan, with weekly emails, using catchy email headlines, that will turn a cold lead into a warm prospect.
-    
-    Give it to me in the format
-    Week 1
-    Headline:
-    
-    A headline can only contain 70 characters.
-    
-    You can use these examples to understand email headline best practices
-    
-    - using a number like 3 Secrets
-    - using statements like "What 98% are doing wrong"
-    - Adding something in brackets like "in 2023" or "7 steps"
-    - cause curiosity "I just had to share this with you"
-    - Case Study like What "name" did to get 100 leads
-    - Heartfelt message Why I decided to coach on "topic"
-    - Make something easier - It's not difficult to do "this". Here is why
-    - Create a villain - Why someone hate me
-    - Be witty - My mom asked me to share this with you`;
-
+    const promptMessage = `Generate 5 ${formData.tone} 'Quote of the Day' suggestions on the topic of ${formData.topic}. Ensure the quotes are engaging and relevant. It should be suitable for a ${formData.audience} audience.`;
     const handleSubmit = (event: React.SyntheticEvent<HTMLFormElement>) => {
         event.preventDefault();
         sendPrompt(dispatch, { input, messages, generatorPrompt, promptMessage });
     };
     return (
         <div className="generator-section">
-            <h2>Lead Nurturing Email Ideas</h2>
-            <h3>Generate innovative and engaging email ideas for lead nurturing campaigns.</h3>
+            <h2>Quote of the Day</h2>
+            <h3>Generate 'Quote of the Day' suggestions based on any topic.</h3>
             <form onSubmit={handleSubmit}>
                 <div className="form-group">
-                    <label htmlFor="topic"> Topic <span className="asterisk">*</span></label>
+                    <label htmlFor="topic"> Topic
+                        <span className="asterisk">*</span></label>
                     <input
                         required
                         className="form-control"
                         name="topic"
                         onChange={handleInputChange}
                         value={formData.topic}
-                        placeholder="Eg. Dance classes for kids, Robotics course for kids"
+                        placeholder="e.g., perseverance, teamwork, innovation"
                     />
                 </div>
 
+                <div className='form-group'>
+                    <label htmlFor='tone'> Tone </label>
+                    <select
+                        className='form-control'
+                        name="tone"
+                        onChange={handleInputChange}
+                        value={formData.tone}>
+                        <option value="">Choose the tone that best suits your audience and context</option>
+                        <option value="Inspirational">Inspirational</option>
+                        <option value="Humorous">Humorous</option>
+                        <option value="Reflective">Reflective</option>
+                        <option value="Motivational">Motivational</option>
+                        <option value="Thought-Provoking">Thought-Provoking</option>
+                    </select>
+                </div>
+
                 <div className="form-group">
-                    <label htmlFor="audience"> Audience <span className="asterisk">*</span></label>
+                    <label htmlFor="audience"> Audience </label>
                     <input
-                        required
                         className="form-control"
                         name="audience"
                         onChange={handleInputChange}
                         value={formData.audience}
-                        placeholder="Eg. Parents, Teenagers"
+                        placeholder="e.g., Children, Teenagers, Adults, Mixed Age Groups, Working Professionals"
                     />
                 </div>
 
                 <Button title='Generate' type="submit" />
-
             </form>
         </div>
-    )
+    );
 };
-export default LeadNurturingEmailIdeas;
+export default QuoteOfTheDay;

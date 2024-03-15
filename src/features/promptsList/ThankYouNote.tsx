@@ -4,51 +4,54 @@ import { generatorPrompt } from '../promptListGeneratorSlice/QuestionGeneratorSl
 import Button from '../../components/buttons/Button';
 import { sendPrompt } from '../../utils/sendPrompt';
 
-const SocialMediaCalendarGenerator = () => {
+const ThankYouNote = () => {
     const { generatorData: { messages, input } } = useSelector((state) => state);
     const dispatch = useDispatch();
     const getInitialFormData = () => ({
-        themesTopics: '',
-        audience: '',
+        relationship: '',
+        reason: ''
     });
     const [formData, setFormData] = useState(getInitialFormData);
-    const handleInputChange = (e: ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
+    const handleInputChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
         const { name, value } = e.target;
         setFormData((prevData) => ({
             ...prevData,
             [name]: value,
         }));
     };
-    const promptMessage = `Create a social media calendar for 15 days in a table. My audience is ${formData.audience}. Theme is ${formData.themesTopics}. Content ideas should be engaging so that posts get more likes, comments, saves and shares and also promote follows and should cover all popular formats mentioning the format. Table should have Serial number, Content idea and Format.`;
+    const promptMessage = `Generate a customized thank you note for my ${formData.relationship} for ${formData.reason}.`;
     const handleSubmit = (event: React.SyntheticEvent<HTMLFormElement>) => {
         event.preventDefault();
         sendPrompt(dispatch, { input, messages, generatorPrompt, promptMessage });
     };
     return (
         <div className="generator-section">
-            <h2>Social Media Calendar Generator</h2>
-            <h3>Generate a daily social media posting calendar.</h3>
+            <h2>Thank You Note Generator</h2>
+            <h3>Create a personalized Thank You Note for various occasions.</h3>
             <form onSubmit={handleSubmit}>
                 <div className="form-group">
-                    <label htmlFor="audience"> Audience <span className="asterisk">*</span></label>
+                    <label htmlFor="relationship"> Relationship
+                        <span className="asterisk">*</span></label>
                     <input
                         required
                         className="form-control"
-                        name="audience"
+                        name="relationship"
                         onChange={handleInputChange}
-                        value={formData.audience}
-                        placeholder="Eg. students, parents, or educators."
+                        value={formData.relationship}
+                        placeholder="e.g., Family Member, Friend, Colleague, Teacher, Mentor"
                     />
                 </div>
 
                 <div className="form-group">
-                    <label htmlFor="themesTopics"> Themes/Topics </label>
+                    <label htmlFor="reason"> Reason
+                        <span className="asterisk">*</span></label>
                     <input
+                        required
                         className="form-control"
-                        name="themesTopics"
+                        name="reason"
                         onChange={handleInputChange}
-                        value={formData.themesTopics}
-                        placeholder="Eg. yoga tips for kids, teaching tips"
+                        value={formData.reason}
+                        placeholder="e.g., birthday gift, farewell, support during a project"
                     />
                 </div>
 
@@ -57,4 +60,4 @@ const SocialMediaCalendarGenerator = () => {
         </div>
     );
 };
-export default SocialMediaCalendarGenerator;
+export default ThankYouNote;

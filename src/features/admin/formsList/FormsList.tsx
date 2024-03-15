@@ -62,8 +62,8 @@ const FormsList = () => {
             const wscols = flattenedformData.map(form => Object.values(form).map(value => ({ width: value?.toString().length + 10 })));
             ws['!cols'] = wscols[0];
             const wb = XLSX.utils.book_new();
-            XLSX.utils.book_append_sheet(wb, ws, 'Forms_List');
-            XLSX.writeFile(wb, 'Forms_List.xlsx');
+            XLSX.utils.book_append_sheet(wb, ws, 'FormsList');
+            XLSX.writeFile(wb, 'FormsList.xlsx');
         } catch (error) {
             console.error('Error exporting to Excel:', error);
         }

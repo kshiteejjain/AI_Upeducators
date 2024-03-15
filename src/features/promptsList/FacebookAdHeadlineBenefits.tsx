@@ -4,64 +4,58 @@ import { generatorPrompt } from '../promptListGeneratorSlice/QuestionGeneratorSl
 import Button from '../../components/buttons/Button';
 import { sendPrompt } from '../../utils/sendPrompt';
 
-const LeadNurturingEmailIdeas = () => {
+const FacebookAdHeadlineBenefits = () => {
     const { generatorData: { messages, input } } = useSelector((state) => state);
     const dispatch = useDispatch();
     const getInitialFormData = () => ({
-        topic: '',
-        audience: ''
+        courseSkillName: '',
+        audience: '',
     });
     const [formData, setFormData] = useState(getInitialFormData);
-    const handleInputChange = (e: ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+
+    const handleInputChange = (e: ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
         const { name, value } = e.target;
         setFormData((prevData) => ({
             ...prevData,
             [name]: value,
         }));
     };
-    const promptMessage = `Topic is ${formData.topic}
-    I want to add leads for the topic into an email drip campaign. Audience is ${formData.audience}
-    
-    Give me a 6 month plan, with weekly emails, using catchy email headlines, that will turn a cold lead into a warm prospect.
-    
-    Give it to me in the format
-    Week 1
-    Headline:
-    
-    A headline can only contain 70 characters.
-    
-    You can use these examples to understand email headline best practices
-    
-    - using a number like 3 Secrets
-    - using statements like "What 98% are doing wrong"
-    - Adding something in brackets like "in 2023" or "7 steps"
-    - cause curiosity "I just had to share this with you"
-    - Case Study like What "name" did to get 100 leads
-    - Heartfelt message Why I decided to coach on "topic"
-    - Make something easier - It's not difficult to do "this". Here is why
-    - Create a villain - Why someone hate me
-    - Be witty - My mom asked me to share this with you`;
+    const promptMessage = `Need to generate a facebook ad for ${formData.courseSkillName}, and the audience is ${formData.audience}
 
+    The format of the ad is as follows:
+    
+    1 compelling and attractive headline
+    Eg: Best Course for Parents in this Digital age
+    
+    3 Key benefits. Each benefit should be less than 9 words.
+    Eg: 1. Learn 18+ Google tools
+    2. Learn from Top Experts
+    3. Become a Certified Tech Parent
+    Don't stick to examples only
+    
+    Generate 5 sets of 1 headline and 3 Benefits, each benefit with less than 9 words
+    `
     const handleSubmit = (event: React.SyntheticEvent<HTMLFormElement>) => {
         event.preventDefault();
         sendPrompt(dispatch, { input, messages, generatorPrompt, promptMessage });
     };
     return (
         <div className="generator-section">
-            <h2>Lead Nurturing Email Ideas</h2>
-            <h3>Generate innovative and engaging email ideas for lead nurturing campaigns.</h3>
+            <h2>Facebook ad: Headline & Benefits</h2>
+            <h3>Create Headline &  benefits for Facebook ads creative</h3>
             <form onSubmit={handleSubmit}>
                 <div className="form-group">
-                    <label htmlFor="topic"> Topic <span className="asterisk">*</span></label>
+                    <label htmlFor="courseSkillName"> Course/Skill Name <span className="asterisk">*</span></label>
                     <input
                         required
                         className="form-control"
-                        name="topic"
+                        name="courseSkillName"
                         onChange={handleInputChange}
-                        value={formData.topic}
-                        placeholder="Eg. Dance classes for kids, Robotics course for kids"
+                        value={formData.courseSkillName}
+                        placeholder="Eg. Yoga classes for kids, Maths tuition for class 6th"
                     />
                 </div>
+
 
                 <div className="form-group">
                     <label htmlFor="audience"> Audience <span className="asterisk">*</span></label>
@@ -75,10 +69,10 @@ const LeadNurturingEmailIdeas = () => {
                     />
                 </div>
 
-                <Button title='Generate' type="submit" />
 
+                <Button title='Generate' type="submit" />
             </form>
         </div>
     )
 };
-export default LeadNurturingEmailIdeas;
+export default FacebookAdHeadlineBenefits;

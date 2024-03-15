@@ -51,7 +51,7 @@ const Login = () => {
                         navigate("/ContactUs");
                     } else {
                         const onboardingUserSnapshot = await getDocs(
-                            query(collection(firestore, 'onboardingQuestions'), where('email', '==', userDetails?.email))
+                            query(collection(firestore, 'OnboardingQuestions'), where('email', '==', userDetails?.email))
                         );
                         if (!onboardingUserSnapshot.empty) {
                             // User exists in OnBoardingQuestions collection
@@ -99,7 +99,7 @@ const Login = () => {
 
                 // Check if the user exists in OnBoardingQuestions collection
                 const onboardingUserSnapshot = await getDocs(
-                    query(collection(firestore, 'onboardingQuestions'), where('email', '==', email))
+                    query(collection(firestore, 'OnboardingQuestions'), where('email', '==', email))
                 );
                 if (!onboardingUserSnapshot.empty) {
                     // User exists in OnBoardingQuestions collection

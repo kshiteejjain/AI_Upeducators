@@ -28,7 +28,7 @@ const FacebookVideoAdsScript = () => {
     return (
         <div className="generator-section">
             <h2>Facebook Video Ads Script</h2>
-            <h3>Create dynamic and visually appealing content for Facebook video.reel ad, tailored to captivate your audience and drive interaction.</h3>
+            <h3>Create content for Facebook ad reels</h3>
             <form onSubmit={handleSubmit}>
                 <div className='form-group'>
                     <label htmlFor='service'>Service/Skill <span className='asterisk'>*</span></label>

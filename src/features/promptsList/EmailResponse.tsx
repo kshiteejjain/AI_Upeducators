@@ -4,12 +4,12 @@ import { generatorPrompt } from '../promptListGeneratorSlice/QuestionGeneratorSl
 import Button from '../../components/buttons/Button';
 import { sendPrompt } from '../../utils/sendPrompt';
 
-const SocialMediaCalendarGenerator = () => {
+const EmailResponse = () => {
     const { generatorData: { messages, input } } = useSelector((state) => state);
     const dispatch = useDispatch();
     const getInitialFormData = () => ({
-        themesTopics: '',
-        audience: '',
+        receivedEmail: '',
+        keyPointsToIncludeInReply: ''
     });
     const [formData, setFormData] = useState(getInitialFormData);
     const handleInputChange = (e: ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
@@ -19,37 +19,42 @@ const SocialMediaCalendarGenerator = () => {
             [name]: value,
         }));
     };
-    const promptMessage = `Create a social media calendar for 15 days in a table. My audience is ${formData.audience}. Theme is ${formData.themesTopics}. Content ideas should be engaging so that posts get more likes, comments, saves and shares and also promote follows and should cover all popular formats mentioning the format. Table should have Serial number, Content idea and Format.`;
+    const promptMessage = `Generate a professional email response to address this email “${formData.receivedEmail}” and follow the outlined response: ${formData.keyPointsToIncludeInReply}. `;
     const handleSubmit = (event: React.SyntheticEvent<HTMLFormElement>) => {
         event.preventDefault();
         sendPrompt(dispatch, { input, messages, generatorPrompt, promptMessage });
     };
     return (
         <div className="generator-section">
-            <h2>Social Media Calendar Generator</h2>
-            <h3>Generate a daily social media posting calendar.</h3>
+            <h2>Email Response</h2>
+            <h3>Create an email response based on the email you received.</h3>
             <form onSubmit={handleSubmit}>
                 <div className="form-group">
-                    <label htmlFor="audience"> Audience <span className="asterisk">*</span></label>
-                    <input
+                    <label htmlFor="receivedEmail"> Received Email <span className="asterisk">*</span></label>
+                    <textarea
                         required
                         className="form-control"
-                        name="audience"
+                        name="receivedEmail"
                         onChange={handleInputChange}
-                        value={formData.audience}
-                        placeholder="Eg. students, parents, or educators."
-                    />
+                        value={formData.receivedEmail}
+                        rows={5}
+                        placeholder="Paste the email you received."
+                    >
+                    </textarea>
                 </div>
 
                 <div className="form-group">
-                    <label htmlFor="themesTopics"> Themes/Topics </label>
-                    <input
+                    <label htmlFor="keyPointsToIncludeInReply"> Key Points to Include in Reply <span className="asterisk">*</span></label>
+                    <textarea
+                        required
                         className="form-control"
-                        name="themesTopics"
+                        name="keyPointsToIncludeInReply"
                         onChange={handleInputChange}
-                        value={formData.themesTopics}
-                        placeholder="Eg. yoga tips for kids, teaching tips"
-                    />
+                        value={formData.keyPointsToIncludeInReply}
+                        rows={5}
+                        placeholder="Any information or specific details you want to include"
+                    >
+                    </textarea>
                 </div>
 
                 <Button title='Generate' type="submit" />
@@ -57,4 +62,4 @@ const SocialMediaCalendarGenerator = () => {
         </div>
     );
 };
-export default SocialMediaCalendarGenerator;
+export default EmailResponse;
