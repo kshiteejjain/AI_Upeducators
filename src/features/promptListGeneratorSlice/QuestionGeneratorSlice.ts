@@ -1,8 +1,8 @@
-import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
+import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
 import { handleCreditDecrement } from '../../utils/firebaseUtils';
 import { RootState } from 'react-redux';
-import { addDoc, collection, doc, getDocs, getFirestore, query, setDoc, updateDoc, where } from 'firebase/firestore';
+import { collection, doc, getDocs, getFirestore, query, setDoc, updateDoc, where } from 'firebase/firestore';
 
 const creditValue = Number(import.meta.env.VITE_TEXT_GENERATOR_CREDITS);
 // Define the async thunk

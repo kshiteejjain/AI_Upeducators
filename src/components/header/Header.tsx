@@ -70,8 +70,6 @@ const Header = ({ isLoginPage, moreOptions = true }: Props) => {
           if (!isSameDay) {
             setIsExpire(!(currentDate < registrationDate));
           }
-          console.log('currentDate', currentDate)
-          console.log('registrationDate', registrationDate)
         } else {
           console.log('Registration timestamp not available.');
         }

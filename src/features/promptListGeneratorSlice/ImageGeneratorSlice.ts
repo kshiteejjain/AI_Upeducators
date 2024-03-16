@@ -17,13 +17,15 @@ const initialState: GeneratorState = {
 const creditValue = Number(import.meta.env.VITE_IMAGE_GENERATOR_CREDITS);
 
 export const generatorPrompt = createAsyncThunk('generator/generatorPrompt', async (prompt: string) => {
+  const latestPrompt = prompt[prompt.length - 1].content;
+  const promptString = JSON.stringify(latestPrompt);
   await handleCreditDecrement(creditValue);
   try {
     const response = await axios.post(
       import.meta.env.VITE_OPEN_AI_GENERATION_API_URL,
       {
         model: "dall-e-3",
-        prompt: prompt.prompt,
+        prompt: promptString,
         n: 1,
         size: "1024x1024"
       },
