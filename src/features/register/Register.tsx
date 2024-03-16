@@ -15,6 +15,7 @@ import './Register.css';
 
 const Register = () => {
     const currentDateTime = new Date();
+    currentDateTime.setDate(currentDateTime.getDate() + 365)
     const formattedDateTime = currentDateTime.toISOString().split('T')[0];
     const initialFormData = {
         name: '',

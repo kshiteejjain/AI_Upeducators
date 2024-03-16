@@ -48,21 +48,30 @@ const Header = ({ isLoginPage, moreOptions = true }: Props) => {
       }
     };
     fetchData();
-  
+
     const fetchUserData = async () => {
       try {
         const usersData = await fetchAllUserData(firestore);
         const loggedInUserEmail = localStorage.getItem('username');
         const loggedInUser = usersData.find(user => user.email === loggedInUserEmail);
-  
+
         const registrationTimestamp = loggedInUser?.register_timestamp;
-  
+
         if (registrationTimestamp) {
           const registrationDate = new Date(registrationTimestamp);
           const currentDate = new Date();
-  
+
           // Set isExpire state
-          setIsExpire(!(currentDate < registrationDate));
+          const isSameDay = currentDate.getFullYear() === registrationDate.getFullYear() &&
+            currentDate.getMonth() === registrationDate.getMonth() &&
+            currentDate.getDate() === registrationDate.getDate();
+
+          // If currentDate and registrationDate are the same day, don't mark as expired
+          if (!isSameDay) {
+            setIsExpire(!(currentDate < registrationDate));
+          }
+          console.log('currentDate', currentDate)
+          console.log('registrationDate', registrationDate)
         } else {
           console.log('Registration timestamp not available.');
         }
@@ -70,18 +79,18 @@ const Header = ({ isLoginPage, moreOptions = true }: Props) => {
         console.error('Error fetching user data:', error);
       }
     };
-  
+
     fetchUserData();
-  
+
     if (isExpire) {
       navigate('/ContactUs');
     }
-  
+
     if (remainingCredits !== undefined && remainingCredits <= 0) {
       navigate('/ContactUs');
     }
   }, [remainingCredits, navigate, isExpire]);
-  
+
 
   return (
     <header className="header">

@@ -15,7 +15,8 @@ import './FreeTrial.css';
 
 const FreeTrial = () => {
     const currentDateTime = new Date();
-    const formattedDateTime = currentDateTime.toLocaleString();
+    currentDateTime.setDate(currentDateTime.getDate() + 30)
+    const formattedDateTime = currentDateTime.toISOString().split('T')[0];
     const initialFormData = {
         name: '',
         email: '',

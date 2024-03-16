@@ -8,6 +8,7 @@ import { fetchAllForms } from '../../utils/firebaseUtils';
 import CategoriesFilter from '../categoriesFilter/CategoriesFilter';
 import Strings from '../../utils/en';
 import BannerCarousel from '../../components/bannerCarousel/bannerCarousel';
+import logo from '../../assets/Upeducator-logo.png';
 
 import './Categories.css';
 
@@ -127,7 +128,8 @@ const Categories = () => {
                                         tilesIcon={item && item.IconComponent}
                                         categoryAlt={item && item.name}
                                         description={item && item.description}
-                                        thumbnailPath={item && `/assets/${item.name.replace(/\s+/g, '-')}.png`}
+                                        // thumbnailPath={item && `/assets/${item.name.replace(/\s+/g, '-')}.png`}
+                                        thumbnailPath='https://scontent.famd1-1.fna.fbcdn.net/v/t39.30808-1/318448786_668408198224826_6537482282997335753_n.jpg?stp=dst-jpg_p480x480&_nc_cat=1&ccb=1-7&_nc_sid=5f2048&_nc_ohc=a7BKX5VDoHEAX8tEaGa&_nc_ht=scontent.famd1-1.fna&oh=00_AfAIpsxcyVHKGCIr91fF3rSJSOl8R0hrLy53GgEVBzvVug&oe=65F961B5'
                                     />
                                 ))}
                         </div>
