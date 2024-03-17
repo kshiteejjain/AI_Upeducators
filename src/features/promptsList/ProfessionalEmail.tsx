@@ -28,8 +28,8 @@ const ProfessionalEmail = () => {
     };
     return (
         <div className="generator-section">
-            <h2>Professional Email Generator</h2>
-            <h3>Create professional emails tailored to specific needs and contexts.</h3>
+            <h2>Professional Email</h2>
+            <h3>Generate emails for communication.</h3>
             <form onSubmit={handleSubmit}>
                 <div className="form-group">
                     <label htmlFor="purposeOfEmail"> Purpose of Email <span className="asterisk">*</span></label>

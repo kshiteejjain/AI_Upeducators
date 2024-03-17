@@ -8,7 +8,6 @@ import { fetchAllForms } from '../../utils/firebaseUtils';
 import CategoriesFilter from '../categoriesFilter/CategoriesFilter';
 import Strings from '../../utils/en';
 import BannerCarousel from '../../components/bannerCarousel/bannerCarousel';
-import logo from '../../assets/Upeducator-logo.png';
 
 import './Categories.css';
 

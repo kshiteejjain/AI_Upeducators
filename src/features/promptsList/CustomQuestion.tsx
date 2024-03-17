@@ -30,8 +30,8 @@ const CustomQuestion = () => {
     };
     return (
         <div className="generator-section">
-            <h2>Custom Question Generator</h2>
-            <h3>This form helps create tailored questions for educational or training purposes.</h3>
+            <h2>Custom Question</h2>
+            <h3>Create questions based on your specific requirements.</h3>
             <form onSubmit={handleSubmit}>
                 <div className='form-group'>
                     <label htmlFor='gradeLevel'> Grade Level <span className="asterisk">*</span></label>
@@ -87,16 +87,16 @@ const CustomQuestion = () => {
 
                 <div className='form-group'>
                     <label> Difficulty Level </label>
-                    <div className='checkbox-group'>
-                        <div className='checkbox'>
+                    <div className='checkbox-options'>
+                        <div className='checkbox-option'>
                             <input type="checkbox" id="easy" name="easy" onChange={handleInputChange} value={formData.difficultyLevel} />
                             <label htmlFor="easy">Easy</label>
                         </div>
-                        <div className='checkbox'>
+                        <div className='checkbox-option'>
                             <input type="checkbox" id="medium" name="medium" onChange={handleInputChange} value={formData.difficultyLevel} />
                             <label htmlFor="medium">Medium</label>
                         </div>
-                        <div className='checkbox'>
+                        <div className='checkbox-option'>
                             <input type="checkbox" id="hard" name="hard" onChange={handleInputChange} value={formData.difficultyLevel} />
                             <label htmlFor="hard">Hard</label>
                         </div>

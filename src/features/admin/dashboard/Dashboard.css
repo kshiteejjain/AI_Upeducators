@@ -43,3 +43,7 @@
 .table th, .table td.wrapWord{
     white-space: normal;
 }
+.text-red{
+    color: #ff0000;
+    font-weight: bold;
+}

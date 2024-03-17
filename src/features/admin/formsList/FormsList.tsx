@@ -19,6 +19,8 @@ type UserDocumentData = {
     usageCount?: number;
     usageCountBase?: number
     timeStamp? : string
+    likes? : number,
+    dislike? : number,
 };
 
 const FormsList = () => {
@@ -56,6 +58,8 @@ const FormsList = () => {
                 'Form Path': form.redirect,
                 'Created At': form.timeStamp || '', // Include Created At field
                 Bookmarked: form.isBookmarked ? 'Yes' : 'No',
+                'Likes': form.likes,
+                'Dislike': form.dislike,
             }));
             const ws = XLSX.utils.json_to_sheet(flattenedformData, { header: Object.keys(flattenedformData[0]) });
             // Auto-size columns
@@ -107,6 +111,8 @@ const FormsList = () => {
                             <th>Form Path</th>
                             <th>Created At</th>
                             <th>Bookmarked</th>
+                            <th>Likes</th>
+                            <th>Dislike</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -142,6 +148,8 @@ const FormsList = () => {
                                     <td>{item?.redirect}</td>
                                     <td>{item?.timeStamp}</td>
                                     <td>{item?.isBookmarked ? 'Yes' : 'No'}</td>
+                                    <td>{item?.likes}</td>
+                                    <td className='text-red'>{item?.dislike}</td>
                                 </tr>
                             ))}
                     </tbody>

@@ -30,10 +30,6 @@ const TextTranslatorGenerator = () => {
             <h3>Translate any text into your desired language.</h3>
             <form onSubmit={handleSubmit}>
                 <div className='form-group'>
-                    <label htmlFor='originalText'> Original Text <span className='asterisk'>*</span> </label>
-                    <textarea required className='form-control' name='originalText' onChange={handleInputChange} rows={5} value={formData.originalText} placeholder='Enter the text you want to translate.'></textarea>
-                </div>
-                <div className='form-group'>
                     <label htmlFor='text'> Text
                         <span className="asterisk">*</span></label>
                     <textarea

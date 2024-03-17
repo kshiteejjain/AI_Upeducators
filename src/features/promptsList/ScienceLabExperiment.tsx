@@ -30,7 +30,7 @@ const ScienceLabExperiment = () => {
     return (
         <div className="generator-section">
             <h2>Science Lab Experiment </h2>
-            <h3>Generate interactive science lab experiments for students. </h3>
+            <h3>Generate science lab experiments for students. </h3>
             <form onSubmit={handleSubmit}>
                 <div className='form-group'>
                     <label htmlFor='gradeLevel'> Grade Level

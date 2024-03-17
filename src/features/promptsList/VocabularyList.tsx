@@ -72,7 +72,7 @@ const VocabularyList = () => {
                 </div>
 
 
-                <Button title='Translate' type="submit" />
+                <Button title='Generate' type="submit" />
             </form>
         </div>
     )

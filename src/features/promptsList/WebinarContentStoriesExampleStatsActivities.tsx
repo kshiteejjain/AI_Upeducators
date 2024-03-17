@@ -70,7 +70,7 @@ const WebinarContentStoriesExampleStatsActivities = () => {
 
 
                 <div className='form-group'>
-                    <label htmlFor='contentType'> Content Type </label>
+                    <label htmlFor='contentType'> Content Type <span className="asterisk">*</span> </label>
                     <select className='form-control' name="contentType" onChange={handleInputChange} value={formData.contentType}>
                         <option value="Stories">Stories</option>
                         <option value="Examples">Examples</option>

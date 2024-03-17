@@ -49,7 +49,7 @@ const LeadNurturingEmailIdeas = () => {
     return (
         <div className="generator-section">
             <h2>Lead Nurturing Email Ideas</h2>
-            <h3>Generate innovative and engaging email ideas for lead nurturing campaigns.</h3>
+            <h3>Generate tailored lead nurturing email ideas for 6 weeks</h3>
             <form onSubmit={handleSubmit}>
                 <div className="form-group">
                     <label htmlFor="topic"> Topic <span className="asterisk">*</span></label>

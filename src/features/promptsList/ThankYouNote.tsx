@@ -26,8 +26,8 @@ const ThankYouNote = () => {
     };
     return (
         <div className="generator-section">
-            <h2>Thank You Note Generator</h2>
-            <h3>Create a personalized Thank You Note for various occasions.</h3>
+            <h2>Thank You Note</h2>
+            <h3>Create thank you notes to express your gratitude.’</h3>
             <form onSubmit={handleSubmit}>
                 <div className="form-group">
                     <label htmlFor="relationship"> Relationship

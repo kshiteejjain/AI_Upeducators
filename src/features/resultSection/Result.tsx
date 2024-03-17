@@ -176,8 +176,8 @@ const Result = () => {
       </div>
       {generatedData && getFollowPrompt.length !== 0 && !generatedImage && (
         <div className="response-feedback">
-          <img src={ThumbsUp} alt='Like Response' title='Like Response' />
-          <img src={ThumbsUp} alt='Need Improvement' title='Need Improvement' />
+          <img src={ThumbsUp} alt='Like Response' title='Like Response' onClick={() => handleLikes()} />
+          <img src={ThumbsUp} alt='Need Improvement' title='Need Improvement' onClick={() => handleDisike()} />
         </div>
       )}
       {generatedData && getFollowPrompt.length !== 0 && !generatedImage && (

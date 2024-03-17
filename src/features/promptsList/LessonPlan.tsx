@@ -75,37 +75,37 @@ const LessonPlan = () => {
                 </div>
 
                 <div className='form-group'>
-                    <label> Add-Ons </label>
-                    <div className='checkbox-group'>
-                        <div className='checkbox'>
+                <label htmlFor='addOns'> Add-Ons</label>
+                    <div className='checkbox-options'>
+                        <div className='checkbox-option'>
                             <input type="checkbox" id="differentiationStrategies" name="differentiationStrategies" onChange={handleInputChange} value={formData.AddOns} />
                             <label htmlFor="differentiationStrategies">Differentiation Strategies</label>
                         </div>
-                        <div className='checkbox'>
+                        <div className='checkbox-option'>
                             <input type="checkbox" id="startupWarmUpActivity" name="startupWarmUpActivity" onChange={handleInputChange} value={formData.AddOns} />
                             <label htmlFor="startupWarmUpActivity">Startup/Warm Up Activity</label>
                         </div>
-                        <div className='checkbox'>
+                        <div className='checkbox-option'>
                             <input type="checkbox" id="lifeSkills" name="lifeSkills" onChange={handleInputChange} value={formData.AddOns} />
                             <label htmlFor="lifeSkills">Life Skills</label>
                         </div>
-                        <div className='checkbox'>
+                        <div className='checkbox-option'>
                             <input type="checkbox" id="correlationWithOtherSubjects" name="correlationWithOtherSubjects" onChange={handleInputChange} value={formData.AddOns} />
                             <label htmlFor="correlationWithOtherSubjects">Correlation with other Subjects</label>
                         </div>
-                        <div className='checkbox'>
+                        <div className='checkbox-option'>
                             <input type="checkbox" id="hotsQuestions" name="hotsQuestions" onChange={handleInputChange} value={formData.AddOns} />
                             <label htmlFor="hotsQuestions">HOTS Questions</label>
                         </div>
-                        <div className='checkbox'>
+                        <div className='checkbox-option'>
                             <input type="checkbox" id="learningLogs" name="learningLogs" onChange={handleInputChange} value={formData.AddOns} />
                             <label htmlFor="learningLogs">Learning Logs</label>
                         </div>
-                        <div className='checkbox'>
+                        <div className='checkbox-option'>
                             <input type="checkbox" id="teacherInterventions" name="teacherInterventions" onChange={handleInputChange} value={formData.AddOns} />
                             <label htmlFor="teacherInterventions">Teacher Interventions</label>
                         </div>
-                        <div className='checkbox'>
+                        <div className='checkbox-option'>
                             <input type="checkbox" id="additionalNotes" name="additionalNotes" onChange={handleInputChange} value={formData.AddOns} />
                             <label htmlFor="additionalNotes">Additional Notes</label>
                         </div>
