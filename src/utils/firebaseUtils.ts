@@ -84,8 +84,8 @@ export const fetchAllCategories = async (): Promise<any> => {
       return [];
     }
     const categoryData = querySnapshot.docs.map((doc) => ({
+      id: doc.data().id,
       name: doc.data().name,
-      iconPath: doc.data().iconPath,
       subCategories: doc.data().subCategories,
     }));
     return categoryData;

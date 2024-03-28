@@ -8,6 +8,7 @@ const creditValue = Number(import.meta.env.VITE_TEXT_GENERATOR_CREDITS);
 // Define the async thunk
 export const generatorPrompt = createAsyncThunk('generator/generatorPrompt', async (prompt, { getState }) => {
   const isGPT4 = localStorage.getItem('isGPT4');
+  
 
   const promptList = JSON.parse(localStorage.getItem('prompts') || '[]'); // Get existing prompts or initialize as empty array
   promptList.push({
@@ -16,6 +17,9 @@ export const generatorPrompt = createAsyncThunk('generator/generatorPrompt', asy
     isFollowUpPrompt: false
   });
   localStorage.setItem('prompts', JSON.stringify(promptList));
+  if(localStorage.getItem('username') === 'ankushb@upeducators.com'){
+    alert(JSON.stringify(promptList[promptList.length - 1]?.content))
+  }
 
 
   await handleCreditDecrement(creditValue);

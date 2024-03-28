@@ -42,12 +42,12 @@ const Categories = () => {
         const fetchData = async () => {
             try {
                 const categoryData = await fetchAllForms();
-                const iconPathsData = await Promise.all(categoryData.map(async (category: Prop) => {
+                const iconPathsData = await Promise.all(categoryData.map(async (category: Props) => {
                     const path = category.iconPath ? await getIconPath(category.iconPath) : null;
                     return { [category.name]: path };
                 }));
                 const iconPathsObject = Object.assign({}, ...iconPathsData);
-                const formattedCategories = categoryData.map((category) => ({
+                const formattedCategories = categoryData.map((category: any) => ({
                     name: category?.name,
                     IconComponent: iconPathsObject[category?.name],
                     thumbnailPath: category?.thumbnailPath,
@@ -127,8 +127,7 @@ const Categories = () => {
                                         tilesIcon={item && item.IconComponent}
                                         categoryAlt={item && item.name}
                                         description={item && item.description}
-                                        // thumbnailPath={item && `/assets/${item.name.replace(/\s+/g, '-')}.png`}
-                                        thumbnailPath='https://scontent.famd1-1.fna.fbcdn.net/v/t39.30808-1/318448786_668408198224826_6537482282997335753_n.jpg?stp=dst-jpg_p480x480&_nc_cat=1&ccb=1-7&_nc_sid=5f2048&_nc_ohc=a7BKX5VDoHEAX8tEaGa&_nc_ht=scontent.famd1-1.fna&oh=00_AfAIpsxcyVHKGCIr91fF3rSJSOl8R0hrLy53GgEVBzvVug&oe=65F961B5'
+                                        thumbnailPath={item && `/assets/${item?.name?.replace(/\s+/g, '-')}.svg`}
                                     />
                                 ))}
                         </div>

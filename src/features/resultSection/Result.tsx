@@ -11,6 +11,7 @@ import Loader from '../../components/loader/Loader';
 import { getFollowupPrompts } from '../../utils/followupPromptsService';
 
 import './Result.css';
+import { collection, doc, getDocs, getFirestore, query, setDoc, updateDoc, where } from 'firebase/firestore';
 
 type RootState = {
   generatorData: {
@@ -147,6 +148,7 @@ const Result = () => {
   }, [content]);
 
 
+
   return (
     <div className="result-section" ref={resultRef}>
       {isLoading && <Loader isSwipeText />}
@@ -176,8 +178,8 @@ const Result = () => {
       </div>
       {generatedData && getFollowPrompt.length !== 0 && !generatedImage && (
         <div className="response-feedback">
-          <img src={ThumbsUp} alt='Like Response' title='Like Response' onClick={() => handleLikes()} />
-          <img src={ThumbsUp} alt='Need Improvement' title='Need Improvement' onClick={() => handleDisike()} />
+          <img src={ThumbsUp} alt='Like Response' title='Like Response' />
+          <img src={ThumbsUp} alt='Need Improvement' title='Need Improvement' />
         </div>
       )}
       {generatedData && getFollowPrompt.length !== 0 && !generatedImage && (

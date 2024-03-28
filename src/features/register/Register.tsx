@@ -200,8 +200,6 @@ const Register = () => {
         }
     };
 
-
-
     return (
         <div className='login-wrapper'>
             <LoginImages />
