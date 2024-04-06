@@ -10,21 +10,38 @@ const LessonPlan = () => {
     const getInitialFormData = () => ({
         gradeLevel: '',
         topicSubjectObjectives: '',
-        AddOns: '',
+        addOns: [] as string[],
         additionalDetails: ''
     });
     const [formData, setFormData] = useState(getInitialFormData);
 
     const handleInputChange = (e: ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
-        const { name, value } = e.target;
-        setFormData((prevData) => ({
-            ...prevData,
-            [name]: value,
-        }));
+        const { name, value, type } = e.target;
+    
+        if (type === 'checkbox') {
+            const checkbox = e.target as HTMLInputElement;
+            if (checkbox.checked) {
+                setFormData((prevData) => ({
+                    ...prevData,
+                    addOns: [...prevData.addOns, value]
+                }));
+            } else {
+                setFormData((prevData) => ({
+                    ...prevData,
+                    addOns: prevData.addOns.filter((item) => item !== value)
+                }));
+            }
+        } else {
+            setFormData((prevData) => ({
+                ...prevData,
+                [name]: value,
+            }));
+        }
     };
+
     const promptMessage = `Generate a detailed lesson plan for ${formData.gradeLevel} covering this Subject / Topic / Learning Objectives: ${formData.topicSubjectObjectives}. Along with the detailed plan consider these additional  details: ${formData.additionalDetails}
-    The lesson plan should also have an additional section involving these elements: ${formData.AddOns}.
-    Follow this structure in the lesson plan output: Title, Subject/Topic, Grade Level, Duration, Learning Objectives, Materials/Resources, Introduction, Detailed Instructional Procedures, Lesson Activities, Assessment Criteria, Closure, Extended Activities, Reflection, Home Learning Tasks, ${formData.AddOns}.`
+    The lesson plan should also have an additional section involving these elements: ${formData.addOns}.
+    Follow this structure in the lesson plan output: Title, Subject/Topic, Grade Level, Duration, Learning Objectives, Materials/Resources, Introduction, Detailed Instructional Procedures, Lesson Activities, Assessment Criteria, Closure, Extended Activities, Reflection, Home Learning Tasks, ${formData.addOns}.`
     const handleSubmit = (event: React.SyntheticEvent<HTMLFormElement>) => {
         event.preventDefault();
         sendPrompt(dispatch, { input, messages, generatorPrompt, promptMessage });
@@ -78,35 +95,35 @@ const LessonPlan = () => {
                 <label htmlFor='addOns'> Add-Ons</label>
                     <div className='checkbox-options'>
                         <div className='checkbox-option'>
-                            <input type="checkbox" id="differentiationStrategies" name="differentiationStrategies" onChange={handleInputChange} value={formData.AddOns} />
+                            <input type="checkbox" id="differentiationStrategies" name="differentiationStrategies" onChange={handleInputChange} value='differentiationStrategies' />
                             <label htmlFor="differentiationStrategies">Differentiation Strategies</label>
                         </div>
                         <div className='checkbox-option'>
-                            <input type="checkbox" id="startupWarmUpActivity" name="startupWarmUpActivity" onChange={handleInputChange} value={formData.AddOns} />
+                            <input type="checkbox" id="startupWarmUpActivity" name="startupWarmUpActivity" onChange={handleInputChange} value='startupWarmUpActivity' />
                             <label htmlFor="startupWarmUpActivity">Startup/Warm Up Activity</label>
                         </div>
                         <div className='checkbox-option'>
-                            <input type="checkbox" id="lifeSkills" name="lifeSkills" onChange={handleInputChange} value={formData.AddOns} />
+                            <input type="checkbox" id="lifeSkills" name="lifeSkills" onChange={handleInputChange} value='lifeSkills' />
                             <label htmlFor="lifeSkills">Life Skills</label>
                         </div>
                         <div className='checkbox-option'>
-                            <input type="checkbox" id="correlationWithOtherSubjects" name="correlationWithOtherSubjects" onChange={handleInputChange} value={formData.AddOns} />
+                            <input type="checkbox" id="correlationWithOtherSubjects" name="correlationWithOtherSubjects" onChange={handleInputChange} value='correlationWithOtherSubjects' />
                             <label htmlFor="correlationWithOtherSubjects">Correlation with other Subjects</label>
                         </div>
                         <div className='checkbox-option'>
-                            <input type="checkbox" id="hotsQuestions" name="hotsQuestions" onChange={handleInputChange} value={formData.AddOns} />
+                            <input type="checkbox" id="hotsQuestions" name="hotsQuestions" onChange={handleInputChange} value='hotsQuestions' />
                             <label htmlFor="hotsQuestions">HOTS Questions</label>
                         </div>
                         <div className='checkbox-option'>
-                            <input type="checkbox" id="learningLogs" name="learningLogs" onChange={handleInputChange} value={formData.AddOns} />
+                            <input type="checkbox" id="learningLogs" name="learningLogs" onChange={handleInputChange} value='learningLogs' />
                             <label htmlFor="learningLogs">Learning Logs</label>
                         </div>
                         <div className='checkbox-option'>
-                            <input type="checkbox" id="teacherInterventions" name="teacherInterventions" onChange={handleInputChange} value={formData.AddOns} />
+                            <input type="checkbox" id="teacherInterventions" name="teacherInterventions" onChange={handleInputChange} value='teacherInterventions' />
                             <label htmlFor="teacherInterventions">Teacher Interventions</label>
                         </div>
                         <div className='checkbox-option'>
-                            <input type="checkbox" id="additionalNotes" name="additionalNotes" onChange={handleInputChange} value={formData.AddOns} />
+                            <input type="checkbox" id="additionalNotes" name="additionalNotes" onChange={handleInputChange} value='additionalNotes' />
                             <label htmlFor="additionalNotes">Additional Notes</label>
                         </div>
                     </div>

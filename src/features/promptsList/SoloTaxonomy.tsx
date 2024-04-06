@@ -11,24 +11,40 @@ const SoloTaxonomy = () => {
     const getInitialFormData = () => ({
         gradeLevel: '',
         topic: '',
-        SoloTaxonomyLevels: '',
+        soloTaxonomyLevels: [] as string[],
         questionTypes: ''
     });
 
     const [formData, setFormData] = useState(getInitialFormData);
 
     const handleInputChange = (e: ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
-        const { name, value } = e.target;
-        setFormData((prevData) => ({
-            ...prevData,
-            [name]: value,
-        }));
+        const { name, value, type } = e.target;
+    
+        if (type === 'checkbox') {
+            const checkbox = e.target as HTMLInputElement;
+            if (checkbox.checked) {
+                setFormData((prevData) => ({
+                    ...prevData,
+                    soloTaxonomyLevels: [...prevData.soloTaxonomyLevels, value]
+                }));
+            } else {
+                setFormData((prevData) => ({
+                    ...prevData,
+                    soloTaxonomyLevels: prevData.soloTaxonomyLevels.filter((item) => item !== value)
+                }));
+            }
+        } else {
+            setFormData((prevData) => ({
+                ...prevData,
+                [name]: value,
+            }));
+        }
     };
-    const promptMessage = `Generate 10 ${formData.questionTypes} questions for ${formData.gradeLevel} on the topic ${formData.topic}. It should focus on ${formData.SoloTaxonomyLevels} levels of SOLO Taxonomy. Ensure the questions are appropriate for the educational level and taxonomy stages selected. Also show the selected level i.e., ${formData.SoloTaxonomyLevels} with each question.`;
+
+    const promptMessage = `Generate 10 ${formData.questionTypes} questions for ${formData.gradeLevel} on the topic ${formData.topic}. It should focus on ${formData.soloTaxonomyLevels} levels of SOLO Taxonomy. Ensure the questions are appropriate for the educational level and taxonomy stages selected. Also show the selected level i.e., ${formData.soloTaxonomyLevels} with each question.`;
     const handleSubmit = (event: React.SyntheticEvent<HTMLFormElement>) => {
         event.preventDefault();
         sendPrompt(dispatch, { input, messages, generatorPrompt, promptMessage });
-        setFormData(getInitialFormData);
     };
     return (
         <div className="generator-section">
@@ -85,7 +101,7 @@ const SoloTaxonomy = () => {
                             <input
                                 type='checkbox'
                                 name='Pre-structural'
-                                value={formData.SoloTaxonomyLevels}
+                                value='Pre-structural'
                                 onChange={handleInputChange}
                             /> Pre-structural
                         </label>
@@ -93,7 +109,7 @@ const SoloTaxonomy = () => {
                             <input
                                 type='checkbox'
                                 name='Uni-structural'
-                                value={formData.SoloTaxonomyLevels}
+                                value='Uni-structural'
                                 onChange={handleInputChange}
                             /> Uni-structural
                         </label>
@@ -101,7 +117,7 @@ const SoloTaxonomy = () => {
                             <input
                                 type='checkbox'
                                 name='Multi-structural'
-                                value={formData.SoloTaxonomyLevels}
+                                value='Multi-structural'
                                 onChange={handleInputChange}
                             /> Multi-structural
                         </label>
@@ -109,7 +125,7 @@ const SoloTaxonomy = () => {
                             <input
                                 type='checkbox'
                                 name='Relational'
-                                value={formData.SoloTaxonomyLevels}
+                                value='Relational'
                                 onChange={handleInputChange}
                             /> Relational
                         </label>
@@ -117,7 +133,7 @@ const SoloTaxonomy = () => {
                             <input
                                 type='checkbox'
                                 name='Extended Abstract'
-                                value={formData.SoloTaxonomyLevels}
+                                value='Extended Abstract'
                                 onChange={handleInputChange}
                             /> Extended Abstract
                         </label>

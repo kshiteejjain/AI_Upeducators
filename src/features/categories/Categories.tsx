@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { setCategory } from './CategoriesSlice';
+import { resetGeneratedData } from '../promptListGeneratorSlice/QuestionGeneratorSlice';
 import CategoryTiles from '../../components/categoryTiles/CategoryTiles';
 import Header from '../../components/header/Header';
 import { fetchAllForms } from '../../utils/firebaseUtils';
@@ -65,6 +66,9 @@ const Categories = () => {
         fetchData();
         localStorage.setItem('filterCategory', filterCategory);
         setFilterCategory(localStorage.getItem('filterCategory') || 'All');
+
+        //Resetting store data
+        dispatch(resetGeneratedData())
     }, [filterCategory]);
 
     const handleTile = (redirect?: string) => {

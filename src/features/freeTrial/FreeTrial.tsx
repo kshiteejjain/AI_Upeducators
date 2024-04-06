@@ -257,7 +257,6 @@ const FreeTrial = () => {
                         </form>
                         <div className="additional-actions">
                             <Button title={Strings.ForgotPassword.title} isSecondary type="button" onClick={handleForgotPassword} />
-                            <Button isSecondary title={Strings.login.buttonLogin} type="button" onClick={() => navigate('/')} />
                         </div>
 
                     </>

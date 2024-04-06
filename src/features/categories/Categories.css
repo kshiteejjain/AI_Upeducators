@@ -27,6 +27,16 @@
     border: 1px solid var(--mediumGray);
 }
 @media(max-width:767px){
+    .category-listing{
+        flex-direction: column;
+        padding: 0;
+    }
+    .tiles-group{
+        width: 100%;
+    }
+    .list-img {
+        max-width: 70px;
+    }
     .category-listing-wrapper {
         width: 100%;
     }

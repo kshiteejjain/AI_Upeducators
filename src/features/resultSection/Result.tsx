@@ -60,13 +60,24 @@ const Result = () => {
               // Splitting the content into lines
               msg.content.split('\n').map((line, lineIndex) => (
                 <div key={lineIndex}>
-                  {line.trim().endsWith('?') || line.trim().endsWith(':') || line.trim().endsWith('!') ? (
-                    <strong>{line}</strong>
-                  ) : (
-                    line
-                  )}
-                  <br />
-                </div>
+              {line.trim().endsWith('?') || line.trim().endsWith(':') || line.trim().endsWith('!') ? (
+                <strong>{line}</strong>
+              ) : (
+                // Render each HTTP or HTTPS link as individual clickable links
+                line.split(/\b(https?:\/\/[^\s]+)\b/g).map((segment, segmentIndex) => {
+                  if (segment.match(/^https?:\/\//)) {
+                    return (
+                      <a key={segmentIndex} href={segment} target="_blank">{segment}</a>
+                    );
+                  } else {
+                    return (
+                      <span key={segmentIndex}>{segment}</span>
+                    );
+                  }
+                })
+              )}
+              <br />
+            </div>
               ))
             ) : (
               <div>{msg.content}</div> // Render the content as is if it's not a string

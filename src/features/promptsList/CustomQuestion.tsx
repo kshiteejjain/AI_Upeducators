@@ -12,7 +12,7 @@ const CustomQuestion = () => {
         questionType: '',
         topic: '',
         difficultyLevel: '',
-        contextPreference: 1,
+        contextPreference: '',
         additionalDetails: '',
     });
     const [formData, setFormData] = useState(getInitialFormData);
@@ -89,15 +89,15 @@ const CustomQuestion = () => {
                     <label> Difficulty Level </label>
                     <div className='checkbox-options'>
                         <div className='checkbox-option'>
-                            <input type="checkbox" id="easy" name="easy" onChange={handleInputChange} value={formData.difficultyLevel} />
+                            <input type="checkbox" id="easy" name="easy" onChange={handleInputChange} value='easy' />
                             <label htmlFor="easy">Easy</label>
                         </div>
                         <div className='checkbox-option'>
-                            <input type="checkbox" id="medium" name="medium" onChange={handleInputChange} value={formData.difficultyLevel} />
+                            <input type="checkbox" id="medium" name="medium" onChange={handleInputChange} value='medium' />
                             <label htmlFor="medium">Medium</label>
                         </div>
                         <div className='checkbox-option'>
-                            <input type="checkbox" id="hard" name="hard" onChange={handleInputChange} value={formData.difficultyLevel} />
+                            <input type="checkbox" id="hard" name="hard" onChange={handleInputChange} value='hard' />
                             <label htmlFor="hard">Hard</label>
                         </div>
                     </div>

@@ -11,24 +11,40 @@ const BloomsTaxonomy = () => {
     const getInitialFormData = () => ({
         gradeLevel: '',
         topic: '',
-        bloomsTaxonomyLevels: '',
+        bloomsTaxonomyLevels: [] as string[],
         questionTypes: ''
     });
 
     const [formData, setFormData] = useState(getInitialFormData);
 
     const handleInputChange = (e: ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
-        const { name, value } = e.target;
-        setFormData((prevData) => ({
-            ...prevData,
-            [name]: value,
-        }));
+        const { name, value, type } = e.target;
+    
+        if (type === 'checkbox') {
+            const checkbox = e.target as HTMLInputElement;
+            if (checkbox.checked) {
+                setFormData((prevData) => ({
+                    ...prevData,
+                    bloomsTaxonomyLevels: [...prevData.bloomsTaxonomyLevels, value]
+                }));
+            } else {
+                setFormData((prevData) => ({
+                    ...prevData,
+                    bloomsTaxonomyLevels: prevData.bloomsTaxonomyLevels.filter((item) => item !== value)
+                }));
+            }
+        } else {
+            setFormData((prevData) => ({
+                ...prevData,
+                [name]: value,
+            }));
+        }
     };
-    const promptMessage = `Generate 10 ${formData.questionTypes} questions for ${formData.gradeLevel} on the topic ${formData.topic}. It should focus on ${formData.gradeLevel} levels of Bloom's Taxonomy. Ensure the questions are appropriate for the educational level and taxonomy stages selected. Also show the selected level i.e., ${formData.gradeLevel} with each question. `;
+    
+    const promptMessage = `Generate 10 ${formData.questionTypes} questions for ${formData.gradeLevel} on the topic ${formData.topic}. It should focus on ${formData.bloomsTaxonomyLevels} levels of Bloom's Taxonomy. Ensure the questions are appropriate for the educational level and taxonomy stages selected. Also show the selected level i.e., ${formData.bloomsTaxonomyLevels} with each question.`;
     const handleSubmit = (event: React.SyntheticEvent<HTMLFormElement>) => {
         event.preventDefault();
         sendPrompt(dispatch, { input, messages, generatorPrompt, promptMessage });
-        setFormData(getInitialFormData);
     };
     return (
         <div className="generator-section">
@@ -63,7 +79,6 @@ const BloomsTaxonomy = () => {
                     </select>
                 </div>
 
-
                 <div className="form-group">
                     <label htmlFor="topic"> Topic
                         <span className="asterisk">*</span></label>
@@ -85,7 +100,7 @@ const BloomsTaxonomy = () => {
                             <input
                                 type='checkbox'
                                 name='Remembering'
-                                value={formData.bloomsTaxonomyLevels}
+                                value='Remembering'
                                 onChange={handleInputChange}
                             /> Remembering
                         </label>
@@ -93,15 +108,15 @@ const BloomsTaxonomy = () => {
                             <input
                                 type='checkbox'
                                 name='Understanding'
-                                value={formData.bloomsTaxonomyLevels}
+                                value='Understanding'
                                 onChange={handleInputChange}
                             /> Understanding
                         </label>
                         <label>
                             <input
                                 type='checkbox'
-                                name='v'
-                                value={formData.bloomsTaxonomyLevels}
+                                name='Applying'
+                                value='Applying'
                                 onChange={handleInputChange}
                             /> Applying
                         </label>
@@ -109,7 +124,7 @@ const BloomsTaxonomy = () => {
                             <input
                                 type='checkbox'
                                 name='Analyzing'
-                                value={formData.bloomsTaxonomyLevels}
+                                value='Analyzing'
                                 onChange={handleInputChange}
                             /> Analyzing
                         </label>
@@ -117,7 +132,7 @@ const BloomsTaxonomy = () => {
                             <input
                                 type='checkbox'
                                 name='Evaluating'
-                                value={formData.bloomsTaxonomyLevels}
+                                value='Evaluating'
                                 onChange={handleInputChange}
                             /> Evaluating
                         </label>
@@ -125,7 +140,7 @@ const BloomsTaxonomy = () => {
                             <input
                                 type='checkbox'
                                 name='Creating'
-                                value={formData.bloomsTaxonomyLevels}
+                                value='Creating'
                                 onChange={handleInputChange}
                             /> Creating
                         </label>

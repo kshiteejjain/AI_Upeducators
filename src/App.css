@@ -336,15 +336,13 @@ img {
   .chipList {
     width: 100%;
     min-height: auto;
-    display: block;
-    white-space: nowrap;
     overflow-x: auto;
   }
 
   .chipList li {
-    display: inline-block;
-    border-right: 1px solid var(--gray);
-    padding: 0.4rem 1rem;
+    width: 100%;
+    border:none;
+    padding:0;
   }
 
   .generator-section {

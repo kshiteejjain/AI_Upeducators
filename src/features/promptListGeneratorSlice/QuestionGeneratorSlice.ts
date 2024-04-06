@@ -64,14 +64,12 @@ export const generatorPrompt = createAsyncThunk('generator/generatorPrompt', asy
         },
       }
     );
-
     return response?.data?.choices[0]?.message?.content?.trim();
   } catch (error) {
     alert(`Error sending message to OpenAI API:', ${error}`);
     throw error;
   }
 });
-
 const generatorSlice = createSlice({
   name: 'generator',
   initialState: {

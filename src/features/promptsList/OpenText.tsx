@@ -48,7 +48,7 @@ const OpenText = () => {
             handleSubmit(event);
         }
         setTimeout(() => {
-            setFormData(getInitialFormData);
+            
         }, 3000)
     }, [results, isRecording]);
 
