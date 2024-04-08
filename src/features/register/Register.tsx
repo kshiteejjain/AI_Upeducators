@@ -107,7 +107,6 @@ const Register = () => {
             }
     
             let plan = '';
-    
             // Determine plan based on email
             if (await isEmailInPaidUsers(formData.email, 'Silver')) {
                 plan = 'Silver';
@@ -118,7 +117,6 @@ const Register = () => {
                 formData.total_credits = 4000;
                 formData.remain_credits = 4000;
             }
-    
             // Check if the email is in the paid users collection
             const isPaidUser = await isEmailInPaidUsers(formData.email, plan);
             if (!isPaidUser) {
@@ -126,7 +124,6 @@ const Register = () => {
                 window.location.href = 'https://upeducators.ai/';
                 return;
             }
-    
             // Check if the email is already registered
             const isRegistered = await isEmailRegistered(formData.email);
             if (isRegistered) {
@@ -134,17 +131,14 @@ const Register = () => {
                 navigate('/');
                 return;
             }
-    
             // Generate OTP and store it temporarily
             const otp = generateOTP();
             localStorage.setItem('otp_temp', otp);
-    
             // Update formData with plan and other details
             const updatedFormData = {
                 ...formData,
                 plan: plan,
             };
-    
             // Set entered email, switch to OTP screen, and update formData
             setEnteredEmail(formData.email);
             setIsOTPScreen(true);
@@ -200,24 +194,53 @@ const Register = () => {
             if (!email) {
                 throw new Error('User email not found');
             }
-            const isRegistered = await isEmailRegistered(email);
-            if (isRegistered) {
-                alert('Email is already registered!');
+    
+            let plan = '';
+            // Determine plan based on email
+            if (await isEmailInPaidUsers(email, 'Silver')) {
+                plan = 'Silver';
+                formData.total_credits += 1500;
+                formData.remain_credits += 1500;
+            } else if (await isEmailInPaidUsers(email, 'Platinum')) {
+                plan = 'Platinum';
+                formData.total_credits = 4000;
+                formData.remain_credits = 4000;
+            }
+            // Check if the email is in the paid users collection
+            const isPaidUser = await isEmailInPaidUsers(email, plan);
+            if (!isPaidUser) {
+                alert("You are not a subscriber. Please choose a plan. Redirecting to our plans.");
+                window.location.href = 'https://upeducators.ai/';
                 return;
             }
+            // Check if the email is already registered
+            const isAlreadyRegistered = await isEmailRegistered(email);
+            if (isAlreadyRegistered) {
+                alert('Email is already registered!');
+                navigate('/');
+                return;
+            }
+            // Generate OTP and store it temporarily
             const otp = generateOTP();
+            localStorage.setItem('otp_temp', otp);
+            // Update formData with plan and other details
+            const updatedFormData = {
+                ...formData,
+                plan: plan,
+            };
+    
             setEnteredEmail(email);
             setIsOTPScreen(true);
             setLoading(false);
-            const updatedFormData = { ...initialFormData, name: user?.displayName, email };
             setFormData(updatedFormData);
-            await setDoc(doc(collection(firestore, 'RegisteredUsers'), email), { ...updatedFormData, otp: Number(otp) });
+            await setDoc(doc(collection(firestore, 'RegisteredUsers'), email), { ...updatedFormData });
             await sendEmail(email, otp);
         } catch (error) {
             setError('An error occurred. Please try again.');
             console.error('Error logging in with Google:', error);
         }
     };
+    
 
 
     return (
