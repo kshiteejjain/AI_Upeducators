@@ -85,6 +85,7 @@ const AuthorsStyleRewriter = () => {
                         name="originalText"
                         onChange={handleInputChange}
                         value={formData.originalText}
+                        rows={5}
                         placeholder="Enter the text you want to be rewritten in the author's style.">
                     </textarea>
                 </div>

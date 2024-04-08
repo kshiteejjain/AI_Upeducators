@@ -29,8 +29,8 @@ const MemeIdeas = () => {
   return (
     <div className="generator-section">
 
-      <h2>Social Media Meme Ideas Generator</h2>
-      <h3>Generate creative and engaging meme ideas that resonate with your target audience and are suitable for various social media platforms.</h3>
+      <h2>Meme Ideas</h2>
+      <h3>Generate meme ideas that resonate with your target audience.</h3>
       <form onSubmit={handleSubmit}>
         <div className="form-group">
           <label htmlFor="audience">Audience <span className="asterisk">*</span></label>

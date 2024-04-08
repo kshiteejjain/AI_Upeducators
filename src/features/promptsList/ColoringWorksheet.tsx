@@ -1,6 +1,6 @@
 import React, { useState, ChangeEvent } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { generatorPrompt } from '../promptListGeneratorSlice/QuestionGeneratorSlice';
+import { generatorPrompt } from '../promptListGeneratorSlice/ImageGeneratorSlice';
 import Button from '../../components/buttons/Button';
 import { sendPrompt } from '../../utils/sendPrompt';
 

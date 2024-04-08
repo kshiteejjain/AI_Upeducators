@@ -19,14 +19,10 @@ const AnalogiesMultipleExplanations = () => {
             [name]: value,
         }));
     };
-    const promptMessage = `Generate 5 pairs of exemplar and non-exemplar items for ${formData.gradeLevel} students focusing on the topic/concept of: ${formData.topicConcept}. 
-    Consider the Example below for generating the output:
-    Exemplar:
-    Subject: Thank You Letter
-    Content: A letter thanking a local firefighter for their bravery during a recent fire in the community. It includes specific details about the firefighter's actions and expresses gratitude for their service.
-    Non-Exemplar:
-    Subject: Thank You Letter
-    Content: A letter vaguely thanking a friend for a gift received. It lacks specific details or personalization, and the language is casual and informal. The closing is abrupt and lacks sincerity.`;
+    const promptMessage = `Generate 5 types of explanations for the concept: ${formData.topicConcept} for ${formData.gradeLevel} students. Each explanation should offer a unique perspective and be accompanied by an analogy to aid understanding. 
+    Follow this Structure for each of the explanations: 'Concept' description, detailed 'Explanation', 'Analogy'. 
+    In case you want to add something else in the structure to make it better, then you can do it.`;
+
     const handleSubmit = (event: React.SyntheticEvent<HTMLFormElement>) => {
         event.preventDefault();
         sendPrompt(dispatch, { input, messages, generatorPrompt, promptMessage });

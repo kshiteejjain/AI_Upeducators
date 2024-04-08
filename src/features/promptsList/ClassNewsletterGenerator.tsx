@@ -19,7 +19,7 @@ const ClassNewsletterGenerator = () => {
         length: '',
     });
     const [formData, setFormData] = useState(getInitialFormData);
-    const handleInputChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    const handleInputChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
         const { name, value } = e.target;
         setFormData((prevData) => ({
             ...prevData,
@@ -39,12 +39,22 @@ const ClassNewsletterGenerator = () => {
                 <div className='form-group'>
                     <label htmlFor='classLevel'> Class Level <span className='asterisk'>*</span> </label>
                     <select required className='form-control' name="classLevel" onChange={handleInputChange} value={formData.classLevel}>
+                    <option value="">Select the grade level for which the project is intended.</option>
                         <option value="Nursery">Nursery</option>
-                        <option value="Kindergarten">Kindergarten</option>
+                        <option value="Preparatory">Preparatory</option>
                         <option value="1st Grade">1st Grade</option>
                         <option value="2nd Grade">2nd Grade</option>
-                        {/* Add more grade options as needed */}
+                        <option value="3rd Grade">3rd Grade</option>
+                        <option value="4th Grade">4th Grade</option>
+                        <option value="5th Grade">5th Grade</option>
+                        <option value="6th Grade">6th Grade</option>
+                        <option value="7th Grade">7th Grade</option>
+                        <option value="8th Grade">8th Grade</option>
+                        <option value="9th Grade">9th Grade</option>
+                        <option value="10th Grade">10th Grade</option>
+                        <option value="11th Grade">11th Grade</option>
                         <option value="12th Grade">12th Grade</option>
+                        <option value="College Level">College Level</option>
                     </select>
                 </div>
                 <div className='form-group'>

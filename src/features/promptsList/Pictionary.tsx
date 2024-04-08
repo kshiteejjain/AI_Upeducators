@@ -20,7 +20,7 @@ const Pictionary = () => {
             [name]: value,
         }));
     };
-    const promptMessage = `Generate 15 Pictionary words for the ${formData.ageGroup} age group in the category of (Category) at ${formData.difficultyLevel} difficulty level.`;
+    const promptMessage = `Generate 15 Pictionary words for the ${formData.ageGroup} age group in the category of ${formData.categoryTopicSubject} at ${formData.difficultyLevel} difficulty level.`;
     const handleSubmit = (event: React.SyntheticEvent<HTMLFormElement>) => {
         event.preventDefault();
         sendPrompt(dispatch, { input, messages, generatorPrompt, promptMessage });

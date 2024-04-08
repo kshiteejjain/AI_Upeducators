@@ -4,7 +4,7 @@ import { generatorPrompt } from '../promptListGeneratorSlice/QuestionGeneratorSl
 import Button from '../../components/buttons/Button';
 import { sendPrompt } from '../../utils/sendPrompt';
 
-const ActivityIdeasGenerator = () => {
+const ActivityIdeas = () => {
     const { generatorData: { messages, input } } = useSelector((state) => state);
     const dispatch = useDispatch();
 
@@ -29,7 +29,7 @@ const ActivityIdeasGenerator = () => {
 
     return (
         <div className="generator-section">
-            <h2>Activity Ideas Generator</h2>
+            <h2>Activity Ideas</h2>
             <h3>Generate creative and engaging activity ideas.</h3>
             <form onSubmit={handleSubmit}>
                 <div className='form-group'>
@@ -89,4 +89,4 @@ const ActivityIdeasGenerator = () => {
         </div>
     )
 };
-export default ActivityIdeasGenerator;
+export default ActivityIdeas;

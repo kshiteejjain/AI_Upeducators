@@ -30,7 +30,7 @@ const ToolIntegration = () => {
     return (
         <div className="generator-section">
             <h2>Tool Integration</h2>
-            <h3>Generate a curated list of YouTube video suggestions on specific topics.</h3>
+            <h3>Find tools that can be integrated into educational content for any topic.</h3>
             <form onSubmit={handleSubmit}>
                 <div className="form-group">
                     <label htmlFor="gradeLevel">Grade Level <span className="asterisk">*</span></label>

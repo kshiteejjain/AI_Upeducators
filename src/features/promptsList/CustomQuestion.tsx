@@ -11,17 +11,33 @@ const CustomQuestion = () => {
         gradeLevel: '',
         questionType: '',
         topic: '',
-        difficultyLevel: '',
+        difficultyLevel: [] as string[],
         contextPreference: '',
         additionalDetails: '',
     });
     const [formData, setFormData] = useState(getInitialFormData);
     const handleInputChange = (e: ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
-        const { name, value } = e.target;
-        setFormData((prevData) => ({
-            ...prevData,
-            [name]: value,
-        }));
+        const { name, value, type } = e.target;
+    
+        if (type === 'checkbox') {
+            const checkbox = e.target as HTMLInputElement;
+            if (checkbox.checked) {
+                setFormData((prevData) => ({
+                    ...prevData,
+                    difficultyLevel: [...prevData.difficultyLevel, value]
+                }));
+            } else {
+                setFormData((prevData) => ({
+                    ...prevData,
+                    difficultyLevel: prevData.difficultyLevel.filter((item) => item !== value)
+                }));
+            }
+        } else {
+            setFormData((prevData) => ({
+                ...prevData,
+                [name]: value,
+            }));
+        }
     };
     const promptMessage = `Generate 10 ${formData.questionType} questions for ${formData.gradeLevel} on ${formData.topic}. It should be framed within the context of ${formData.contextPreference} at a ${formData.difficultyLevel} difficulty level. Also, consider these additional details: ${formData.additionalDetails}`;
     const handleSubmit = (event: React.SyntheticEvent<HTMLFormElement>) => {

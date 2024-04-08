@@ -62,9 +62,7 @@ const ProjectBasedLearning = () => {
                 </div>
                 <div className='form-group'>
                     <label htmlFor='subjectArea'> Topic / Subject / Learning Objectives  <span className='asterisk'>*</span></label>
-                    <select required className='form-control' name="subjectArea" onChange={handleInputChange} value={formData.subjectArea}>
-                        {/* Options for Subject Area */}
-                    </select>
+                    <textarea type="text" className="form-control" name="subjectArea"  onChange={handleInputChange} value={formData.subjectArea} rows={5} required placeholder="e.g., Gravitational Force, History, Implement the concepts of Perimeter and Area"> </textarea>
                 </div>
                 <div className="form-group">
                     <label htmlFor="additionalDetails">Additional Details</label>

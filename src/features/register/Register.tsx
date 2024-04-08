@@ -22,14 +22,13 @@ const Register = () => {
         email: '',
         phone: '',
         password: '',
-        total_credits: 1000,
-        remain_credits: 1000,
+        total_credits: 0,
+        remain_credits: 0,
         access_duration_days: 365,
         credits_limit_perday: 50,
         isActiveUser: true,
         isAdmin: false,
         register_timestamp: formattedDateTime,
-        otp: '',
         isFreeUser: false,
         isPrePaidUser: false,
         campaignName: '',
@@ -62,53 +61,101 @@ const Register = () => {
     const handleForgotPassword = () => {
         navigate('/ForgotPassword')
     }
-    const generateRandomOTP = () => {
-        const otp = Math.floor(100000 + Math.random() * 900000);
-        setFormData((prevData) => ({
-            ...prevData,
-            otp: otp.toString(),
-        }));
-        return otp.toString();
+    const generateOTP = () => {
+        return Math.floor(100000 + Math.random() * 900000).toString(); s
+    };
+
+    const isEmailInPaidUsers = async (email: string, plan?: string) => {
+        const paidUsersSnapshot = await getDocs(
+            query(
+                collection(firestore, 'AIUpEducatorsPaidUsers'),
+                where('payload.payment.entity.notes.email', '==', email),
+                where('payload.payment.entity.notes.plan', '==', plan)
+            )
+        );
+        return !paidUsersSnapshot.empty;
+    };
+    
+
+    const isEmailRegistered = async (email: string) => {
+        const querySnapshot = await getDocs(
+            query(collection(firestore, 'RegisteredUsers'), where('email', '==', email))
+        );
+        return !querySnapshot.empty;
+    };
+
+    const sendEmail = async (email: string, otp: number) => {
+        try {
+            await emailjs.send(import.meta.env.VITE_EMAILJS_SERVICE_ID, import.meta.env.VITE_EMAILJS_TEMPLATE_REGISTER, {
+                ...formData,
+                message: otp,
+                to_email: email,
+            }, import.meta.env.VITE_EMAILJS_API_KEY);
+            console.log('Email sent successfully!');
+        } catch (error) {
+            console.error('Failed to send email:', error);
+            throw new Error('Failed to send email');
+        }
     };
 
     const formSubmit = async (e: FormEvent) => {
         e.preventDefault();
-        setLoading(true)
+        setLoading(true);
         try {
-            const querySnapshot = await getDocs(
-                query(collection(firestore, 'RegisteredUsers'), where('email', '==', formData.email))
-            );
-            if (!querySnapshot.empty) {
-                // Email already exists, show alert or handle accordingly
-                alert('Email is already registered!');
+            if (!formData.email) {
+                throw new Error('Email is required.');
+            }
+    
+            let plan = '';
+    
+            // Determine plan based on email
+            if (await isEmailInPaidUsers(formData.email, 'Silver')) {
+                plan = 'Silver';
+                formData.total_credits += 1500;
+                formData.remain_credits += 1500;
+            } else if (await isEmailInPaidUsers(formData.email, 'Platinum')) {
+                plan = 'Platinum';
+                formData.total_credits = 4000;
+                formData.remain_credits = 4000;
+            }
+    
+            // Check if the email is in the paid users collection
+            const isPaidUser = await isEmailInPaidUsers(formData.email, plan);
+            if (!isPaidUser) {
+                alert("You are not a subscriber. Please choose a plan. Redirecting to our plans.");
+                window.location.href = 'https://upeducators.ai/';
                 return;
             }
-            const otp = generateRandomOTP();
-            const selfRegisteredUsersCollection = collection(firestore, 'RegisteredUsers');
-            const userDocRef = doc(selfRegisteredUsersCollection, formData?.email);
-            await setDoc(userDocRef, {
+    
+            // Check if the email is already registered
+            const isRegistered = await isEmailRegistered(formData.email);
+            if (isRegistered) {
+                alert('Email is already registered!');
+                navigate('/');
+                return;
+            }
+    
+            // Generate OTP and store it temporarily
+            const otp = generateOTP();
+            localStorage.setItem('otp_temp', otp);
+    
+            // Update formData with plan and other details
+            const updatedFormData = {
                 ...formData,
-                otp: Number(otp),
-            });
+                plan: plan,
+            };
+    
+            // Set entered email, switch to OTP screen, and update formData
             setEnteredEmail(formData.email);
             setIsOTPScreen(true);
-            setLoading(false)
-            // Optional: Clear the form after submission
-            setFormData(initialFormData);
-            emailjs.send(import.meta.env.VITE_EMAILJS_SERVICE_ID, import.meta.env.VITE_EMAILJS_TEMPLATE_REGISTER, {
-                ...formData,
-                message: otp,
-                to_email: formData.email,
-            }, import.meta.env.VITE_EMAILJS_API_KEY)
-                .then(response => {
-                    console.log('SUCCESS!', response);
-                }, error => {
-                    alert(`FAILED...', ${error}`);
-                });
+            setLoading(false);
+            setFormData(updatedFormData);
         } catch (error) {
-            alert(`An error occurred:', ${error}`);
+            alert(`An error occurred: ${error}`);
+            console.error('Error submitting form:', error);
         }
     };
+    
     const handleInputChangeOTP = (e: ChangeEvent<HTMLInputElement>) => {
         const enteredValue = e.target.value;
         if (/^\d{0,6}$/.test(enteredValue)) {
@@ -118,87 +165,60 @@ const Register = () => {
         }
         setEnteredOTP(enteredValue);
     };
+
     const logEmailAndOTP = async (e: FormEvent) => {
         e.preventDefault();
-        setLoading(true);
-        const usersCollection = collection(firestore, 'RegisteredUsers');
-        if (!enteredEmail || !enteredOTP) {
-            console.error('Email or OTP is undefined');
-            return;
-        }
-        const q = query(usersCollection, where('email', '==', enteredEmail), where('otp', '==', Number(enteredOTP)));
         try {
-            const querySnapshot = await getDocs(q);
-            if (!querySnapshot.empty) {
-                alert('Registration Successful, Redirecting to login.');
-                setLoading(false)
-                navigate('/')
+            if (!enteredEmail) {
+                throw new Error('Email is empty or undefined');
+            }
+
+            if (enteredOTP === localStorage.getItem('otp_temp')) {
+                localStorage.removeItem('otp_temp');
+                setEnteredEmail(enteredEmail);
+                const usersCollection = collection(firestore, 'RegisteredUsers');
+                const userDocRef = doc(usersCollection, enteredEmail);
+                await setDoc(userDocRef, formData);
+                setIsOTPScreen(true);
+                setLoading(false);
+                setFormData(initialFormData);
+                navigate('/');
             } else {
-                alert('Email and OTP do not match');
+                alert('You have entered wrong OTP');
             }
         } catch (error) {
-            console.error('Error fetching documents: ', error);
+            setError('An error occurred. Please try again.');
+            console.error('Error submitting form:', error);
         }
     };
-    const logGoogleUser = async () => {
+
+    const handleGoogleLogin = async () => {
         try {
             const response = await signInWithGooglePopup();
             const user = response?.user;
-            const querySnapshot = await getDocs(
-                query(collection(firestore, 'RegisteredUsers'), where('email', '==', user?.email))
-            );
-            if (!querySnapshot.empty) {
-                // Email already exists, show alert or handle accordingly
+            const email = user?.email;
+            if (!email) {
+                throw new Error('User email not found');
+            }
+            const isRegistered = await isEmailRegistered(email);
+            if (isRegistered) {
                 alert('Email is already registered!');
                 return;
             }
-            const otp = generateRandomOTP();
-            setEnteredEmail(user?.email); // Use extracted email
+            const otp = generateOTP();
+            setEnteredEmail(email);
             setIsOTPScreen(true);
             setLoading(false);
-            // Optional: Clear the form after submission
-            const updatedFormData = {
-                name: user?.displayName,
-                email: user?.email, // Use user's email here instead of enteredEmail
-                phone: '',
-                password: '',
-                total_credits: 1000,
-                remain_credits: 1000,
-                access_duration_days: 365,
-                credits_limit_perday: 50,
-                isActiveUser: true,
-                isAdmin: false,
-                register_timestamp: formattedDateTime,
-                otp: otp,
-                isFreeUser: false,
-                isPrePaidUser: false,
-                campaignName: '',
-                campaignSource: '',
-                campaignMedium: ''
-            };
+            const updatedFormData = { ...initialFormData, name: user?.displayName, email };
             setFormData(updatedFormData);
-            const selfRegisteredUsersCollection = collection(firestore, 'RegisteredUsers');
-            const userDocRef = doc(selfRegisteredUsersCollection, user?.email); // Use user's email as document ID
-            await setDoc(userDocRef, {
-                ...updatedFormData,
-                otp: Number(otp),
-            });
-            // Adding the form data to the Firestore collection
-
-            emailjs.send(import.meta.env.VITE_EMAILJS_SERVICE_ID, import.meta.env.VITE_EMAILJS_TEMPLATE_REGISTER, {
-                ...formData,
-                message: otp,
-                to_email: user?.email,
-            }, import.meta.env.VITE_EMAILJS_API_KEY)
-                .then(response => {
-                    console.log('SUCCESS!', response);
-                }, error => {
-                    alert(`FAILED...', ${error}`);
-                });
+            await setDoc(doc(collection(firestore, 'RegisteredUsers'), email), { ...updatedFormData, otp: Number(otp) });
+            await sendEmail(email, otp);
         } catch (error) {
-            alert(`Error: ${error}`);
+            setError('An error occurred. Please try again.');
+            console.error('Error logging in with Google:', error);
         }
     };
+
 
     return (
         <div className='login-wrapper'>
@@ -249,7 +269,7 @@ const Register = () => {
                             </div>
                             <Button title='Register' type="submit" />
                             <div className="separator"><div className="separator-text">or</div></div>
-                            <Button title={Strings.register.googleRegister} onClick={logGoogleUser} isSocial isImage imagePath={googleLogo} />
+                            <Button title={Strings.register.googleRegister} onClick={handleGoogleLogin} isSocial isImage imagePath={googleLogo} />
                         </form>
                         <div className="additional-actions">
                             <Button title={Strings.ForgotPassword.title} isSecondary type="button" onClick={handleForgotPassword} />

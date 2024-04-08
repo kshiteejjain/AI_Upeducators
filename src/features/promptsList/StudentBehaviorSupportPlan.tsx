@@ -48,8 +48,6 @@ const StudentBehaviorSupportPlan = () => {
                     </select>
                 </div>
 
-                Field no. 2
-
                 <div className="form-group">
                     <label htmlFor="behaviourConcern">Behavior Concern <span className="asterisk">*</span></label>
                     <input
@@ -61,8 +59,6 @@ const StudentBehaviorSupportPlan = () => {
                         placeholder="e.g., inappropriate language or gestures, difficulty focusing, aggressive outbursts, non-compliance with classroom rules, excessive talking or interrupting"
                     />
                 </div>
-
-                Field no. 3
 
                 <div className='form-group'>
                     <label htmlFor='additionalInformation'>Additional Information</label>

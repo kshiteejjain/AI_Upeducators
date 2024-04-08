@@ -97,6 +97,7 @@ const OnboardingQuestions = () => {
             <div className='question-container'>
                 <div className='question-side onBoardingQuestions'>
                     <h2>Complete Your Profile</h2>
+                    <p>You are just one step away from using India's first AI platform for educators.</p>
                     <form onSubmit={handleSubmit}>
                         <div className='form-group'>
                             <label htmlFor='name'>Name<span className='asterisk'>*</span></label>

@@ -44,13 +44,13 @@ const TwentyFirstCenturySkillsBasedLessonPlan = () => {
     return (
         <div className="generator-section">
             <h2>21st Century Skills-based Lesson Plan</h2>
-            <h3>This form is designed to help educators create lesson plans that integrate 21st Century Competencies, focusing on fostering critical thinking, creativity, collaboration, and communication among students.</h3>
+            <h3>Create lesson plans focused on developing 21st-century skills such as critical thinking, collaboration, communication, and creativity.</h3>
             <form onSubmit={handleSubmit}>
                 <div className='form-group'>
                     <label htmlFor='gradeLevel'>Grade Level
                         <span className="asterisk">*</span></label>
                     <select
-                        required
+                        required    
                         className='form-control'
                         name="gradeLevel"
                         onChange={handleInputChange}

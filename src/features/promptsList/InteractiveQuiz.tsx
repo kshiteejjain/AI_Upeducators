@@ -10,16 +10,34 @@ const InteractiveQuiz = () => {
     const getInitialFormData = () => ({
         gradeLevel: '',
         subjectTopic: '',
-        questionType: '',
+        questionType: [] as string[],
     });
     const [formData, setFormData] = useState(getInitialFormData);
-    const handleInputChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
-        const { name, value } = e.target;
-        setFormData((prevData) => ({
-            ...prevData,
-            [name]: value,
-        }));
+    
+    const handleInputChange = (e: ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
+        const { name, value, type } = e.target;
+    
+        if (type === 'checkbox') {
+            const checkbox = e.target as HTMLInputElement;
+            if (checkbox.checked) {
+                setFormData((prevData) => ({
+                    ...prevData,
+                    questionType: [...prevData.questionType, value]
+                }));
+            } else {
+                setFormData((prevData) => ({
+                    ...prevData,
+                    questionType: prevData.questionType.filter((item) => item !== value)
+                }));
+            }
+        } else {
+            setFormData((prevData) => ({
+                ...prevData,
+                [name]: value,
+            }));
+        }
     };
+
     const promptMessage = `Generate 10 interactive quiz questions for ${formData.gradeLevel} students on this Subject/Topic: ${formData.subjectTopic}. The question types should be ${formData.questionType}.  
     Add relevant Interactive Elements for example- Images, Videos, Audio Clips, Interactive Diagrams, Graphs, etc for every question. 
     Provide the answer, Interactive Elements, and Immediate Feedback after every question.
@@ -78,19 +96,71 @@ const InteractiveQuiz = () => {
 
                 <div className='form-group'>
                     <label htmlFor='questionType'>Question Type</label>
-                    <div className="checkbox-options">
-                        {["Multiple Choice", "True/False", "Short Answer", "Fill in the Blanks", "Puzzle or Riddle", "Crossword or Word Search", "Rapid-Fire", "Bonus or Tiebreaker"].map(type => (
-                            <div key={type} className="checkbox-option">
-                                <input
-                                    type="checkbox"
-                                    name={type}
-                                    value={type}
-                                    checked={formData.questionType === type}
-                                    onChange={handleInputChange}
-                                />
-                                <label htmlFor={type}>{type}</label>
-                            </div>
-                        ))}
+                    <div className='checkbox-group'>
+                        <label>
+                            <input
+                                type='checkbox'
+                                name='Multiple Choice'
+                                value='Multiple Choice'
+                                onChange={handleInputChange}
+                            /> Multiple Choice
+                        </label>
+                        <label>
+                            <input
+                                type='checkbox'
+                                name='True/False'
+                                value='True/False'
+                                onChange={handleInputChange}
+                            /> True/False
+                        </label>
+                        <label>
+                            <input
+                                type='checkbox'
+                                name='Short Answer'
+                                value='Short Answer'
+                                onChange={handleInputChange}
+                            /> Short Answer
+                        </label>
+                        <label>
+                            <input
+                                type='checkbox'
+                                name='Fill in the Blanks'
+                                value='Fill in the Blanks'
+                                onChange={handleInputChange}
+                            /> Fill in the Blanks
+                        </label>
+                        <label>
+                            <input
+                                type='checkbox'
+                                name='Puzzle or Riddle'
+                                value='Puzzle or Riddle'
+                                onChange={handleInputChange}
+                            /> Puzzle or Riddle
+                        </label>
+                        <label>
+                            <input
+                                type='checkbox'
+                                name='Crossword or Word Search'
+                                value='Crossword or Word Search'
+                                onChange={handleInputChange}
+                            /> Crossword or Word Search
+                        </label>
+                        <label>
+                            <input
+                                type='checkbox'
+                                name='Rapid-Fire'
+                                value='Rapid-Fire'
+                                onChange={handleInputChange}
+                            /> Rapid-Fire
+                        </label>
+                        <label>
+                            <input
+                                type='checkbox'
+                                name='Bonus or Tiebreaker'
+                                value='Bonus or Tiebreaker'
+                                onChange={handleInputChange}
+                            /> Bonus or Tiebreaker
+                        </label>
                     </div>
                 </div>
                 <Button title='Generate' type="submit" />

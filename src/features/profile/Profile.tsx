@@ -72,40 +72,7 @@ const Profile = () => {
                         <p>{Strings.header.email}: {localStorage.getItem('username')}</p>
                         <p>{Strings.header.remainingCredits} {remainingCredits}</p>
                     </div>
-                    <div className='profile-cards'>
-                        <h2> Search History </h2>
-                        <div className='tableWrapper'>
-                            <table className='table'>
-                                <thead>
-                                    <tr>
-                                        <th>Form Name</th>
-                                        <th>Usage</th>
-                                        <th>Date</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    {statsData
-                                        .filter((item) =>
-                                            item.user === localStorage.getItem('username') ?? 'User')
-                                        .map((item, index) => {
-                                            // Split the category name by uppercase letters and join with spaces
-                                            const formattedCategoryName = item.categoryName
-                                                .split(/(?=[A-Z])/)
-                                                .join(' ');
-                                            return (
-                                                <tr key={index}>
-                                                    <td onClick={() => handleTile(item.categoryName)}><span className='link'>{formattedCategoryName}</span></td>
-                                                    <td>{item.count}</td>
-                                                    <td>{item.timeStamp}</td>
-                                                </tr>
-                                            );
-                                        })}
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                </div>
-                <div className='profile-flex'>
+                    
                     <div className='profile-cards'>
                         <h2> Your Profile </h2>
                         <div className='tableWrapper'>
@@ -144,6 +111,40 @@ const Profile = () => {
                                                         <th>Organization</th>
                                                         <td>{item?.organization}</td>
                                                     </tr></React.Fragment>
+                                            );
+                                        })}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <div className='profile-flex'>
+                <div className='profile-cards'>
+                        <h2> Search History </h2>
+                        <div className='tableWrapper'>
+                            <table className='table'>
+                                <thead>
+                                    <tr>
+                                        <th>Form Name</th>
+                                        <th>Usage</th>
+                                        <th>Date</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {statsData
+                                        .filter((item) =>
+                                            item.user === localStorage.getItem('username') ?? 'User')
+                                        .map((item, index) => {
+                                            // Split the category name by uppercase letters and join with spaces
+                                            const formattedCategoryName = item.categoryName
+                                                .split(/(?=[A-Z])/)
+                                                .join(' ');
+                                            return (
+                                                <tr key={index}>
+                                                    <td onClick={() => handleTile(item.categoryName)}><span className='link'>{formattedCategoryName}</span></td>
+                                                    <td>{item.count}</td>
+                                                    <td>{item.timeStamp}</td>
+                                                </tr>
                                             );
                                         })}
                                 </tbody>
