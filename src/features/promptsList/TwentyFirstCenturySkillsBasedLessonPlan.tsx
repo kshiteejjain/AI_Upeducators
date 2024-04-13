@@ -39,8 +39,6 @@ const TwentyFirstCenturySkillsBasedLessonPlan = () => {
         event.preventDefault();
         sendPrompt(dispatch, { input, messages, generatorPrompt, promptMessage });
     };
-
-    console.log('promptMessage', promptMessage)
     return (
         <div className="generator-section">
             <h2>21st Century Skills-based Lesson Plan</h2>

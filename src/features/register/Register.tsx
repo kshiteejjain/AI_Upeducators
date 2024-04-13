@@ -1,5 +1,5 @@
 import { useState, ChangeEvent, FormEvent } from 'react';
-import { firestore, signInWithGooglePopup } from '../../utils/firebase';
+import { firestore, signInWithGooglePopup, } from '../../utils/firebase';
 import { collection, getDocs, where, query, doc, setDoc } from 'firebase/firestore';
 import { useNavigate } from 'react-router-dom';
 import emailjs from '@emailjs/browser';
