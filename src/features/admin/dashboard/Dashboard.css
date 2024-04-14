@@ -37,7 +37,7 @@
     justify-content: space-between;
 }
 .section .tableWrapper {
-    max-height: 450px;
+    max-height: 600px;
     overflow-y: auto;
 }
 .table th, .table td.wrapWord{

@@ -116,7 +116,7 @@ export const fetchAllForms = async (): Promise<any> => {
       timeStamp: doc.data().timeStamp,
       thumbnailPath: doc.data().name,
       likes: doc.data().likes,
-      dislike: doc.data().dislike
+      dislikes: doc.data().dislikes
     }));
     return categoryData;
   } catch (error) {

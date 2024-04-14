@@ -20,7 +20,7 @@ type UserDocumentData = {
     usageCountBase?: number
     timeStamp? : string
     likes? : number,
-    dislike? : number,
+    dislikes? : number,
 };
 
 const FormsList = () => {
@@ -112,7 +112,7 @@ const FormsList = () => {
                             <th>Created At</th>
                             <th>Bookmarked</th>
                             <th>Likes</th>
-                            <th>Dislike</th>
+                            <th>Dislikes</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -149,7 +149,7 @@ const FormsList = () => {
                                     <td>{item?.timeStamp}</td>
                                     <td>{item?.isBookmarked ? 'Yes' : 'No'}</td>
                                     <td>{item?.likes}</td>
-                                    <td className='text-red'>{item?.dislike}</td>
+                                    <td className='text-red'>{item?.dislikes}</td>
                                 </tr>
                             ))}
                     </tbody>
