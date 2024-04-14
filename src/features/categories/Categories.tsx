@@ -71,7 +71,8 @@ const Categories = () => {
         dispatch(resetGeneratedData())
     }, [filterCategory]);
 
-    const handleTile = (redirect?: string) => {
+    const handleTile = (redirect?: string, name?: string) => {
+        localStorage.setItem('curForm', name)
         if (redirect) {
             dispatch(setCategory(redirect));
             navigate('/GeneratorAndResult')
@@ -127,7 +128,7 @@ const Categories = () => {
                                     <CategoryTiles
                                         key={index}
                                         title={item && item.name}
-                                        onClick={() => handleTile(item && item.redirect)}
+                                        onClick={() => handleTile(item && item.redirect, item.name)}
                                         tilesIcon={item && item.IconComponent}
                                         categoryAlt={item && item.name}
                                         description={item && item.description}

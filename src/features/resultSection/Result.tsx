@@ -4,14 +4,13 @@ import { useDispatch, useSelector } from 'react-redux';
 import { sendPrompt } from '../../utils/sendPrompt';
 import Button from '../../components/buttons/Button';
 import NoDataFoundImage from '../../assets/no-data-found.svg';
-import ThumbsUp from '../../assets/thumb-up.svg';
 import CopyClipboard from '../../assets/copyClipboard.svg';
 import mp3Sound from '../../assets/result-audio.mp3';
 import Loader from '../../components/loader/Loader';
 import { getFollowupPrompts } from '../../utils/followupPromptsService';
+import ResponseFeedback from '../responseFeedback/responseFeedback';
 
 import './Result.css';
-import { collection, doc, getDocs, getFirestore, query, setDoc, updateDoc, where } from 'firebase/firestore';
 
 type RootState = {
   generatorData: {
@@ -188,10 +187,7 @@ const Result = () => {
 
       </div>
       {generatedData && getFollowPrompt.length !== 0 && !generatedImage && (
-        <div className="response-feedback">
-          <img src={ThumbsUp} alt='Like Response' title='Like Response' />
-          <img src={ThumbsUp} alt='Need Improvement' title='Need Improvement' />
-        </div>
+        <ResponseFeedback />
       )}
       {generatedData && getFollowPrompt.length !== 0 && !generatedImage && (
         <div className="followup-prompts">

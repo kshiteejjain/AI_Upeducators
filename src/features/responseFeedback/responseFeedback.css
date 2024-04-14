@@ -1,0 +1,24 @@
+.response-feedback{
+    display: flex;
+    justify-content: flex-end;
+    padding: 0 1rem;
+}
+.response-feedback img{
+    max-width: 25px;
+    margin-left: 1rem;
+    cursor: pointer;
+    filter: grayscale(1);
+}
+
+.response-feedback img:nth-child(2){
+    transform: rotate(180deg);
+    opacity: 0.4;
+}
+.response-feedback img:nth-child(1):hover{
+    opacity: 1;
+    filter: grayscale(0);
+}
+.response-feedback img:nth-child(2):hover{
+    opacity: 0.8;
+    filter: grayscale(0);
+}
