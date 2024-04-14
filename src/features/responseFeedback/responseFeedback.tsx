@@ -53,8 +53,6 @@ const responseFeedback = () => {
             const currentDislikes = document.data().dislikes ? document.data().dislikes + 1 : 1;
             await updateDoc(doc(firestore, 'FormsList', document.id), {
                 dislikes: currentDislikes
-            }).then(() => {
-                console.log("Dislikes updated to:", currentDislikes);  // Confirm update was successful
             }).catch((error) => {
                 console.error("Error updating dislikes:", error);  // Log any errors during update
             });
