@@ -9,6 +9,7 @@ import { fetchAllForms } from '../../utils/firebaseUtils';
 import CategoriesFilter from '../categoriesFilter/CategoriesFilter';
 import Strings from '../../utils/en';
 import BannerCarousel from '../../components/bannerCarousel/bannerCarousel';
+import tick from "../../assets/tick.svg"
 
 import './Categories.css';
 
@@ -27,6 +28,12 @@ const Categories = () => {
     });
     const [searchTerm, setSearchTerm] = useState('');
     const [isSearchFocused, setIsSearchFocused] = useState(false);
+    const [isBoardForms, setIsBoardForms] = useState(false);
+    const [formData, setFormData] = useState({
+        gradeLevel: localStorage.getItem('gradeLevel') || '',
+        subject: localStorage.getItem('subject') || '',
+        chapter: localStorage.getItem('chapter') || '',
+    });
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const getIconPath = async (iconPath: string) => {
@@ -94,6 +101,29 @@ const Categories = () => {
         setIsSearchFocused(false);
     };
 
+    const handleBoardForms = () => {
+        setIsBoardForms(prev => !prev)
+    }
+
+    const handleInputChange = (event) => {
+        const { name, value } = event.target;
+
+        // Update the formData state and save the new state to localStorage
+        setFormData(prevFormData => {
+            const updatedFormData = {
+                ...prevFormData,
+                [name]: value
+            };
+
+            // Serialize and save the updated form data to localStorage
+            localStorage.setItem('boardFormData', JSON.stringify(updatedFormData));
+
+            return updatedFormData;
+        });
+    };
+
+
+
     return (
         <>
             <Header />
@@ -102,18 +132,77 @@ const Categories = () => {
                 <div className='container'>
                     <CategoriesFilter onSelect={handleCategorySelect} />
                     <div className='category-listing-wrapper'>
-                        <div className='search-wrapper'>
-                            <label>{Strings.categories.searchCategories}</label>
-                            <input
-                                type="search"
-                                placeholder="Type your search..."
-                                value={searchTerm}
-                                onChange={handleSearch}
-                                onFocus={handleSearchFocus}
-                                onBlur={handleSearchBlur}
-                                className='form-control'
-                            />
+                        <div className='additional-filter-parent'>
+                            <div className='additional-filters'>
+                                <button onClick={handleBoardForms}> {Strings.categories.searchCategories} {isBoardForms && <img src={tick} />} </button>
+                            </div>
+                            <div className='search-wrapper'>
+                                <input
+                                    type="search"
+                                    placeholder="Type your search..."
+                                    value={searchTerm}
+                                    onChange={handleSearch}
+                                    onFocus={handleSearchFocus}
+                                    onBlur={handleSearchBlur}
+                                    className='form-control'
+                                />
+                            </div>
                         </div>
+                        {isBoardForms &&
+                            <form className='board-forms-prefix'>
+                                <div className='form-group'>
+                                    <label htmlFor='gradeLevel'>Grade Level
+                                        <span className="asterisk">*</span></label>
+                                    <select
+                                        required
+                                        className='form-control'
+                                        name="gradeLevel"
+                                        onChange={handleInputChange}
+                                        value={formData.gradeLevel}
+                                        placeholder="Select the grade level for which the questions are being created">
+                                        <option value="">Select the grade</option>
+                                        <option value="6th-Grade">6th Grade</option>
+                                        <option value="7th-Grade">7th Grade</option>
+                                    </select>
+                                </div>
+
+                                <div className='form-group'>
+                                    <label htmlFor='subject'>Subject
+                                        <span className="asterisk">*</span></label>
+                                    <select
+                                        required
+                                        className='form-control'
+                                        name="subject"
+                                        onChange={handleInputChange}
+                                        value={formData.subject}
+                                        placeholder="Select Subject">
+                                        <option value="">Select the subject</option>
+                                        <option value="Science">Science</option>
+                                        <option value="Mathematics">Mathematics</option>
+                                    </select>
+                                </div>
+
+                                <div className='form-group'>
+                                    <label htmlFor='chapter'>Chapter
+                                        <span className="asterisk">*</span></label>
+                                    <select
+                                        required
+                                        className='form-control'
+                                        name="chapter"
+                                        onChange={handleInputChange}
+                                        value={formData.chapter}
+                                        placeholder="Select the relevant chapter name">
+                                        <option value="">Select the chapter</option>
+                                        <option value="Chapter 1">Chapter 1</option>
+                                        <option value="Chapter 2">Chapter 2</option>
+                                        <option value="Chapter 3">Chapter 3</option>
+                                        <option value="Chapter 4">Chapter 4</option>
+                                        <option value="Chapter 5">Chapter 5</option>
+                                    </select>
+                                </div>
+                            </form>
+                        }
+
                         <div className='category-listing'>
                             {categories
                                 .filter(item => {

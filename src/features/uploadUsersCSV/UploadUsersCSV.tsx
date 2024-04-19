@@ -59,7 +59,7 @@ const UploadUsersCSV: React.FC<UploadUsersCSVProps> = (): ReactElement => {
             );
             alert('Data uploaded to Firestore successfully!');
         } catch (error) {
-            alert('Error uploading data to Firestore:', error);
+            alert(`Error uploading data to Firestore:, ${error}`);
         }
     };
 
@@ -76,7 +76,6 @@ const UploadUsersCSV: React.FC<UploadUsersCSVProps> = (): ReactElement => {
         const dataRows = csvData?.slice(1);
         const formattedData = dataRows?.map((row) => {
             const document: Record<string, string | number | boolean | any[]> = {};
-            let documentId: string | null = null; // Initialize documentId variable
 
             row.forEach((value, index) => {
                 switch (headers[index]) {
@@ -109,13 +108,18 @@ const UploadUsersCSV: React.FC<UploadUsersCSVProps> = (): ReactElement => {
                         break;
                     case 'Name':
                         document['name'] = value;
-                        documentId = value; // Assign value to documentId
                         break;
                     case 'Followup Prompts':
                         document['followupPrompts'] = value.split(',').map(item => item.trim());
                         break;
                     case 'Keyword':
                         document['keyword'] = value.split(/[?,]/).map(item => item.trim());
+                        break;
+                    case 'Likes':
+                        document['likes'] = isNaN(Number(value)) ? null : Number(value);
+                        break;
+                    case 'Dislikes':
+                        document['dislikes'] = isNaN(Number(value)) ? null : Number(value);
                         break;
                     default:
                         document[headers[index]] = value;
@@ -130,28 +134,28 @@ const UploadUsersCSV: React.FC<UploadUsersCSVProps> = (): ReactElement => {
         try {
             const collectionRef = collection(firestore, 'FormsList');
             const existingUsers = await getDocs(collectionRef);
-            const duplicateNames = formattedData
-                .map((item) => item['name'])
-                .filter((name) => existingUsers.docs.some((doc) => doc.id === name));
-            if (duplicateNames.length > 0) {
-                alert(`Duplicate names found: ${duplicateNames.join(', ')}`);
-                return;
-            }
-        
-            // Add data to Firestore
+
+            // Prepare data to be uploaded
             await Promise.all(
                 formattedData.map(async (item) => {
                     const docRef = doc(collectionRef, item['name']); // Using document['name'] as document id
-                    await setDoc(docRef, item);
+                    // Check if the document already exists
+                    if (existingUsers.docs.some((doc) => doc.id === item['name'])) {
+                        // Document exists, update it
+                        await setDoc(docRef, item, { merge: true });
+                    } else {
+                        // Document does not exist, create new
+                        await setDoc(docRef, item);
+                    }
                 })
             );
-            alert('Data uploaded to Firestore successfully!');
+            alert('Data uploaded to Firestore successfully! Existing entries were updated.');
         } catch (error) {
             console.error('Error uploading data:', error);
-            alert(error)
+            alert(error);
             // Handle error
         }
-        
+
     };
 
 
@@ -160,24 +164,26 @@ const UploadUsersCSV: React.FC<UploadUsersCSVProps> = (): ReactElement => {
     return (
         <>
             <Header />
-            <div className="uploadForm">
-                <h2>Upload Existing Users to Firebase</h2>
-                <p>
-                    Prior to uploading users' data in CSV format, kindly ensure that the existing data is cleared to prevent duplication.
-                </p>
-                <div className="form-group">
-                    <CSVReader onFileLoaded={handleCSVRead} />
+            <div className='uploadFormWrapper'>
+                <div className="uploadForm">
+                    <h2>Upload Bulk Users</h2>
+                    <p>
+                        Prior to uploading users' data in CSV format, kindly ensure that the existing data is cleared to prevent duplication.
+                    </p>
+                    <div className="form-group">
+                        <CSVReader onFileLoaded={handleCSVRead} />
+                    </div>
+                    <Button title="Upload Data" type="button" onClick={uploadUsersToFirestore} />
+                    <Button isSecondary title="Go to Categories" type="button" onClick={goHome} />
                 </div>
-                <Button title="Upload Data" type="button" onClick={uploadUsersToFirestore} />
-                <Button isSecondary title="Go to Categories" type="button" onClick={goHome} />
-            </div>
-            <div className="uploadForm">
-                <h2>Upload Forms to Firebase</h2>
-                <div className="form-group">
-                    <CSVReader onFileLoaded={handleCSVRead} />
+                <div className="uploadForm">
+                    <h2>Upload Forms to Firebase</h2>
+                    <div className="form-group">
+                        <CSVReader onFileLoaded={handleCSVRead} />
+                    </div>
+                    <Button title="Upload Data" type="button" onClick={uploadFormsToFirestore} />
+                    <Button isSecondary title="Go to Categories" type="button" onClick={goHome} />
                 </div>
-                <Button title="Upload Data" type="button" onClick={uploadFormsToFirestore} />
-                <Button isSecondary title="Go to Categories" type="button" onClick={goHome} />
             </div>
         </>
     );

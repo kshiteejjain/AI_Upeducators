@@ -18,9 +18,9 @@ type UserDocumentData = {
     keyword?: string,
     usageCount?: number;
     usageCountBase?: number
-    timeStamp? : string
-    likes? : number,
-    dislikes? : number,
+    timeStamp?: string
+    likes?: number,
+    dislikes?: number,
 };
 
 const FormsList = () => {
@@ -59,7 +59,7 @@ const FormsList = () => {
                 'Created At': form.timeStamp || '', // Include Created At field
                 Bookmarked: form.isBookmarked ? 'Yes' : 'No',
                 'Likes': form.likes,
-                'Dislike': form.dislike,
+                'Dislikes': form.dislikes
             }));
             const ws = XLSX.utils.json_to_sheet(flattenedformData, { header: Object.keys(flattenedformData[0]) });
             // Auto-size columns
@@ -72,10 +72,10 @@ const FormsList = () => {
             console.error('Error exporting to Excel:', error);
         }
     };
-    
-    
-    
-    const handleSearchChange = (e:any) => {
+
+
+
+    const handleSearchChange = (e: any) => {
         setSearchTerm(e.target.value);
     };
 
@@ -117,7 +117,11 @@ const FormsList = () => {
                     </thead>
                     <tbody>
                         {formData
-                        .sort((a, b) => a.id - b.id)
+                            .filter((form) =>
+                                form.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                                form.categoryName.toLowerCase().includes(searchTerm.toLowerCase())
+                            )
+                            .sort((a, b) => a.id - b.id)
                             .map((item, index) => (
                                 <tr key={index}>
                                     <td>{item?.id}</td>

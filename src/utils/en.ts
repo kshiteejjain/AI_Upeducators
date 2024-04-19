@@ -39,7 +39,7 @@ const Strings = {
     },
     categories: {
         Favorite: 'Bookmark',
-        searchCategories: 'Search Forms',
+        searchCategories: 'Board Wise Forms',
         usedBy: 'Used By:',
         people: 'People'
     },

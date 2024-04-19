@@ -17,25 +17,24 @@ type GradeData = {
     [gradeLevel: string]: SubjectData;
 };
 
-type BoardForms = {
-    CBSEForms: GradeData;
-};
-
-
 
 const CBSECustomQuestions = () => {
     const { generatorData: { messages, input } } = useSelector((state) => state);
     const dispatch = useDispatch();
 
-    const getInitialFormData = () => ({
-        gradeLevel: '',
-        subject: '',
-        questionType: '',
-        chapter: '',
-        difficultyLevel: [] as string[],
-        contextPreference: '',
-        additionalDetails: '',
-    });
+    const getInitialFormData = () => {
+        const storedData = localStorage.getItem('boardFormData');
+        const defaultData = {
+            gradeLevel: '',
+            subject: '',
+            questionType: '',
+            chapter: '',
+            difficultyLevel: [] as string[],
+            contextPreference: '',
+            additionalDetails: '',
+        };
+        return storedData ? JSON.parse(storedData) : defaultData;
+    };
 
     const [formData, setFormData] = useState(getInitialFormData);
     const [boardWiseSelectedData, setBoardWiseSelectedData] = useState('');
@@ -65,27 +64,40 @@ const CBSECustomQuestions = () => {
 
     const handleInputChange = (e: ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
         const { name, value, type } = e.target;
-
+    
         if (type === 'checkbox') {
             const checkbox = e.target as HTMLInputElement;
             if (checkbox.checked) {
-                setFormData((prevData) => ({
-                    ...prevData,
-                    difficultyLevel: [...prevData.difficultyLevel, value]
-                }));
+                setFormData((prevData) => {
+                    const updatedData = {
+                        ...prevData,
+                        difficultyLevel: [...prevData.difficultyLevel, value]
+                    };
+                    localStorage.setItem('boardFormData', JSON.stringify(updatedData));
+                    return updatedData;
+                });
             } else {
-                setFormData((prevData) => ({
-                    ...prevData,
-                    difficultyLevel: prevData.difficultyLevel.filter((item) => item !== value)
-                }));
+                setFormData((prevData) => {
+                    const updatedData = {
+                        ...prevData,
+                        difficultyLevel: prevData.difficultyLevel.filter((item) => item !== value)
+                    };
+                    localStorage.setItem('boardFormData', JSON.stringify(updatedData));
+                    return updatedData;
+                });
             }
         } else {
-            setFormData((prevData) => ({
-                ...prevData,
-                [name]: value,
-            }));
+            setFormData((prevData) => {
+                const updatedData = {
+                    ...prevData,
+                    [name]: value,
+                };
+                localStorage.setItem('boardFormData', JSON.stringify(updatedData));
+                return updatedData;
+            });
         }
     };
+    
 
 
     const promptMessage = `Generate 10 ${formData.questionType} questions for ${formData.gradeLevel} on ${formData.chapter}.
@@ -93,14 +105,15 @@ const CBSECustomQuestions = () => {
     
     ${boardWiseSelectedData}
     
-    The questions should be framed within the context of ${formData.contextPreference} at a ${formData.difficultyLevel.join(', ')} difficulty level. 
+    The questions should be framed within the context of ${formData.contextPreference} at a ${formData.difficultyLevel} difficulty level. 
     Also, consider these additional details: ${formData.additionalDetails}.
     `;
 
     const handleSubmit = (event: React.SyntheticEvent<HTMLFormElement>) => {
         event.preventDefault(); 
         sendPrompt(dispatch, { input, messages, generatorPrompt, promptMessage });
-        setPromptMessageView(promptMessage)
+        setPromptMessageView(promptMessage);
+        localStorage.removeItem('boardFormData');
     };
 
     return (
