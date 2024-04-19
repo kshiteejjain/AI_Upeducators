@@ -194,6 +194,12 @@ const Register = () => {
             if (!email) {
                 throw new Error('User email not found');
             }
+
+            let updatedFormData = {
+                ...initialFormData,  // Ensure default values are set
+                email: user.email,  // Store the user email from Google
+                name: user.displayName  // Optionally store the user's display name
+            };
     
             let plan = '';
             // Determine plan based on email
@@ -220,21 +226,17 @@ const Register = () => {
                 navigate('/');
                 return;
             }
+            updatedFormData.plan = plan;
             // Generate OTP and store it temporarily
             const otp = generateOTP();
             localStorage.setItem('otp_temp', otp);
-            // Update formData with plan and other details
-            const updatedFormData = {
-                ...formData,
-                plan: plan,
-            };
     
             setEnteredEmail(email);
             setIsOTPScreen(true);
             setLoading(false);
             setFormData(updatedFormData);
             await setDoc(doc(collection(firestore, 'RegisteredUsers'), email), { ...updatedFormData });
-            await sendEmail(email, otp);
+            //await sendEmail(email, otp);
         } catch (error) {
             setError('An error occurred. Please try again.');
             console.error('Error logging in with Google:', error);
