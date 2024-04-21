@@ -1,5 +1,6 @@
 import { collection, getDocs, query, where, DocumentData, QuerySnapshot, updateDoc } from 'firebase/firestore';
 import { firestore } from './firebase';
+import  googleLogo from '../assets/google.svg';
 type UserDocumentData = {
   total_credits?: number;
   remain_credits?: number;
@@ -138,12 +139,19 @@ export const fetchAllUserData = async (firestore: Firestore): Promise<UserDocume
       name: doc.data().name,
       email: doc.data().email,
       phone: doc.data().phone,
+      plan: doc.data().plan,
       isActiveUser: doc.data().isActiveUser,
       isAdmin: doc.data().isAdmin,
+      isFreeUser: doc.data().isFreeUser,
+      isPrePaidUser: doc.data().isPrePaidUser,
+      expiry: doc.data().expiry,
       register_timestamp: doc.data().register_timestamp,
       password: doc.data().password,
       remain_credits: doc.data().remain_credits || 0,
       total_credits: doc.data().total_credits || 0,
+      campaignName: doc.data().campaignName || 'NA',
+      campaignMedium: doc.data().campaignMedium || 'NA',
+      campaignSource: doc.data().campaignSource || 'NA',
     }));
     return userData;
   } catch (error) {

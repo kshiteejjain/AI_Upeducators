@@ -55,7 +55,7 @@ const Header = ({ isLoginPage, moreOptions = true }: Props) => {
         const loggedInUserEmail = localStorage.getItem('username');
         const loggedInUser = usersData.find(user => user.email === loggedInUserEmail);
 
-        const registrationTimestamp = loggedInUser?.register_timestamp;
+        const registrationTimestamp = loggedInUser?.expiry;
 
         if (registrationTimestamp) {
           const registrationDate = new Date(registrationTimestamp);
@@ -68,7 +68,7 @@ const Header = ({ isLoginPage, moreOptions = true }: Props) => {
 
           // If currentDate and registrationDate are the same day, don't mark as expired
           if (!isSameDay) {
-            setIsExpire(!(currentDate < registrationDate));
+            setIsExpire(!(currentDate < expiry));
           }
         } else {
           console.log('Registration timestamp not available.');

@@ -3,7 +3,7 @@ import { HashRouter as Router, Routes, Route, useNavigate } from 'react-router-d
 import GeneratorAndResult from './features/generatorAndResult/GeneratorAndResult';
 import Login from './features/login/Login';
 import Categories from './features/categories/Categories';
-import UploadUsersCSV from './features/uploadUsersCSV/UploadUsersCSV';
+import BulkUpload from './features/bulkUpload/Index';
 import ContactUs from './features/contactUs/ContactUs';
 import FreeTrial from './features/freeTrial/FreeTrial';
 import ForgotPassword from './features/forgotPassword/ForgotPassword';
@@ -46,7 +46,7 @@ function MainApp({ isLoggedIn }: Props) {
           <Route path="/" element={<Login />} />
           <Route path="/Categories" element={<Categories />} />
           <Route path="/GeneratorAndResult" element={<GeneratorAndResult />} />
-          <Route path="/UploadUsersCSV" element={<UploadUsersCSV />} />
+          <Route path="/BulkUpload" element={<BulkUpload />} />
           <Route path="/ContactUs" element={<ContactUs />} />
           <Route path="/Dashboard" element={<Dashboard />} />
           <Route path="/Profile" element={<Profile />} />

@@ -35,7 +35,7 @@
     margin-right: 1rem;
 }
 .tiles h1{
-    font-size: calc(var(--baseFontSize) - 2px);
+    font-size: calc(var(--baseFontSize) - 1px);
     font-weight: bold;
     text-align: left;
     text-transform: capitalize;
@@ -48,7 +48,7 @@
     box-sizing: border-box;
 }
 .tiles p{
-    font-size: calc(var(--baseFontSize) - 2px);
+    font-size: calc(var(--baseFontSize) - 1px);
     text-align: left;
     margin: 0;
     color: var(--darkGray);

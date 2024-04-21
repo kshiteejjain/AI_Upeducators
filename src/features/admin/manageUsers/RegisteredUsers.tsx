@@ -1,4 +1,4 @@
-import { SetStateAction, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import * as XLSX from 'xlsx';
 import { fetchAllUserData } from '../../../utils/firebaseUtils';
 import { firestore } from '../../../utils/firebase';
@@ -12,14 +12,22 @@ type UserDocumentData = {
     email: string;
     password: string;
     phone: number;
+    plan: string,
     total_credits: number;
     remain_credits: number;
     access_duration_days: number;
+    expiry: string; // Assuming 'Expiry Date' is stored as a string
     credits_limit_perday: number;
     isActiveUser: boolean;
     isAdmin: boolean;
+    isFreeUser: boolean;
+    isPrePaidUser: boolean,
     register_timestamp: string;
+    campaignName: string; // Assuming 'Campaign Name' is a string
+    campaignMedium: string; // Assuming 'Campaign Medium' is a string
+    campaignSource: string; // Assuming 'Campaign Source' is a string
 };
+
 
 const RegisteredUsers = () => {
     const [userData, setUserData] = useState<UserDocumentData[]>([]);
@@ -98,17 +106,24 @@ const RegisteredUsers = () => {
         try {
             // Flatten user data for better export
             const flattenedUserData = userData.map(user => ({
-                Name: user.name,
-                Email: user.email,
-                Password: user.password,
-                Phone: user.phone,
-                'Total Credits': user.total_credits,
-                'Remaining Credits': user.remain_credits,
-                'Access Duration': user.access_duration_days,
-                'Credits Limit Perday': user.credits_limit_perday,
-                'Is Active User': user.isActiveUser ? 'Yes' : 'No',
-                'Is Admin': user.isAdmin ? 'Yes' : 'No',
-                'Date of Registration': user.register_timestamp,
+                'Name': user.name,
+            'Email': user.email,
+            'Password': user.password,
+            'Phone': user.phone,
+            'Plan': user.plan,
+            'Total Credits': user.total_credits,
+            'Remaining Credits': user.remain_credits,
+            'Access Duration': user.access_duration_days,
+            'Expiry Date': user.expiry,
+            'Limit Perday': user.credits_limit_perday,
+            'Is Active User': user.isActiveUser ? 'Yes' : 'No',
+            'Is Admin': user.isAdmin ? 'Yes' : 'No',
+            'Is Free User': user.isFreeUser ? 'Yes' : 'No',
+            'Is Pre Paid User': user.isPrePaidUser ? 'Yes' : 'No',
+            'Date of Registration': user.register_timestamp,
+            'Campaign Name': user.campaignName,
+            'Campaign Medium': user.campaignMedium,
+            'Campaign Source': user.campaignSource,
             }));
             const ws = XLSX.utils.json_to_sheet(flattenedUserData, { header: Object.keys(flattenedUserData[0]) });
             // Auto-size columns
@@ -150,14 +165,20 @@ const RegisteredUsers = () => {
                                     <th>Email</th>
                                     <th>Password</th>
                                     <th>Phone</th>
+                                    <th>Plan</th>
                                     <th>Total Credits</th>
                                     <th>Remaining Credits</th>
                                     <th>Access Duration</th>
                                     <th>Expiry Date</th>
-                                    <th>Credits Limit Perday</th>
+                                    <th>Limit Perday</th>
                                     <th>Is Active User</th>
                                     <th>Is Admin</th>
+                                    <th>Is Free User</th>
+                                    <th>Is Pre Paid User</th>
                                     <th>Date of Registration</th>
+                                    <th>Campaign Name</th>
+                                    <th>Campaign Medium</th>
+                                    <th>Campaign Source</th>
                                     <th>Actions</th>
                                 </tr>
                             </thead>
@@ -218,6 +239,7 @@ const RegisteredUsers = () => {
                                                     user.phone
                                                 )}
                                             </td>
+                                            <td><strong>{user.plan}</strong></td>
                                             <td>{editingUser && editingUser.email === user.email ? (
                                                 <input
                                                     type="number"
@@ -260,6 +282,7 @@ const RegisteredUsers = () => {
                                             ) : (
                                                 user.access_duration_days
                                             )}</td>
+                                            <td>{user.expiry}</td>
                                             <td>{editingUser && editingUser.email === user.email ? (
                                                 <input
                                                     type="text"
@@ -310,14 +333,19 @@ const RegisteredUsers = () => {
                                                     user.isAdmin ? <strong className='cellHighlight blue'>Yes</strong> : 'No'
                                                 )}
                                             </td>
+                                            <td> {user.isFreeUser ? 'Yes' : 'No'} </td>
+                                            <td>{user.isPrePaidUser ? 'Yes' : 'No'}</td>
                                             <td>{user.register_timestamp}</td>
+                                            <td>{user.campaignName}</td>
+                                            <td>{user.campaignMedium}</td>
+                                            <td>{user.campaignSource}</td>
                                             <td>
                                                 {editingUser && editingUser.email === user.email ? (
                                                     <Button title='Save' isSecondary onClick={() => handleSaveClick()} />
                                                 ) : (
-                                                    <Button title='Edit User' isSecondary onClick={() => handleEditClick(user)} />
+                                                    <Button title='Edit' isSecondary onClick={() => handleEditClick(user)} />
                                                 )}
-                                                <Button title='Delete User' isSecondary isDangerous onClick={() => handleDeleteClick(user)} />
+                                                <Button title='Delete' isSecondary isDangerous onClick={() => handleDeleteClick(user)} />
                                             </td>
                                         </tr>
                                     ))}

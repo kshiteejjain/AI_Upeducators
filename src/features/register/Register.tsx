@@ -1,4 +1,4 @@
-import { useState, ChangeEvent, FormEvent } from 'react';
+import { useState, ChangeEvent, FormEvent, useEffect } from 'react';
 import { firestore, signInWithGooglePopup, } from '../../utils/firebase';
 import { collection, getDocs, where, query, doc, setDoc } from 'firebase/firestore';
 import { useNavigate } from 'react-router-dom';
@@ -17,6 +17,7 @@ const Register = () => {
     const currentDateTime = new Date();
     currentDateTime.setDate(currentDateTime.getDate() + 365)
     const formattedDateTime = currentDateTime.toISOString().split('T')[0];
+    const registerDate = new Date().toISOString().split('T')[0];
     const initialFormData = {
         name: '',
         email: '',
@@ -28,7 +29,8 @@ const Register = () => {
         credits_limit_perday: 50,
         isActiveUser: true,
         isAdmin: false,
-        register_timestamp: formattedDateTime,
+        expiry: formattedDateTime,
+        register_timestamp: registerDate,
         isFreeUser: false,
         isPrePaidUser: false,
         campaignName: '',
@@ -43,6 +45,44 @@ const Register = () => {
     const [loading, setLoading] = useState(false);
     const [formData, setFormData] = useState(initialFormData)
     const navigate = useNavigate();
+
+
+    const fetchPaidUserData = async () => {
+        setLoading(true);
+        try {
+            const q = query(
+                collection(firestore, "AIUpEducatorsPaidUsers"),
+                where("payload.payment.entity.notes.email", "!=", null) // Adjust this condition as necessary
+            );
+            const querySnapshot = await getDocs(q);
+            if (!querySnapshot.empty) {
+                const userData = querySnapshot.docs.map(doc => {
+                    const data = doc.data();
+                    return {
+                        name: data.payload.payment.entity.notes.name,
+                        email: data.payload.payment.entity.notes.email,
+                        phone: data.payload.payment.entity.notes.phone,
+                    };
+                })[0]; // Assuming you need the first result
+                setFormData(prev => ({
+                    ...prev,
+                    ...userData,
+                    name: userData.name,
+                    email: userData.email,
+                    phone: userData.phone
+                }));
+            }
+        } catch (error) {
+            console.error("Failed to fetch user data:", error);
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    useEffect(() => {
+        fetchPaidUserData();
+    }, []); 
+
     const handleTogglePasswordVisibility = () => {
         setShowPassword(!showPassword);
     };
@@ -75,7 +115,7 @@ const Register = () => {
         );
         return !paidUsersSnapshot.empty;
     };
-    
+
 
     const isEmailRegistered = async (email: string) => {
         const querySnapshot = await getDocs(
@@ -105,7 +145,7 @@ const Register = () => {
             if (!formData.email) {
                 throw new Error('Email is required.');
             }
-    
+
             let plan = '';
             // Determine plan based on email
             if (await isEmailInPaidUsers(formData.email, 'Silver')) {
@@ -149,7 +189,7 @@ const Register = () => {
             console.error('Error submitting form:', error);
         }
     };
-    
+
     const handleInputChangeOTP = (e: ChangeEvent<HTMLInputElement>) => {
         const enteredValue = e.target.value;
         if (/^\d{0,6}$/.test(enteredValue)) {
@@ -194,29 +234,32 @@ const Register = () => {
             if (!email) {
                 throw new Error('User email not found');
             }
-
-            let updatedFormData = {
-                ...initialFormData,  // Ensure default values are set
-                email: user.email,  // Store the user email from Google
-                name: user.displayName  // Optionally store the user's display name
-            };
-    
             let plan = '';
+            let totalCredits = 0;
+            let remainCredits = 0;
             // Determine plan based on email
             if (await isEmailInPaidUsers(email, 'Silver')) {
                 plan = 'Silver';
-                formData.total_credits += 1500;
-                formData.remain_credits += 1500;
+                totalCredits = 1500;
+                remainCredits = 1500;
             } else if (await isEmailInPaidUsers(email, 'Platinum')) {
                 plan = 'Platinum';
-                formData.total_credits = 4000;
-                formData.remain_credits = 4000;
+                totalCredits = 4000;
+                remainCredits = 4000;
             }
+            let updatedFormData = {
+                ...initialFormData,
+                email: user.email,
+                name: user.displayName,
+                plan: plan,
+                total_credits: totalCredits,
+                remain_credits: remainCredits
+            };
             // Check if the email is in the paid users collection
             const isPaidUser = await isEmailInPaidUsers(email, plan);
             if (!isPaidUser) {
                 alert("You are not a subscriber. Please choose a plan. Redirecting to our plans.");
-                window.location.href = 'https://upeducators.ai/';
+                window.location.href = 'https://upeducators.ai/pricing';
                 return;
             }
             // Check if the email is already registered
@@ -230,7 +273,7 @@ const Register = () => {
             // Generate OTP and store it temporarily
             const otp = generateOTP();
             localStorage.setItem('otp_temp', otp);
-    
+
             setEnteredEmail(email);
             setIsOTPScreen(true);
             setLoading(false);
@@ -242,7 +285,7 @@ const Register = () => {
             console.error('Error logging in with Google:', error);
         }
     };
-    
+
 
 
     return (
@@ -275,15 +318,15 @@ const Register = () => {
                         <form onSubmit={formSubmit}>
                             <div className='form-group'>
                                 <label htmlFor='name'>Name <span className='asterisk'>*</span></label>
-                                <input type='text' required className='form-control' name='name' onChange={handleInputChange} value={formData.name} placeholder='Enter Name' />
+                                <input type='text' required className='form-control' name='name' onChange={handleInputChange} value={formData.name} placeholder='Enter Name' disabled={!!formData.name} />
                             </div>
                             <div className='form-group'>
                                 <label htmlFor='email'>Email <span className='asterisk'>*</span></label>
-                                <input type='email' required className='form-control' name='email' onChange={handleInputChange} value={formData.email} placeholder=' Enter Email' />
+                                <input type='email' required className='form-control' name='email' onChange={handleInputChange} value={formData.email} placeholder=' Enter Email' disabled={!!formData.email}/>
                             </div>
                             <div className='form-group'>
                                 <label htmlFor='phone'>Phone <span className='asterisk'>*</span></label>
-                                <input type='tel' required className='form-control' name='phone' onChange={handleInputChange} value={formData.phone} placeholder='Enter Phone' />
+                                <input type='tel' required className='form-control' name='phone' onChange={handleInputChange} value={formData.phone} placeholder='Enter Phone' disabled={!!formData.phone}/>
                             </div>
                             <div className='form-group'>
                                 <label htmlFor='password'>Password <span className='asterisk'>*</span></label>

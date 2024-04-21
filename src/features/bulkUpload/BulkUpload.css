@@ -22,3 +22,19 @@
 .uploadForm button{
     margin-right: 2rem;
 }
+.uploadFormWrapper .no-access {
+    background-color: var(--white);
+    width: 100%;
+    display: flex;
+    min-height: 300px;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    padding: 50px 0;
+}
+.uploadFormWrapper .no-access h2{
+    color: var(--error);
+}
+.uploadFormWrapper .no-access img{
+    max-width: 300px;
+}

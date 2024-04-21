@@ -15,7 +15,7 @@
 .chipList li {
     cursor: pointer;
     border-bottom: 1px solid var(--gray);
-    font-size: calc(var(--baseFontSize) - 2px);
+    font-size: calc(var(--baseFontSize) - 1px);
     display: flex;
     align-items: center;
     flex-wrap: wrap;
@@ -49,8 +49,8 @@
 }
 .subCategories span {
     display: block;
-    font-size: calc(var(--baseFontSize) - 3px);
-    padding: 0 4px 4px 4px;
+    font-size: calc(var(--baseFontSize) - 2px);
+    padding: 0 4px 8px;
     align-items: center;
     -webkit-transition: all 0.1s ease;
     transition: all 0.1s ease;

@@ -3,20 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { generatorPrompt } from '../promptListGeneratorSlice/QuestionGeneratorSlice';
 import Button from '../../components/buttons/Button';
 import { sendPrompt } from '../../utils/sendPrompt';
-import boardWiseData from '../../utils/BoardWiseForms.json';
-
-type ChapterData = {
-    [chapterName: string]: string; // assuming each chapter's data is just a string, adjust if the structure is different
-};
-
-type SubjectData = {
-    [subjectName: string]: ChapterData;
-};
-
-type GradeData = {
-    [gradeLevel: string]: SubjectData;
-};
-
+import boardWiseData from '../../utils/boardWiseForms.json';
 
 const CBSECustomQuestions = () => {
     const { generatorData: { messages, input } } = useSelector((state) => state);
@@ -53,9 +40,6 @@ const CBSECustomQuestions = () => {
         }
     };
     
-
-    
-
     useEffect(() => {
         if (formData.gradeLevel && formData.subject && formData.chapter) {
             fetchBoardData();
