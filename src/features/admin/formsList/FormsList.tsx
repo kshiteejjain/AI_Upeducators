@@ -61,6 +61,10 @@ const FormsList = () => {
                 'Likes': form.likes,
                 'Dislikes': form.dislikes
             }));
+    
+            // Sort the flattenedformData array based on Id
+            flattenedformData.sort((a, b) => a.Id - b.Id);
+    
             const ws = XLSX.utils.json_to_sheet(flattenedformData, { header: Object.keys(flattenedformData[0]) });
             // Auto-size columns
             const wscols = flattenedformData.map(form => Object.values(form).map(value => ({ width: value?.toString().length + 10 })));
@@ -72,6 +76,7 @@ const FormsList = () => {
             console.error('Error exporting to Excel:', error);
         }
     };
+    
 
 
 

@@ -1,6 +1,5 @@
 import { collection, getDocs, query, where, DocumentData, QuerySnapshot, updateDoc } from 'firebase/firestore';
 import { firestore } from './firebase';
-import  googleLogo from '../assets/google.svg';
 type UserDocumentData = {
   total_credits?: number;
   remain_credits?: number;
@@ -16,6 +15,8 @@ type UserDocumentData = {
   isActiveUser?: boolean,
   isAdmin?: boolean,
   password?: string
+  timestamp?: any
+  account_id?: any;
 };
 export const fetchUserDocument = async (username: string): Promise<QuerySnapshot<DocumentData>> => {
   const collectionRef = collection(firestore, 'RegisteredUsers');
@@ -47,7 +48,7 @@ export const fetchTotalCredits = async (
       }
     } else {
       // Handle the case when no document is found
-      console.warn('No document found for the current user');
+      alert('No document found for the current user');
     }
   } catch (error) {
     alert('Error querying data from Firestore: ' + error);
@@ -190,18 +191,27 @@ export const categoryStats = async (firestore: Firestore): Promise<UserDocumentD
     if (querySnapshot.empty) {
       return [];
     }
-    const categoryData = querySnapshot.docs.map((doc) => ({
-      categoryName: doc.data().selectedCategory,
-      count: doc.data().count,
-      user: doc.data().user,
-      timeStamp: doc.data().timestamp
-    }));
-    return categoryData;
+    const userData: UserDocumentData[] = [];
+    querySnapshot.forEach((doc) => {
+      const email = doc.id;
+      const categories = doc.data();
+      Object.keys(categories).forEach((categoryName) => {
+        const { timestamp, count } = categories[categoryName];
+        userData.push({
+          email,
+          categoryName,
+          timestamp,
+          count
+        });
+      });
+    });
+    return userData;
   } catch (error) {
     console.error('Error querying data from Firestore:', error);
     return [];
   }
 };
+
 
 export const OnBoardingProfile = async (firestore: Firestore): Promise<UserDocumentData[]> => {
   try {
@@ -223,6 +233,25 @@ export const OnBoardingProfile = async (firestore: Firestore): Promise<UserDocum
       otherSubject: doc?.data()?.otherSubject,
       board: doc?.data()?.board,
       organization: doc?.data()?.organization,
+    }));
+    return OnBoardingProfileData;
+  } catch (error) {
+    console.error('Error querying OnBoarding Profile Data from Firestore:', error);
+    return [];
+  }
+};
+
+export const getPaymentDetails = async (firestore: Firestore): Promise<UserDocumentData[]> => {
+  try {
+    const collectionRef = collection(firestore, 'AIUpEducatorsPaidUsers');
+    const querySnapshot = await getDocs(collectionRef);
+    if (querySnapshot.empty) {
+      return [];
+    }
+    const OnBoardingProfileData = querySnapshot.docs.map((doc) => ({
+      date: doc.id,
+      plan: doc?.data()?.payload?.payment?.entity?.notes?.plan,
+      email: doc?.data()?.payload?.payment?.entity?.notes?.email,
     }));
     return OnBoardingProfileData;
   } catch (error) {

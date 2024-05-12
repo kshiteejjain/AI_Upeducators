@@ -1,7 +1,7 @@
 import React from 'react';
 import { useEffect, useState } from 'react';
 import { firestore } from '../../utils/firebase';
-import { categoryStats, fetchTotalCredits, OnBoardingProfile } from '../../utils/firebaseUtils';
+import { categoryStats, fetchTotalCredits, OnBoardingProfile, fetchAllUserData, getPaymentDetails } from '../../utils/firebaseUtils';
 import { setCategory } from '../categories/CategoriesSlice';
 import Header from '../../components/header/Header';
 import Strings from '../../utils/en';
@@ -10,14 +10,37 @@ import { useDispatch } from 'react-redux';
 
 import './Profile.css';
 
-
+type UserData = {
+    expiry: string;
+    remain_credits: number;
+    plan: string;
+    email: string,
+    name: string,
+    phone: number,
+    total_credits: number,
+    categoryName: string,
+    count: number,
+    timestamp: string | number,
+    mobileCountryCode: number,
+    mobile: number,
+    city: string,
+    country: string,
+    role: string,
+    otherRole: string,
+    subjects: string,
+    otherSubject: string,
+    board: string,
+    organization: string
+};
 
 const Profile = () => {
     const [username, setUsername] = useState('');
-    const [statsData, setStatsData] = useState([]);
-    const [isOnboardingData, setIsOnboardingData] = useState([]);
+    const [statsData, setStatsData] = useState<UserData[]>([]);
+    const [isOnboardingData, setIsOnboardingData] = useState<UserData[]>([]);
     const [remainingCredits, setRemainingCredits] = useState<number | undefined>(undefined);
     const [isAdmin, setIsAdmin] = useState(false);
+    const [allUserData, setAllUserData] = useState<UserData[]>([]);
+    const [paymentDetails, setPaymentDetails] = useState<UserData[]>([]);
     const showUsername = (name: string) => {
         const email = name.split('@');
         return email[0];
@@ -47,6 +70,32 @@ const Profile = () => {
                 // Fetch data from OnBoardingProfileData
                 const profileData = await OnBoardingProfile(firestore, storedUsername);
                 setIsOnboardingData(profileData);
+                // Fetch all user data
+                const allUserData = await fetchAllUserData(firestore);
+                setAllUserData(allUserData);
+
+                const userPaymentDetails = await getPaymentDetails(firestore);
+                setPaymentDetails(userPaymentDetails);
+            } catch (error) {
+                console.error("Error fetching data:", error);
+                // Handle errors as needed
+            }
+        };
+        fetchData();
+    }, []);
+
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const storedUsername = localStorage.getItem('username') ?? 'User';
+                setUsername(showUsername(storedUsername));
+                // Fetch only setRemainingCredits
+                await fetchTotalCredits(storedUsername, undefined, setRemainingCredits, setIsAdmin);
+                // Fetch data from OnBoardingProfileData
+                const profileData = await OnBoardingProfile(firestore, storedUsername);
+                setIsOnboardingData(profileData);
+
+                console.log('paymentDetails', paymentDetails)
             } catch (error) {
                 console.error("Error fetching data:", error);
                 // Handle errors as needed
@@ -69,12 +118,65 @@ const Profile = () => {
                 <div className='profile-flex'>
                     <div className='profile-cards'>
                         <h2> Profile </h2>
-                        <p>{Strings.header.email}: {localStorage.getItem('username')}</p>
-                        <p>{Strings.header.remainingCredits} {remainingCredits}</p>
+                        <table className='table'>
+                            <tbody>
+                                {allUserData
+                                    .filter((item) => item.email === localStorage.getItem('username'))
+                                    .map((user, index) => (
+                                        <React.Fragment key={index}>
+                                            <tr>
+                                                <th>Username</th>
+                                                <td>{user.name}</td>
+                                            </tr>
+                                            <tr>
+                                                <th>Registered Mobile</th>
+                                                <td>{user.phone}</td>
+                                            </tr>
+                                            <tr>
+                                                <th>Subscribed Plan</th>
+                                                <td>{user.plan}</td>
+                                            </tr>
+                                            {/* Add more rows for other properties as needed */}
+                                        </React.Fragment>
+                                    ))}
+                            </tbody>
+                        </table>
+
                     </div>
-                    
+
+
                     <div className='profile-cards'>
-                        <h2> Your Profile </h2>
+                        <h2> Usage </h2>
+                        <p>{Strings.profile.upgrade}: <a href='https://upeducators.ai/pricing/'> {Strings.profile.upgradePlan} </a></p>
+
+                        <table className='table'>
+                            <tbody>
+                                {allUserData
+                                    .filter((item) => item.email === localStorage.getItem('username'))
+                                    .map((user, index) => (
+                                        <React.Fragment key={index}>
+                                            <tr>
+                                                <th>Total Credits</th>
+                                                <td>{user.total_credits}</td>
+                                            </tr>
+                                            <tr>
+                                                <th>Remaining Credits</th>
+                                                <td>{user.remain_credits}</td>
+                                            </tr>
+                                            <tr>
+                                                <th>Expiry Date</th>
+                                                <td>{user.expiry}</td>
+                                            </tr>
+                                        </React.Fragment>
+                                    ))}
+                            </tbody>
+                        </table>
+                    </div>
+
+                </div>
+                <div className='profile-flex'>
+                    <div className='profile-cards'>
+                        <h2> Corporate Details </h2>
                         <div className='tableWrapper'>
                             <table className='table'>
                                 <tbody>
@@ -117,9 +219,7 @@ const Profile = () => {
                             </table>
                         </div>
                     </div>
-                </div>
-                <div className='profile-flex'>
-                <div className='profile-cards'>
+                    <div className='profile-cards'>
                         <h2> Search History </h2>
                         <div className='tableWrapper'>
                             <table className='table'>
@@ -133,7 +233,7 @@ const Profile = () => {
                                 <tbody>
                                     {statsData
                                         .filter((item) =>
-                                            item.user === localStorage.getItem('username') ?? 'User')
+                                            item.email === localStorage.getItem('username') ?? 'User')
                                         .map((item, index) => {
                                             // Split the category name by uppercase letters and join with spaces
                                             const formattedCategoryName = item.categoryName
@@ -143,7 +243,7 @@ const Profile = () => {
                                                 <tr key={index}>
                                                     <td onClick={() => handleTile(item.categoryName)}><span className='link'>{formattedCategoryName}</span></td>
                                                     <td>{item.count}</td>
-                                                    <td>{item.timeStamp}</td>
+                                                    <td>{item.timestamp}</td>
                                                 </tr>
                                             );
                                         })}
@@ -152,6 +252,34 @@ const Profile = () => {
                         </div>
                     </div>
                 </div>
+                <div className='profile-cards'>
+                        <h2> Payment History </h2>
+                        <div className='tableWrapper'>
+                            <table className='table'>
+                                <thead>
+                                    <tr>
+                                        <th>Payment Date</th>
+                                        <th>Plan Name</th>
+                                        <th>Plan Credits</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {paymentDetails
+                                        .filter((item) =>
+                                            item.payload?.payment?.entity?.notes?.email === localStorage.getItem('username') ?? 'User')
+                                        .map((item, index) => {
+                                            return (
+                                                <tr key={index}>
+                                                    <td>{item.plan}</td>
+                                                    <td>{item.count}</td>
+                                                    <td>{item.timestamp}</td>
+                                                </tr>
+                                            );
+                                        })}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
             </div>
         </>
     )

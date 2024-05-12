@@ -1,6 +1,6 @@
 import { useState, ChangeEvent, FormEvent, useEffect } from 'react';
 import { firestore, signInWithGooglePopup, } from '../../utils/firebase';
-import { collection, getDocs, where, query, doc, setDoc } from 'firebase/firestore';
+import { collection, getDocs, where, query, doc, setDoc, updateDoc, getDoc } from 'firebase/firestore';
 import { useNavigate } from 'react-router-dom';
 import emailjs from '@emailjs/browser';
 import Loader from '../../components/loader/Loader';
@@ -19,9 +19,7 @@ const Register = () => {
     const formattedDateTime = currentDateTime.toISOString().split('T')[0];
     const registerDate = new Date().toISOString().split('T')[0];
     const initialFormData = {
-        name: '',
         email: '',
-        phone: '',
         password: '',
         total_credits: 0,
         remain_credits: 0,
@@ -35,7 +33,8 @@ const Register = () => {
         isPrePaidUser: false,
         campaignName: '',
         campaignSource: '',
-        campaignMedium: ''
+        campaignMedium: '',
+        batch: ''
     };
     const [showPassword, setShowPassword] = useState(false);
     const [enteredEmail, setEnteredEmail] = useState('');
@@ -47,41 +46,41 @@ const Register = () => {
     const navigate = useNavigate();
 
 
-    const fetchPaidUserData = async () => {
-        setLoading(true);
-        try {
-            const q = query(
-                collection(firestore, "AIUpEducatorsPaidUsers"),
-                where("payload.payment.entity.notes.email", "!=", null) // Adjust this condition as necessary
-            );
-            const querySnapshot = await getDocs(q);
-            if (!querySnapshot.empty) {
-                const userData = querySnapshot.docs.map(doc => {
-                    const data = doc.data();
-                    return {
-                        name: data.payload.payment.entity.notes.name,
-                        email: data.payload.payment.entity.notes.email,
-                        phone: data.payload.payment.entity.notes.phone,
-                    };
-                })[0]; // Assuming you need the first result
-                setFormData(prev => ({
-                    ...prev,
-                    ...userData,
-                    name: userData.name,
-                    email: userData.email,
-                    phone: userData.phone
-                }));
-            }
-        } catch (error) {
-            console.error("Failed to fetch user data:", error);
-        } finally {
-            setLoading(false);
-        }
-    };
+    // const fetchPaidUserData = async () => {
+    //     setLoading(true);
+    //     try {
+    //         const q = query(
+    //             collection(firestore, "AIUpEducatorsPaidUsers"),
+    //             where("payload.payment.entity.notes.email", "!=", null) // Adjust this condition as necessary
+    //         );
+    //         const querySnapshot = await getDocs(q);
+    //         if (!querySnapshot.empty) {
+    //             const userData = querySnapshot.docs.map(doc => {
+    //                 const data = doc.data();
+    //                 return {
+    //                     name: data.payload.payment.entity.notes.name,
+    //                     email: data.payload.payment.entity.notes.email,
+    //                     phone: data.payload.payment.entity.notes.phone,
+    //                 };
+    //             })[0]; // Assuming you need the first result
+    //             setFormData(prev => ({
+    //                 ...prev,
+    //                 ...userData,
+    //                 name: userData.name,
+    //                 email: userData.email,
+    //                 phone: userData.phone
+    //             }));
+    //         }
+    //     } catch (error) {
+    //         console.error("Failed to fetch user data:", error);
+    //     } finally {
+    //         setLoading(false);
+    //     }
+    // };
 
-    useEffect(() => {
-        fetchPaidUserData();
-    }, []); 
+    // useEffect(() => {
+    //     fetchPaidUserData();
+    // }, []); 
 
     const handleTogglePasswordVisibility = () => {
         setShowPassword(!showPassword);
@@ -102,7 +101,7 @@ const Register = () => {
         navigate('/ForgotPassword')
     }
     const generateOTP = () => {
-        return Math.floor(100000 + Math.random() * 900000).toString(); s
+        return Math.floor(100000 + Math.random() * 900000).toString();
     };
 
     const isEmailInPaidUsers = async (email: string, plan?: string) => {
@@ -138,6 +137,26 @@ const Register = () => {
         }
     };
 
+
+    useEffect(() => {
+        const url = window.location.href;
+        const queryStringIndex = url.indexOf('?');
+        if (queryStringIndex !== -1) {
+            const queryString = url.substring(queryStringIndex + 1);
+            const params = new URLSearchParams(queryString);
+            const paramFound = params.has('frmrzp_prm');
+            if (paramFound) {
+                return;
+            } else {
+                navigate('/');
+            }
+        } else {
+            navigate('/');
+        }
+    }, []);
+
+
+
     const formSubmit = async (e: FormEvent) => {
         e.preventDefault();
         setLoading(true);
@@ -161,29 +180,59 @@ const Register = () => {
             const isPaidUser = await isEmailInPaidUsers(formData.email, plan);
             if (!isPaidUser) {
                 alert("You are not a subscriber. Please choose a plan. Redirecting to our plans.");
-                window.location.href = 'https://upeducators.ai/';
+                window.location.href = 'https://upeducators.ai/pricing';
                 return;
             }
             // Check if the email is already registered
-            const isRegistered = await isEmailRegistered(formData.email);
-            if (isRegistered) {
-                alert('Email is already registered!');
-                navigate('/');
-                return;
-            }
+            // const isRegistered = await isEmailRegistered(formData.email);
+            // if (isRegistered) {
+            //     alert('Email is already registered!');
+            //     navigate('/');
+            //     return;
+            // }
             // Generate OTP and store it temporarily
-            const otp = generateOTP();
-            localStorage.setItem('otp_temp', otp);
+            // const otp = generateOTP();
+            // localStorage.setItem('otp_temp', otp);
             // Update formData with plan and other details
+
+            // Fetch current expiry date from Firebase RegisteredUsers collection
+            const userDocRef = doc(collection(firestore, 'RegisteredUsers'), formData.email);
+            const userDocSnapshot = await getDoc(userDocRef);
+            if (userDocSnapshot.exists()) {
+                const userData = userDocSnapshot.data();
+                if (userData && userData.expiry) {
+                    const currentExpiry = new Date(userData.expiry);
+                    currentExpiry.setDate(currentExpiry.getDate() + 365);
+                    const extendedExpiry = currentExpiry.toISOString().split('T')[0];
+                    formData.expiry = extendedExpiry;
+                }
+            }
+
             const updatedFormData = {
                 ...formData,
                 plan: plan,
             };
             // Set entered email, switch to OTP screen, and update formData
             setEnteredEmail(formData.email);
-            setIsOTPScreen(true);
+            //setIsOTPScreen(true);
             setLoading(false);
             setFormData(updatedFormData);
+            localStorage.setItem("isLoggedIn", String(true));
+            localStorage.setItem("username", formData?.email);
+            // Instead of setDoc, use updateDoc to update existing document
+            const userDocReference = doc(collection(firestore, 'RegisteredUsers'), formData.email);
+            await updateDoc(userDocReference, updatedFormData);
+
+            const onboardingUserSnapshot = await getDocs(
+                query(collection(firestore, 'OnboardingQuestions'), where('email', '==', formData.email))
+            );
+            if (!onboardingUserSnapshot.empty) {
+                // User exists in OnBoardingQuestions collection
+                navigate("/Categories");
+            } else {
+                // User does not exist in OnBoardingQuestions collection
+                navigate("/OnBoardingQuestions");
+            }
         } catch (error) {
             alert(`An error occurred: ${error}`);
             console.error('Error submitting form:', error);
@@ -250,7 +299,6 @@ const Register = () => {
             let updatedFormData = {
                 ...initialFormData,
                 email: user.email,
-                name: user.displayName,
                 plan: plan,
                 total_credits: totalCredits,
                 remain_credits: remainCredits
@@ -263,8 +311,8 @@ const Register = () => {
                 return;
             }
             // Check if the email is already registered
-            const isAlreadyRegistered = await isEmailRegistered(email);
-            if (isAlreadyRegistered) {
+            const isRegistered = await isEmailRegistered(formData.email);
+            if (isRegistered) {
                 alert('Email is already registered!');
                 navigate('/');
                 return;
@@ -279,7 +327,7 @@ const Register = () => {
             setLoading(false);
             setFormData(updatedFormData);
             await setDoc(doc(collection(firestore, 'RegisteredUsers'), email), { ...updatedFormData });
-            //await sendEmail(email, otp);
+            await sendEmail(email, otp);
         } catch (error) {
             setError('An error occurred. Please try again.');
             console.error('Error logging in with Google:', error);
@@ -317,27 +365,19 @@ const Register = () => {
                     <>
                         <form onSubmit={formSubmit}>
                             <div className='form-group'>
-                                <label htmlFor='name'>Name <span className='asterisk'>*</span></label>
-                                <input type='text' required className='form-control' name='name' onChange={handleInputChange} value={formData.name} placeholder='Enter Name' disabled={!!formData.name} />
-                            </div>
-                            <div className='form-group'>
                                 <label htmlFor='email'>Email <span className='asterisk'>*</span></label>
-                                <input type='email' required className='form-control' name='email' onChange={handleInputChange} value={formData.email} placeholder=' Enter Email' disabled={!!formData.email}/>
+                                <input type='email' required className='form-control' name='email' onChange={handleInputChange} value={formData.email} placeholder=' Enter Email' />
                             </div>
                             <div className='form-group'>
-                                <label htmlFor='phone'>Phone <span className='asterisk'>*</span></label>
-                                <input type='tel' required className='form-control' name='phone' onChange={handleInputChange} value={formData.phone} placeholder='Enter Phone' disabled={!!formData.phone}/>
-                            </div>
-                            <div className='form-group'>
-                                <label htmlFor='password'>Password <span className='asterisk'>*</span></label>
+                                <label htmlFor='password'>Create Password <span className='asterisk'>*</span></label>
                                 <input type={showPassword ? 'text' : 'password'} required className='form-control' name='password' onChange={handleInputChange} value={formData.password} placeholder='Enter Password' />
                                 <div className="togglePassword" onClick={handleTogglePasswordVisibility}>
                                     {showPassword ? <img src={HidePassword} /> : <img src={ShowPassword} />}
                                 </div>
                             </div>
                             <Button title='Register' type="submit" />
-                            <div className="separator"><div className="separator-text">or</div></div>
-                            <Button title={Strings.register.googleRegister} onClick={handleGoogleLogin} isSocial isImage imagePath={googleLogo} />
+                            {/* <div className="separator"><div className="separator-text">or</div></div>
+                            <Button title={Strings.register.googleRegister} onClick={handleGoogleLogin} isSocial isImage imagePath={googleLogo} /> */}
                         </form>
                         <div className="additional-actions">
                             <Button title={Strings.ForgotPassword.title} isSecondary type="button" onClick={handleForgotPassword} />

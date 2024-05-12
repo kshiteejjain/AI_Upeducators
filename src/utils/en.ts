@@ -35,6 +35,7 @@ const Strings = {
         goToCategory: 'Go To Categories',
         history: 'Search History',
         myProfile: 'My Profile',
+        usage: 'Usage',
         admin: 'Admin'
     },
     categories: {
@@ -42,6 +43,10 @@ const Strings = {
         searchCategories: 'Board Wise Forms',
         usedBy: 'Used By:',
         people: 'People'
+    },
+    profile: {
+        upgrade: 'Plans',
+        upgradePlan: 'Checkout Our Plans'
     },
 }
 export default Strings

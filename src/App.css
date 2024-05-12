@@ -79,7 +79,7 @@ img {
   position: absolute;
   font-size: calc(var(--baseFontSize) - 5px);
   right: 8px;
-  top: 29px;
+  top: 34px;
   cursor: pointer;
   opacity: 0.4;
 }

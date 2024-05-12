@@ -2,13 +2,13 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
 import { handleCreditDecrement } from '../../utils/firebaseUtils';
 import { RootState } from 'react-redux';
-import { collection, doc, getDocs, getFirestore, query, setDoc, updateDoc, where } from 'firebase/firestore';
+import { collection, doc, getDoc, getDocs, getFirestore, query, setDoc, updateDoc, where } from 'firebase/firestore';
 
 const creditValue = Number(import.meta.env.VITE_TEXT_GENERATOR_CREDITS);
 // Define the async thunk
 export const generatorPrompt = createAsyncThunk('generator/generatorPrompt', async (prompt, { getState }) => {
   const isGPT4 = localStorage.getItem('isGPT4');
-  
+
 
   const promptList = JSON.parse(localStorage.getItem('prompts') || '[]'); // Get existing prompts or initialize as empty array
   promptList.push({
@@ -17,7 +17,7 @@ export const generatorPrompt = createAsyncThunk('generator/generatorPrompt', asy
     isFollowUpPrompt: false
   });
   localStorage.setItem('prompts', JSON.stringify(promptList));
-  if(localStorage.getItem('username') === 'ankushb@upeducators.com'){
+  if (localStorage.getItem('username') === 'ankushb@upeducators.com') {
     alert(JSON.stringify(promptList[promptList.length - 1]?.content))
   }
 
@@ -29,21 +29,46 @@ export const generatorPrompt = createAsyncThunk('generator/generatorPrompt', asy
 
     const firestore = getFirestore();
     const abcCollection = collection(firestore, 'CategoryStats');
-    const q = query(abcCollection, where('selectedCategory', '==', selectedCategory));
-    const existingDocs = await getDocs(q);
-    const timestamp = new Date().toLocaleString();
+    const user = localStorage.getItem('username'); // Assuming username is the user's email
 
-    if (!existingDocs.empty) {
-      existingDocs.forEach(async (doc) => {
-        const docRef = doc.ref;
-        const currentCount = doc.data().count || 0;
-        // Update count field
-        await updateDoc(docRef, { count: currentCount + 1 });
-      });
+    if (user) {
+      const userDocRef = doc(abcCollection, user);
+      const userDocSnapshot = await getDoc(userDocRef);
+
+      if (userDocSnapshot.exists()) {
+        // User already has a document, update count
+        const userData = userDocSnapshot.data();
+        const existingCategory = userData[selectedCategory];
+
+        if (existingCategory) {
+          // Category already exists for the user, increase count
+          const currentCount = existingCategory.count || 0;
+          await updateDoc(userDocRef, {
+            [selectedCategory]: {
+              count: currentCount + 1,
+              timestamp: new Date().toLocaleString()
+            }
+          });
+        } else {
+          // Add new category for the user
+          await updateDoc(userDocRef, {
+            [selectedCategory]: {
+              count: 1,
+              timestamp: new Date().toLocaleString()
+            }
+          });
+        }
+      } else {
+        // Add new document for the user
+        await setDoc(userDocRef, {
+          [selectedCategory]: {
+            count: 1,
+            timestamp: new Date().toLocaleString()
+          }
+        });
+      }
     } else {
-      // Add new document with selectedCategory as document ID and timestamp
-      const docRef = doc(abcCollection, selectedCategory);
-      await setDoc(docRef, { selectedCategory, count: 1, timestamp, user: localStorage.getItem('username') });
+      console.error("User is not logged in."); // Handle not logged in scenario
     }
 
 
@@ -64,7 +89,7 @@ export const generatorPrompt = createAsyncThunk('generator/generatorPrompt', asy
         },
       }
     );
-    console.log('Model used ',response.data.model);
+    console.log('Model used ', response.data.model);
     return response?.data?.choices[0]?.message?.content?.trim();
   } catch (error) {
     alert(`Error sending message to OpenAI API:', ${error}`);

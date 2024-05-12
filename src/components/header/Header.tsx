@@ -10,11 +10,11 @@ import defaultProfile from '../../assets/defaultProfile.svg';
 
 import './Header.css';
 
-
 type Props = {
   isLoginPage?: boolean;
   onClick?: () => void;
   moreOptions?: boolean;
+  expiry?: string
 };
 
 const Header = ({ isLoginPage, moreOptions = true }: Props) => {
@@ -24,10 +24,7 @@ const Header = ({ isLoginPage, moreOptions = true }: Props) => {
   const [showCreditDetails, setShowCreditDetails] = useState(false);
   const [isAdmin, setIsAdmin] = useState(false);
   const navigate = useNavigate();
-  const showUsername = (name: string) => {
-    const email = name.split('@');
-    return email[0];
-  };
+  
   const toggleCreditDetails = () => {
     setShowCreditDetails(!showCreditDetails);
   };
@@ -39,7 +36,6 @@ const Header = ({ isLoginPage, moreOptions = true }: Props) => {
     const fetchData = async () => {
       try {
         const storedUsername = localStorage.getItem('username') ?? 'User';
-        setUsername(showUsername(storedUsername));
         // Fetch only setRemainingCredits
         await fetchTotalCredits(storedUsername, undefined, setRemainingCredits, setIsAdmin);
       } catch (error) {
@@ -54,24 +50,18 @@ const Header = ({ isLoginPage, moreOptions = true }: Props) => {
         const usersData = await fetchAllUserData(firestore);
         const loggedInUserEmail = localStorage.getItem('username');
         const loggedInUser = usersData.find(user => user.email === loggedInUserEmail);
-
-        const registrationTimestamp = loggedInUser?.expiry;
-
-        if (registrationTimestamp) {
-          const registrationDate = new Date(registrationTimestamp);
+        const expiry = loggedInUser?.expiry;
+        setUsername(loggedInUser?.name);
+        if (expiry) {
           const currentDate = new Date();
+          const expiryDate = new Date(expiry);
 
-          // Set isExpire state
-          const isSameDay = currentDate.getFullYear() === registrationDate.getFullYear() &&
-            currentDate.getMonth() === registrationDate.getMonth() &&
-            currentDate.getDate() === registrationDate.getDate();
-
-          // If currentDate and registrationDate are the same day, don't mark as expired
-          if (!isSameDay) {
-            setIsExpire(!(currentDate < expiry));
+          if (expiryDate < currentDate) {
+            setIsExpire(true);
+            navigate('/ContactUs');
           }
         } else {
-          console.log('Registration timestamp not available.');
+          console.log('Expiry date not available.');
         }
       } catch (error) {
         console.error('Error fetching user data:', error);
@@ -113,6 +103,7 @@ const Header = ({ isLoginPage, moreOptions = true }: Props) => {
                   : null
                 }
                 <p><Button title={Strings.header.myProfile} isSecondary onClick={() => navigate('/Profile')} /></p>
+                <p><Button title={Strings.header.usage} isSecondary onClick={() => navigate('/Profile')} /></p>
               </>}
 
             {isLoginPage ?? <Button title={Strings.header.signOut} isSecondary onClick={handleLogout} />}

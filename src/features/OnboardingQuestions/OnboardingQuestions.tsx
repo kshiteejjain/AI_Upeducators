@@ -15,24 +15,21 @@ type Props = {
 const OnboardingQuestions = () => {
     const [formData, setFormData] = useState({
         name: "",
-        email: "",
+        email: localStorage.getItem('username') || '',
         mobileCountryCode: "91",
         mobile: "",
         city: "",
         country: "India",
-        role: "Pre-Primary or Primary Teacher",
+        role: "",
         otherRole: "",
-        subjects: ["Elementary (all subjects)"],
+        subjects: [""],
         otherSubject: "",
-        board: "CBSE",
+        board: "",
         organization: "",
     });
     const [isLoader, setIsLoader] = useState(false);
     const [selectedSubjects, setSelectedSubjects] = useState([]);
     const navigate = useNavigate();
-
-    const username = localStorage.getItem('username') || "";
-    const { email } = username;
 
     const handleRemove = (itemName: Props) => {
         setSelectedSubjects(selectedSubjects.filter(item => item !== itemName));
@@ -60,19 +57,47 @@ const OnboardingQuestions = () => {
                 [name]: value
             }));
         }
+    
+        // Validation logic
+        const formElements = document.querySelectorAll('.form-control');
+        let isValid = true;
+        formElements.forEach((element) => {
+            if (element.required && element.value === '') {
+                isValid = false;
+            }
+        });
+    
+        if (isValid) {
+            // Form is valid, you can allow submission or perform further actions
+        } else {
+            // Form is invalid, you can prevent submission or display an error message
+        }
     };
+    
     const handleSubmit = async (e: any) => {
         e.preventDefault();
         setIsLoader(true);
+        
+        // Check if any dropdowns are not selected
+        const dropdowns = ['role', 'subjects', 'board'];
+        const isValidDropdowns = dropdowns.every(field => formData[field] !== "Please Select" && formData[field] !== "");
+    
+        if (!isValidDropdowns) {
+            // Show error message or prevent form submission
+            setIsLoader(false);
+            alert("Please select valid options from dropdowns.");
+            return;
+        }
+    
         try {
             const email = formData.email;
-
+            
             const db = getFirestore();
             const onboardingQuestionsCollection = collection(db, 'OnboardingQuestions');
             const q = query(onboardingQuestionsCollection, where("email", "==", email));
             const querySnapshot = await getDocs(q);
             const userDocRef = doc(onboardingQuestionsCollection, email);
-
+    
             if (querySnapshot.empty) {
                 await setDoc(userDocRef, {
                     ...formData,
@@ -89,6 +114,7 @@ const OnboardingQuestions = () => {
             console.error("Error adding document: ", error);
         }
     };
+    
 
     return (
         <>
@@ -119,7 +145,8 @@ const OnboardingQuestions = () => {
                                 className='form-control'
                                 name='email'
                                 placeholder='Enter your email'
-                                onChange={handleInputChange}
+                                value={formData.email} 
+                                disabled
                             />
                         </div>
 
@@ -622,6 +649,7 @@ const OnboardingQuestions = () => {
                         <div className='form-group'>
                             <label htmlFor="role">Role<span>*</span></label>
                             <select name="role" onChange={handleInputChange} required className='form-control'>
+                                <option>Please Select</option>
                                 <option value="Pre-Primary or Primary Teacher">Pre-Primary or Primary Teacher</option>
                                 <option value="Teacher for 6th-12th Class">Teacher for 6th-12th Class</option>
                                 <option value="Principal/Senior Management">Principal/Senior Management</option>
@@ -645,6 +673,7 @@ const OnboardingQuestions = () => {
 
                             <label htmlFor="subjects">Subjects<span>*</span></label>
                             <select name="subjects" onChange={handleInputChange} className='form-control'>
+                            <option>Please Select</option>
                                 <option value="Elementary">Elementary (all subjects)</option>
                                 <option value="Electives">Electives</option>
                                 <option value="Art & Music">Art & Music</option>
@@ -682,6 +711,7 @@ const OnboardingQuestions = () => {
                         <div className='form-group'>
                             <label htmlFor="board">Board<span>*</span></label>
                             <select name="board" required className='form-control' onChange={handleInputChange}>
+                            <option>Please Select</option>
                                 <option value="CBSE">CBSE</option>
                                 <option value="ICSE">ICSE</option>
                                 <option value="Cambridge">Cambridge</option>

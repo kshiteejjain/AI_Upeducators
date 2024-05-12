@@ -76,7 +76,7 @@ const uploadUsersToFirestore = async () => {
                     const headerLowercase = headers[index].toLowerCase();
                     if (headerLowercase === 'plan') {
                         document[headerLowercase] = value;
-                        creditsToAdd = value.toLowerCase() === 'silver' ? 1500 : value.toLowerCase() === 'platinum' ? 4000 : 0;
+                        creditsToAdd = value.toLowerCase() === 'super' ? 1000 : 0;
                     } else if (['name', 'email', 'plan', 'batch', 'phone'].includes(headerLowercase)) {
                         document[headerLowercase] = value;
                     } else if (!Object.keys(document).includes(headerLowercase)) {
@@ -99,9 +99,11 @@ const uploadUsersToFirestore = async () => {
                 if (docSnapshot.exists()) {
                     const existingDocument = docSnapshot.data();
 
-                    // Update the credits
-                    existingDocument['total_credits'] += creditsToAdd;
-                    existingDocument['remain_credits'] += creditsToAdd;
+                    // Update the credits only if plan is 'super'
+                    if (document['plan'].toLowerCase() === 'super') {
+                        existingDocument['total_credits'] += 1000;
+                        existingDocument['remain_credits'] += 1000;
+                    }
 
                     // Update expiry by 365 days
                     const existingExpiry = new Date(existingDocument['expiry']);
@@ -137,12 +139,6 @@ const uploadUsersToFirestore = async () => {
         alert(`Error uploading data to Firestore: ${error}`);
     }
 };
-
-
-
-
-
-
 
 
     return (

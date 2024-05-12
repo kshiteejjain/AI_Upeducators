@@ -111,7 +111,7 @@ const Login = () => {
             } else {
                 // Email doesn't exist in RegisteredUsers, handle accordingly
                 alert('Email is not registered, Redirecting to Register');
-                navigate("/Register");
+                window.location.href = 'https://upeducators.ai/pricing';
             }
 
         }
@@ -155,12 +155,11 @@ const Login = () => {
                         </div>
                     </div>
                     <Button title={Strings.login.buttonLogin} type="submit" />
-                    <div className="separator"><div className="separator-text">or</div></div>
-                    <Button title={Strings.login.googleLogin} onClick={logGoogleUser} isSocial isImage imagePath={googleLogo} />
+                    {/* <div className="separator"><div className="separator-text">or</div></div>
+                    <Button title={Strings.login.googleLogin} onClick={logGoogleUser} isSocial isImage imagePath={googleLogo} /> */}
                 </form>
                 <div className="additional-actions">
                     <Button title={Strings.ForgotPassword.title} isSecondary type="button" onClick={handleForgotPassword} />
-                    <Button isSecondary title={Strings.login.register} type="button" onClick={() => navigate('/Register')} />
                     {loader && <Loader />}
                 </div>
             </div>

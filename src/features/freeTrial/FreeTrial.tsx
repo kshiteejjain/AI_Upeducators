@@ -17,6 +17,7 @@ const FreeTrial = () => {
     const currentDateTime = new Date();
     currentDateTime.setDate(currentDateTime.getDate() + 30)
     const formattedDateTime = currentDateTime.toISOString().split('T')[0];
+    const registerDate = new Date().toISOString().split('T')[0];
     const initialFormData = {
         name: '',
         email: '',
@@ -28,13 +29,14 @@ const FreeTrial = () => {
         credits_limit_perday: 20,
         isActiveUser: true,
         isAdmin: false,
-        register_timestamp: formattedDateTime,
-        otp: '',
+        expiry: formattedDateTime,
+        register_timestamp: registerDate,
         isFreeUser: true,
         isPrePaidUser: false,
         campaignName: '',
         campaignSource: '',
-        campaignMedium: ''
+        campaignMedium: '',
+        batch: ''
     };
     const [showPassword, setShowPassword] = useState(false);
     const [enteredEmail, setEnteredEmail] = useState('');
@@ -55,25 +57,21 @@ const FreeTrial = () => {
         }
         setFormData((prevData) => ({
             ...prevData,
-            [name]: value,
             [name]: name === 'phone' ? Number(value) : value,
         }));
     };
+
     const handleForgotPassword = () => {
         navigate('/ForgotPassword')
     }
     const generateRandomOTP = () => {
         const otp = Math.floor(100000 + Math.random() * 900000);
-        setFormData((prevData) => ({
-            ...prevData,
-            otp: otp.toString(),
-        }));
         return otp.toString();
     };
 
     const formSubmit = async (e: FormEvent) => {
         e.preventDefault();
-        setLoading(true)
+        setLoading(true);
         try {
             const querySnapshot = await getDocs(
                 query(collection(firestore, 'RegisteredUsers'), where('email', '==', formData.email))
@@ -81,22 +79,16 @@ const FreeTrial = () => {
             if (!querySnapshot.empty) {
                 // Email already exists, show alert or handle accordingly
                 alert('Email is already registered!');
+                setLoading(false);
                 return;
             }
             const otp = generateRandomOTP();
-            const selfRegisteredUsersCollection = collection(firestore, 'RegisteredUsers');
-            const userDocRef = doc(selfRegisteredUsersCollection, formData?.email); 
-            await setDoc(userDocRef, {
-                ...formData,
-                otp: Number(otp),
-            });
+            localStorage.setItem('otp_temp', otp.toString());
             setEnteredEmail(formData.email);
             setIsOTPScreen(true);
-            setLoading(false)
-            // Optional: Clear the form after submission
-            setFormData(initialFormData);
+            setLoading(false);
+            //setFormData(initialFormData);
             emailjs.send(import.meta.env.VITE_EMAILJS_SERVICE_ID, import.meta.env.VITE_EMAILJS_TEMPLATE_REGISTER, {
-                ...formData,
                 message: otp,
                 to_email: formData.email,
             }, import.meta.env.VITE_EMAILJS_API_KEY)
@@ -118,34 +110,59 @@ const FreeTrial = () => {
         }
         setEnteredOTP(enteredValue);
     };
+
     const logEmailAndOTP = async (e: FormEvent) => {
         e.preventDefault();
         setLoading(true);
         const usersCollection = collection(firestore, 'RegisteredUsers');
         if (!enteredEmail || !enteredOTP) {
             console.error('Email or OTP is undefined');
+            setLoading(false);
             return;
         }
-        const q = query(usersCollection, where('email', '==', enteredEmail), where('otp', '==', Number(enteredOTP)));
-        try {
-            const querySnapshot = await getDocs(q);
-            if (!querySnapshot.empty) {
-                alert('Registration Successful, Redirecting to login.');
-                setLoading(false)
-                navigate('/')
+        // Validate entered OTP from local storage
+        const storedOTP = localStorage.getItem('otp_temp');
+        if (storedOTP !== enteredOTP) {
+            alert('Entered OTP is incorrect');
+            setLoading(false);
+            return;
+        }
+        try {            
+            // Update formData with entered email and OTP
+            const updatedFormData = {
+                ...formData,
+            };
+            const userDocRef = doc(usersCollection, enteredEmail);
+            await setDoc(userDocRef, updatedFormData);
+
+            localStorage.setItem("isLoggedIn", String(true));
+            localStorage.setItem("username", enteredEmail);
+            setLoading(false);
+            localStorage.removeItem('otp_temp');
+            // Check if the user exists in OnBoardingQuestions collection
+            const onboardingUserSnapshot = await getDocs(
+                query(collection(firestore, 'OnboardingQuestions'), where('email', '==', enteredEmail))
+            );
+            if (!onboardingUserSnapshot.empty) {
+                // User exists in OnBoardingQuestions collection
+                navigate("/Categories");
             } else {
-                alert('Email and OTP do not match');
-                setLoading(false)
+                // User does not exist in OnBoardingQuestions collection
+                navigate("/OnBoardingQuestions");
             }
         } catch (error) {
-            console.error('Error fetching documents: ', error);
-            setLoading(false)
+            console.error('Error storing user data: ', error);
+            setLoading(false);
         }
     };
+
+
+
+
     const logGoogleUser = async () => {
         try {
             const response = await signInWithGooglePopup();
-            const user = response?.user;    
+            const user = response?.user;
             const querySnapshot = await getDocs(
                 query(collection(firestore, 'RegisteredUsers'), where('email', '==', user?.email))
             );
@@ -186,7 +203,7 @@ const FreeTrial = () => {
                 otp: Number(otp),
             });
             // Adding the form data to the Firestore collection
-    
+
             emailjs.send(import.meta.env.VITE_EMAILJS_SERVICE_ID, import.meta.env.VITE_EMAILJS_TEMPLATE_REGISTER, {
                 ...formData,
                 message: otp,
@@ -201,7 +218,7 @@ const FreeTrial = () => {
             alert(`Error: ${error}`);
         }
     };
-    
+
 
 
     return (
@@ -227,7 +244,6 @@ const FreeTrial = () => {
                         {error && <div className="errorMessage">{error}</div>}
                         <div className="additional-actions">
                             <Button title={Strings.otp.button} type="submit" />
-                            <Button isSecondary title={Strings.login.register} type="button" onClick={() => setIsOTPScreen(false)} />
                         </div>
                     </form> :
                     <>
@@ -242,18 +258,18 @@ const FreeTrial = () => {
                             </div>
                             <div className='form-group'>
                                 <label htmlFor='phone'>Phone <span className='asterisk'>*</span></label>
-                                <input type='tel' required className='form-control' name='phone' onChange={handleInputChange} value={formData.phone} placeholder='Enter Phone' />
+                                <input type='tel' required className='form-control' name='phone' onChange={handleInputChange} value={formData.phone} placeholder='Enter Phone' pattern='[0-9]{10,}'  />
                             </div>
                             <div className='form-group'>
-                                <label htmlFor='password'>Password <span className='asterisk'>*</span></label>
+                                <label htmlFor='password'>Create Password <span className='asterisk'>*</span></label>
                                 <input type={showPassword ? 'text' : 'password'} required className='form-control' name='password' onChange={handleInputChange} value={formData.password} placeholder='Enter Password' />
                                 <div className="togglePassword" onClick={handleTogglePasswordVisibility}>
                                     {showPassword ? <img src={HidePassword} /> : <img src={ShowPassword} />}
                                 </div>
                             </div>
                             <Button title='Register' type="submit" />
-                            <div className="separator"><div className="separator-text">or</div></div>
-                            <Button title={Strings.register.googleRegister} onClick={logGoogleUser} isSocial isImage imagePath={googleLogo} />
+                            {/* <div className="separator"><div className="separator-text">or</div></div> */}
+                            {/* <Button title={Strings.register.googleRegister} onClick={logGoogleUser} isSocial isImage imagePath={googleLogo} /> */}
                         </form>
                         <div className="additional-actions">
                             <Button title={Strings.ForgotPassword.title} isSecondary type="button" onClick={handleForgotPassword} />
