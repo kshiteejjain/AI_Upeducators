@@ -49,7 +49,7 @@ const LessonPlan = () => {
     return (
         <div className="generator-section">
             <h2>Lesson Plan Generator</h2>
-            <h3>This form is designed to generate a detailed lesson plan. </h3>
+            <h3>Generate lesson plans for any subject or topic </h3>
             <form onSubmit={handleSubmit}>
                 <div className='form-group'>
                     <label htmlFor='gradeLevel'> Grade Level <span className="asterisk">*</span></label>
@@ -125,6 +125,10 @@ const LessonPlan = () => {
                         <div className='checkbox-option'>
                             <input type="checkbox" id="additionalNotes" name="additionalNotes" onChange={handleInputChange} value='additionalNotes' />
                             <label htmlFor="additionalNotes">Additional Notes</label>
+                        </div>
+                        <div className='checkbox-option'>
+                            <input type="checkbox" id="learningOutcomes" name="learningOutcomes" onChange={handleInputChange} value='learningOutcomes' />
+                            <label htmlFor="learningOutcomes">Learning Outcomes</label>
                         </div>
                     </div>
                 </div>

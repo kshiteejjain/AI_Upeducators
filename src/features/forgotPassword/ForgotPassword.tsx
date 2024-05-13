@@ -13,26 +13,20 @@ const ForgotPassword = () => {
         email: '',
     });
     const navigate = useNavigate();
-    const generateRandomPassword =  () => {
-        const upEducators = "upEducators";
-        const alphanumericChars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-        const specialChars = "!@#$%^&*()_+{}[]|;:,.<>?";
-    
-        // Generate a random alphanumeric string
-        const randomAlphanumeric = Array.from({ length: 6 }, () => alphanumericChars[Math.floor(Math.random() * alphanumericChars.length)]).join('');
-    
-        // Choose a random special character
-        const randomSpecialChar = specialChars[Math.floor(Math.random() * specialChars.length)];
-    
-        // Combine the components to form the password
-        const password = `${upEducators}${randomSpecialChar}${randomAlphanumeric}`;
-    
+    const generateRandomPassword = () => {
+        const length = 8;
+        const charset = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+        let password = '';
+        for (let i = 0; i < length; i++) {
+            const randomIndex = Math.floor(Math.random() * charset.length);
+            password += charset[randomIndex];
+        }
         return password;
-    }
+    };
     
     // Example usage
     const randomPassword = generateRandomPassword();
-    const handleResetPassword = async (e) => {
+    const handleResetPassword = async (e: any) => {
         e.preventDefault();
         try {
             const collectionRef = collection(firestore, 'RegisteredUsers');
@@ -49,17 +43,17 @@ const ForgotPassword = () => {
                 await updateDoc(docRef, {
                     password: randomPassword
                 });
-                alert('Password changed successfully, Redirecting to Login.');
                 emailjs.send(import.meta.env.VITE_EMAILJS_SERVICE_ID, import.meta.env.VITE_EMAILJS_TEMPLATE_FORGOT_PASSWORD, {
                     to_email: userDetails.email,
                     message: randomPassword,
                 }, import.meta.env.VITE_EMAILJS_API_KEY)
                     .then(response => {
                         console.log('SUCCESS!', response);
+                        alert('We have sent password on your registered email.');
+                        navigate('/')
                     }, error => {
-                        alert(`FAILED...', ${error}`);
+                        console.log(`FAILED...', ${error}`);
                     });
-                navigate('/')
                 // Now you can redirect or perform any other actions
             } else {
                 // No document with this email found

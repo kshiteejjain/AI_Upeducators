@@ -8,6 +8,7 @@ import Strings from '../../utils/en';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 
+
 import './Profile.css';
 
 type UserData = {
@@ -117,6 +118,7 @@ const Profile = () => {
             <div className='wrapper'>
                 <div className='profile-flex'>
                     <div className='profile-cards'>
+                    <EmailSender userEmail="kshiteejjain@gmail.com" templateId="your_template_id" />
                         <h2> Profile </h2>
                         <table className='table'>
                             <tbody>

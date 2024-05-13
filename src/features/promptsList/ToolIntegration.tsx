@@ -21,7 +21,10 @@ const ToolIntegration = () => {
             [name]: value,
         }));
     };
-    const promptMessage = `Generate 5 suggestions for educational tools that can be integrated with the Topic/Subject of ${formData.topicSubject} for ${formData.gradeLevel} students. The tool should provide ${formData.desiredToolFunctionality} functionality.`;
+    const promptMessage = `Generate 5 suggestions for educational tools that can be integrated with the Topic/Subject of ${formData.topicSubject} for ${formData.gradeLevel} students. The tool should provide ${formData.desiredToolFunctionality} functionality. 
+    Consider these specific requirements: ${formData.specificRequirements}.
+    Provide a description within 25 words and the URL to their web page.`;
+    
     const handleSubmit = (event: React.SyntheticEvent<HTMLFormElement>) => {
         event.preventDefault();
         localStorage.setItem('isGPT4', 'true');

@@ -1,46 +1,42 @@
-import { useState } from 'react';
-import { SendMailClient } from "zeptomail";
+import { useEffect } from 'react';
+import emailjs from '@emailjs/browser';
+import { useNavigate } from 'react-router-dom';
 
-const EmailSender = ({ userEmails, templateId }) => {
-    const [sending, setSending] = useState(false);
-    const [error, setError] = useState(null);
-    const url = import.meta.env.VITE_ZEPTO_URL;
-    const token = import.meta.env.VITE_ZEPTO_TOKEN;
-    const client = new SendMailClient({ url, token });
+interface SendEmailProps {
+  toEmail: string;
+  templateId: string;
+  message: string;
+  apiKey: string;
+}
 
+const SendEmail: React.FC<SendEmailProps> = ({ toEmail, templateId, message, apiKey }) => {
+  const navigate = useNavigate();
+
+  useEffect(() => {
     const sendEmail = async () => {
-        setSending(true);
-        try {
-            const response = await client.sendMail({
-                "from": {
-                    "address": "noreply@upeducators.ai",
-                    "name": "noreply"
-                },
-                "to": userEmails.map(email => ({
-                    "email_address": {
-                        "address": email,
-                        "name": "" // you can customize the name if needed
-                    }
-                })),
-                "template_id": templateId, // Assuming the templateId is passed as a prop
-            });
-            console.log("Emails sent successfully:", response);
-        } catch (error) {
-            setError(error.message);
-            console.error("Error sending emails:", error);
-        } finally {
-            setSending(false);
-        }
+      try {
+        await emailjs.send(
+          import.meta.env.VITE_EMAILJS_SERVICE_ID,
+          templateId,
+          {
+            to_email: toEmail,
+            message: message,
+          },
+          apiKey
+        );
+        console.log('Email sent successfully');
+        alert('We have sent the password to your registered email.');
+        navigate('/');
+      } catch (error) {
+        console.error('Failed to send email:', error);
+        alert('Failed to send email. Please try again later.');
+      }
     };
 
-    return (
-        <div>
-            <button onClick={sendEmail} disabled={sending}>
-                {sending ? 'Sending...' : 'Send Emails'}
-            </button>
-            {error && <p>Error: {error}</p>}
-        </div>
-    );
+    sendEmail();
+  }, [toEmail, templateId, message, apiKey, navigate]);
+
+  return null; // Since this is a utility component, it doesn't render anything
 };
 
-export default EmailSender;
+export default SendEmail;

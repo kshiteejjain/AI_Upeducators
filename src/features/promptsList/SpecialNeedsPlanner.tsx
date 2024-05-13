@@ -26,7 +26,6 @@ const SpecialNeedsPlanner = () => {
     Include specific methods, tools, and approaches to address the student's needs and facilitate effective learning.`
     const handleSubmit = (event: React.SyntheticEvent<HTMLFormElement>) => {
         event.preventDefault();
-        localStorage.setItem('isGPT4', 'true');
         sendPrompt(dispatch, { input, messages, generatorPrompt, promptMessage });
     };
     return (

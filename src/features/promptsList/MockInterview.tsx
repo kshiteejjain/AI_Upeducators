@@ -20,8 +20,9 @@ const MockInterview = () => {
             [name]: value,
         }));
     };
-    const promptMessage = `Generate 15 interview questions considering this Job Role or the Job Description: ${formData.jobRoleDescription}. The candidate has ${formData.experienceYears} of experience and is applying to the ${formData.board} school board.  
-    The questions should be tailored to assess the candidate's suitability for the role, subject matter expertise, educational philosophy, teaching methodology, problem-solving skills, and personal growth in the education sector. It should give them an insight into how to prepare for the interview.`
+    const promptMessage = `Please assume the role of an interviewer for this Job Role or Job Description: ${formData.jobRoleDescription}. 
+    I will be the candidate, and we will engage in a conversation with you asking interview questions one at a time, without any explanations. We’ll begin with a greeting, “Hi”, and continue the interview as I provide answers to your questions. Your follow-up question can be based on my reply.
+    The questions should be tailored to assess my suitability for the role, Subject matter expertise,`
     const handleSubmit = (event: React.SyntheticEvent<HTMLFormElement>) => {
         event.preventDefault();
         localStorage.setItem('isGPT4', 'true');

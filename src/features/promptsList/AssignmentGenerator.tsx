@@ -23,7 +23,7 @@ const AssignmentGenerator = () => {
     };
     const promptMessage = `Generate a detailed assignment for ${formData.gradeLevel} students. The assignments should be based on this topic/learning objectives: ${formData.topicLearningObjectives}. The timeframe should be ${formData.duration} and the assignment type should be ${formData.assignmentType}.
     Follow this structure in the output: Title, Duration, Assignment Overview, Learning Objectives, Resources needed, duration-wise detailed Assignment Plan, Assessment, and Reflection.
-    In case you want to add something else in the structure to make it better, then you can do it`;
+    In case you want to add something else in the structure to make it better, then you can do it.`;
     const handleSubmit = (event: React.SyntheticEvent<HTMLFormElement>) => {
         event.preventDefault();
         sendPrompt(dispatch, { input, messages, generatorPrompt, promptMessage });
@@ -67,8 +67,9 @@ const AssignmentGenerator = () => {
 
                 <div className="form-group">
                     <label htmlFor="duration">Duration</label>
-                    <input className="form-control" name="duration" onChange={handleInputChange} value={formData.duration} placeholder="e.g., 3 className periods, 1 week, 1 month, Longer" />
+                    <input className="form-control" name="duration" onChange={handleInputChange} value={formData.duration} placeholder="e.g., 3 class periods, 1 week, 1 month, Longer" />
                 </div>
+
 
                 <Button title='Generate' type="submit" />
             </form>

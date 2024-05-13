@@ -9,9 +9,9 @@ const CourseOutlineGenerator = () => {
     const dispatch = useDispatch();
     const getInitialFormData = () => ({
         courseTitle: '',
-        audience: 'General',
+        audience: '',
         courseDuration: '',
-        contentDeliveryMode: 'Online',
+        contentDeliveryMode: '',
     });
     const [formData, setFormData] = useState(getInitialFormData);
     const handleInputChange = (e: ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
@@ -21,7 +21,7 @@ const CourseOutlineGenerator = () => {
             [name]: value,
         }));
     };
-    const promptMessage = `Create a course outline for "${formData.courseTitle}" for ${formData.audience}. The course duration is ${formData.courseDuration}. Content will be delivered through ${formData.contentDeliveryMode}.`;
+    const promptMessage = `Create a detailed course outline for ${formData.courseTitle} targeted at ${formData.audience}. The duration of the course is ${formData.courseDuration} and the content will be delivered through ${formData.contentDeliveryMode} mode. Follow this structure in the output: Course title, Course Duration, Delivery Method, Course Description, Learning Outcomes, Course Schedule (detailed description of modules along with module title), Assessment Strategies, Resources/Course Materials. Show the duration of all the modules along with the module title.`;
     const handleSubmit = (event: React.SyntheticEvent<HTMLFormElement>) => {
         event.preventDefault();
         sendPrompt(dispatch, { input, messages, generatorPrompt, promptMessage });
