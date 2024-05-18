@@ -327,6 +327,7 @@ img {
 
   .generator-section {
     width: 100%;
+    min-height: auto;
   }
 }
 @media(max-width:1366px) {

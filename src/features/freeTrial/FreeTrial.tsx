@@ -9,13 +9,12 @@ import LoginImages from '../../components/loginImages/loginImages';
 import Strings from '../../utils/en';
 import ShowPassword from '../../assets/showPassword.svg';
 import HidePassword from '../../assets/hidePassword.svg'
-import googleLogo from '../../assets/google.svg';
 
 import './FreeTrial.css';
 
 const FreeTrial = () => {
     const currentDateTime = new Date();
-    currentDateTime.setDate(currentDateTime.getDate() + 30)
+    currentDateTime.setDate(currentDateTime.getDate() + 365);
     const formattedDateTime = currentDateTime.toISOString().split('T')[0];
     const registerDate = new Date().toISOString().split('T')[0];
     const initialFormData = {
@@ -134,7 +133,11 @@ const FreeTrial = () => {
             };
             const userDocRef = doc(usersCollection, enteredEmail);
             await setDoc(userDocRef, updatedFormData);
-
+            await emailjs.send(import.meta.env.VITE_EMAILJS_SERVICE_ID, import.meta.env.VITE_EMAILJS_TEMPLATE_WELCOME_REGISTER, {
+                message: `Name: ${formData.name}, \n Email: ${formData.email}, \n Phone: ${formData.phone}, \n Expiry: ${formData.expiry}`,
+                to_email: formData.email,
+            }, import.meta.env.VITE_EMAILJS_API_KEY);
+            console.log('Email sent successfully!');
             localStorage.setItem("isLoggedIn", String(true));
             localStorage.setItem("username", enteredEmail);
             setLoading(false);

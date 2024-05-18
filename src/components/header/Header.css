@@ -23,6 +23,20 @@
     position: relative;
     display: flex;
   }
+  .headerRight-others{
+    display: flex;
+    align-items:center;
+    font-size: calc(var(--baseFontSize) - 2px);
+    margin-right: 1.5rem;
+    border-right: 1px solid var(--gray);
+    padding-right: 5px;
+  }
+  .headerRight-others p{
+    margin:0 1rem 0 0;
+  }
+  .headerRight-others a{
+    font-weight: bold;
+  }
   .creditDetails.hidden{
     display: none;
   }
@@ -75,5 +89,8 @@
     }
     .header .defaultProfile img{
       max-width: 22px;
+    }
+    .username{
+      flex-direction: column-reverse;
     }
   }

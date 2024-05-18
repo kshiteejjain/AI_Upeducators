@@ -18,7 +18,7 @@ const Strings = {
     },
     otp: {
         title: 'Enter Your 6 Digit OTP',
-        button: 'Submit',
+        button: 'Send',
         emailSent: 'An OTP has been sent to your registered email address for verification.'
     },
     ForgotPassword: {
@@ -46,7 +46,7 @@ const Strings = {
     },
     profile: {
         upgrade: 'Plans',
-        upgradePlan: 'Checkout Our Plans'
+        upgradePlan: 'Upgrade Plan'
     },
 }
 export default Strings

@@ -82,4 +82,17 @@
     .search-wrapper{
         padding: 0 0 1rem 0;
     }
+    .additional-filter-parent{
+        flex-direction: column-reverse;
+        margin: 0 0 1rem 0;
+    }
+    .search-wrapper{
+        width: 100%;
+    }
+    .additional-filters{
+        width: 100%;
+    }
+    .additional-filters button{
+        width: 100%;
+    }
 }

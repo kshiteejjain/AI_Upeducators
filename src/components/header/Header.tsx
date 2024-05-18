@@ -24,7 +24,7 @@ const Header = ({ isLoginPage, moreOptions = true }: Props) => {
   const [showCreditDetails, setShowCreditDetails] = useState(false);
   const [isAdmin, setIsAdmin] = useState(false);
   const navigate = useNavigate();
-  
+
   const toggleCreditDetails = () => {
     setShowCreditDetails(!showCreditDetails);
   };
@@ -47,6 +47,7 @@ const Header = ({ isLoginPage, moreOptions = true }: Props) => {
 
     const fetchUserData = async () => {
       try {
+        
         const usersData = await fetchAllUserData(firestore);
         const loggedInUserEmail = localStorage.getItem('username');
         const loggedInUser = usersData.find(user => user.email === loggedInUserEmail);
@@ -85,6 +86,10 @@ const Header = ({ isLoginPage, moreOptions = true }: Props) => {
       <div className="container">
         <img src={logo} alt={Strings.header.metaTitle} title={Strings.header.metaTitle} />
         <div className="headerRight">
+          <div className='headerRight-others'>
+            <p> Remaining Credits: {remainingCredits}</p>
+            <p><a href='https://upeducators.ai/pricing/'> {Strings.profile.upgradePlan} </a></p>
+          </div>
           {isAdmin && <nav>
             <button onClick={() => navigate('/Dashboard')}>{Strings.header.admin}</button>
           </nav>}
@@ -110,7 +115,7 @@ const Header = ({ isLoginPage, moreOptions = true }: Props) => {
           </div>
         </div>
       </div>
-    </header>
+    </header >
   );
 };
 export default Header;

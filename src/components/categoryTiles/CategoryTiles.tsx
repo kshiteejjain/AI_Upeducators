@@ -2,7 +2,6 @@ import { useEffect, useState } from 'react';
 import { firestore } from '../../utils/firebase';
 import { fetchAllForms } from '../../utils/firebaseUtils';
 import Strings from '../../utils/en';
-import bookmarkIcon from '../../assets/bookmark.svg'
 import graph from '../../assets/graph.svg'
 import './CategoryTiles.css';
 

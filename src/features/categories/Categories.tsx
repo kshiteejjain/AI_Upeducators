@@ -19,6 +19,7 @@ type Props = {
     iconPath: string;
     IconComponent: string;
     redirect?: string;
+    usageCount?: number;
     onClick?: () => void;
 };
 const Categories = () => {
@@ -64,6 +65,7 @@ const Categories = () => {
                     id: category?.id,
                     redirect: category?.redirect,
                     isBookmarked: category?.isBookmarked,
+                    usageCount: category?.usageCount
                 }));
                 setCategories(formattedCategories);
             } catch (error) {
@@ -213,6 +215,7 @@ const Categories = () => {
                                         (item && item.name && item.name.toLowerCase().includes(searchTerm.toLowerCase()));
                                     return isMatchingCategory && isMatchingSearchTerm;
                                 })
+                                .sort((a, b) => (b.usageCount || 0) - (a.usageCount || 0))
                                 .map((item, index) => (
                                     <CategoryTiles
                                         key={index}

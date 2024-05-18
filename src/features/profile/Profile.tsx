@@ -118,7 +118,6 @@ const Profile = () => {
             <div className='wrapper'>
                 <div className='profile-flex'>
                     <div className='profile-cards'>
-                    <EmailSender userEmail="kshiteejjain@gmail.com" templateId="your_template_id" />
                         <h2> Profile </h2>
                         <table className='table'>
                             <tbody>
@@ -167,7 +166,7 @@ const Profile = () => {
                                             </tr>
                                             <tr>
                                                 <th>Expiry Date</th>
-                                                <td>{user.expiry}</td>
+                                                <td>{user.expiry.split('-').reverse().join('-')}</td>
                                             </tr>
                                         </React.Fragment>
                                     ))}
@@ -254,34 +253,34 @@ const Profile = () => {
                         </div>
                     </div>
                 </div>
-                <div className='profile-cards'>
-                        <h2> Payment History </h2>
-                        <div className='tableWrapper'>
-                            <table className='table'>
-                                <thead>
-                                    <tr>
-                                        <th>Payment Date</th>
-                                        <th>Plan Name</th>
-                                        <th>Plan Credits</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    {paymentDetails
-                                        .filter((item) =>
-                                            item.payload?.payment?.entity?.notes?.email === localStorage.getItem('username') ?? 'User')
-                                        .map((item, index) => {
-                                            return (
-                                                <tr key={index}>
-                                                    <td>{item.plan}</td>
-                                                    <td>{item.count}</td>
-                                                    <td>{item.timestamp}</td>
-                                                </tr>
-                                            );
-                                        })}
-                                </tbody>
-                            </table>
-                        </div>
+                {/* <div className='profile-cards'>
+                    <h2> Payment History </h2>
+                    <div className='tableWrapper'>
+                        <table className='table'>
+                            <thead>
+                                <tr>
+                                    <th>Payment Date</th>
+                                    <th>Plan Name</th>
+                                    <th>Plan Credits</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {paymentDetails
+                                    .filter((item) =>
+                                        item.payload?.payment?.entity?.notes?.email === localStorage.getItem('username') ?? 'User')
+                                    .map((item, index) => {
+                                        return (
+                                            <tr key={index}>
+                                                <td>{item.plan}</td>
+                                                <td>{item.count}</td>
+                                                <td>{item.timestamp}</td>
+                                            </tr>
+                                        );
+                                    })}
+                            </tbody>
+                        </table>
                     </div>
+                                </div>*/}
             </div>
         </>
     )

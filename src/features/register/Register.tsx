@@ -1,6 +1,6 @@
 import { useState, ChangeEvent, FormEvent, useEffect } from 'react';
 import { firestore, signInWithGooglePopup, } from '../../utils/firebase';
-import { collection, getDocs, where, query, doc, setDoc, updateDoc, getDoc } from 'firebase/firestore';
+import { collection, getDocs, where, query, doc, setDoc } from 'firebase/firestore';
 import { useNavigate } from 'react-router-dom';
 import emailjs from '@emailjs/browser';
 import Loader from '../../components/loader/Loader';
@@ -9,7 +9,6 @@ import LoginImages from '../../components/loginImages/loginImages';
 import Strings from '../../utils/en';
 import ShowPassword from '../../assets/showPassword.svg';
 import HidePassword from '../../assets/hidePassword.svg'
-import googleLogo from '../../assets/google.svg';
 
 import './Register.css';
 
@@ -19,6 +18,7 @@ const Register = () => {
     const formattedDateTime = currentDateTime.toISOString().split('T')[0];
     const registerDate = new Date().toISOString().split('T')[0];
     const initialFormData = {
+        name: '',
         email: '',
         password: '',
         total_credits: 0,
@@ -173,8 +173,13 @@ const Register = () => {
                 formData.remain_credits += 1500;
             } else if (await isEmailInPaidUsers(formData.email, 'Platinum')) {
                 plan = 'Platinum';
-                formData.total_credits = 4000;
-                formData.remain_credits = 4000;
+                formData.total_credits = 2500;
+                formData.remain_credits = 2500;
+            }
+            if (!plan) {
+                alert("You are not a subscriber. Please choose a plan. Redirecting to our plans.");
+                window.location.href = 'https://upeducators.ai/pricing';
+                return;
             }
             // Check if the email is in the paid users collection
             const isPaidUser = await isEmailInPaidUsers(formData.email, plan);
@@ -191,48 +196,53 @@ const Register = () => {
             //     return;
             // }
             // Generate OTP and store it temporarily
-            // const otp = generateOTP();
-            // localStorage.setItem('otp_temp', otp);
-            // Update formData with plan and other details
-
-            // Fetch current expiry date from Firebase RegisteredUsers collection
-            const userDocRef = doc(collection(firestore, 'RegisteredUsers'), formData.email);
-            const userDocSnapshot = await getDoc(userDocRef);
-            if (userDocSnapshot.exists()) {
-                const userData = userDocSnapshot.data();
-                if (userData && userData.expiry) {
-                    const currentExpiry = new Date(userData.expiry);
-                    currentExpiry.setDate(currentExpiry.getDate() + 365);
-                    const extendedExpiry = currentExpiry.toISOString().split('T')[0];
-                    formData.expiry = extendedExpiry;
-                }
-            }
+            const otp = generateOTP();
+            localStorage.setItem('otp_temp', otp);
+            await emailjs.send(import.meta.env.VITE_EMAILJS_SERVICE_ID, import.meta.env.VITE_EMAILJS_TEMPLATE_REGISTER, {
+                message: `OTP: ${otp}`,
+                to_email: formData.email,
+            }, import.meta.env.VITE_EMAILJS_API_KEY);
+            console.log('Email sent successfully!');
 
             const updatedFormData = {
                 ...formData,
                 plan: plan,
             };
+            // Update formData with plan and other details
+
+            // Fetch current expiry date from Firebase RegisteredUsers collection
+            // const userDocRef = doc(collection(firestore, 'RegisteredUsers'), formData.email);
+            // const userDocSnapshot = await getDoc(userDocRef);
+            // if (userDocSnapshot.exists()) {
+            //     const userData = userDocSnapshot.data();
+            //     if (userData && userData.expiry) {
+            //         const currentExpiry = new Date(userData.expiry);
+            //         currentExpiry.setDate(currentExpiry.getDate() + 365);
+            //         const extendedExpiry = currentExpiry.toISOString().split('T')[0];
+            //         formData.expiry = extendedExpiry;
+            //     }
+            // }
             // Set entered email, switch to OTP screen, and update formData
             setEnteredEmail(formData.email);
-            //setIsOTPScreen(true);
+            setIsOTPScreen(true);
             setLoading(false);
-            setFormData(updatedFormData);
-            localStorage.setItem("isLoggedIn", String(true));
-            localStorage.setItem("username", formData?.email);
+            setFormData(updatedFormData)
+            //localStorage.setItem("isLoggedIn", String(true));
+            //localStorage.setItem("username", formData?.email);
             // Instead of setDoc, use updateDoc to update existing document
-            const userDocReference = doc(collection(firestore, 'RegisteredUsers'), formData.email);
-            await updateDoc(userDocReference, updatedFormData);
+            // const userDocReference = doc(collection(firestore, 'RegisteredUsers'), formData.email);
+            // await updateDoc(userDocReference, updatedFormData);
 
-            const onboardingUserSnapshot = await getDocs(
-                query(collection(firestore, 'OnboardingQuestions'), where('email', '==', formData.email))
-            );
-            if (!onboardingUserSnapshot.empty) {
-                // User exists in OnBoardingQuestions collection
-                navigate("/Categories");
-            } else {
-                // User does not exist in OnBoardingQuestions collection
-                navigate("/OnBoardingQuestions");
-            }
+            // const onboardingUserSnapshot = await getDocs(
+            //     query(collection(firestore, 'OnboardingQuestions'), where('email', '==', formData.email))
+            // );
+            // if (!onboardingUserSnapshot.empty) {
+            //     // User exists in OnBoardingQuestions collection
+            //     navigate("/Categories");
+            // } else {
+            //     // User does not exist in OnBoardingQuestions collection
+            //     navigate("/OnBoardingQuestions");
+            // }
         } catch (error) {
             alert(`An error occurred: ${error}`);
             console.error('Error submitting form:', error);
@@ -251,6 +261,7 @@ const Register = () => {
 
     const logEmailAndOTP = async (e: FormEvent) => {
         e.preventDefault();
+        setLoading(true);
         try {
             if (!enteredEmail) {
                 throw new Error('Email is empty or undefined');
@@ -259,13 +270,34 @@ const Register = () => {
             if (enteredOTP === localStorage.getItem('otp_temp')) {
                 localStorage.removeItem('otp_temp');
                 setEnteredEmail(enteredEmail);
+
+                let plan = '';
+                if (await isEmailInPaidUsers(enteredEmail, 'Silver')) {
+                    plan = 'Silver';
+                } else if (await isEmailInPaidUsers(enteredEmail, 'Platinum')) {
+                    plan = 'Platinum';
+                }
+
+                const updatedFormData = {
+                    ...formData,
+                    plan: plan,
+                };
+
                 const usersCollection = collection(firestore, 'RegisteredUsers');
                 const userDocRef = doc(usersCollection, enteredEmail);
-                await setDoc(userDocRef, formData);
-                setIsOTPScreen(true);
+                await setDoc(userDocRef, updatedFormData);
+
+                const onboardingUserSnapshot = await getDocs(
+                    query(collection(firestore, 'OnboardingQuestions'), where('email', '==', enteredEmail))
+                );
+                if (!onboardingUserSnapshot.empty) {
+                    navigate("/Categories");
+                } else {
+                    navigate("/OnBoardingQuestions");
+                }
+                localStorage.setItem("isLoggedIn", String(true));
+                localStorage.setItem("username", formData?.email);
                 setLoading(false);
-                setFormData(initialFormData);
-                navigate('/');
             } else {
                 alert('You have entered wrong OTP');
             }
@@ -293,8 +325,8 @@ const Register = () => {
                 remainCredits = 1500;
             } else if (await isEmailInPaidUsers(email, 'Platinum')) {
                 plan = 'Platinum';
-                totalCredits = 4000;
-                remainCredits = 4000;
+                totalCredits = 2500;
+                remainCredits = 2500;
             }
             let updatedFormData = {
                 ...initialFormData,
@@ -359,7 +391,6 @@ const Register = () => {
                         {error && <div className="errorMessage">{error}</div>}
                         <div className="additional-actions">
                             <Button title={Strings.otp.button} type="submit" />
-                            <Button isSecondary title={Strings.login.register} type="button" onClick={() => setIsOTPScreen(false)} />
                         </div>
                     </form> :
                     <>

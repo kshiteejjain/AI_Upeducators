@@ -7,6 +7,7 @@ import { resetGeneratedData } from '../promptListGeneratorSlice/QuestionGenerato
 import BannerCarousel from '../../components/bannerCarousel/bannerCarousel';
 import examplerData from '../../utils/exampler.json'
 import Close from '../../assets/close.svg'
+import Loader from '../../components/loader/Loader';
 
 type Props = {
     formName?: string
@@ -64,7 +65,7 @@ const GeneratorAndResult = () => {
                     })}
                 </div>
                 <div className='container'>
-                    <Suspense fallback={<div>Loading</div>}>
+                    <Suspense fallback={<Loader />}>
                         {Generator && <Generator />}
                         {Result && <Result />}
                     </Suspense>

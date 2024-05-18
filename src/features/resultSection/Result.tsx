@@ -59,24 +59,24 @@ const Result = () => {
               // Splitting the content into lines
               msg.content.split('\n').map((line, lineIndex) => (
                 <div key={lineIndex}>
-              {line.trim().endsWith('?') || line.trim().endsWith(':') || line.trim().endsWith('!') ? (
-                <strong>{line}</strong>
-              ) : (
-                // Render each HTTP or HTTPS link as individual clickable links
-                line.split(/\b(https?:\/\/[^\s]+)\b/g).map((segment, segmentIndex) => {
-                  if (segment.match(/^https?:\/\//)) {
-                    return (
-                      <a key={segmentIndex} href={segment} target="_blank">{segment}</a>
-                    );
-                  } else {
-                    return (
-                      <span key={segmentIndex}>{segment}</span>
-                    );
-                  }
-                })
-              )}
-              <br />
-            </div>
+                  {line.trim().endsWith('?') || line.trim().endsWith(':') || line.trim().endsWith('!') ? (
+                    <strong>{line}</strong>
+                  ) : (
+                    // Render each HTTP or HTTPS link as individual clickable links
+                    line.split(/\b(https?:\/\/[^\s]+)\b/g).map((segment, segmentIndex) => {
+                      if (segment.match(/^https?:\/\//)) {
+                        return (
+                          <a key={segmentIndex} href={segment} target="_blank">{segment}</a>
+                        );
+                      } else {
+                        return (
+                          <span key={segmentIndex}>{segment}</span>
+                        );
+                      }
+                    })
+                  )}
+                  <br />
+                </div>
               ))
             ) : (
               <div>{msg.content}</div> // Render the content as is if it's not a string
@@ -132,7 +132,7 @@ const Result = () => {
   };
   const promptMessage = `${formData.followUpPromptInput}`;
 
-  const handleSubmit = async (event: React.SyntheticEvent<HTMLFormElement>) => {
+  const handleFollowupPromptSubmit = async (event: React.SyntheticEvent<HTMLFormElement>) => {
     event.preventDefault();
     setIsSubmitClicked(true);
     sendPrompt(dispatch, { input, messages, generatorPrompt, promptMessage, isFollowUpPrompt: true });
@@ -186,9 +186,18 @@ const Result = () => {
         )}
 
       </div>
+
       {generatedData && getFollowPrompt.length !== 0 && !generatedImage && (
         <ResponseFeedback />
       )}
+
+      {/* <div className="chat-bubble">
+        <div className="typing">
+          <div className="dot"></div>
+          <div className="dot"></div>
+          <div className="dot"></div>
+        </div>
+      </div> */}
       {generatedData && getFollowPrompt.length !== 0 && !generatedImage && (
         <div className="followup-prompts">
           <h2>Followup Query?</h2>
@@ -201,9 +210,8 @@ const Result = () => {
           </ul>
         </div>
       )}
-
       {generatedData?.length >= 2 && !generatedImage && (
-        <form onSubmit={handleSubmit} className='followUpPrompt'>
+        <form onSubmit={handleFollowupPromptSubmit} className='followUpPrompt'>
           <div className='form-group'>
             <input
               name="followUpPromptInput"
