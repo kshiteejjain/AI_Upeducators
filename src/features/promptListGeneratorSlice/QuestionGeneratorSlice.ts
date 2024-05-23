@@ -115,7 +115,7 @@ const generatorSlice = createSlice({
       state.messages.push(action.payload);
     },
     resetGeneratedData: (state) => {
-      state.messages = null;
+      state.messages = [];
       state.error = null;
       state.status = 'idle';
     },

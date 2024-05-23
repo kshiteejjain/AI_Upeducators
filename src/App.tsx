@@ -6,7 +6,7 @@ import Categories from './features/categories/Categories';
 import BulkUpload from './features/bulkUpload/Index';
 import ContactUs from './features/contactUs/ContactUs';
 import FreeTrial from './features/freeTrial/FreeTrial';
-import ForgotPassword from './features/forgotPassword/ForgotPassword';
+import CreatePassword from './features/createPassword/CreatePassword';
 import Dashboard from './features/admin/dashboard/Dashboard';
 import Register from './features/register/Register';
 import Profile from './features/profile/Profile';
@@ -25,7 +25,7 @@ function App() {
       <Routes>
           <Route path="/FreeTrial" element={<FreeTrial />} />
           <Route path="/Register" element={<Register />} />
-          <Route path="/ForgotPassword" element={<ForgotPassword />} />
+          <Route path="/CreatePassword" element={<CreatePassword />} />
           <Route path="/*" element={<MainApp isLoggedIn={isLoggedIn} />} />
         </Routes>
       </Router>

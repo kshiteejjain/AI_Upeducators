@@ -1,6 +1,7 @@
 import React, { useState, ReactElement } from 'react';
-import { collection, doc, setDoc } from 'firebase/firestore';
+import { collection, doc, getDoc, setDoc } from 'firebase/firestore';
 import { useNavigate } from 'react-router-dom';
+import emailjs from '@emailjs/browser';
 import { firestore } from '../../utils/firebase';
 import CSVReader from 'react-csv-reader';
 import Button from '../../components/buttons/Button';
@@ -8,8 +9,9 @@ import Button from '../../components/buttons/Button';
 import './BulkUpload.css';
 
 type BulkUsersUploadProps = {};
+
 const currentDateTime = new Date();
-currentDateTime.setDate(currentDateTime.getDate() + 365)
+currentDateTime.setDate(currentDateTime.getDate() + 365);
 const formattedDateTime = currentDateTime.toISOString().split('T')[0];
 const registerDate = new Date().toISOString().split('T')[0];
 const initialFormData = {
@@ -34,7 +36,7 @@ const initialFormData = {
 };
 
 const BulkUsersUpload: React.FC<BulkUsersUploadProps> = (): ReactElement => {
-    const [csvData, setCsvData] = useState<string[][] | undefined>(initialFormData);
+    const [csvData, setCsvData] = useState<string[][] | undefined>();
     const navigate = useNavigate();
     const goHome = () => {
         navigate('/Categories');
@@ -43,8 +45,6 @@ const BulkUsersUpload: React.FC<BulkUsersUploadProps> = (): ReactElement => {
         // Process the CSV data as needed
         setCsvData(data);
     };
-
-
 
     // Function to generate a random alphanumeric password
     const generateRandomPassword = () => {
@@ -57,8 +57,6 @@ const BulkUsersUpload: React.FC<BulkUsersUploadProps> = (): ReactElement => {
         }
         return password;
     };
-
-
 
     const uploadUsersToFirestore = async () => {
         if (!csvData) return alert('No CSV data available.');
@@ -91,26 +89,49 @@ const BulkUsersUpload: React.FC<BulkUsersUploadProps> = (): ReactElement => {
 
                     // Check if email already exists in RegisteredUsers
                     const docRef = doc(collectionRef, email);
-                    //const docSnapshot = await getDoc(docRef);
-                    // if (docSnapshot.exists()) {
-                    //     // Email already exists, log a message and skip processing this row
-                    //     alert(`Email ${email} already exists in RegisteredUsers. Skipping...`);
-                    //     return;
-                    // }
+                    const docSnapshot = await getDoc(docRef);
+                    let existingRemainingCredits = 0;
 
-                    // Generate random password
-                    const password = generateRandomPassword();
+                    if (docSnapshot.exists()) {
+                        const existingData = docSnapshot.data();
+                        existingRemainingCredits = existingData.remain_credits || 0;
+
+                        // If the document exists, do not change the password
+                        delete document.password;
+                        await emailjs.send(import.meta.env.VITE_EMAILJS_SERVICE_ID, import.meta.env.VITE_EMAILJS_TEMPLATE_WELCOME_SUPER_EXISTING_USER, {
+                            registeredEmail: document.email,
+                            registeredUsername: document.name,
+                            registeredPlan: document.plan,
+                            credits: 1000,
+                            expiryDate:document.expiry.split('-').reverse().join('-'),
+                            to_email: document.email,
+                        }, import.meta.env.VITE_EMAILJS_API_KEY);
+                    } else {
+                        // Generate random password for new users
+                        const password = generateRandomPassword();
+                        document.password = password;
+                        await emailjs.send(import.meta.env.VITE_EMAILJS_SERVICE_ID, import.meta.env.VITE_EMAILJS_TEMPLATE_WELCOME_REGISTER, {
+                            registeredEmail: document.email,
+                            registeredUsername: document.name,
+                            registeredPlan: document.plan,
+                            credits: 1000,
+                            registeredDate: new Date().toISOString().split('T')[0].split('-').reverse().join('-'),
+                            expiryDate:document.expiry.split('-').reverse().join('-'),
+                            to_email: document.email,
+                        }, import.meta.env.VITE_EMAILJS_API_KEY);
+                    }
 
                     // If the document doesn't exist, create a new one
-                    document['total_credits'] = creditsToAdd;
-                    document['remain_credits'] = creditsToAdd;
+                    document.total_credits = existingRemainingCredits + creditsToAdd;
+                    document.remain_credits = existingRemainingCredits + creditsToAdd;
 
-                    // Set the password
-                    document['password'] = password;
-
+                    // Ensure plan is set to "Super"
+                    if (document.plan.toLowerCase() === 'super') {
+                        document.plan = 'Super';
+                    }
 
                     // Add the document to Firestore
-                    await setDoc(docRef, document);
+                    await setDoc(docRef, document, { merge: true });
                 })
             );
             alert('Data uploaded to Firestore successfully!');
@@ -118,8 +139,6 @@ const BulkUsersUpload: React.FC<BulkUsersUploadProps> = (): ReactElement => {
             alert(`Error uploading data to Firestore: ${error}`);
         }
     };
-
-
 
     return (
         <div className="uploadForm">
@@ -130,7 +149,6 @@ const BulkUsersUpload: React.FC<BulkUsersUploadProps> = (): ReactElement => {
             <Button title="Upload Data" type="button" onClick={uploadUsersToFirestore} />
             <Button isSecondary title="Go to Categories" type="button" onClick={goHome} />
         </div>
-
     );
 };
 export default BulkUsersUpload;

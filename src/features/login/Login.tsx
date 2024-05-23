@@ -21,7 +21,10 @@ const Login = () => {
     const [showPassword, setShowPassword] = useState(false);
     const navigate = useNavigate();
     const handleForgotPassword = () => {
-        navigate('/ForgotPassword')
+        navigate('/CreatePassword')
+    }
+    const handleSignUp = () => {
+        navigate('/FreeTrial')
     }
     const handleTogglePasswordVisibility = () => {
         setShowPassword(!showPassword);
@@ -159,7 +162,8 @@ const Login = () => {
                     <Button title={Strings.login.googleLogin} onClick={logGoogleUser} isSocial isImage imagePath={googleLogo} /> */}
                 </form>
                 <div className="additional-actions">
-                    <Button title={Strings.ForgotPassword.title} isSecondary type="button" onClick={handleForgotPassword} />
+                    <Button title={Strings.CreatePassword.title} isSecondary type="button" onClick={handleForgotPassword} />
+                    <Button title={Strings.register.signUp} isSecondary type="button" onClick={handleSignUp} />
                     {loader && <Loader />}
                 </div>
             </div>

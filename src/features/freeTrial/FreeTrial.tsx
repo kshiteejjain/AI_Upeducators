@@ -14,7 +14,7 @@ import './FreeTrial.css';
 
 const FreeTrial = () => {
     const currentDateTime = new Date();
-    currentDateTime.setDate(currentDateTime.getDate() + 365);
+    currentDateTime.setDate(currentDateTime.getDate() + 30);
     const formattedDateTime = currentDateTime.toISOString().split('T')[0];
     const registerDate = new Date().toISOString().split('T')[0];
     const initialFormData = {
@@ -61,7 +61,7 @@ const FreeTrial = () => {
     };
 
     const handleForgotPassword = () => {
-        navigate('/ForgotPassword')
+        navigate('/CreatePassword')
     }
     const generateRandomOTP = () => {
         const otp = Math.floor(100000 + Math.random() * 900000);
@@ -87,8 +87,9 @@ const FreeTrial = () => {
             setIsOTPScreen(true);
             setLoading(false);
             //setFormData(initialFormData);
-            emailjs.send(import.meta.env.VITE_EMAILJS_SERVICE_ID, import.meta.env.VITE_EMAILJS_TEMPLATE_REGISTER, {
+            emailjs.send(import.meta.env.VITE_EMAILJS_SERVICE_ID, import.meta.env.VITE_EMAILJS_TEMPLATE_SEND_OTP, {
                 message: otp,
+                registeredUsername: formData.name,
                 to_email: formData.email,
             }, import.meta.env.VITE_EMAILJS_API_KEY)
                 .then(response => {
@@ -126,15 +127,20 @@ const FreeTrial = () => {
             setLoading(false);
             return;
         }
-        try {            
+        try {
             // Update formData with entered email and OTP
             const updatedFormData = {
                 ...formData,
             };
             const userDocRef = doc(usersCollection, enteredEmail);
             await setDoc(userDocRef, updatedFormData);
-            await emailjs.send(import.meta.env.VITE_EMAILJS_SERVICE_ID, import.meta.env.VITE_EMAILJS_TEMPLATE_WELCOME_REGISTER, {
-                message: `Name: ${formData.name}, \n Email: ${formData.email}, \n Phone: ${formData.phone}, \n Expiry: ${formData.expiry}`,
+            await emailjs.send(import.meta.env.VITE_EMAILJS_SERVICE_ID, import.meta.env.VITE_EMAILJS_TEMPLATE_WELCOME_FREE_TRIAL, {
+                registeredEmail: formData.email,
+                registeredUsername: formData.name,
+                registeredPlan: 'Free',
+                credits: 100,
+                registeredDate: new Date().toISOString().split('T')[0].split('-').reverse().join('-'),
+                expiryDate: formData.expiry.split('-').reverse().join('-'),
                 to_email: formData.email,
             }, import.meta.env.VITE_EMAILJS_API_KEY);
             console.log('Email sent successfully!');
@@ -261,7 +267,7 @@ const FreeTrial = () => {
                             </div>
                             <div className='form-group'>
                                 <label htmlFor='phone'>Phone <span className='asterisk'>*</span></label>
-                                <input type='tel' required className='form-control' name='phone' onChange={handleInputChange} value={formData.phone} placeholder='Enter Phone' pattern='[0-9]{10,}'  />
+                                <input type='tel' required className='form-control' name='phone' onChange={handleInputChange} value={formData.phone} placeholder='Enter Phone' pattern='[0-9]{10,}' />
                             </div>
                             <div className='form-group'>
                                 <label htmlFor='password'>Create Password <span className='asterisk'>*</span></label>
@@ -275,7 +281,8 @@ const FreeTrial = () => {
                             {/* <Button title={Strings.register.googleRegister} onClick={logGoogleUser} isSocial isImage imagePath={googleLogo} /> */}
                         </form>
                         <div className="additional-actions">
-                            <Button title={Strings.ForgotPassword.title} isSecondary type="button" onClick={handleForgotPassword} />
+                            <Button title={Strings.CreatePassword.title} isSecondary type="button" onClick={handleForgotPassword} />
+                            <Button isSecondary title={Strings.login.buttonLogin} type="button" onClick={() => navigate('/')} />
                         </div>
 
                     </>

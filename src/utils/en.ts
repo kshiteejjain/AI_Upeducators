@@ -14,15 +14,16 @@ const Strings = {
     },
     register: {
         title: 'Register to The AI Experience',
-        googleRegister: 'Register With Google'
+        googleRegister: 'Register With Google',
+        signUp: 'Sign up',
     },
     otp: {
         title: 'Enter Your 6 Digit OTP',
-        button: 'Send',
+        button: 'Verify',
         emailSent: 'An OTP has been sent to your registered email address for verification.'
     },
-    ForgotPassword: {
-        title: 'Forgot Password?',
+    CreatePassword: {
+        title: 'Create Password?',
     },
     header: {
         signOut: 'Sign Out',
