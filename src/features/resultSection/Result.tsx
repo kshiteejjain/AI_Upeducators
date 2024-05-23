@@ -13,8 +13,12 @@ import ResponseFeedback from '../responseFeedback/responseFeedback';
 import './Result.css';
 
 type RootState = {
+  imageData: any;
+  selectedCategory: any;
   generatorData: {
     isFollowUpPrompt: boolean;
+    status: any;
+    messages: string;
     data: {
       choices: {
         text: string;
@@ -39,45 +43,92 @@ const Result = () => {
   const resultRef = useRef<HTMLDivElement | null>(null)
   const generatedDataOption = isFollowUpPrompt ? generatedData : generatedData?.slice(-2);
 
-  const content = generatedDataOption?.map((msg, index) => {
+  const content = generatedDataOption?.map((msg: any, index: number) => {
     if (!msg || !msg.content || typeof msg.content !== 'string') {
       return null; // Skip rendering if msg or msg.content is not valid
     }
-
+  
     if (msg.role === 'user' && (msg.isVisible === false || msg.isVisible === undefined)) {
       return null;
     }
-
+  
+    const isTableResponse = msg.content.includes('table response:') || msg.content.includes('table response');
+    const isSimpleTableFormat = msg.content.trim().split('\n').every((line: any) => /^\|.*\|$/.test(line.trim()));
+    const renderBoldBeforeColon = (text: string) => {
+      const parts = text.split(/(:\s*)/);
+      return (
+        <>
+          <strong>{parts.shift()}</strong>
+          {parts.join('')}
+        </>
+      );
+    };
+    
     return (
       <div className='response-data' key={index}>
         <div className={msg.role}>
           {msg.role === 'user' ? (
             <div dangerouslySetInnerHTML={{ __html: msg.content?.trim()?.replace(/\n/g, '<br />') }} />
           ) : (
-            // Check if msg.content is a string before splitting
             typeof msg.content === 'string' ? (
-              // Splitting the content into lines
-              msg.content.split('\n').map((line, lineIndex) => (
-                <div key={lineIndex}>
-                  {line.trim().endsWith('?') || line.trim().endsWith(':') || line.trim().endsWith('!') ? (
-                    <strong>{line}</strong>
-                  ) : (
-                    // Render each HTTP or HTTPS link as individual clickable links
-                    line.split(/\b(https?:\/\/[^\s]+)\b/g).map((segment, segmentIndex) => {
-                      if (segment.match(/^https?:\/\//)) {
-                        return (
-                          <a key={segmentIndex} href={segment} target="_blank">{segment}</a>
-                        );
-                      } else {
-                        return (
-                          <span key={segmentIndex}>{segment}</span>
-                        );
-                      }
-                    })
-                  )}
-                  <br />
-                </div>
-              ))
+              isTableResponse ? (
+                // Render the content as a table
+                <table className='table-response'>
+                  <tbody>
+                    {msg.content.split('\n').map((line: any, lineIndex: number) => {
+                      const columns = line.split('|').map((col: any) => col.trim()).filter((col: any) => col !== '');
+                      return (
+                        <tr key={lineIndex}>
+                          {columns.map((col: any, colIndex: number) => (
+                            <td key={colIndex}>{col}</td>
+                          ))}
+                        </tr>
+                      );
+                    })}
+                  </tbody>
+                </table>
+              ) : isSimpleTableFormat ? (
+                // Render the simple table format "| Name | Value |"
+                <table className='table-response'>
+                  <tbody>
+                    {msg.content.split('\n').map((line: any, lineIndex: number) => {
+                      const columns = line.split('|').map((col: any) => col.trim()).filter((col: any) => col !== '');
+                      return (
+                        <tr key={lineIndex}>
+                          {columns.map((col: any, colIndex: number) => (
+                            <td key={colIndex}>{col}</td>
+                          ))}
+                        </tr>
+                      );
+                    })}
+                  </tbody>
+                </table>
+              ) : (
+                // Render the content as lines
+                msg.content.split('\n').map((line: any, lineIndex: number) => (
+                  <div key={lineIndex}>
+                    {line.includes(':') ? (
+                      renderBoldBeforeColon(line)
+                    ) : line.trim().endsWith('?') || line.trim().endsWith(':') || line.trim().endsWith('!') ? (
+                      <strong>{line}</strong>
+                    ) : (
+                      // Render each HTTP or HTTPS link as individual clickable links
+                      line.split(/\b(https?:\/\/[^\s]+)\b/g).map((segment: any, segmentIndex: number) => {
+                        if (segment.match(/^https?:\/\//)) {
+                          return (
+                            <a key={segmentIndex} href={segment} target="_blank">{segment}</a>
+                          );
+                        } else {
+                          return (
+                            <span key={segmentIndex}>{segment}</span>
+                          );
+                        }
+                      })
+                    )}
+                    <br />
+                  </div>
+                ))
+              )
             ) : (
               <div>{msg.content}</div> // Render the content as is if it's not a string
             )
@@ -86,12 +137,11 @@ const Result = () => {
       </div>
     );
   });
-
-
+   
 
   useEffect(() => {
     isSubmitClicked ? null : setIsLoading(loadingStatus === 'loading');
-    generatedData?.length === 2 ? (resultAudio.play(), fetchFollowupPrompts()) : null;
+    generatedData?.length === 1 ? (resultAudio.play(), fetchFollowupPrompts()) : null;
 
   }, [generatedData, generatedImage, resultAudio]);
 
@@ -103,7 +153,7 @@ const Result = () => {
   const handleCopyData = () => {
     alert('Result data copied and ready to paste.');
     const textArea = document.createElement('textarea');
-    textArea.value = generatedData?.map(msg => msg.content).join('\n') || '';
+    textArea.value = generatedData?.map((msg: any) => msg.content).join('\n') || '';
     document.body.appendChild(textArea);
     textArea.select();
     document.execCommand('copy');
@@ -210,7 +260,7 @@ const Result = () => {
           </ul>
         </div>
       )}
-      {generatedData?.length >= 2 && !generatedImage && (
+      {generatedData?.length >= 1 && !generatedImage && (
         <form onSubmit={handleFollowupPromptSubmit} className='followUpPrompt'>
           <div className='form-group'>
             <input

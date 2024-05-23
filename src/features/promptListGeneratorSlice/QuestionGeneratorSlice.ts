@@ -9,7 +9,6 @@ const creditValue = Number(import.meta.env.VITE_TEXT_GENERATOR_CREDITS);
 export const generatorPrompt = createAsyncThunk('generator/generatorPrompt', async (prompt, { getState }) => {
   const isGPT4 = localStorage.getItem('isGPT4');
 
-
   const promptList = JSON.parse(localStorage.getItem('prompts') || '[]'); // Get existing prompts or initialize as empty array
   promptList.push({
     role: 'user',
@@ -17,11 +16,7 @@ export const generatorPrompt = createAsyncThunk('generator/generatorPrompt', asy
     isFollowUpPrompt: false
   });
   localStorage.setItem('prompts', JSON.stringify(promptList));
-  if (localStorage.getItem('username') === 'ankushb@upeducators.com') {
-    alert(JSON.stringify(promptList[promptList.length - 1]?.content))
-  }
-
-
+ 
   await handleCreditDecrement(creditValue);
   try {
     const state = getState() as RootState; // Cast to RootState
@@ -71,7 +66,6 @@ export const generatorPrompt = createAsyncThunk('generator/generatorPrompt', asy
       console.error("User is not logged in."); // Handle not logged in scenario
     }
 
-
     const response = await axios.post(
       `${import.meta.env.VITE_OPEN_AI_CHAT_COMPLETION_API_URL}`,
       {
@@ -89,6 +83,7 @@ export const generatorPrompt = createAsyncThunk('generator/generatorPrompt', asy
         },
       }
     );
+    console.log(prompt)
     console.log('Model used ', response.data.model);
     return response?.data?.choices[0]?.message?.content?.trim();
   } catch (error) {

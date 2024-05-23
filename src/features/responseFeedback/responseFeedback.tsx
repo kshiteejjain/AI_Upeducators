@@ -3,11 +3,15 @@ import { firestore } from '../../utils/firebase';
 import ThumbsUp from '../../assets/thumb-up.svg';
 
 import  './responseFeedback.css';
+import Loader from '../../components/loader/Loader';
+import { useState } from 'react';
 
 const responseFeedback = () => {
+    const [loader, setLoader] = useState(false);
+
     const likeResponse = async () => {
         const curForm = localStorage.getItem('curForm');
-    
+        setLoader(true);
         if (!curForm) {
             return;
         }
@@ -24,6 +28,7 @@ const responseFeedback = () => {
             await updateDoc(doc(firestore, 'FormsList', document.id), {
                 likes: newLikes
             }).then(() => {
+                setLoader(false);
             }).catch((error) => {
                 console.error("Error updating likes:", error);  // Log any errors during update
             });
@@ -33,7 +38,7 @@ const responseFeedback = () => {
 
     const needImprovement = async () => {
         const curForm = localStorage.getItem('curForm');
-        
+        setLoader(true);
         if (!curForm) {
             console.log("No current form found in localStorage");
             return;
@@ -53,6 +58,8 @@ const responseFeedback = () => {
             const currentDislikes = document.data().dislikes ? document.data().dislikes + 1 : 1;
             await updateDoc(doc(firestore, 'FormsList', document.id), {
                 dislikes: currentDislikes
+            }).then(() => {
+                setLoader(false);
             }).catch((error) => {
                 console.error("Error updating dislikes:", error);  // Log any errors during update
             });
@@ -63,8 +70,9 @@ const responseFeedback = () => {
 
     return (
         <div className="response-feedback">
+            {loader && <Loader />}
             <img src={ThumbsUp} alt='Like Response' title='Like Response' onClick={likeResponse} />
-            <img src={ThumbsUp} alt='Need Improvement' title='Need Improvement' onClick={needImprovement} />
+            <img src={ThumbsUp} className='needImprovement' alt='Need Improvement' title='Need Improvement' onClick={needImprovement} />
         </div>
     )
 }

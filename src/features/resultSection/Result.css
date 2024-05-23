@@ -196,6 +196,17 @@
     }
 }
 
+.table-response {
+    border-collapse: collapse;
+    width: 100%;
+}
+
+.table-response td {
+    border: 1px solid var(--gray);
+    padding: 5px 10px;
+    text-transform: capitalize;
+}
+
 @media(max-width:767px) {
     .result-section {
         width: 100%;
