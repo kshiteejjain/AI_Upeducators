@@ -14,13 +14,16 @@ import tick from "../../assets/tick.svg"
 import './Categories.css';
 
 type Props = {
+    id: number;
     name: string;
     description: string;
     iconPath: string;
     IconComponent: string;
     redirect?: string;
     usageCount?: number;
+    categoryName? : string;
     onClick?: () => void;
+    isBookmarked: boolean | 0
 };
 const Categories = () => {
     const [categories, setCategories] = useState<Props[]>([]);
@@ -35,6 +38,9 @@ const Categories = () => {
         subject: localStorage.getItem('subject') || '',
         chapter: localStorage.getItem('chapter') || '',
     });
+    const [bookmarkedOnly, setBookmarkedOnly] = useState(false);
+    const [bookmarkedIds, setBookmarkedIds] = useState<number[]>(() => JSON.parse(localStorage.getItem('bookmarks') || '[]'));
+
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const getIconPath = async (iconPath: string) => {
@@ -46,6 +52,8 @@ const Categories = () => {
             return null;
         }
     };
+
+    console.log('bookmarkedIds', bookmarkedIds.includes(10))
 
     useEffect(() => {
         const fetchData = async () => {
@@ -87,11 +95,18 @@ const Categories = () => {
             navigate('/GeneratorAndResult')
         }
     };
+
     const handleCategorySelect = (selectedCategory: string) => {
-        setFilterCategory(selectedCategory)
+        if (selectedCategory === 'Bookmarked') {
+            setBookmarkedOnly(true);
+        } else {
+            setBookmarkedOnly(false);
+            setFilterCategory(selectedCategory);
+        }
     };
     const handleSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
         setSearchTerm(event.target.value);
+        setBookmarkedOnly(false);
     };
     const handleSearchFocus = () => {
         setIsSearchFocused(true);
@@ -107,25 +122,20 @@ const Categories = () => {
         setIsBoardForms(prev => !prev)
     }
 
-    const handleInputChange = (event) => {
+    const handleInputChange = (event: any) => {
         const { name, value } = event.target;
-
-        // Update the formData state and save the new state to localStorage
         setFormData(prevFormData => {
             const updatedFormData = {
                 ...prevFormData,
                 [name]: value
             };
-
-            // Serialize and save the updated form data to localStorage
             localStorage.setItem('boardFormData', JSON.stringify(updatedFormData));
 
             return updatedFormData;
         });
     };
 
-
-
+    
     return (
         <>
             <Header />
@@ -208,23 +218,30 @@ const Categories = () => {
                         <div className='category-listing'>
                             {categories
                                 .filter(item => {
-                                    const isMatchingCategory = filterCategory === 'All' || (item && item?.categoryName?.toLowerCase() === filterCategory?.toLowerCase());
+                                    const isBookmarked = bookmarkedOnly ? bookmarkedIds.includes(item.id) : true;
                                     const isMatchingSearchTerm =
                                         isSearchFocused && searchTerm === '' ||
                                         (!isSearchFocused && searchTerm === '') ||
                                         (item && item.name && item.name.toLowerCase().includes(searchTerm.toLowerCase()));
-                                    return isMatchingCategory && isMatchingSearchTerm;
+                                        if (bookmarkedOnly) {
+                                            return isBookmarked && isMatchingSearchTerm;
+                                        } else {
+                                            const isMatchingCategory = filterCategory === 'All' || (item && item?.categoryName?.toLowerCase() === filterCategory?.toLowerCase());
+                                            return isBookmarked && isMatchingCategory && isMatchingSearchTerm;
+                                        }
                                 })
                                 .sort((a, b) => (b.usageCount || 0) - (a.usageCount || 0))
                                 .map((item, index) => (
                                     <CategoryTiles
                                         key={index}
+                                        id={item && item.id}
                                         title={item && item.name}
                                         onClick={() => handleTile(item && item.redirect, item.name)}
                                         tilesIcon={item && item.IconComponent}
                                         categoryAlt={item && item.name}
                                         description={item && item.description}
                                         thumbnailPath={item && `/assets/${item?.name?.replace(/\s+/g, '-')}.svg`}
+                                        bookmarkedIds={bookmarkedIds}
                                     />
                                 ))}
                         </div>

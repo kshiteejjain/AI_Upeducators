@@ -3,9 +3,12 @@ import { firestore } from '../../utils/firebase';
 import { fetchAllForms } from '../../utils/firebaseUtils';
 import Strings from '../../utils/en';
 import graph from '../../assets/graph.svg'
+import bookmarked from '../../assets/star.svg'
+
 import './CategoryTiles.css';
 
 type Props = {
+    id: number;
     title?: string;
     categoryName?: string;
     onClick?: () => void;
@@ -18,9 +21,11 @@ type Props = {
     name?: string
     onBookmarkClick?: () => void;
     thumbnailPath?: string;
+    bookmarkedIds: number[];
 }
-const CategoryTiles = ({ title, onClick, thumbnailPath = '/src/assets/Upeducator-logo.png', description }: Props) => {
+const CategoryTiles = ({ title, onClick, thumbnailPath = '/src/assets/Upeducator-logo.png', description, id = 0 }: Props) => {
     const [formCount, setFormCount] = useState<Props[]>([]);
+    const [currentBookmarkedIds, setCurrentBookmarkedIds] = useState<number[]>([]);
     const truncatedStory = description ?
         (description.length > 10 ? description.split(' ').slice(0, 8).join(' ') + '...' : description)
         : '';
@@ -28,22 +33,37 @@ const CategoryTiles = ({ title, onClick, thumbnailPath = '/src/assets/Upeducator
     useEffect(() => {
         const fetchData = async () => {
             try {
-
                 const formData = await fetchAllForms(firestore);
                 setFormCount(formData);
             } catch (error) {
                 console.error('Error fetching category stats:', error);
             }
         };
-
         fetchData(); // Call fetchData function on component mount
     }, []);
+
+    useEffect(() => {
+        const bookmarks = JSON.parse(localStorage.getItem('bookmarks') || '[]');
+        setCurrentBookmarkedIds(bookmarks);
+    }, []);
+
+    const toggleBookmark = (id: number) => {
+        let bookmarks = JSON.parse(localStorage.getItem('bookmarks') || '[]');
+        if (id) {
+            if (bookmarks.includes(id)) {
+                bookmarks = bookmarks.filter((bookmarkId: number) => bookmarkId !== id);
+            } else {
+                bookmarks.push(id);
+            }
+            localStorage.setItem('bookmarks', JSON.stringify(bookmarks));
+            setCurrentBookmarkedIds(bookmarks);
+        }
+    };
 
     return (
         <div className='tiles-group'>
             <div className='tiles' onClick={onClick}>
                 <img src={thumbnailPath} className='list-img' />
-                {/* <img src={bookmarkIcon} className='bookmarkIcon' title={Strings.categories.Favorite} alt={Strings.categories.Favorite} /> */}
                 <div className='clickSection'>
                     <div className='tiles-icon'>
                         <h1 title={title}>{title}</h1>
@@ -68,6 +88,7 @@ const CategoryTiles = ({ title, onClick, thumbnailPath = '/src/assets/Upeducator
                     </p>
                 </div>
             </div>
+            <span onClick={() => toggleBookmark(id)} className={currentBookmarkedIds.includes(id) ? 'bookmark bookmarked' : 'bookmark'}> <img src={bookmarked} alt="Bookmarked" className="bookmark-icon" /> </span>
         </div>
     )
 };

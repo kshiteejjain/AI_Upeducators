@@ -29,9 +29,14 @@ const Header = ({ isLoginPage, moreOptions = true }: Props) => {
     setShowCreditDetails(!showCreditDetails);
   };
   const handleLogout = () => {
-    navigate('/');
+    const bookmarkedItems = localStorage.getItem('bookmarks');
     localStorage.clear();
+    if (bookmarkedItems) {
+      localStorage.setItem('bookmarks', bookmarkedItems);
+    }
+    navigate('/');
   };
+  
   useEffect(() => {
     const fetchData = async () => {
       try {

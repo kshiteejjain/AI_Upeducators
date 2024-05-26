@@ -5,6 +5,8 @@ import { sendPrompt } from '../../utils/sendPrompt';
 import Button from '../../components/buttons/Button';
 import NoDataFoundImage from '../../assets/no-data-found.svg';
 import CopyClipboard from '../../assets/copyClipboard.svg';
+import Play from '../../assets/play.svg';
+import Stop from '../../assets/stop.svg';
 import mp3Sound from '../../assets/result-audio.mp3';
 import Loader from '../../components/loader/Loader';
 import { getFollowupPrompts } from '../../utils/followupPromptsService';
@@ -29,7 +31,6 @@ type RootState = {
 const Result = () => {
   const { generatorData: { messages, input } } = useSelector((state) => state);
   const generatedData = useSelector((state: RootState) => state?.generatorData?.messages);
-
   const generatedImage = useSelector((state: RootState) => state?.imageData?.data?.data?.[0]?.url);
 
   const isFollowUpPrompt = useSelector((state: RootState) => state.generatorData?.isFollowUpPrompt)
@@ -39,6 +40,7 @@ const Result = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [isSubmitClicked, setIsSubmitClicked] = useState(false);
   const [getFollowPrompt, setGetFollowPrompt] = useState<string[]>([]);
+  const [isSpeaking, setIsSpeaking] = useState(false);
   const dispatch = useDispatch();
   const resultRef = useRef<HTMLDivElement | null>(null)
   const generatedDataOption = isFollowUpPrompt ? generatedData : generatedData?.slice(-2);
@@ -47,11 +49,11 @@ const Result = () => {
     if (!msg || !msg.content || typeof msg.content !== 'string') {
       return null; // Skip rendering if msg or msg.content is not valid
     }
-  
+
     if (msg.role === 'user' && (msg.isVisible === false || msg.isVisible === undefined)) {
       return null;
     }
-  
+
     const isTableResponse = msg.content.includes('table response:') || msg.content.includes('table response');
     const isSimpleTableFormat = msg.content.trim().split('\n').every((line: any) => /^\|.*\|$/.test(line.trim()));
     const renderBoldBeforeColon = (text: string) => {
@@ -63,7 +65,7 @@ const Result = () => {
         </>
       );
     };
-    
+
     return (
       <div className='response-data' key={index}>
         <div className={msg.role}>
@@ -137,7 +139,17 @@ const Result = () => {
       </div>
     );
   });
-   
+
+  const speakText = () => {
+    const speech = new SpeechSynthesisUtterance(generatedData[generatedData.length - 1].content);
+    window.speechSynthesis.speak(speech);
+    setIsSpeaking(true);
+  };
+
+  const stopSpeech = () => {
+    window.speechSynthesis.cancel();
+    setIsSpeaking(false);
+  };
 
   useEffect(() => {
     isSubmitClicked ? null : setIsLoading(loadingStatus === 'loading');
@@ -215,6 +227,15 @@ const Result = () => {
 
       <div className="result-section-inner">
         {content}
+
+        {generatedData?.length !== 0 && !generatedImage && loadingStatus === 'succeeded' &&(
+          isSpeaking ? (
+            <button className='speech-btn' onClick={stopSpeech}> <img src={Stop} /></button>
+          ) : (
+            <button className='speech-btn' onClick={speakText}> <img src={Play} /> </button>
+          )
+        )}
+
         {generatedData?.length !== 0 && !generatedImage && (
           <>
             <button className='copyClipboard' title="Copy Content" onClick={handleCopyData}>

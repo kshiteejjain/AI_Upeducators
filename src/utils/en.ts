@@ -40,7 +40,8 @@ const Strings = {
         admin: 'Admin'
     },
     categories: {
-        Favorite: 'Bookmark',
+        Favorite: 'Add to Bookmark',
+        Bookmarked: 'Bookmarked',
         searchCategories: 'Board Wise Forms',
         usedBy: 'Used By:',
         people: 'People'

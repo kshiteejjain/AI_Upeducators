@@ -115,8 +115,8 @@
     border: 1px solid var(--gray);
     padding: 5px 15px;
     box-sizing: border-box;
-    font-size: calc(var(--baseFontSize) - 2px);
-    color: var(--darkGray);
+    font-size: var(--baseFontSize);
+    color: var(--primary);
     cursor: pointer;
     border-radius: 3px;
     display: flex;
@@ -205,6 +205,29 @@
     border: 1px solid var(--gray);
     padding: 5px 10px;
     text-transform: capitalize;
+}
+
+.speech-btn{
+    font-size: calc(var(--baseFontSize) - 3px);
+    margin: 10px 0 0 0;
+    color: var(--primary);
+    padding: 5px 8px;
+    border-radius: 3px;
+    font-weight: bold;
+    background-color: var(--grayBlue);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid var(--primary);
+}
+.speech-btn:hover{
+    background-color: var(--white);
+}
+.speech-btn:focus{
+    outline: 0;
+}
+.speech-btn img{
+    max-width: 14px;
 }
 
 @media(max-width:767px) {

@@ -1,5 +1,6 @@
   import React, { useEffect, useState } from 'react';
   import { fetchAllCategories } from '../../utils/firebaseUtils';
+  import Strings from '../../utils/en';
   import ChevronRight from '../../assets/chevron-right.svg';
   import './CategoriesFilter.css';
 
@@ -27,7 +28,7 @@
             subCategories
           }));
 
-          const allCategoryIndex = formattedCategories.findIndex(({ name }) => name === 'All');
+          const allCategoryIndex = formattedCategories.findIndex(({ name }: any) => name === 'All');
           if (allCategoryIndex !== -1) {
             const allCategory = formattedCategories.splice(allCategoryIndex, 1)[0];
             formattedCategories.unshift(allCategory);
@@ -35,7 +36,7 @@
 
           setCategories(formattedCategories);
         } catch (error) {
-          alert('Error fetching categories:', error);
+          alert(`Error fetching categories:', ${error}`);
         }
       };
       fetchData();
@@ -51,11 +52,17 @@
         ? localStorage.setItem('selectedSubcategory', clickedSubcategory)
         : localStorage.removeItem('selectedSubcategory');
     };
-    
 
+    const handleBookmarked = () => {
+      const bookmarks = JSON.parse(localStorage.getItem('bookmarks') || '[]');
+      localStorage.setItem('filterCategory', 'All');
+      onSelect?.('Bookmarked', bookmarks);
+    }
+    
     return (
       <ul className="chipList">
-        {categories.sort((a, b) => a.id - b.id).map(({ id, name, subCategories }, index) => (
+        <li onClick={handleBookmarked}><strong><img src={ChevronRight} className="chevronRight" />  {Strings.categories.Bookmarked}</strong></li>
+        {categories.sort((a, b) => a.id - b.id).map(({ name, subCategories }, index) => (
           <li key={index} className={selectedCategory === name ? 'active' : ''}>
             <strong onClick={() => handleClickTarget(name)}>
               <img src={ChevronRight} className="chevronRight" /> {name}
