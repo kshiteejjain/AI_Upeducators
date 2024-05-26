@@ -93,4 +93,7 @@
     .username{
       flex-direction: column-reverse;
     }
+    .headerRight-others{
+      display: none;
+    }
   }

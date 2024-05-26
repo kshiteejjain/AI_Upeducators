@@ -10,7 +10,7 @@ const ProjectIdeas = () => {
     const getInitialFormData = () => ({
         gradeLevel: '',
         topic: '',
-        projectType: ''
+        additionalDetails: ''
     });
     const [formData, setFormData] = useState(getInitialFormData);
     const handleInputChange = (e: ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
@@ -21,7 +21,8 @@ const ProjectIdeas = () => {
         }));
     };
     const promptMessage = `Generate 8 engaging project ideas for ${formData.gradeLevel} students covering the topic ${formData.topic}.
-    The project type is ${formData.projectType} Project`;
+    Consider these additional details: ${formData.additionalDetails}.
+    Add the output for each Idea under these headings: 'Project Title' and 'Project Description'`;
     const handleSubmit = (event: React.SyntheticEvent<HTMLFormElement>) => {
         event.preventDefault();
         sendPrompt(dispatch, { input, messages, generatorPrompt, promptMessage });
@@ -73,13 +74,16 @@ const ProjectIdeas = () => {
                 </div>
 
                 <div className='form-group'>
-                    <label htmlFor='projectType'>Project Type</label>
-                    <input
+                    <label htmlFor='additionalDetails'>Additional Details</label>
+                    <textarea
                         className='form-control'
-                        name="projectType"
+                        name="additionalDetails"
                         onChange={handleInputChange}
-                        value={formData.projectType}
-                        placeholder="e.g., Research, Community Service, Group, Case Study, Art and Design, Technology-integrated" />
+                        value={formData.additionalDetails}
+                        placeholder={`For Example- Learning Environment (e.g., Classroom, Online, Hybrid), \nProject Type (e.g., Research, Group, Technology-integrated), \nProject Duration (e.g., 1 class period, 1 week, 1 month)`}
+                        rows={5}
+                    >
+                    </textarea>
                 </div>
 
 

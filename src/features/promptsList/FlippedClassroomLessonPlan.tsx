@@ -60,7 +60,7 @@ const FlippedClassroomLessonPlan = () => {
 
 
                 <div className='form-group'>
-                    <label htmlFor='subjectTopicObjectives'> Subject/Topic/Learning Objectives <span className="asterisk">*</span></label>
+                    <label htmlFor='subjectTopicObjectives'> Topic or Learning Objective <span className="asterisk">*</span></label>
                     <textarea
                         required
                         className='form-control'
@@ -80,7 +80,7 @@ const FlippedClassroomLessonPlan = () => {
                         onChange={handleInputChange}
                         rows={5}
                         value={formData.additionalDetails}
-                        placeholder='For Example- Any Special Instruction, Learning Environment (e.g., Classroom, Online, Hybrid), Project Type (e.g., Research, Problem-solving, Collaborative), Project Duration (e.g.,1 class period, 1 week, 1 month).'>
+                        placeholder={`For Example- Any Special Instruction, Learning Environment \n(e.g., Classroom, Online, Hybrid), Project Type \n(e.g., Research, Problem-solving, Collaborative), Project Duration \n(e.g.,1 class period, 1 week, 1 month).`}>
                     </textarea>
                 </div>
 

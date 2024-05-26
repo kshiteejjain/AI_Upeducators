@@ -229,6 +229,26 @@
 .speech-btn img{
     max-width: 14px;
 }
+.related-forms{
+    padding: 16px;
+    background-color: #f2f6fe;
+    border-radius: 0 0 8px 8px;
+    border-top: 1px solid var(--grayBlue);
+}
+.related-forms h2{
+    font-size: calc(var(--baseFontSize) - 2px);
+    line-height: normal;
+}
+.related-forms a:last-child {
+    border-right: 0;
+}
+.related-forms a {
+    font-size: calc(var(--baseFontSize) - 2px);
+    cursor: pointer;
+    margin-right: 12px;
+    border-right: 1px solid var(--gray);
+    padding-right: 10px;
+}
 
 @media(max-width:767px) {
     .result-section {

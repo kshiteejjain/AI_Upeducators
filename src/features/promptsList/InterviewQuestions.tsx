@@ -22,8 +22,9 @@ const InterviewQuestions = () => {
             [name]: value,
         }));
     };
-    const promptMessage = `Generate 15 interview questions considering this Job Role or the Job Description: ${formData.jobRoleDescription}. The candidate has ${formData.experienceYears} of experience and is applying to the ${formData.board} school board.  
+    const promptMessage = `Generate 15 interview questions considering this Job Role or the Job Description: ${formData.jobRoleDescription}.The candidate has ${formData.experienceYears} of experience and is applying to the ${formData.board} board.  
     The questions should be tailored to assess the candidate's suitability for the role, subject matter expertise, educational philosophy, teaching methodology, problem-solving skills, and personal growth in the education sector. It should give them an insight into how to prepare for the interview.`
+
     const handleSubmit = (event: React.SyntheticEvent<HTMLFormElement>) => {
         event.preventDefault();
         localStorage.setItem('isGPT4', 'true');
@@ -46,24 +47,6 @@ const InterviewQuestions = () => {
                     ></textarea>
                 </div>
                 <div className="form-group">
-                    <label htmlFor="board">Board <span className="asterisk">*</span></label>
-                    <select
-                        required
-                        className="form-control"
-                        name="board"
-                        onChange={handleInputChange}
-                        value={formData.board}
-                    >
-                        <option value="">Select the educational board you are applying to.</option>
-                        <option value="CBSE">CBSE</option>
-                        <option value="ICSE">ICSE</option>
-                        <option value="IGCSE">IGCSE</option>
-                        <option value="IB">IB</option>
-                        <option value="State Board">State Board</option>
-                    </select>
-                </div>
-
-                <div className="form-group">
                     <label htmlFor="experienceYears">Experience Years <span className="asterisk">*</span></label>
                     <select
                         required
@@ -78,6 +61,22 @@ const InterviewQuestions = () => {
                         <option value="3-5 years">3-5 years</option>
                         <option value="5-10 years">5-10 years</option>
                         <option value="More than 10 years">More than 10 years</option>
+                    </select>
+                </div>
+                <div className="form-group">
+                    <label htmlFor="board">Board</label>
+                    <select
+                        className="form-control"
+                        name="board"
+                        onChange={handleInputChange}
+                        value={formData.board}
+                    >
+                        <option value="">Select the educational board you are applying to.</option>
+                        <option value="CBSE">CBSE</option>
+                        <option value="ICSE">ICSE</option>
+                        <option value="IGCSE">IGCSE</option>
+                        <option value="IB">IB</option>
+                        <option value="State Board">State Board</option>
                     </select>
                 </div>
 

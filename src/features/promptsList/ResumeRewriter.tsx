@@ -25,7 +25,14 @@ const ResumeRewriter = () => {
     const promptMessage = `Rewrite and Tailor the resume below according to this Job Description: ${formData.jobDescription}.
     “${formData.currentResume}”
     Emphasize these Key Highlights in the Resume: ${formData.keyHighlights}.
-    Follow this structure in the output: Contact Details, Professional Summary, Work Experience, Educational Background, Skills, and Additional Section (with relevant sub-category).`
+    Follow this structure in the output: Contact Details, Professional Summary, Work Experience, Educational Background, Skills, and Additional Section (with relevant sub-category).
+    Follow this format for showing the Educational background information: 
+    (Degree Type) in (Area of Study)
+    (Name of Institution), (Location of Institution)
+    (Month Year of Graduation)
+    The resume should be well-organized and effectively showcase the educator's strengths, qualifications, and readiness for the potential job, making it compelling for employers.
+    It should be tailored according to the job description.`
+
     const handleSubmit = (event: React.SyntheticEvent<HTMLFormElement>) => {
         event.preventDefault();
         localStorage.setItem('isGPT4', 'true');
@@ -45,6 +52,7 @@ const ResumeRewriter = () => {
                         onChange={handleInputChange}
                         value={formData.currentResume}
                         placeholder="Paste your current resume that has to be re-written."
+                        rows={5}
                     ></textarea>
                 </div>
                 <div className="form-group">
@@ -56,6 +64,7 @@ const ResumeRewriter = () => {
                         onChange={handleInputChange}
                         value={formData.jobDescription}
                         placeholder="Paste the full job description to tailor the resume to specific job requirements."
+                        rows={5}
                     ></textarea>
                 </div>
                 <div className="form-group">
@@ -66,6 +75,7 @@ const ResumeRewriter = () => {
                         onChange={handleInputChange}
                         value={formData.keyHighlights}
                         placeholder="List any specific achievements, skills, projects or accomplishments you want to highlight in the resume."
+                        rows={5}
                     ></textarea>
                 </div>
 

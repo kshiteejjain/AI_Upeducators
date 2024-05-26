@@ -10,7 +10,7 @@ const AssignmentIdeas = () => {
     const getInitialFormData = () => ({
         gradeLevel: '',
         topic: '',
-        assignmentType: '',
+        additionalDetails: '',
     });
     const [formData, setFormData] = useState(getInitialFormData);
     const handleInputChange = (e: ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
@@ -20,7 +20,9 @@ const AssignmentIdeas = () => {
             [name]: value,
         }));
     };
-    const promptMessage = `Generate 8 assignment ideas with descriptions for ${formData.gradeLevel} covering the topic ${formData.topic}. The assignment type is ${formData.assignmentType}.`;
+    const promptMessage = `Generate 8 assignment ideas with descriptions for ${formData.gradeLevel} covering the topic ${formData.topic}. 
+    Consider these additional details: ${formData.additionalDetails}.
+    Add the output for each Idea under these headings: 'Assignment Title' and 'Assignment Description'`;
     const handleSubmit = (event: React.SyntheticEvent<HTMLFormElement>) => {
         event.preventDefault();
         sendPrompt(dispatch, { input, messages, generatorPrompt, promptMessage });
@@ -69,13 +71,14 @@ const AssignmentIdeas = () => {
                     />
                 </div>
                 <div className='form-group'>
-                    <label htmlFor='assignmentType'> Assignment Type </label>
-                    <input
+                    <label htmlFor='additionalDetails'> Additional Details  </label>
+                    <textarea
                         className="form-control"
-                        name="assignmentType"
+                        name="additionalDetails"
                         onChange={handleInputChange}
-                        value={formData.assignmentType}
-                        placeholder="e.g., Essay, Research Paper, Case Study, Problem Solving, Creative Writing"
+                        value={formData.additionalDetails}
+                        placeholder={`For Example- Assignment Type (e.g., Essay, Research, Case Study, Problem-solving), \nLearning Environment (e.g., Classroom, Online, Hybrid), \nAssignment Duration (e.g.,1 class period, 1 week, 1 month)`}
+                        rows={5}
                     />
                 </div>
                 <Button title='Generate' type="submit" />

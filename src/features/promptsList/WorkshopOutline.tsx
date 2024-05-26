@@ -71,10 +71,8 @@ const WorkshopOutline = () => {
                 </div>
 
                 <div className='form-group'>
-                    <label htmlFor='workshopGoals'>Workshop Goals
-                        <span className="asterisk">*</span></label>
+                    <label htmlFor='workshopGoals'>Workshop Goals</label>
                     <textarea
-                        required
                         className='form-control'
                         name="workshopGoals"
                         onChange={handleInputChange}

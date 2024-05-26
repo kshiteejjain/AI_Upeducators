@@ -28,7 +28,7 @@ const RealWorldExamples = () => {
     };
     return (
         <div className="generator-section">
-            <h2>Real-World Examples</h2>
+            <h2>Real World Examples</h2>
             <h3>Generate real-world examples to enhance student understanding.</h3>
             <form onSubmit={handleSubmit}>
                 <div className='form-group'>

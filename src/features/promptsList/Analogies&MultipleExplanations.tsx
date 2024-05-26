@@ -30,7 +30,7 @@ const AnalogiesMultipleExplanations = () => {
     return (
         <div className="generator-section">
             <h2>Analogies & Multiple Explanations</h2>
-            <h3>Generate multiple explanations of concepts and analogies.</h3>
+            <h3>Generate multiple explanations and analogies of concepts.</h3>
             <form onSubmit={handleSubmit}>
                 <div className="form-group">
                     <label htmlFor="gradeLevel">Grade Level <span className="asterisk">*</span></label>

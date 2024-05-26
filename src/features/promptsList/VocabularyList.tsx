@@ -19,7 +19,8 @@ const VocabularyList = () => {
             [name]: value,
         }));
     };
-    const promptMessage = `Generate 10 vocabulary words for ${formData.gradeLevel} focusing on ${formData.topicOrText}. The words should be relevant and appropriate for the specified grade and subject matter.`;
+    const promptMessage = `Generate 10 vocabulary words along with an explanation for ${formData.gradeLevel} focusing on ${formData.topicOrText}. 
+    The words and explanations should be relevant and appropriate for the specified grade and subject matter.`;
     const handleSubmit = (event: React.SyntheticEvent<HTMLFormElement>) => {
         event.preventDefault();
         sendPrompt(dispatch, { input, messages, generatorPrompt, promptMessage });

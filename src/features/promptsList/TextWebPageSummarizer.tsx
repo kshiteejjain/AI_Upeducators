@@ -8,7 +8,6 @@ const TextWebPageSummarizer = () => {
     const { generatorData: { messages, input } } = useSelector((state) => state);
     const dispatch = useDispatch();
     const getInitialFormData = () => ({
-        gradeLevel: '',
         textURLToSummarize:'',
         summaryLength: '',
         outputType: '',
@@ -21,7 +20,8 @@ const TextWebPageSummarizer = () => {
             [name]: value,
         }));
     };
-    const promptMessage = `Generate a ${formData.outputType} summary of the following text or link: ${formData.textURLToSummarize}. It should be generated according to ${formData.gradeLevel} Standards. The summary should be approximately ${formData.summaryLength} in length.`;
+    const promptMessage = `Generate a ${formData.outputType} summary of the following text or link: ${formData.textURLToSummarize}  
+    The summary should be approximately ${formData.summaryLength} in length.`;
     const handleSubmit = (event: React.SyntheticEvent<HTMLFormElement>) => {
         event.preventDefault();
         sendPrompt(dispatch, { input, messages, generatorPrompt, promptMessage });
@@ -31,27 +31,6 @@ const TextWebPageSummarizer = () => {
             <h2>Text / Web Page Summarizer</h2>
             <h3>Summarize any text or web page in a concise format. </h3>
             <form onSubmit={handleSubmit}>
-                <div className='form-group'>
-                    <label htmlFor='gradeLevel'> Grade Level <span className="asterisk">*</span></label>
-                    <select required className='form-control' name="gradeLevel" onChange={handleInputChange} value={formData.gradeLevel} placeholder="Select the grade level of your students.">
-                        <option value="Nursery">Nursery</option>
-                        <option value="Preparatory">Preparatory</option>
-                        <option value="1st-Grade">1st Grade</option>
-                        <option value="2nd-Grade">2nd Grade</option>
-                        <option value="3rd-Grade">3rd Grade</option>
-                        <option value="4th-Grade">4th Grade</option>
-                        <option value="5th-Grade">5th Grade</option>
-                        <option value="6th-Grade">6th Grade</option>
-                        <option value="7th-Grade">7th Grade</option>
-                        <option value="8th-Grade">8th Grade</option>
-                        <option value="9th-Grade">9th Grade</option>
-                        <option value="10th-Grade">10th Grade</option>
-                        <option value="11th-Grade">11th Grade</option>
-                        <option value="12th-Grade">12th Grade</option>
-                        <option value="College-Level">College Level</option>
-                    </select>
-                </div>
-
                 <div className="form-group">
                     <label htmlFor="textURLToSummarize"> Text / URL to Summarize <span className="asterisk">*</span></label>
                     <textarea
@@ -78,13 +57,16 @@ const TextWebPageSummarizer = () => {
 
                 <div className="form-group">
                     <label htmlFor="outputType"> Output Type </label>
-                    <input
-                        className="form-control"
-                        name="outputType"
+                    <select
+                        required
+                        className='form-control'
+                        name="textLength"
                         onChange={handleInputChange}
-                        value={formData.outputType}
-                        placeholder="e.g. Paragraph, Points-wise"
-                    />
+                        value={formData.outputType}>
+                        <option value="">Select One</option>
+                        <option value="Paragraph-style">Paragraph-style</option>
+                        <option value="Bullet point">Bullet point</option>
+                    </select>
                 </div>
 
                 <Button title='Generate' type="submit" />

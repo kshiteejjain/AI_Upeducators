@@ -20,7 +20,9 @@ const InterdisciplinaryProjectIdeas = () => {
             [name]: value,
         }));
     };
-    const promptMessage = `Generate 8 Interdisciplinary Project Ideas for ${formData.gradeLevel}. The project integrates the following subjects/topics: ${formData.subjectsTopics}. Also consider these additional details: ${formData.additionalDetails}.`;
+    const promptMessage = `Generate 8 Interdisciplinary Project Ideas for ${formData.gradeLevel}. The project integrates the following subjects/topics: ${formData.subjectsTopics}. 
+    Also consider these additional details: ${formData.additionalDetails}.
+    Add the output for each Idea under these headings: 'Project Title',  'Project Description', and 'Disciplines'.`;
     const handleSubmit = (event: React.SyntheticEvent<HTMLFormElement>) => {
         event.preventDefault();
         sendPrompt(dispatch, { input, messages, generatorPrompt, promptMessage });
@@ -60,13 +62,14 @@ const InterdisciplinaryProjectIdeas = () => {
 
                 <div className='form-group'>
                     <label htmlFor='subjectsTopics'> Subjects/Topics to Integrate <span className="asterisk">*</span></label>
-                    <input
+                    <textarea
                         required
                         className="form-control"
                         name="subjectsTopics"
                         onChange={handleInputChange}
                         value={formData.subjectsTopics}
-                        placeholder="e.g., History and Art, Longitudes-Latitudes and Degrees of Measurement, Science Fiction Storytelling"
+                        placeholder={`e.g., History and Art, Geography and Environmental Science, \nMathematics with other Subjects`}
+                        rows={5}
                     />
                 </div>
 

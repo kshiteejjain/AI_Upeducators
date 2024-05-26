@@ -84,7 +84,7 @@ const ReportCardComments = () => {
 
                 <div className="form-group">
                     <label htmlFor="additionalDetails">Additional Details</label>
-                    <input className="form-control" name="additionalDetails" onChange={handleInputChange} value={formData.additionalDetails} placeholder="Areas of Strength, Areas of Weakness, Additional comments about the student's performance or behavior" />
+                    <textarea className="form-control" name="additionalDetails" onChange={handleInputChange} value={formData.additionalDetails} placeholder="e.g., Mathematics, Science, Co-curricular" rows={5} />
                 </div>
 
                 <Button title='Generate' type="submit" />

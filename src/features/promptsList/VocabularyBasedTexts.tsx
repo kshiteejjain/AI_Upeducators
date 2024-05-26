@@ -61,7 +61,7 @@ const VocabularyBasedTexts = () => {
 
                 <div className="form-group">
                     <label htmlFor="topic">Topic<span className="asterisk">*</span></label>
-                    <textarea required className="form-control" name="topic" onChange={handleInputChange} value={formData.topic} rows={5} placeholder="e.g., Environmental Science, World History, Innovation, Gravity"></textarea>
+                    <input required className="form-control" name="topic" onChange={handleInputChange} value={formData.topic} placeholder="e.g., Environmental Science, World History, Innovation, Gravity" />
                 </div>
 
 
@@ -88,7 +88,7 @@ const VocabularyBasedTexts = () => {
 
                 <div className="form-group">
                     <label htmlFor="additionalDetails">Additional Details</label>
-                    <textarea className="form-control" name="additionalDetails" onChange={handleInputChange} value={formData.additionalDetails} rows={5} placeholder="For Example- Specific Theme (e.g., Fiction, Friendship, Adventure, Mystery) Customization of Characters (e.g., character names, character background) Setting (e.g., Historical, Modern City, Outer Space) Any other additional requirements"></textarea>
+                    <textarea className="form-control" name="additionalDetails" onChange={handleInputChange} value={formData.additionalDetails} rows={5} placeholder={`For Example- Specific Theme (e.g., Fiction, Friendship, Adventure, Mystery)\nCustomization of Characters (e.g., character names, character background)\nSetting (e.g., Historical, Modern City, Outer Space)\nAny other additional requirements`}></textarea>
                 </div>
                 <Button title='Generate' type="submit" />
             </form>

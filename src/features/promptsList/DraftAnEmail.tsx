@@ -11,6 +11,7 @@ const ProfessionalEmail = () => {
         purposeOfEmail: '',
         relationshipWithReceiver: '',
         keyPointsToInclude: '',
+        length: ''
     });
     const [formData, setFormData] = useState(getInitialFormData);
     const handleInputChange = (e: ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
@@ -20,15 +21,14 @@ const ProfessionalEmail = () => {
             [name]: value,
         }));
     };
-    const promptMessage = `Generate a professional email tailored to ${formData.relationshipWithReceiver}.The email should serve the purpose of ${formData.purposeOfEmail} and include the following key points: ${formData.keyPointsToInclude}. The email should be concise, clear, and respectful, ensuring effective communication.
-    `;
+    const promptMessage = `Generate a professional email tailored to ${formData.relationshipWithReceiver}.The email should serve the purpose of ${formData.purposeOfEmail} and include the following key points: ${formData.keyPointsToInclude}. The email should be concise, clear, and respectful, ensuring effective communication and be ${formData.length} in length.`;
     const handleSubmit = (event: React.SyntheticEvent<HTMLFormElement>) => {
         event.preventDefault();
         sendPrompt(dispatch, { input, messages, generatorPrompt, promptMessage });
     };
     return (
         <div className="generator-section">
-            <h2>Professional Email</h2>
+            <h2>Draft an Email</h2>
             <h3>Generate emails for communication.</h3>
             <form onSubmit={handleSubmit}>
                 <div className="form-group">
@@ -42,7 +42,6 @@ const ProfessionalEmail = () => {
                         placeholder="e.g., Meeting Request, Project Update, Feedback Request, General Inquiry"
                     />
                 </div>
-
                 <div className="form-group">
                     <label htmlFor="relationshipWithReceiver"> Relationship with the Receiver <span className="asterisk">*</span></label>
                     <input
@@ -54,7 +53,6 @@ const ProfessionalEmail = () => {
                         placeholder="e.g., Principal, HR Department, Student, Colleague, Parents"
                     />
                 </div>
-
                 <div className="form-group">
                     <label htmlFor="keyPointsToInclude"> Key Points to Include <span className="asterisk">*</span></label>
                     <textarea
@@ -67,6 +65,16 @@ const ProfessionalEmail = () => {
                         placeholder="e.g., any specific information, deadlines, attachments, meeting details"
                     >
                     </textarea>
+                </div>
+                <div className="form-group">
+                    <label htmlFor="length">Length</label>
+                    <select className="form-control" name="length" onChange={handleInputChange} value={formData.length}>
+                        <option value="">Choose the desired length of the note.</option>
+                        <option value="Short (25-50 words)">Short (25-50 words)</option>
+                        <option value="Medium (50-75 words)">Medium (50-75 words)</option>
+                        <option value="Long (75-100 words)">Long (75-100 words)</option>
+                        <option value="Very Long (100-150 words)">Very Long (100-150 words)</option>
+                    </select>
                 </div>
 
                 <Button title="Generate" type="submit" />

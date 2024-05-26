@@ -30,8 +30,8 @@ const InterviewAHistoricalFigure = () => {
     };
     return (
         <div className="generator-section">
-            <h2>Interview a Historical Figure</h2>
-            <h3>Generate insightful interview answers by any famous historical figure.</h3>
+            <h2>Interview a Famous Personality</h2>
+            <h3>Generate insightful interview responses from renowned personalities.</h3>
             <form onSubmit={handleSubmit}>
                 <div className="form-group">
                     <label htmlFor="gradeLevel">Grade Level <span className="asterisk">*</span></label>
@@ -63,14 +63,14 @@ const InterviewAHistoricalFigure = () => {
                 </div>
 
                 <div className="form-group">
-                    <label htmlFor="historicalFigure">Historical Figure <span className="asterisk">*</span></label>
+                    <label htmlFor="nameOfPersonality">Name of the Personality<span className="asterisk">*</span></label>
                     <input
                         required
                         className="form-control"
-                        name="historicalFigure"
+                        name="nameOfPersonality"
                         onChange={handleInputChange}
-                        value={formData.historicalFigure}
-                        placeholder="Enter the name of the historical figure you want to interview (e.g., Albert Einstein, Mahatma Gandhi)"
+                        value={formData.nameOfPersonality}
+                        placeholder="e.g., Bill Gates, Sachin Tendulkar, Mahatma Gandhi"
                     />
                 </div>
 
@@ -82,7 +82,7 @@ const InterviewAHistoricalFigure = () => {
                         name="interviewQuestion"
                         onChange={handleInputChange}
                         value={formData.interviewQuestion}
-                        placeholder='Type the question you want the historical figure to answer (e.g., "What was your greatest discovery?")'
+                        placeholder='Type the question you want the personality to answer'
                     />
                 </div>
 

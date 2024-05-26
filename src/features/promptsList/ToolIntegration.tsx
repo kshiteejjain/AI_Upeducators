@@ -23,7 +23,7 @@ const ToolIntegration = () => {
     };
     const promptMessage = `Generate 5 suggestions for educational tools that can be integrated with the Topic/Subject of ${formData.topicSubject} for ${formData.gradeLevel} students. The tool should provide ${formData.desiredToolFunctionality} functionality. 
     Consider these specific requirements: ${formData.specificRequirements}.
-    Provide a description within 25 words and the URL to their web page.`;
+    Describe the tool within 25 words and give the link to their website home page in this format only: "https://kahoot.com/"`;
     
     const handleSubmit = (event: React.SyntheticEvent<HTMLFormElement>) => {
         event.preventDefault();
@@ -78,14 +78,14 @@ const ToolIntegration = () => {
                 </div>
 
                 <div className="form-group">
-                    <label htmlFor="desiredToolFunctionality">Desired Tool Functionality <span className="asterisk">*</span></label>
-                    <input
-                        required
+                    <label htmlFor="desiredToolFunctionality">Desired Tool Functionality</label>
+                    <textarea
                         className="form-control"
                         name="desiredToolFunctionality"
                         onChange={handleInputChange}
                         value={formData.desiredToolFunctionality}
                         placeholder="Choose the primary functionality you're looking for in a tool (e.g., Content Creation, Classroom Management, Student Engagement, Assessment, Collaboration, Gamification)"
+                        rows={5}
                     />
                 </div>
 

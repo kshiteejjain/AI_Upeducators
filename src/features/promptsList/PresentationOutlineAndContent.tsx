@@ -29,7 +29,7 @@ const PresentationContent = () => {
     };
     return (
         <div className="generator-section">
-            <h2>Presentation Content</h2>
+            <h2>Presentation Outline and Content</h2>
             <h3>Generate engaging content for your Presentations.</h3>
             <form onSubmit={handleSubmit}>
                 <div className='form-group'>

@@ -1,13 +1,12 @@
 import React from 'react';
 import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
 import { firestore } from '../../utils/firebase';
 import { categoryStats, fetchTotalCredits, OnBoardingProfile, fetchAllUserData, getPaymentDetails } from '../../utils/firebaseUtils';
 import { setCategory } from '../categories/CategoriesSlice';
 import Header from '../../components/header/Header';
 import Strings from '../../utils/en';
-import { useNavigate } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
-
 
 import './Profile.css';
 

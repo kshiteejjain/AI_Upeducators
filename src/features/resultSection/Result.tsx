@@ -1,18 +1,21 @@
 import { ChangeEvent, useEffect, useMemo, useRef, useState } from 'react'
+import { useNavigate } from 'react-router-dom';
 import { generatorPrompt, } from '../promptListGeneratorSlice/QuestionGeneratorSlice';
 import { useDispatch, useSelector } from 'react-redux';
 import { sendPrompt } from '../../utils/sendPrompt';
 import Button from '../../components/buttons/Button';
+import Strings from '../../utils/en';
 import NoDataFoundImage from '../../assets/no-data-found.svg';
 import CopyClipboard from '../../assets/copyClipboard.svg';
 import Play from '../../assets/play.svg';
 import Stop from '../../assets/stop.svg';
 import mp3Sound from '../../assets/result-audio.mp3';
 import Loader from '../../components/loader/Loader';
-import { getFollowupPrompts } from '../../utils/followupPromptsService';
+import { getFollowupPrompts, getSuggestedForms } from '../../utils/followupPromptsService';
 import ResponseFeedback from '../responseFeedback/responseFeedback';
 
 import './Result.css';
+import { setCategory } from '../categories/CategoriesSlice';
 
 type RootState = {
   imageData: any;
@@ -40,10 +43,14 @@ const Result = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [isSubmitClicked, setIsSubmitClicked] = useState(false);
   const [getFollowPrompt, setGetFollowPrompt] = useState<string[]>([]);
+  const [isSuggestedForms, setIsSuggestedForms] = useState<string[]>([]);
   const [isSpeaking, setIsSpeaking] = useState(false);
-  const dispatch = useDispatch();
+
   const resultRef = useRef<HTMLDivElement | null>(null)
   const generatedDataOption = isFollowUpPrompt ? generatedData : generatedData?.slice(-2);
+
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const content = generatedDataOption?.map((msg: any, index: number) => {
     if (!msg || !msg.content || typeof msg.content !== 'string') {
@@ -144,6 +151,9 @@ const Result = () => {
     const speech = new SpeechSynthesisUtterance(generatedData[generatedData.length - 1].content);
     window.speechSynthesis.speak(speech);
     setIsSpeaking(true);
+    speech.onend = () => {
+      setIsSpeaking(false);
+    };
   };
 
   const stopSpeech = () => {
@@ -153,13 +163,18 @@ const Result = () => {
 
   useEffect(() => {
     isSubmitClicked ? null : setIsLoading(loadingStatus === 'loading');
-    generatedData?.length === 1 ? (resultAudio.play(), fetchFollowupPrompts()) : null;
+    generatedData?.length === 1 ? (resultAudio.play(), fetchFollowupPrompts(), fetchSuggestedForms()) : null;
 
   }, [generatedData, generatedImage, resultAudio]);
 
   async function fetchFollowupPrompts() {
     const followupPrompts = await getFollowupPrompts(getFormName?.selectedCategory);
     setGetFollowPrompt(followupPrompts);
+  }
+
+  async function fetchSuggestedForms() {
+    const followupPrompts = await getSuggestedForms(getFormName?.selectedCategory);
+    setIsSuggestedForms(followupPrompts);
   }
 
   const handleCopyData = () => {
@@ -219,7 +234,9 @@ const Result = () => {
     }, 0);
   }, [content]);
 
-
+  const handleSuggestedForms = (item: any) => {
+    dispatch(setCategory(item));
+  }
 
   return (
     <div className="result-section" ref={resultRef}>
@@ -228,7 +245,7 @@ const Result = () => {
       <div className="result-section-inner">
         {content}
 
-        {generatedData?.length !== 0 && !generatedImage && loadingStatus === 'succeeded' &&(
+        {generatedData?.length !== 0 && !generatedImage && loadingStatus === 'succeeded' && (
           isSpeaking ? (
             <button className='speech-btn' onClick={stopSpeech}> <img src={Stop} /></button>
           ) : (
@@ -271,7 +288,7 @@ const Result = () => {
       </div> */}
       {generatedData && getFollowPrompt.length !== 0 && !generatedImage && (
         <div className="followup-prompts">
-          <h2>Followup Query?</h2>
+          <h2>{Strings.result.followupTitle}</h2>
           <ul>
             {getFollowPrompt.map((prompt, index) => (
               <li key={index} onClick={() => setFormData({ followUpPromptInput: prompt })}>
@@ -281,6 +298,7 @@ const Result = () => {
           </ul>
         </div>
       )}
+
       {generatedData?.length >= 1 && !generatedImage && (
         <form onSubmit={handleFollowupPromptSubmit} className='followUpPrompt'>
           <div className='form-group'>
@@ -296,6 +314,16 @@ const Result = () => {
           </div>
           <Button title='Send' type="submit" />
         </form>
+      )}
+      {generatedData && getFollowPrompt.length !== 0 && !generatedImage && (
+        <div className="related-forms">
+          <h2>{Strings.result.relatedFormsTitle}</h2>
+            {isSuggestedForms.map((item, index) => (
+              <a href='javascript:void(0)' key={index} onClick={()=> handleSuggestedForms(item)}>
+                {item}
+              </a>
+            ))}
+        </div>
       )}
     </div>
   );

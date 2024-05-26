@@ -11,7 +11,6 @@ const SpiralReviewProblemSet = () => {
         gradeLevel: '',
         mathsTopic: '',
         questionType: '',
-        difficultyLevel: '',
     });
     const [formData, setFormData] = useState(getInitialFormData);
     const handleInputChange = (e: ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
@@ -21,7 +20,9 @@ const SpiralReviewProblemSet = () => {
             [name]: value,
         }));
     };
-    const promptMessage = `Generate a spiral review problem set with 10 ${formData.questionType} Questions for ${formData.gradeLevel} covering ${formData.mathsTopic}. The output should be generated according to the different levels of Spiral review. Also, mention the levels of spiral review and its description with each question. The questions should be ${formData.difficultyLevel} in difficulty.`;
+    const promptMessage = `Generate a spiral review problem set with 10 ${formData.questionType} Questions for ${formData.gradeLevel} covering ${formData.mathsTopic}. 
+    The output should be generated according to the Five levels of the Spiral review, and it should proceed from lower levels to higher levels with an equal number of questions for each. 
+    Also, mention the name of the level with each question.`;
     const handleSubmit = (event: React.SyntheticEvent<HTMLFormElement>) => {
         event.preventDefault();
         sendPrompt(dispatch, { input, messages, generatorPrompt, promptMessage });
@@ -75,16 +76,6 @@ const SpiralReviewProblemSet = () => {
                         placeholder="e.g., Multiple Choice, Open-Ended, Fill in the Blanks, True/False"
                     />
                 </div>
-
-                <div className='form-group'>
-                    <label htmlFor='difficultyLevel'> Difficulty Level </label>
-                    <select className='form-control' name="difficultyLevel" onChange={handleInputChange} value={formData.difficultyLevel} placeholder="Select the difficulty level of the problems.">
-                        <option value="Easy">Easy</option>
-                        <option value="Medium">Medium</option>
-                        <option value="Hard">Hard</option>
-                    </select>
-                </div>
-
 
                 <Button title='Generate' type="submit" />
             </form>

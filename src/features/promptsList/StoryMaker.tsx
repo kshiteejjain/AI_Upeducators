@@ -9,7 +9,7 @@ const StoryMaker = () => {
     const dispatch = useDispatch();
     const getInitialFormData = () => ({
         gradeLevel: '',
-        themeEventSituation: '',
+        topicTheme: '',
         textLength: '',
         customizationDetails: ''
     });
@@ -21,8 +21,10 @@ const StoryMaker = () => {
             [name]: value,
         }));
     };
-    const promptMessage = `Generate a story for a ${formData.gradeLevel} student about: ${formData.themeEventSituation}. The story should be around ${formData.textLength} in length.
-    It should also consider these additional details: ${formData.customizationDetails}`;
+    const promptMessage = `Generate a story for a ${formData.gradeLevel} student about: ${formData.topicTheme}. 
+    The story should be around ${formData.textLength} in length.
+    It should also consider these additional details: ${formData.customizationDetails}.
+    Give a suitable ‘Title’ to the story.`;
     const handleSubmit = (event: React.SyntheticEvent<HTMLFormElement>) => {
         event.preventDefault();
         sendPrompt(dispatch, { input, messages, generatorPrompt, promptMessage });
@@ -63,15 +65,17 @@ const StoryMaker = () => {
 
 
                 <div className='form-group'>
-                    <label htmlFor='themeEventSituation'> Theme/Event/Situation
+                    <label htmlFor='topicTheme'>Topic or Theme
                         <span className="asterisk">*</span></label>
-                    <input
+                    <textarea
                         required
                         className='form-control'
-                        name='themeEventSituation'
+                        name='topicTheme'
                         onChange={handleInputChange}
-                        value={formData.themeEventSituation}
-                        placeholder="e.g., Developing ‘Empathy’, 'First Day at School', 'Visiting the Dentist', ’Helping a Neighbor in Need’" />
+                        value={formData.topicTheme}
+                        placeholder="e.g., Celebrating ‘Cultural Diversity’, Developing ‘Empathy’, First Day at School, Building ‘Self-Confidence’, Visiting the Dentist, Helping a Neighbor in Need"
+                        rows={5} 
+                        />
                 </div>
 
                 <div className='form-group'>

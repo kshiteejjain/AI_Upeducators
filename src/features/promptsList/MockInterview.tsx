@@ -21,8 +21,8 @@ const MockInterview = () => {
         }));
     };
     const promptMessage = `Please assume the role of an interviewer for this Job Role or Job Description: ${formData.jobRoleDescription}. 
-    I will be the candidate, and we will engage in a conversation with you asking interview questions one at a time, without any explanations. We’ll begin with a greeting, “Hi”, and continue the interview as I provide answers to your questions. Your follow-up question can be based on my reply.
-    The questions should be tailored to assess my suitability for the role, Subject matter expertise,`
+    I will be the candidate, and we will engage in a conversation with you asking interview questions one at a time, without any explanations. You will begin with the first question, and continue the interview as I provide answers to your questions.
+    Based on my answers, you will ask follow-up questions to evaluate my suitability for the role, subject matter expertise, educational philosophy, teaching methodology, problem-solving skills, and personal growth in the education sector.`
     const handleSubmit = (event: React.SyntheticEvent<HTMLFormElement>) => {
         event.preventDefault();
         localStorage.setItem('isGPT4', 'true');

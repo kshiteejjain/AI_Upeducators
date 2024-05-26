@@ -32,7 +32,7 @@ const AuthorsStyleRewriter = () => {
     };
     return (
         <div className="generator-section">
-            <h2>Author's Style Rewriter</h2>
+            <h2>Author's Style Text Rewriter</h2>
             <h3>Rewrite a given text to match the writing style of a specific author.</h3>
             <form onSubmit={handleSubmit}>
                 <div className='form-group'>
@@ -115,11 +115,7 @@ const AuthorsStyleRewriter = () => {
                         name="additionalDetails"
                         onChange={handleInputChange}
                         value={formData.additionalDetails}
-                        placeholder="For Example-
-Tone (e.g., Formal, Informal, Humorous, Serious, Satirical)
-Content Type (e.g., Textbook Page, Play Script, Speech)
-Vocabulary Level (e.g., Basic, Intermediate, Advanced)
-Any other additional details" />
+                        placeholder={`For Example-Tone (e.g., Formal, Informal, Humorous, Serious, Satirical) \nContent Type (e.g., Textbook Page, Play Script, Speech) \nVocabulary Level (e.g., Basic, Intermediate, Advanced) \nAny other additional details`} />
                 </div>
 
                 <Button title='Generate' type="submit" />

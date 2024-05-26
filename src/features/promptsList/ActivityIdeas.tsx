@@ -11,17 +11,19 @@ const ActivityIdeas = () => {
     const getInitialFormData = () => ({
         gradeLevel: '',
         topic: '',
-        activityType: '',
+        additionalDetails: '',
     });
     const [formData, setFormData] = useState(getInitialFormData);
-    const handleInputChange = (e: ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+    const handleInputChange = (e: ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
         const { name, value } = e.target;
         setFormData((prevData) => ({
             ...prevData,
             [name]: value,
         }));
     };
-    const promptMessage = `Generate 8 engaging and creative activity ideas for the students of ${formData.gradeLevel} on the Topic ${formData.topic}. The activities should be of this type: ${formData.activityType} Activity.`;
+    const promptMessage = `Generate 8 engaging and creative activity ideas for the students of ${formData.gradeLevel} on the Topic ${formData.topic}. 
+    Consider these additional details: ${formData.additionalDetails}.
+    Add the output for each Idea under these headings: ‘Activity Title' and 'Activity Description'`;
     const handleSubmit = (event: React.SyntheticEvent<HTMLFormElement>) => {
         event.preventDefault();
         sendPrompt(dispatch, { input, messages, generatorPrompt, promptMessage });
@@ -74,13 +76,15 @@ const ActivityIdeas = () => {
                 </div>
 
                 <div className='form-group'>
-                    <label htmlFor='activityType'>Activity Type</label>
-                    <input
+                    <label htmlFor='additionalDetails'>Additional Details</label>
+                    <textarea
                         className='form-control'
-                        name="activityType"
+                        name="additionalDetails"
                         onChange={handleInputChange}
-                        value={formData.activityType}
-                        placeholder="e.g., Interactive, Hands-On, Group, Game Based, Reflective and Metacognitive, Technology-Integrated" />
+                        value={formData.additionalDetails}
+                        placeholder={`For Example- Learning Environment (e.g., Classroom, Online, Hybrid), \nActivity Type (e.g., Interactive, Hands-On, Group, Reflective), \nActivity Duration (e.g., 15 minutes, 30 minutes, 2 class periods)`}
+                        rows={5}
+                        />
                 </div>
 
                 <Button title='Generate' type="submit" />

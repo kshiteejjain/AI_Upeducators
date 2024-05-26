@@ -109,7 +109,7 @@ const AcademicContent = () => {
                         onChange={handleInputChange}
                         rows={5}
                         value={formData.specialInstructions}
-                        placeholder="e.g., focus on the environmental impacts, include real-world examples">
+                        placeholder="e.g., include real-world examples, incorporate statistical data, provide case studies, focus on recent trends">
                     </textarea>
                 </div>
 

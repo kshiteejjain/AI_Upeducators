@@ -50,5 +50,9 @@ const Strings = {
         upgrade: 'Plans',
         upgradePlan: 'Upgrade Plan'
     },
+    result: {
+        followupTitle: 'Followup Query?',
+        relatedFormsTitle: 'Related Forms'
+    }
 }
 export default Strings

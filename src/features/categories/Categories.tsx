@@ -21,7 +21,7 @@ type Props = {
     IconComponent: string;
     redirect?: string;
     usageCount?: number;
-    categoryName? : string;
+    categoryName?: string;
     onClick?: () => void;
     isBookmarked: boolean | 0
 };
@@ -95,7 +95,6 @@ const Categories = () => {
             navigate('/GeneratorAndResult')
         }
     };
-
     const handleCategorySelect = (selectedCategory: string) => {
         if (selectedCategory === 'Bookmarked') {
             setBookmarkedOnly(true);
@@ -121,7 +120,6 @@ const Categories = () => {
     const handleBoardForms = () => {
         setIsBoardForms(prev => !prev)
     }
-
     const handleInputChange = (event: any) => {
         const { name, value } = event.target;
         setFormData(prevFormData => {
@@ -135,7 +133,6 @@ const Categories = () => {
         });
     };
 
-    
     return (
         <>
             <Header />
@@ -223,13 +220,14 @@ const Categories = () => {
                                         isSearchFocused && searchTerm === '' ||
                                         (!isSearchFocused && searchTerm === '') ||
                                         (item && item.name && item.name.toLowerCase().includes(searchTerm.toLowerCase()));
-                                        if (bookmarkedOnly) {
-                                            return isBookmarked && isMatchingSearchTerm;
-                                        } else {
-                                            const isMatchingCategory = filterCategory === 'All' || (item && item?.categoryName?.toLowerCase() === filterCategory?.toLowerCase());
-                                            return isBookmarked && isMatchingCategory && isMatchingSearchTerm;
-                                        }
+                                    if (bookmarkedOnly) {
+                                        return isBookmarked && isMatchingSearchTerm;
+                                    } else {
+                                        const isMatchingCategory = filterCategory === 'All' || (item && item?.categoryName?.toLowerCase() === filterCategory?.toLowerCase());
+                                        return isBookmarked && isMatchingCategory && isMatchingSearchTerm;
+                                    }
                                 })
+                                .filter((item) => item.name !== 'Story Creation Generator')
                                 .sort((a, b) => (b.usageCount || 0) - (a.usageCount || 0))
                                 .map((item, index) => (
                                     <CategoryTiles

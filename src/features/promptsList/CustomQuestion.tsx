@@ -121,23 +121,25 @@ const CustomQuestion = () => {
 
                 <div className='form-group'>
                     <label htmlFor='contextPreference'> Context Preference </label>
-                    <input
+                    <textarea
                         className="form-control"
                         name="contextPreference"
                         onChange={handleInputChange}
                         value={formData.contextPreference}
                         placeholder="Mention the context or theme in which you prefer the questions to be framed (e.g., Cricket, Harry Potter, Space Exploration)"
+                        rows={3}
                     />
                 </div>
 
                 <div className='form-group'>
                     <label htmlFor='additionalDetails'> Additional Details </label>
-                    <input
+                    <textarea
                         className="form-control"
                         name="additionalDetails"
                         onChange={handleInputChange}
                         value={formData.additionalDetails}
                         placeholder="e.g., word limit for essay questions, structure for multiple-choice options, any specific requirement"
+                        rows={3}
                     />
                 </div>
 

@@ -19,16 +19,15 @@ const TextURLToQuestions = () => {
             [name]: value,
         }));
     };
-    const promptMessage = `Generate 10 ${formData.questionType} questions based on the following text or link: ${formData.textInputUrl}. 
-    The questions should be relevant to the key themes and ideas in the text or URL 
-    `;
+    const promptMessage = `Generate 10 ${formData.questionType} questions based on the following text or link: ${formData.textInputUrl}
+    The questions should be relevant to the key themes and ideas in the text or URL.`;
     const handleSubmit = (event: React.SyntheticEvent<HTMLFormElement>) => {
         event.preventDefault();
         sendPrompt(dispatch, { input, messages, generatorPrompt, promptMessage });
     };
     return (
         <div className="generator-section">
-            <h2>Text URL To Questions</h2>
+            <h2>Text or Webpage to Questions</h2>
             <h3>Generate questions based on text or web page/URL.</h3>
             <form onSubmit={handleSubmit}>
                 <div className='form-group'>

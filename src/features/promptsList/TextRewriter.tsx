@@ -28,7 +28,7 @@ const CustomTextRewriter = () => {
     };
     return (
         <div className="generator-section">
-            <h2>Text Rewriter Generator</h2>
+            <h2>Text Rewriter</h2>
             <h3>Transform any given text according to specific requirements.</h3>
             <form onSubmit={handleSubmit}>
                 <div className='form-group'>

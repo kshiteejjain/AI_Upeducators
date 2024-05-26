@@ -21,9 +21,9 @@ const ClassroomRulesAndExpectations = () => {
             [name]: value,
         }));
     };
-    const promptMessage = `Generate 8 Classroom Rules and 8 Expectations (with short descriptions) for ${formData.gradeLevel} students. The rules/expectations should primarily focus on this Behavior Focus/Specific Issues: ${formData.behaviorFocus}. 
-    Also consider these additional details in the output: ${formData.additionalDetails}
-    Suggest ways to bring the required change through class activities.`;
+    const promptMessage = `Generate 8 effective Classroom management strategies (with descriptions) for ${formData.gradeLevel} students based on this Behavior Focus/Common Challenge: ${formData.behaviorFocus}. 
+    Along with the 8 management strategies suggest ways to bring the required change through 8 ‘Class Activities’ and 8 ‘Classroom Rules and Expectations’. 
+    Consider these additional details for generating the output: ${formData.additionalDetails}.`;
     const handleSubmit = (event: React.SyntheticEvent<HTMLFormElement>) => {
         event.preventDefault();
         sendPrompt(dispatch, { input, messages, generatorPrompt, promptMessage });
@@ -31,8 +31,8 @@ const ClassroomRulesAndExpectations = () => {
 
     return (
         <div className="generator-section">
-            <h2>Classroom Rules and Expectations</h2>
-            <h3>Establish clear rules and expectations to foster a positive classroom environment.</h3>
+            <h2>Classroom Management</h2>
+            <h3>Generate classroom management strategies to address common classroom challenges or instill good behavior among students.</h3>
             <form onSubmit={handleSubmit}>
                 <div className='form-group'>
                     <label htmlFor='gradeLevel'>Grade Level
@@ -64,15 +64,17 @@ const ClassroomRulesAndExpectations = () => {
                 </div>
 
                 <div className='form-group'>
-                    <label htmlFor='behaviorFocus'>Behavior Focus/Specific Issues
+                    <label htmlFor='behaviorFocus'>Behavior Focus or Common Challenges
                         <span className="asterisk">*</span></label>
-                    <input
+                    <textarea
                         required
                         className='form-control'
                         name="behaviorFocus"
                         onChange={handleInputChange}
                         value={formData.behaviorFocus}
-                        placeholder="e.g., Respect, Responsibility, Honesty, Bullying, Tardiness" />
+                        placeholder="e.g., Honesty, Respect, Responsibility, Disengagement, Bullying, Varied Learning Paces, Inconsistent Attendance, Exam Anxiety"
+                        rows={5}
+                    />
                 </div>
 
                 <div className='form-group'>
@@ -86,7 +88,9 @@ const ClassroomRulesAndExpectations = () => {
 Rule Enforcement Method (e.g., Positive Reinforcement, Consequences, Both)
 Participation (e.g., Teacher-Set, Student-Involved, Both)
 Review Frequency (e.g., Daily, Weekly, Monthly)
-Any other additional expectations for your classroom">
+Any other additional expectations for your classroom"
+                        rows={5}
+                    >
                     </textarea>
                 </div>
 

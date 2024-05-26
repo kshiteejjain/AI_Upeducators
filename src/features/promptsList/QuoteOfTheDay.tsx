@@ -39,7 +39,7 @@ const QuoteOfTheDay = () => {
                         name="topic"
                         onChange={handleInputChange}
                         value={formData.topic}
-                        placeholder="e.g., perseverance, teamwork, innovation"
+                        placeholder="e.g., Teamwork, Self-discipline, Innovation, The Magic of Numbers, Climate Change, Cultural Diversity"
                     />
                 </div>
 
@@ -53,9 +53,11 @@ const QuoteOfTheDay = () => {
                         <option value="">Choose the tone that best suits your audience and context</option>
                         <option value="Inspirational">Inspirational</option>
                         <option value="Humorous">Humorous</option>
-                        <option value="Reflective">Reflective</option>
                         <option value="Motivational">Motivational</option>
                         <option value="Thought-Provoking">Thought-Provoking</option>
+                        <option value="Philosophical">Philosophical</option>
+                        <option value="Optimistic">Optimistic</option>
+                        <option value="Light-hearted">Light-hearted</option>
                     </select>
                 </div>
 
