@@ -46,9 +46,6 @@ const BulkFormsUpload: React.FC<BulkFormsUploadProps> = (): ReactElement => {
                     case 'Form Path':
                         document['redirect'] = value;
                         break;
-                    case 'Icon':
-                        document['iconPath'] = value;
-                        break;
                     case 'Usage Count':
                         document['usageCount'] = isNaN(Number(value)) ? null : Number(value);
                         break;
@@ -76,6 +73,9 @@ const BulkFormsUpload: React.FC<BulkFormsUploadProps> = (): ReactElement => {
                     case 'Dislikes':
                         document['dislikes'] = isNaN(Number(value)) ? null : Number(value);
                         break;
+                    case 'isActive':
+                        document['isActive'] = value.trim().toLowerCase() === 'yes';
+                    break;
                     default:
                         document[headers[index]] = value;
                         break;

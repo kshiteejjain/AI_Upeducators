@@ -80,7 +80,7 @@ const FlippedClassroomLessonPlan = () => {
                         onChange={handleInputChange}
                         rows={5}
                         value={formData.additionalDetails}
-                        placeholder={`For Example- Any Special Instruction, Learning Environment \n(e.g., Classroom, Online, Hybrid), Project Type \n(e.g., Research, Problem-solving, Collaborative), Project Duration \n(e.g.,1 class period, 1 week, 1 month).`}>
+                        placeholder={`For Example- Duration of the Lesson (e.g.,3 class periods, 60 minutes), \nLearning Environment (e.g., Classroom, Online, Hybrid), \nAny Special Instruction`}>
                     </textarea>
                 </div>
 

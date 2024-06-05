@@ -9,7 +9,7 @@ const InterdisciplinaryProjectPlan = () => {
     const dispatch = useDispatch();
     const getInitialFormData = () => ({
         gradeLevel: '',
-        subjectsToIntegrate: '',
+        topicOrTitle: '',
         topicLearningObjectives: '',
         additionalDetails: ''
     });
@@ -21,8 +21,11 @@ const InterdisciplinaryProjectPlan = () => {
             [name]: value,
         }));
     };
-    const promptMessage = `Generate a detailed interdisciplinary project plan for ${formData.gradeLevel}. The project integrates the following disciplines / subject areas: ${formData.subjectsToIntegrate} focusing on this topic / Learning objectives: ${formData.topicLearningObjectives}. Also consider these additional details: ${formData.additionalDetails}.
-    Follow this structure in the output: Title, Grade, Duration, Project Overview, Learning Objectives, Resources needed, Interdisciplinary Integration, duration-wise detailed  Project Plan, Assessment, and Reflection.`;
+    const promptMessage = `Generate a detailed Interdisciplinary Project Plan for ${formData.gradeLevel} students. The project should be based on this Topic or Title: ${formData.topicOrTitle}.
+    Also, consider this Learning Objective Or Project Description: ${formData.topicLearningObjectives} and additional details: ${formData.additionalDetails}. 
+    Follow this structure in the output: Title, Grade, Duration, Project Overview, Learning Objectives, Resources needed, Interdisciplinary Integration, duration-wise detailed  Project Plan, Assessment, and Reflection.
+    In case you want to add something else in the structure to make it better, then you can do it.`;
+    
     const handleSubmit = (event: React.SyntheticEvent<HTMLFormElement>) => {
         event.preventDefault();
         sendPrompt(dispatch, { input, messages, generatorPrompt, promptMessage });
@@ -61,20 +64,20 @@ const InterdisciplinaryProjectPlan = () => {
                 </div>
 
                 <div className='form-group'>
-                    <label htmlFor='subjectsToIntegrate'> Subjects to Integrate <span className="asterisk">*</span></label>
+                    <label htmlFor='topicOrTitle'> Topic or Title <span className="asterisk">*</span></label>
                     <input
                         required
                         className="form-control"
-                        name="subjectsToIntegrate"
+                        name="topicOrTitle"
                         onChange={handleInputChange}
-                        value={formData.subjectsToIntegrate}
-                        placeholder="e.g., Mathematics, Science, Art"
+                        value={formData.topicOrTitle}
+                        placeholder="e.g., Latitude & Longitude Puzzle Quest, Math and Art Fusion"
                     />
                 </div>
 
 
                 <div className='form-group'>
-                    <label htmlFor='topicLearningObjectives'> Topic / Learning Objectives <span className="asterisk">*</span></label>
+                    <label htmlFor='topicLearningObjectives'> Objective Or Project Description <span className="asterisk">*</span></label>
                     <textarea
                         required
                         className='form-control'
@@ -82,7 +85,7 @@ const InterdisciplinaryProjectPlan = () => {
                         onChange={handleInputChange}
                         rows={5}
                         value={formData.topicLearningObjectives}
-                        placeholder="e.g., Science Fiction Storytelling, Analyzing geographic data using statistical techniques, Using visual artworks as prompts for creative writing activities."
+                        placeholder={`e.g., Analyzing geographic data using statistical techniques, \nUsing visual artworks as prompts for creative writing activities`}
                     ></textarea>
                 </div>
 

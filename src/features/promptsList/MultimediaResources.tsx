@@ -21,8 +21,8 @@ const MultimediaResources = () => {
         }));
     };
     const promptMessage = `Generate 3 suggestions for each resource type: ${formData.resourceType} for ${formData.gradeLevel} students. The Subject/Topic is ${formData.subjectTopic}. The resources should be engaging, informative, and tailored to the students' needs, enhancing their learning experience.
-    Also, give the resource web page URL with every suggestion.
-    Add the description within 25 words.`;
+    Describe the resources within 25 words and give their website home page link in this format only: "https://kahoot.com/"`;
+
     const handleSubmit = (event: React.SyntheticEvent<HTMLFormElement>) => {
         event.preventDefault();
         localStorage.setItem('isGPT4', 'true');

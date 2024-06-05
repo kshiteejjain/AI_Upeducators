@@ -110,11 +110,12 @@ const AuthorsStyleRewriter = () => {
 
                 <div className='form-group'>
                     <label htmlFor='additionalDetails'>Additional Details</label>
-                    <input
+                    <textarea
                         className='form-control'
                         name="additionalDetails"
                         onChange={handleInputChange}
                         value={formData.additionalDetails}
+                        rows={5}
                         placeholder={`For Example-Tone (e.g., Formal, Informal, Humorous, Serious, Satirical) \nContent Type (e.g., Textbook Page, Play Script, Speech) \nVocabulary Level (e.g., Basic, Intermediate, Advanced) \nAny other additional details`} />
                 </div>
 

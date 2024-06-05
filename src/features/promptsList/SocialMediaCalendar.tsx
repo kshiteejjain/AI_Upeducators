@@ -10,6 +10,7 @@ const SocialMediaCalendarGenerator = () => {
     const getInitialFormData = () => ({
         themesTopics: '',
         audience: '',
+        platform: ''
     });
     const [formData, setFormData] = useState(getInitialFormData);
     const handleInputChange = (e: ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
@@ -19,14 +20,15 @@ const SocialMediaCalendarGenerator = () => {
             [name]: value,
         }));
     };
-    const promptMessage = `Create a social media calendar for 15 days in a table. My audience is ${formData.audience}. Theme is ${formData.themesTopics}. Content ideas should be engaging so that posts get more likes, comments, saves and shares and also promote follows and should cover all popular formats mentioning the format. Table should have Serial number, Content idea and Format.`;
+    const promptMessage = `Create a social media calendar for 15 days for ${formData.platform} in a table. My audience is ${formData.audience}. Theme is ${formData.themesTopics}. Content ideas should be engaging so that posts get more likes, comments, saves and shares and also promote follows and should cover all popular formats mentioning the format. Table should have Serial number, Content idea and Format.`;
+
     const handleSubmit = (event: React.SyntheticEvent<HTMLFormElement>) => {
         event.preventDefault();
         sendPrompt(dispatch, { input, messages, generatorPrompt, promptMessage });
     };
     return (
         <div className="generator-section">
-            <h2>Social Media Calendar Generator</h2>
+            <h2>Social Media Calendar</h2>
             <h3>Generate a daily social media posting calendar.</h3>
             <form onSubmit={handleSubmit}>
                 <div className="form-group">
@@ -50,6 +52,25 @@ const SocialMediaCalendarGenerator = () => {
                         value={formData.themesTopics}
                         placeholder="Eg. yoga tips for kids, teaching tips"
                     />
+                </div>
+                <div className="form-group">
+                    <label htmlFor="platform"> Platform
+                        <span className="asterisk">*</span>
+                    </label>
+                    <select
+                        required
+                        className="form-control"
+                        name="platform"
+                        onChange={handleInputChange}
+                        value={formData.platform}
+                    >
+                        <option value="Facebook">Facebook</option>
+                        <option value="Instagram">Instagram</option>
+                        <option value="Twitter">Twitter</option>
+                        <option value="LinkedIn">LinkedIn</option>
+                        <option value="Pinterest">Pinterest</option>
+                        <option value="YouTube">YouTube</option>
+                    </select>
                 </div>
 
                 <Button title='Generate' type="submit" />

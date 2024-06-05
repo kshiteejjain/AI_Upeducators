@@ -30,7 +30,7 @@ const ThankYouNote = () => {
     return (
         <div className="generator-section">
             <h2>Thank You Note</h2>
-            <h3>Create thank you notes to express your gratitude.’</h3>
+            <h3>Create thank you notes to express your gratitude.</h3>
             <form onSubmit={handleSubmit}>
                 <div className="form-group">
                     <label htmlFor="relationship"> Relationship

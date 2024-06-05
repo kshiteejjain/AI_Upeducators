@@ -9,9 +9,9 @@ const AssignmentGenerator = () => {
     const dispatch = useDispatch();
     const getInitialFormData = () => ({
         gradeLevel: '',
+        topicOrTitle:'',
         topicLearningObjectives: '',
-        assignmentType: '',
-        duration: '',
+        additionalDetails: '',
     });
     const [formData, setFormData] = useState(getInitialFormData);
     const handleInputChange = (e: ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
@@ -21,9 +21,11 @@ const AssignmentGenerator = () => {
             [name]: value,
         }));
     };
-    const promptMessage = `Generate a detailed assignment for ${formData.gradeLevel} students. The assignments should be based on this topic/learning objectives: ${formData.topicLearningObjectives}. The timeframe should be ${formData.duration} and the assignment type should be ${formData.assignmentType}.
+    const promptMessage = `Generate a detailed Assignment Plan for ${formData.gradeLevel} students. The assignment should be based on this Topic or Title: ${formData.topicOrTitle}. 
+    Also, consider this Learning Objective Or Assignment Description: ${formData.topicLearningObjectives} and additional details: ${formData.additionalDetails}.
     Follow this structure in the output: Title, Duration, Assignment Overview, Learning Objectives, Resources needed, duration-wise detailed Assignment Plan, Assessment, and Reflection.
     In case you want to add something else in the structure to make it better, then you can do it.`;
+
     const handleSubmit = (event: React.SyntheticEvent<HTMLFormElement>) => {
         event.preventDefault();
         sendPrompt(dispatch, { input, messages, generatorPrompt, promptMessage });
@@ -56,21 +58,19 @@ const AssignmentGenerator = () => {
                 </div>
 
                 <div className="form-group">
-                    <label htmlFor="topicLearningObjectives">Topic / Learning Objectives <span className="asterisk">*</span></label>
-                    <textarea className="form-control" name="topicLearningObjectives" required onChange={handleInputChange} value={formData.topicLearningObjectives} placeholder="e.g., World History, Forces and Motion, analyzing historical events, comprehending plant biology"></textarea>
+                    <label htmlFor="topicOrTitle">Topic or Title <span className="asterisk">*</span></label>
+                    <input className="form-control" name="topicOrTitle" required onChange={handleInputChange} value={formData.topicOrTitle} placeholder="e.g., World History, Forces and Motion, The Impact of Climate Change" />
+                </div>  
+
+                <div className="form-group">
+                    <label htmlFor="topicLearningObjectives">Learning Objective Or Assignment Description <span className="asterisk">*</span></label>
+                    <textarea className="form-control" name="topicLearningObjectives" required onChange={handleInputChange} value={formData.topicLearningObjectives} rows={5} placeholder={`e.g., Analyzing historical events, Creating graphs and charts to analyze data, \nStudents will conduct a hands-on science experiment of their choice`}></textarea>
                 </div>
 
                 <div className="form-group">
-                    <label htmlFor="assignmentType">Assignment Type</label>
-                    <input className="form-control" name="assignmentType" onChange={handleInputChange} value={formData.assignmentType} placeholder="e.g., Essay, Research Paper, Case Study, Problem Solving, Creative Writing" />
+                    <label htmlFor="additionalDetails">Additional Details <span className="asterisk">*</span></label>
+                    <textarea className="form-control" name="additionalDetails" required onChange={handleInputChange} value={formData.additionalDetails} rows={5} placeholder={`For Example- \nLearning Environment (e.g., Classroom, Online, Hybrid), \nAssignment Type (e.g., Essay, Research, Case Study, Problem Solving), \nAssignment Duration (e.g.,1 class period, 1 week, 1 month)`}></textarea>
                 </div>
-
-                <div className="form-group">
-                    <label htmlFor="duration">Duration</label>
-                    <input className="form-control" name="duration" onChange={handleInputChange} value={formData.duration} placeholder="e.g., 3 class periods, 1 week, 1 month, Longer" />
-                </div>
-
-
                 <Button title='Generate' type="submit" />
             </form>
         </div>

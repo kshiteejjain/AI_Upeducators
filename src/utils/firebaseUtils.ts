@@ -5,12 +5,12 @@ type UserDocumentData = {
   remain_credits?: number;
   credits_limit_perday?: number;
   name?: string;
-  iconPath?: string;
   categoryName?: string,
   description?: string,
   id?: number,
   redirect?: string,
   isBookmarked?: boolean,
+  isActive?: boolean,
   email?: string,
   isActiveUser?: boolean,
   isAdmin?: boolean,
@@ -118,7 +118,8 @@ export const fetchAllForms = async (): Promise<any> => {
       timeStamp: doc.data().timeStamp,
       thumbnailPath: doc.data().name,
       likes: doc.data().likes,
-      dislikes: doc.data().dislikes
+      dislikes: doc.data().dislikes,
+      isActive: doc.data().isActive
     }));
     return categoryData;
   } catch (error) {

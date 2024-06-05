@@ -23,7 +23,8 @@ type Props = {
     usageCount?: number;
     categoryName?: string;
     onClick?: () => void;
-    isBookmarked: boolean | 0
+    isBookmarked: boolean | 0;
+    isActive: boolean
 };
 const Categories = () => {
     const [categories, setCategories] = useState<Props[]>([]);
@@ -53,8 +54,6 @@ const Categories = () => {
         }
     };
 
-    console.log('bookmarkedIds', bookmarkedIds.includes(10))
-
     useEffect(() => {
         const fetchData = async () => {
             try {
@@ -73,7 +72,8 @@ const Categories = () => {
                     id: category?.id,
                     redirect: category?.redirect,
                     isBookmarked: category?.isBookmarked,
-                    usageCount: category?.usageCount
+                    usageCount: category?.usageCount,
+                    isActive: category?.isActive
                 }));
                 setCategories(formattedCategories);
             } catch (error) {
@@ -216,6 +216,7 @@ const Categories = () => {
                             {categories
                                 .filter(item => {
                                     const isBookmarked = bookmarkedOnly ? bookmarkedIds.includes(item.id) : true;
+                                    const isActive = item.isActive === true;
                                     const isMatchingSearchTerm =
                                         isSearchFocused && searchTerm === '' ||
                                         (!isSearchFocused && searchTerm === '') ||
@@ -223,11 +224,10 @@ const Categories = () => {
                                     if (bookmarkedOnly) {
                                         return isBookmarked && isMatchingSearchTerm;
                                     } else {
-                                        const isMatchingCategory = filterCategory === 'All' || (item && item?.categoryName?.toLowerCase() === filterCategory?.toLowerCase());
-                                        return isBookmarked && isMatchingCategory && isMatchingSearchTerm;
+                                        const isMatchingCategory = filterCategory === 'All' || (item && item?.categoryName?.toLowerCase().split(',').map(cat => cat.trim()).includes(filterCategory?.toLowerCase()));
+                                        return isActive && isBookmarked && isMatchingCategory && isMatchingSearchTerm;
                                     }
                                 })
-                                .filter((item) => item.name !== 'Story Creation Generator')
                                 .sort((a, b) => (b.usageCount || 0) - (a.usageCount || 0))
                                 .map((item, index) => (
                                     <CategoryTiles

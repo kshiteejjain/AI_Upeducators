@@ -20,7 +20,7 @@ const Strings = {
     otp: {
         title: 'Enter Your 6 Digit OTP',
         button: 'Verify',
-        emailSent: 'An OTP has been sent to your registered email address for verification.'
+        emailSent: 'Security code has been sent to your email.'
     },
     CreatePassword: {
         title: 'Create Password?',

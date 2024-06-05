@@ -19,9 +19,11 @@
     "@types/firebase": "^3.2.1",
     "axios": "^1.6.2",
     "cors": "^2.8.5",
+    "docx": "^8.5.0",
     "dotenv": "^16.3.1",
     "embla-carousel-autoplay": "^8.0.0-rc22",
     "embla-carousel-react": "^8.0.0-rc22",
+    "file-saver": "^2.0.5",
     "firebase": "^10.7.1",
     "openai": "^4.26.0",
     "prop-types": "^15.8.1",
@@ -38,6 +40,7 @@
     "xlsx": "^0.18.5"
   },
   "devDependencies": {
+    "@types/file-saver": "^2.0.7",
     "@types/react": "^18.2.15",
     "@types/react-dom": "^18.2.7",
     "@typescript-eslint/eslint-plugin": "^6.0.0",

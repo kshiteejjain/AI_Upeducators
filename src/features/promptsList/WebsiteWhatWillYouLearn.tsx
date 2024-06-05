@@ -10,6 +10,7 @@ const LandingPageWhatWillYouLearn = () => {
     const [formData, setFormData] = useState({
         topicOfLandingPage: '',
         audience: '',
+        duration: ''
     });
     const handleInputChange = (e: ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
         const { name, value } = e.target;
@@ -19,19 +20,20 @@ const LandingPageWhatWillYouLearn = () => {
         }));
     };
     const promptMessage = `List 12 different points that I can add to the "What you will learn" section. It should persuade people to want to learn it.
-    Each point should seem logical and represent a module in the customer learning journey
+    Each point should seem logical and represent the topic.
     Give me the list without an intro or summary.
-    Generate 2 outputs: 1 output without a description and 1 output with a description in each point less than 150 characters long.
+    Generate 2 list of outputs with 12-12 points: 1 output without a description and 1 output with heading and description in each point less than 150 characters long and give respective headings for both the outputs.
     Make it persuasive and use powerful words while describing what they will learn from me, make it quantifiable if possible.
-    Give some a powerful formula name to make it look like I have a unique method. Topic is ${formData.topicOfLandingPage}. Audience is ${formData.audience}.`
+    Give a powerful formula name in some points to make it look like I have a unique method. Topic is ${formData.topicOfLandingPage}. Audience is ${formData.audience}. Duration is ${formData.duration}.`
+
     const handleSubmit = (event: React.SyntheticEvent<HTMLFormElement>) => {
         event.preventDefault();
         sendPrompt(dispatch, { input, messages, generatorPrompt, promptMessage });
     };
     return (
         <div className="generator-section">
-            <h2>Landing Page: What will you learn</h2>
-            <h3>Generate Content for ‘What will you learn’ section on your landing page.</h3>
+            <h2>Website: What Will You Learn</h2>
+            <h3>Generate Content for ‘What will you learn’ section on your website or landing page.</h3>
             <form onSubmit={handleSubmit}>
                 <div className="form-group">
                     <label htmlFor="topicOfLandingPage"> Topic of the Landing Page
@@ -43,9 +45,20 @@ const LandingPageWhatWillYouLearn = () => {
                         name="topicOfLandingPage"
                         onChange={handleInputChange}
                         value={formData.topicOfLandingPage}
-                        placeholder="yoga classes for kids, dance classes for kids"
+                        placeholder="Eg. yoga classes for kids, webinar on necessity of dance for kids"
                     />
                 </div>
+
+                <div className="form-group">
+    <label htmlFor="duration"> Duration </label>
+    <input
+      className="form-control"
+      name="duration"
+      onChange={handleInputChange}
+      value={formData.duration}
+      placeholder="Eg. 30 minutes, 1 hour, 90 minutes"
+    />
+</div>
 
                 <div className="form-group">
                     <label htmlFor="audience"> Audience

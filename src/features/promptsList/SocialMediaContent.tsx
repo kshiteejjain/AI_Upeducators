@@ -9,11 +9,9 @@ const SocialMediaPostContentGenerator = () => {
   const dispatch = useDispatch();
   const getInitialFormData = () => ({
     audience: '',
-    platform: 'Facebook',
-    contentType: 'Single Image Post',
-    memeTheme: '',
-    numberOfIdeas: '5',
-    tone: 'Humorous'
+    platform: '',
+    postIdea: '',
+    contentFormat: '',
   });
   const [formData, setFormData] = useState(getInitialFormData);
 
@@ -24,7 +22,8 @@ const SocialMediaPostContentGenerator = () => {
       [name]: value,
     }));
   };
-  const promptMessage = `Develop a social media post for ${formData.audience} on ${formData.platform}. The post should be based on ${formData.postIdea} and created in the ${formData.contentFormat} style. Ensure that the content is captivating, relevant, and effectively communicates with the target audience. Also mention what is caption and what should be written over the post.`
+  const promptMessage = `Develop a social media post for ${formData.audience} on ${formData.platform}. The post should be based on ${formData.postIdea} and created in the ${formData.contentFormat} style. Ensure that the content is captivating, relevant, and effectively communicates with the target audience. what is caption and what should be written over the post. Also Give caption under heading 'Caption', what should be written over Text over image under heading 'Text over image'. Text over image should be of limited text that should look good on the image. In case of Content Format like Carousel or Reel which has more than 1 slide, then caption will be only 1 for whole post. Text over image will be different for each slide and give image idea for each slide. In case of Content Format like Single Image which has only 1 slide, then give only 1 output.`
+
   const handleSubmit = (event: React.SyntheticEvent<HTMLFormElement>) => {
     event.preventDefault();
     sendPrompt(dispatch, { input, messages, generatorPrompt, promptMessage });
@@ -33,12 +32,12 @@ const SocialMediaPostContentGenerator = () => {
   return (
     <div className="generator-section">
 
-      <h2>Social Media Post Content Generator</h2>
+      <h2>Social Media Content</h2>
       <h3>Craft detailed social media posts based on your conceptual ideas, specifically designed for your target audience and chosen platform.</h3>
       <form onSubmit={handleSubmit}>
         <div className='form-group'>
             <label htmlFor='audience'>Audience <span className='asterisk'>*</span></label>
-            <input required className='form-control' name='audience' onChange={handleInputChange} value={formData.audience} placeholder='Specify your target audience, for example, College Students, Young Parents, Tech Enthusiasts' />
+            <input required className='form-control' name='audience' onChange={handleInputChange} value={formData.audience} placeholder='Eg. Parents, Students' />
         </div>
         <div className='form-group'>
           <label htmlFor='platform'>Platform <span className='asterisk'>*</span> </label>

@@ -103,6 +103,7 @@ const BulkUsersUpload: React.FC<BulkUsersUploadProps> = (): ReactElement => {
                             registeredUsername: document.name,
                             registeredPlan: document.plan,
                             credits: 1000,
+                            registeredDate: new Date().toISOString().split('T')[0].split('-').reverse().join('-'),
                             expiryDate:document.expiry.split('-').reverse().join('-'),
                             to_email: document.email,
                         }, import.meta.env.VITE_EMAILJS_API_KEY);

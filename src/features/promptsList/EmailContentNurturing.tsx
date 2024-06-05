@@ -10,7 +10,8 @@ const EmailContentNurturing = () => {
 
     const getInitialFormData = () => ({
         emailSubject: '',
-        audience: ''
+        audience: '',
+        additionalDetails: ''
     });
 
     const [formData, setFormData] = useState(getInitialFormData);
@@ -22,7 +23,7 @@ const EmailContentNurturing = () => {
         }));
     };
 
-    const promptMessage = `Email Headline: ${formData.emailSubject}`;
+    const promptMessage = `Email Headline ${formData.emailSubject}. Convert this headline into a 125 word email. Audience of the email is ${formData.audience}. Be to the point. Use short sentences and short paragraphs. Have a powerful intro in your email, with a hook, so people read further. Don't just use content from the system prompt. Use anything that you think the reader will appreciate. Give what is promised in the email headline in the email itself and don't use that as a hook to get people to buy. 80% of the content should add value, and 20% points them towards signing up or registration. In the email, Also Include these points flawlessly: ${formData.additionalDetails}`;
     const handleSubmit = (event: React.SyntheticEvent<HTMLFormElement>) => {
         event.preventDefault();
         sendPrompt(dispatch, { input, messages, generatorPrompt, promptMessage });
@@ -55,6 +56,17 @@ const EmailContentNurturing = () => {
                         value={formData.audience}
                         placeholder='Enter the target audience, such as Parents, Teenagers'
                     />
+                </div>
+                <div className='form-group'>
+                    <label htmlFor='additionalDetails'> Additional Details </label>
+                    <textarea
+                        className='form-control'
+                        name='additionalDetails'
+                        onChange={handleInputChange}
+                        rows={5}
+                        value={formData.additionalDetails}
+                        placeholder='Write any details you want to add in email'
+                    ></textarea>
                 </div>
                 <Button title='Generate' type="submit" />
 

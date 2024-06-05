@@ -4,6 +4,7 @@ import { fetchAllForms } from '../../utils/firebaseUtils';
 import Strings from '../../utils/en';
 import graph from '../../assets/graph.svg'
 import bookmarked from '../../assets/star.svg'
+import logo from '../../assets/empty-state.gif';
 
 import './CategoryTiles.css';
 
@@ -63,7 +64,7 @@ const CategoryTiles = ({ title, onClick, thumbnailPath = '/src/assets/Upeducator
     return (
         <div className='tiles-group'>
             <div className='tiles' onClick={onClick}>
-                <img src={thumbnailPath} className='list-img' />
+                <img src={thumbnailPath} className='list-img' onError={({ currentTarget }) => currentTarget.src = logo} />
                 <div className='clickSection'>
                     <div className='tiles-icon'>
                         <h1 title={title}>{title}</h1>

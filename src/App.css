@@ -88,11 +88,6 @@ img {
   width: 20px;
 }
 
-.noDataFoundImage {
-  max-width: 60%;
-  margin: 100px auto;
-}
-
 .generator-section h2 {
   font-size: 1.5rem;
   margin: 0.5rem 0;
@@ -241,7 +236,7 @@ img {
 
 .card-popup-content {
   position: relative;
-  width: 50%;
+  width: 60%;
   background-color: var(--white);
   z-index: 9;
   margin: 2rem auto 0 auto;
@@ -249,7 +244,7 @@ img {
   box-sizing: border-box;
   border-radius: 10px;
   box-shadow: 0 0 5px var(--black);
-  max-height: 85%;
+  max-height: 90%;
   overflow-y: auto;
 }
 
@@ -261,6 +256,27 @@ img {
   margin: 0 0 9px 0;
   font-size: calc(var(--baseFontSize) - 1px);
   line-height: 28px;
+}
+.card-popup-content ul{
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}.card-popup-content ul li{
+  margin-bottom: 1.5rem;
+}
+.card-popup-content ul li:first-child span{
+  background-color: var(--gray);
+}
+.card-popup-content p strong {
+  display: block;
+  color: var(--black);
+}
+.card-popup-content ul li span{
+  border: 1px solid var(--gray);
+  padding: 6px 10px;
+  display: block;
+  border-radius: 4px;
+  margin: 3px 0 20px 0;
 }
 .card-popup .close{
   max-width: 25px;
@@ -328,6 +344,10 @@ img {
   .generator-section {
     width: 100%;
     min-height: auto;
+  }
+  .card-popup-content{
+    width: 90%;
+    margin-top: 1rem;
   }
 }
 @media(max-width:1366px) {

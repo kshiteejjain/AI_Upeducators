@@ -10,7 +10,8 @@ const HashtagGenerator = () => {
 
     const getInitialFormData = () => ({
         postTopic: '',
-        targetAudience: ''
+        targetAudience: '',
+        platform: ''
     });
 
     const [formData, setFormData] = useState(getInitialFormData);
@@ -22,11 +23,12 @@ const HashtagGenerator = () => {
             [name]: value,
         }));
     };
-    const promptMessage = `Generate 15 popular hashtags for a post about ${formData.postTopic} targeting ${formData.targetAudience}. Ensure the hashtags are relevant and likely to attract the intended audience.`;
+    const promptMessage = `Generate 15 popular hashtags for a post on ${formData.platform} about ${formData.postTopic} targeting ${formData.targetAudience}. Ensure the hashtags are relevant and likely to attract the intended audience.`;
+
     const handleSubmit = (event: React.SyntheticEvent<HTMLFormElement>) => {
         event.preventDefault();
         sendPrompt(dispatch, { input, messages, generatorPrompt, promptMessage });
-        
+
     };
     return (
         <div className="generator-section">
@@ -55,6 +57,17 @@ const HashtagGenerator = () => {
                         value={formData.targetAudience}
                         placeholder="Eg. Parents, students"
                     />
+                </div>
+                <div className='form-group'>
+                    <label htmlFor='platform'> Platform <span className='asterisk'>*</span></label>
+                    <select className='form-control' name='platform' required onChange={handleInputChange} value={formData.platform}>
+                        <option value='Facebook'>Facebook</option>
+                        <option value='Instagram'>Instagram</option>
+                        <option value='Twitter'>Twitter</option>
+                        <option value='LinkedIn'>LinkedIn</option>
+                        <option value='Pinterest'>Pinterest</option>
+                        <option value='YouTube'>YouTube</option>
+                    </select>
                 </div>
 
                 <Button title='Generate' type="submit" />

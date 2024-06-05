@@ -12,8 +12,10 @@ const TwentyFirstCenturySkillsBasedLessonPlan = () => {
         topicSubject: '',
         additionalDetails: '',
         twentyFirstCenturySkills: [] as string[],
+        twentyFirstCenturySkillsOthers: ''
     });
     const [formData, setFormData] = useState(getInitialFormData);
+    const [isTwentyFirstCenturySkillsOthers, setIsTwentyFirstCenturySkillsOthers] = useState(false);
     const handleInputChange = (e: ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
         const { name, value } = e.target;
         setFormData((prevData) => ({
@@ -23,16 +25,20 @@ const TwentyFirstCenturySkillsBasedLessonPlan = () => {
     };
     const handleCheckboxChange = (e: ChangeEvent<HTMLInputElement>) => {
         const { value } = e.target;
+        const isChecked = formData.twentyFirstCenturySkills.includes(value);
         setFormData((prevData) => ({
             ...prevData,
             twentyFirstCenturySkills: prevData.twentyFirstCenturySkills.includes(value)
                 ? prevData.twentyFirstCenturySkills.filter(skill => skill !== value)
                 : [...prevData.twentyFirstCenturySkills, value],
         }));
+        if (value === "Others") {
+            setIsTwentyFirstCenturySkillsOthers(!isChecked);
+        }
     };
     const skillsText = formData.twentyFirstCenturySkills.join(', ');
     const promptMessage = `Generate a detailed lesson plan for ${formData.gradeLevel} students focusing on this Subject / Topic / Learning Objectives: ${formData.topicSubject}.  
-    The lesson plan should be based on these 21st-century Skills: ${skillsText}.
+    The lesson plan should be based on these 21st-century Skills: ${skillsText} ${formData.twentyFirstCenturySkillsOthers}.
    Along with the detailed plan consider these additional details: ${formData.additionalDetails}
    Show the skills to be achieved explicitly in the lesson plan`;
     const handleSubmit = (event: React.SyntheticEvent<HTMLFormElement>) => {
@@ -48,7 +54,7 @@ const TwentyFirstCenturySkillsBasedLessonPlan = () => {
                     <label htmlFor='gradeLevel'>Grade Level
                         <span className="asterisk">*</span></label>
                     <select
-                        required    
+                        required
                         className='form-control'
                         name="gradeLevel"
                         onChange={handleInputChange}
@@ -88,7 +94,7 @@ const TwentyFirstCenturySkillsBasedLessonPlan = () => {
                 <div className='form-group'>
                     <label htmlFor='twentyFirstCenturySkills'>21st Century Skills <span className='asterisk'>*</span></label>
                     <div className="checkbox-options">
-                        {["Critical Thinking", "Creativity", "Collaboration", "Communication", "Problem-solving", "Innovation", "Teamwork", "Interpersonal skills", "Technology literacy", "Adaptability", "Leadership and Responsibility", "Initiative and Self-direction"].map(skill => (
+                        {["Critical Thinking", "Creativity", "Collaboration", "Communication", "Problem-solving", "Innovation", "Teamwork", "Interpersonal skills", "Technology literacy", "Adaptability", "Leadership and Responsibility", "Initiative and Self-direction", "Others"].map(skill => (
                             <div key={skill} className="checkbox-option">
                                 <input
                                     type="checkbox"
@@ -102,6 +108,18 @@ const TwentyFirstCenturySkillsBasedLessonPlan = () => {
                         ))}
                     </div>
                 </div>
+                {isTwentyFirstCenturySkillsOthers && <div className='form-group'>
+                    <label htmlFor='twentyFirstCenturySkillsOthers'>Others
+                        <span className="asterisk">*</span></label>
+                    <input
+                        required
+                        className='form-control'
+                        name="twentyFirstCenturySkillsOthers"
+                        onChange={handleInputChange}
+                        value={formData.twentyFirstCenturySkillsOthers}
+                        placeholder="e.g., Gravitational Force, English, Implement the concepts of Perimeter and Area" />
+                </div>}
+
 
                 <div className='form-group'>
                     <label htmlFor='additionalDetails'>Additional Details</label>

@@ -28,7 +28,7 @@ const DesignFacebookAdsCreative = () => {
     };
     return (
         <div className="generator-section">
-            <h2>Design Facebook Ads Creative</h2>
+            <h2>Facebook Ads Image</h2>
             <h3>Design image for your facebook ad.</h3>
             <form onSubmit={handleSubmit}>
                 <div className="form-group">
@@ -52,7 +52,7 @@ const DesignFacebookAdsCreative = () => {
                         name="callToAction"
                         onChange={handleInputChange}
                         value={formData.callToAction}
-                        placeholder="Eg. Register Now"
+                        placeholder="Eg. Enroll now, Register Now, Join now, Sign up, Learn more"
                     />
                 </div>
 

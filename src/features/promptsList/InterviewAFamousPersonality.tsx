@@ -9,9 +9,9 @@ const InterviewAHistoricalFigure = () => {
     const dispatch = useDispatch();
     const getInitialFormData = () => ({
         gradeLevel: '',
-        historicalFigure: '',
         interviewQuestion: '',
-        answerLength: ''
+        answerLength: '',
+        nameOfPersonality: ''
     });
     const [formData, setFormData] = useState(getInitialFormData);
     const handleInputChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
@@ -21,9 +21,10 @@ const InterviewAHistoricalFigure = () => {
             [name]: value,
         }));
     };
-    const promptMessage = `Generate an answer for the interview question ${formData.interviewQuestion} as if you were ${formData.historicalFigure}. 
+    const promptMessage = `Generate an answer for the interview question ${formData.interviewQuestion} as if you were ${formData.nameOfPersonality}. 
     The answer should be suitable for ${formData.gradeLevel} students and be ${formData.answerLength} in length. 
-    It should reflect the historical figure's perspective and experiences`;
+    It should reflect the Personality’s perspective and experiences.`;
+
     const handleSubmit = (event: React.SyntheticEvent<HTMLFormElement>) => {
         event.preventDefault();
         sendPrompt(dispatch, { input, messages, generatorPrompt, promptMessage });

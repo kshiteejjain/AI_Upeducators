@@ -10,6 +10,7 @@ const FacebookAdHeadlineUSP = () => {
     const getInitialFormData = () => ({
         courseSkillName: '',
         audience: '',
+        usp: ''
     });
     const [formData, setFormData] = useState(getInitialFormData);
 
@@ -30,7 +31,7 @@ const FacebookAdHeadlineUSP = () => {
     2. A Unique selling point.
     Eg: Live classes by Experts on Weekends
     
-    The word limit for the headline and the Unique selling points should not be more than 20 words. Don't generate anything else apart from Headline and USP. Generate 5 outputs.`
+    The word limit for the headline and the Unique selling points should not be more than 20 words. Don't generate anything else apart from Headline and ${formData.usp}. Generate 5 outputs.`
     const handleSubmit = (event: React.SyntheticEvent<HTMLFormElement>) => {
         event.preventDefault();
         sendPrompt(dispatch, { input, messages, generatorPrompt, promptMessage });
@@ -61,6 +62,18 @@ const FacebookAdHeadlineUSP = () => {
                         onChange={handleInputChange}
                         value={formData.audience}
                         placeholder="Eg. Parents, Teenagers"
+                    />
+                </div>
+
+                <div className="form-group">
+                    <label htmlFor="audience"> USP </label>
+                    <input
+                        required
+                        className="form-control"
+                        name="usp"
+                        onChange={handleInputChange}
+                        value={formData.usp}
+                        placeholder="Enter USP"
                     />
                 </div>
 

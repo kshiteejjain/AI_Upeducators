@@ -4,14 +4,13 @@ import { generatorPrompt } from '../promptListGeneratorSlice/QuestionGeneratorSl
 import Button from '../../components/buttons/Button';
 import { sendPrompt } from '../../utils/sendPrompt';
 
-const WebinarContentStoriesExampleStatsActivities = () => {
+const WebinarOutline = () => {
     const { generatorData: { messages, input } } = useSelector((state) => state);
     const dispatch = useDispatch();
     const getInitialFormData = () => ({
         webinarTitle: '',
         audience: '',
         duration: '',
-        contentType: '',
     });
     const [formData, setFormData] = useState(getInitialFormData);
 
@@ -22,15 +21,15 @@ const WebinarContentStoriesExampleStatsActivities = () => {
             [name]: value,
         }));
     };
-    const promptMessage = `I am conducting a webinar on ${formData.webinarTitle}. The audience of the webinar is ${formData.audience}.  Duration is ${formData.duration}. Pls suggest me 5 interesting ${formData.contentType} that i can refer in the webinar.`
+    const promptMessage = `Craft a compelling and dynamic ${formData.duration} webinar outline for ${formData.webinarTitle}, strategically tailored to captivate and engage ${formData.audience}. Ensure the content is not only informative but also enthralling, keeping the audience hooked from start to finish. Integrate strategic points throughout the outline to seamlessly transition into a persuasive call-to-action for the course you're promoting at the end. Make every minute count, making the entire webinar an irresistible journey that leaves attendees eagerly signing up for the course you're showcasing.`
     const handleSubmit = (event: React.SyntheticEvent<HTMLFormElement>) => {
         event.preventDefault();
         sendPrompt(dispatch, { input, messages, generatorPrompt, promptMessage });
     };
     return (
         <div className="generator-section">
-            <h2>Webinar Content: Stories/Example/Stats/Activities</h2>
-            <h3>Generate Stories/Example/Stats/Activities for the Webinar</h3>
+            <h2>Webinar Outline</h2>
+            <h3>Generate a structured outline for webinar or seminar, focusing on the title and audience</h3>
             <form onSubmit={handleSubmit}>
                 <div className="form-group">
                     <label htmlFor="webinarTitle"> Webinar Title <span className="asterisk">*</span></label>
@@ -43,7 +42,6 @@ const WebinarContentStoriesExampleStatsActivities = () => {
                         placeholder="Eg. Careers after 12th"
                     />
                 </div>
-
                 <div className="form-group">
                     <label htmlFor="audience"> Audience <span className="asterisk">*</span></label>
                     <input
@@ -52,7 +50,7 @@ const WebinarContentStoriesExampleStatsActivities = () => {
                         name="audience"
                         onChange={handleInputChange}
                         value={formData.audience}
-                        placeholder="Eg. Parents, Indian students, Teenagers"
+                        placeholder="Eg. 12th grade passed students"
                     />
                 </div>
 
@@ -64,21 +62,9 @@ const WebinarContentStoriesExampleStatsActivities = () => {
                         name="duration"
                         onChange={handleInputChange}
                         value={formData.duration}
-                        placeholder="Eg. 1 hour, 90 minutes"
+                        placeholder="Eg. 1 hour, 90 minutes, 30 minutes"
                     />
                 </div>
-
-
-                <div className='form-group'>
-                    <label htmlFor='contentType'> Content Type <span className="asterisk">*</span> </label>
-                    <select className='form-control' name="contentType" onChange={handleInputChange} value={formData.contentType}>
-                        <option value="Stories">Stories</option>
-                        <option value="Examples">Examples</option>
-                        <option value="Statistics">Statistics</option>
-                        <option value="Activities">Activities</option>
-                    </select>
-                </div>
-
 
 
                 <Button title='Generate' type="submit" />
@@ -86,4 +72,4 @@ const WebinarContentStoriesExampleStatsActivities = () => {
         </div>
     )
 };
-export default WebinarContentStoriesExampleStatsActivities;
+export default WebinarOutline;

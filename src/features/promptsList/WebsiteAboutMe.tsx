@@ -42,8 +42,8 @@ const LandingPageAboutMe = () => {
     };
     return (
         <div className="generator-section">
-            <h2>Landing Page: About me</h2>
-            <h3>Generate Content for ‘About me’ section on your landing page.</h3>
+            <h2>Website: About Me</h2>
+            <h3>Generate Content for ‘About me’ section on your website or landing page.</h3>
             <form onSubmit={handleSubmit}>
                 <div className='form-group'>
                     <label htmlFor='trainersName'> Trainer’s Name and Brief Introduction
@@ -73,33 +73,36 @@ const LandingPageAboutMe = () => {
 
                 <div className="form-group">
                     <label htmlFor="challengesInSolving"> Challenges in Solving Them </label>
-                    <input
+                    <textarea
                         className="form-control"
                         name="challengesInSolving"
                         onChange={handleInputChange}
                         value={formData.challengesInSolving}
+                        rows={5}
                         placeholder="Conveying the urgency during the COVID era, where online interactions became the norm"
                     />
                 </div>
 
                 <div className="form-group">
                     <label htmlFor="result"> Result </label>
-                    <input
+                    <textarea
                         className="form-control"
                         name="result"
                         onChange={handleInputChange}
                         value={formData.result}
+                        rows={5}
                         placeholder="A remarkable transformation as parents gradually adapted to the digital landscape. Over the past years, my experiments, akin to a digital parenting boot camp, have empowered countless parents"
                     />
                 </div>
 
                 <div className="form-group">
                     <label htmlFor="mission"> Mission </label>
-                    <input
+                    <textarea
                         className="form-control"
                         name="mission"
                         onChange={handleInputChange}
                         value={formData.mission}
+                        rows={5}
                         placeholder="To equip parents with the skills needed to connect, understand, and guide their children through the complexities of the digital age"
                     />
                 </div>
@@ -107,11 +110,12 @@ const LandingPageAboutMe = () => {
 
                 <div className="form-group">
                     <label htmlFor="experimentsIDid"> Experiments I Did </label>
-                    <input
+                    <textarea
                         className="form-control"
                         name="experimentsIDid"
                         onChange={handleInputChange}
                         value={formData.experimentsIDid}
+                        rows={5}
                         placeholder="Practical exercises, interactive sessions, and tailored tutorials, designed a unique Digital Parenting Toolkit"
                     />
                 </div>

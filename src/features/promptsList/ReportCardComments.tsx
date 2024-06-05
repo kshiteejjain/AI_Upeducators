@@ -79,12 +79,12 @@ const ReportCardComments = () => {
 
                 <div className="form-group">
                     <label htmlFor="subjectArea">Subject Area</label>
-                    <input className="form-control" name="subjectArea" onChange={handleInputChange} value={formData.subjectArea} placeholder="Enter the subject area for which the comment is required (e.g., Mathematics, Science, Co-curricular Activities)." />
+                    <input className="form-control" name="subjectArea" onChange={handleInputChange} value={formData.subjectArea} placeholder="e.g., Mathematics, Science, Co-curricular" />
                 </div>
 
                 <div className="form-group">
                     <label htmlFor="additionalDetails">Additional Details</label>
-                    <textarea className="form-control" name="additionalDetails" onChange={handleInputChange} value={formData.additionalDetails} placeholder="e.g., Mathematics, Science, Co-curricular" rows={5} />
+                    <textarea className="form-control" name="additionalDetails" onChange={handleInputChange} value={formData.additionalDetails} placeholder="Areas of Strength, Areas of Weakness, Additional comments about the student's performance or behaviors" rows={5} />
                 </div>
 
                 <Button title='Generate' type="submit" />

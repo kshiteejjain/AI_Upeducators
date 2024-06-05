@@ -4,7 +4,6 @@ import { useNavigate } from 'react-router-dom';
 import Header from '../../components/header/Header';
 import Button from '../../components/buttons/Button';
 import { resetGeneratedData } from '../promptListGeneratorSlice/QuestionGeneratorSlice';
-import BannerCarousel from '../../components/bannerCarousel/bannerCarousel';
 import examplerData from '../../utils/exampler.json'
 import Close from '../../assets/close.svg'
 import Loader from '../../components/loader/Loader';
@@ -40,7 +39,6 @@ const GeneratorAndResult = () => {
         <>
             <Header />
             <div className='page-wrapper'>
-                <BannerCarousel />
                 <div className='backButton'>
                     <div className='container'>
                         <Button isSecondary title="Go Back" type="button" onClick={handleBack} />
@@ -50,13 +48,15 @@ const GeneratorAndResult = () => {
                         return (
                             <div className='card-popup' key={index}>
                                 <div className='card-popup-content'>
-                                    <h1>{item.formName}</h1>
+                                    <h1>{item.formName.replace(/([a-z])([A-Z])/g, '$1 $2')}</h1>
                                     <img src={Close} onClick={() => setShowExampler([])} className='close' />
+                                    <ul>
                                     {Object.keys(item?.formFields).map((key, index) => (
-                                        <p key={index}>
-                                        <strong>{key}</strong> : <span dangerouslySetInnerHTML={{ __html: item?.formFields[key].replace(/\n\n/g, '<br /><br />').replace(/\n/g, '<br />').replace(/\./g, '.<br />') }} />
-                                        </p>
+                                        <li key={index}>
+                                        <strong>{key}</strong> <span dangerouslySetInnerHTML={{ __html: item?.formFields[key].replace(/(^[^:]+):/gm, '<strong>$1:</strong>').replace(/\n\n/g, '<br /><br />').replace(/\n/g, '<br />').replace(/\./g, '.<br />') }} />
+                                        </li>
                                     ))}
+                                    </ul>
 
                                 </div>
                                 <div className='overlay'></div>

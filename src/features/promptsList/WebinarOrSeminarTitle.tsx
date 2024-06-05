@@ -28,30 +28,30 @@ const WebinarTitle = () => {
     return (
         <div className="generator-section">
             <h2>Webinar Title</h2>
-            <h3>Generate innovative titles for your webinars.</h3>
+            <h3>Generate innovative titles for your Webinars or Seminars</h3>
             <form onSubmit={handleSubmit}>
-            <div className="form-group">
-  <label htmlFor="topic"> Topic <span className="asterisk">*</span></label>
-  <input
-    required
-    className="form-control"
-    name="topic"
-    onChange={handleInputChange}
-    value={formData.topic}
-    placeholder="Eg. Careers after 12th, Technology Trends."
-  />
-</div>
-<div className="form-group">
-  <label htmlFor="audience"> Audience <span className="asterisk">*</span></label>
-  <input
-    required
-    className="form-control"
-    name="audience"
-    onChange={handleInputChange}
-    value={formData.audience}
-    placeholder="Eg. College Students, Fitness Enthusiasts, Gaming Fans."
-  />
-</div>
+                <div className="form-group">
+                    <label htmlFor="topic"> Topic <span className="asterisk">*</span></label>
+                    <input
+                        required
+                        className="form-control"
+                        name="topic"
+                        onChange={handleInputChange}
+                        value={formData.topic}
+                        placeholder="Eg. Careers after 12th, Technology Trends."
+                    />
+                </div>
+                <div className="form-group">
+                    <label htmlFor="audience"> Audience <span className="asterisk">*</span></label>
+                    <input
+                        required
+                        className="form-control"
+                        name="audience"
+                        onChange={handleInputChange}
+                        value={formData.audience}
+                        placeholder="Eg. College Students, Fitness Enthusiasts, Gaming Fans."
+                    />
+                </div>
 
                 <Button title='Generate' type="submit" />
             </form>

@@ -1,17 +1,17 @@
 import React, { useState, ChangeEvent } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { generatorPrompt } from '../promptListGeneratorSlice/ImageGeneratorSlice';
+import { generatorPrompt } from '../promptListGeneratorSlice/DescribeImageSlice';
 import Button from '../../components/buttons/Button';
 import { sendPrompt } from '../../utils/sendPrompt';
 
-const MemeImage = () => {
+const DescribeImage = () => {
     const { generatorData: { messages, input } } = useSelector((state) => state);
     const dispatch = useDispatch();
     const getInitialFormData = () => ({
-        memeContent: '',
-        memeCaption: ''
+        image: '',
     });
     const [formData, setFormData] = useState(getInitialFormData);
+    const [file, setFile] = useState();
 
     const handleInputChange = (e: ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
         const { name, value } = e.target;
@@ -20,38 +20,40 @@ const MemeImage = () => {
             [name]: value,
         }));
     };
-    const promptMessage = `Generate a meme image that shows ${formData.memeContent} and add a caption as ${formData.memeCaption}.`
+    const promptMessage = `${formData.image}`
+
     const handleSubmit = (event: React.SyntheticEvent<HTMLFormElement>) => {
         event.preventDefault();
+        localStorage.setItem('isGPT4', 'true');
         sendPrompt(dispatch, { input, messages, generatorPrompt, promptMessage });
     };
+    
     return (
         <div className="generator-section">
-            <h2>Meme Image</h2>
-            <h3>Generate image for the meme idea</h3>
+            <h2>Describe Image </h2>
+            <h3>Upload the image and get description.</h3>
             <form onSubmit={handleSubmit}>
                 <div className="form-group">
-                    <label htmlFor="memeContent">Meme Context<span className="asterisk">*</span></label>
-                    <textarea
-                        required
-                        className="form-control"
-                        name="memeContent"
-                        onChange={handleInputChange}
-                        value={formData.memeContent}
-                        rows={4}
-                        placeholder="Eg. kid struggling to do a yoga pose, Parent trying to explain a science concept to their child"
-                    ></textarea>
-                </div>
-
-                <div className="form-group">
-                    <label htmlFor="memeCaption"> Meme caption </label>
+                    <label htmlFor="image">Upload Image <span className="asterisk">*</span></label>
                     <input
+                        type='file'
                         className="form-control"
-                        name="memeCaption"
+                        name="image"
                         onChange={handleInputChange}
-                        value={formData.memeCaption}
-                        placeholder="Eg. When your kid shows you up in yoga class"
+                        value={formData.image}
                     />
+                </div>
+                <div className="form-group">
+                    <label htmlFor="instructions">Instructions <span className="asterisk">*</span></label>
+                    <textarea
+                        className="form-control"
+                        name="instructions"
+                        onChange={handleInputChange}
+                        value={formData.instructions}
+                        placeholder='Enter Instructions'
+                        rows={5}
+                    >
+                    </textarea>
                 </div>
 
 
@@ -60,4 +62,4 @@ const MemeImage = () => {
         </div>
     )
 };
-export default MemeImage;
+export default DescribeImage;

@@ -69,11 +69,11 @@ const ProfessionalEmail = () => {
                 <div className="form-group">
                     <label htmlFor="length">Length</label>
                     <select className="form-control" name="length" onChange={handleInputChange} value={formData.length}>
-                        <option value="">Choose the desired length of the note.</option>
-                        <option value="Short (25-50 words)">Short (25-50 words)</option>
-                        <option value="Medium (50-75 words)">Medium (50-75 words)</option>
-                        <option value="Long (75-100 words)">Long (75-100 words)</option>
-                        <option value="Very Long (100-150 words)">Very Long (100-150 words)</option>
+                        <option value="">Choose the desired length of the E-mail</option>
+                        <option value="Short (50-100 words)">Short (50-100 words)</option>
+                        <option value="Medium (100-150 words)">Medium (100-150 words)</option>
+                        <option value="Long (150-200 words)">Long (150-200 words)</option>
+                        <option value="Very Long (200-250 words)">Very Long (200-250 words)</option>
                     </select>
                 </div>
 

@@ -10,9 +10,9 @@ const ActivityGenerator = () => {
 
     const getInitialFormData = () => ({
         gradeLevel: '',
-        subjectTopic: '',
-        activityType: '',
-        duration: ''
+        topicOrTitle: '',
+        learningObjective:'',
+        additionalDetails: '',
     });
     const [formData, setFormData] = useState(getInitialFormData);
     const handleInputChange = (e: ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
@@ -22,9 +22,11 @@ const ActivityGenerator = () => {
             [name]: value,
         }));
     };
-    const promptMessage = `Generate an engaging activity for ${formData.gradeLevel} students. The activity should be based on this Subject/Topic/Learning Objectives: ${formData.subjectTopic}. The timeframe should be ${formData.duration} and the activity type should be ${formData.activityType} activity. 
+    const promptMessage = `Generate an engaging Activity Plan for [Grade Level] students. The activity should be based on this Topic or Title: ${formData.topicOrTitle}.
+    Also, consider this Learning Objective Or Activity Description: ${formData.learningObjective} and additional details: ${formData.additionalDetails}.
     Follow this structure in the output: Title, Duration, Activity Overview, Learning Objectives, Resources needed, duration-wise detailed Activity Plan, Assessment, Closure, and Reflection.
     In case you want to add something else in the structure to make it better, then you can do it.`;
+
     const handleSubmit = (event: React.SyntheticEvent<HTMLFormElement>) => {
         event.preventDefault();
         sendPrompt(dispatch, { input, messages, generatorPrompt, promptMessage });
@@ -65,38 +67,38 @@ const ActivityGenerator = () => {
                 </div>
 
                 <div className='form-group'>
-                    <label htmlFor='subjectTopic'>Subject/Topic/Learning Objectives
+                    <label htmlFor='topicOrTitle'>Topic or Title
                         <span className="asterisk">*</span></label>
-                    <textarea
+                    <input
                         required
                         className='form-control'
-                        name="subjectTopic"
+                        name="topicOrTitle"
                         onChange={handleInputChange}
-                        value={formData.subjectTopic}
-                        placeholder="History, Motion and Movement, Mathematics, Language Arts, Develop critical thinking">
-                    </textarea>
+                        value={formData.topicOrTitle}
+                        placeholder="e.g., Motion and Movement, Solar System Scavenger Hunt, The Impact of Climate Change" />
                 </div>
 
                 <div className='form-group'>
-                    <label htmlFor='activityType'>Activity Type</label>
-                    <input
+                    <label htmlFor='learningObjective'>Learning Objective Or Activity Description</label>
+                    <textarea
                         className='form-control'
-                        name="activityType"
+                        name="learningObjective"
                         onChange={handleInputChange}
-                        value={formData.activityType}
-                        placeholder="e.g., Interactive, Hands-On, Group, Game Based, Reflective and Metacognitive, Technology-Integrated" />
+                        value={formData.learningObjective}
+                        rows={5}
+                        placeholder="e.g., Develop critical thinking, Students will create a 3D model of the solar system using household items" />
                 </div>
 
                 <div className='form-group'>
-                    <label htmlFor='duration'>Duration</label>
-                    <input
+                    <label htmlFor='additionalDetails'>Additional Details </label>
+                    <textarea
                         className='form-control'
-                        name="duration"
+                        name="additionalDetails"
                         onChange={handleInputChange}
-                        value={formData.duration}
-                        placeholder="e.g., 15 minutes, 30 minutes, 1 Class Period" />
+                        value={formData.additionalDetails}
+                        rows={5}
+                        placeholder={`For Example- \nLearning Environment (e.g., Classroom, Online, Hybrid), \nActivity Type (e.g., Interactive, Hands-On, Group, Reflective), \nActivity Duration (e.g., 15 minutes, 30 minutes, 2 class periods)`} />
                 </div>
-
 
                 <Button title='Generate' type="submit" />
 

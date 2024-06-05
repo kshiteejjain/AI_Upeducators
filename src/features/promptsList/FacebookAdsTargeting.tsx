@@ -20,7 +20,7 @@ const FacebookAdsTargeting = () => {
             [name]: value,
         }));
     };
-    const promptMessage = `Generate a list of specific job titles, roles and other areas available in Behaviour, Interest, Education, Job Title and other areas you feel necessary for my ad that can be targeted and available in Facebook Ads for promoting ${formData.courseSkillName} in ${formData.location}. The targeting should focus on ${formData.audience}. Targeting should be detailed and specific. The list should be detailed and tailored to effectively reach the intended audience for the course or product being advertised. Also give other details like Age, Location ideas and other ideas that are necessary`;
+    const promptMessage = `Generate a list of specific job titles, roles and other areas available in Behaviour, Interest, Education, Job Title and other areas you feel necessary for my ad that can be targeted and available in Facebook Ads for promoting ${formData.courseSkillName} in ${formData.location}. The targeting should focus on ${formData.audience}. Targeting should be detailed and specific. The list should be detailed and tailored to effectively reach the intended audience for the course or product being advertised. Also give other details like Age, Location ideas and other ideas that are necessary. Don't add introductory paragraph. Only provide to-the-point output.`;
     const handleSubmit = (event: React.SyntheticEvent<HTMLFormElement>) => {
         event.preventDefault();
         localStorage.setItem('isGPT4', 'true');
@@ -29,7 +29,7 @@ const FacebookAdsTargeting = () => {
     return (
         <div className="generator-section">
             <h2>Facebook Ads Targeting</h2>
-            <h3>Identify the target audience for your Facebook Campaign.</h3>
+            <h3>Create a targeting strategy for Facebook ads to promote courses effectively</h3>
             <form onSubmit={handleSubmit}>
                 <div className="form-group">
                     <label htmlFor="courseSkillName">Course/Skill Name<span className="asterisk">*</span></label>
@@ -54,8 +54,6 @@ const FacebookAdsTargeting = () => {
                         placeholder="Eg. Parents, Teenagers"
                     />
                 </div>
-
-
                 <div className="form-group">
                     <label htmlFor="location">Location<span className="asterisk">*</span></label>
                     <input

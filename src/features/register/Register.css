@@ -21,7 +21,7 @@
     margin: 0 1rem;
 }
 .otpSent{
-  font-size: calc(var(--baseFontSize) - 2px);
+  font-size: var(--baseFontSize);
   color: var(--darkGray);
   display: block;
   margin-top: 15px;

@@ -716,6 +716,7 @@ const OnboardingQuestions = () => {
                                 <option value="ICSE">ICSE</option>
                                 <option value="Cambridge">Cambridge</option>
                                 <option value="IB">IB</option>
+                                <option value="State Board">State Board</option>
                                 <option value="Not Applicable">Not Applicable</option>
                                 <option value="Other">Other</option>
                             </select>

@@ -1,10 +1,12 @@
 [
     {
-        "formName": "FacebookAdsCreativeContentCreatorImage",
+        "formName": "ActivityIdeas",
         "formFields": {
-            "Service Skill": "Engineer",
-            "Audience": "Custom Audience",
-            "Subject": "\n\nChanges to Basketball Schedule\n\nHello [Colleague Name],\n\nI hope this email finds you well. I wanted to bring to your attention some changes to the basketball schedule for this season. It's important that we have one administrator present at each home game to ensure everything runs smoothly. To help organize this, I will start a Google form where we can all sign up to be present at one or two games. This way, we can ensure that the games are adequately covered and that our students have a positive experience. Thank you for your attention to this matter, and I appreciate your cooperation in ensuring the success of the basketball season.\nBest regards,\n[Your Name]"
+            "Use Cases": "A Mathematics teacher wants to create an activity on Algebra to give its practical use case and exposure to the Students to make it easy to learn.",
+            "Grade Level*": "6th Grade",
+            "Topic*": "Algebra",
+            "Additional Details": "Activity Type: Hands-on",
+            "Output": "Activity Title: Algebraic Art \n Activity Description: Students will create their own piece of art using algebraic equations. They can use different equations to create patterns, shapes, or designs. \nActivity Title: Equation Scavenger Hunt Activity Description: Students will go around the classroom or school to find different items that represent different algebraic equations. They will write down the equations and solutions they find. \nActivity Title: Algebraic Puzzle Activity Description: Give students a puzzle where they have to solve algebraic equations to complete the puzzle. This will help them practice solving equations in a fun way."
         }
     },
     {

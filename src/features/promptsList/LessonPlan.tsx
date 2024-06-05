@@ -48,7 +48,7 @@ const LessonPlan = () => {
     };
     return (
         <div className="generator-section">
-            <h2>Lesson Plan Generator</h2>
+            <h2>Lesson Plan</h2>
             <h3>Generate lesson plans for any subject or topic </h3>
             <form onSubmit={handleSubmit}>
                 <div className='form-group'>

@@ -9,8 +9,8 @@ const ProjectPlan = () => {
     const dispatch = useDispatch();
     const getInitialFormData = () => ({
         gradeLevel: '',
-        topicSubject: '',
-        projectType: '',
+        topicOrTitle: '',
+        learningObjective: '',
         additionalDetails: ''
     });
     const [formData, setFormData] = useState(getInitialFormData);
@@ -21,10 +21,11 @@ const ProjectPlan = () => {
             [name]: value,
         }));
     };
-    const promptMessage = `Generate a detailed Project Plan for ${formData.gradeLevel} covering this Subject / Topic / Learning Objectives: ${formData.topicSubject}. The project type is a ${formData.projectType} Project.
-    Along with the Project Plan consider these additional details: ${formData.additionalDetails}.
-    Follow this structure in the project plan output: Title, Subject/Topic, Grade Level, Duration, Project Overview, Learning Objectives, Materials/Resources, duration-wise detailed Project Plan, Assessment Criteria, Closure, Reflection.
+    const promptMessage = `Generate a detailed Project Plan for ${formData.gradeLevel} students. The project should be based on this Topic or Title: ${formData.topicOrTitle}.
+    Also, consider this Learning Objective Or Project Description: ${formData.learningObjective} and additional details: ${formData.additionalDetails}.
+    Follow this structure in the project plan output: Title, Subject/Topic, Grade Level, Duration, Project Overview, Learning Objectives, Materials/Resources, duration-wise detailed Project Plan, Assessment Criteria, Closure, and Reflection.
     In case you want to add something else in the structure to make it better, then you can do it.`;
+
     const handleSubmit = (event: React.SyntheticEvent<HTMLFormElement>) => {
         event.preventDefault();
         sendPrompt(dispatch, { input, messages, generatorPrompt, promptMessage });
@@ -64,26 +65,28 @@ const ProjectPlan = () => {
                 </div>
 
                 <div className='form-group'>
-                    <label htmlFor='topicSubject'>Topic / Subject / Learning Objectives
+                    <label htmlFor='topicOrTitle'>Topic or Title
+                        <span className="asterisk">*</span></label>
+                    <input
+                        required
+                        className='form-control'
+                        name="topicOrTitle"
+                        onChange={handleInputChange}
+                        value={formData.topicOrTitle}
+                        placeholder="e.g., Motion and Movement, The Impact of Climate Change, Analysing major Historical Events" />
+                </div>
+
+                <div className='form-group'>
+                    <label htmlFor='learningObjective'>Learning Objective Or Project Description
                         <span className="asterisk">*</span></label>
                     <textarea
                         required
                         className='form-control'
-                        name="topicSubject"
+                        name="learningObjective"
                         onChange={handleInputChange}
-                        value={formData.topicSubject}
-                        placeholder="e.g., Gravitational Force, History, Implement the concepts of Perimeter and Area">
-                    </textarea>
-                </div>
-
-                <div className='form-group'>
-                    <label htmlFor='projectType'>Project Type</label>
-                    <input
-                        className='form-control'
-                        name="projectType"
-                        onChange={handleInputChange}
-                        value={formData.projectType}
-                        placeholder="e.g., Research, Community Service, Group, Case Study, Art and Design, Technology-integrated" />
+                        value={formData.learningObjective}
+                        rows={5}
+                        placeholder="e.g., Motion and Movement, The Impact of Climate Change, Analysing major Historical Events" />
                 </div>
 
                 <div className='form-group'>
@@ -93,7 +96,8 @@ const ProjectPlan = () => {
                         name="additionalDetails"
                         onChange={handleInputChange}
                         value={formData.additionalDetails}
-                        placeholder="e.g., Duration of the Lesson, Special Instructions, Assessment Type, Teaching Method, Learning Environment">
+                        rows={5}
+                        placeholder={`For Example- Learning Environment (e.g., Classroom, Online, Hybrid), \nProject Type (e.g., Research, Group, Technology-integrated), \nProject Duration (e.g., 1 class period, 1 week, 1 month)`}>
                     </textarea>
                 </div>
 

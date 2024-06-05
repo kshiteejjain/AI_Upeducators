@@ -9,7 +9,8 @@ const FacebookAdProblemSolution = () => {
     const dispatch = useDispatch();
     const getInitialFormData = () => ({
         courseSkillName: '',
-        audience: ''
+        audience: '',
+        problemsNoticed: ''
     });
     const [formData, setFormData] = useState(getInitialFormData);
     const handleInputChange = (e: ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
@@ -19,16 +20,8 @@ const FacebookAdProblemSolution = () => {
             [name]: value,
         }));
     };
-    const promptMessage = `I want to create an ad on ${formData.courseSkillName}, the audience of my course is ${formData.audience} which has the following sections
+    const promptMessage = `I want to create an ad on ${formData.courseSkillName}, the audience of my course is ${formData.audience} which has the following sections: 1. A problem statement: which Address a problem your target audience faces, in 6 to 8 words, Example: Struggling to stay updated with technology for Education? 2. Solution : present your product or service as the solution in 8 - 10 words, Example: Become a Google certified educator and enhance your teaching skills. Generate 5 such problem - solution statement. Problems I noticed is: ${formData.problemsNoticed}. Please maintain Q&A format.`;
 
-    A problem statement: which Address a problem your target audience faces, in 6 to 8 words
-    Eg: Struggling to stay updated with technology for Education?
-    
-    Solution : present your product or service as the solution in 8 - 10 words
-    Eg: Become a Google certified educator and enhance your teaching skills
-    
-    Generate 5 such problem - solution statement
-    `;
     const handleSubmit = (event: React.SyntheticEvent<HTMLFormElement>) => {
         event.preventDefault();
         sendPrompt(dispatch, { input, messages, generatorPrompt, promptMessage });
@@ -62,7 +55,16 @@ const FacebookAdProblemSolution = () => {
                         placeholder="Eg. Parents, Teenagers"
                     />
                 </div>
-
+                <div className="form-group">
+                    <label htmlFor="problemsNoticed"> Problems I noticed my audience is facing </label>
+                    <input
+                        className="form-control"
+                        name="problemsNoticed"
+                        onChange={handleInputChange}
+                        value={formData.problemsNoticed}
+                        placeholder="Eg. Parents want children to reduce screen time"
+                    />
+                </div>
                 <Button title='Generate' type="submit" />
 
             </form>

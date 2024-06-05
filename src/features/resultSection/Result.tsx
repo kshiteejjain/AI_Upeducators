@@ -1,12 +1,15 @@
 import { ChangeEvent, useEffect, useMemo, useRef, useState } from 'react'
 import { useNavigate } from 'react-router-dom';
-import { generatorPrompt, } from '../promptListGeneratorSlice/QuestionGeneratorSlice';
+import { generatorPrompt, resetGeneratedData, } from '../promptListGeneratorSlice/QuestionGeneratorSlice';
 import { useDispatch, useSelector } from 'react-redux';
 import { sendPrompt } from '../../utils/sendPrompt';
+import DownloadWordFile from './DownloadWordFile';
 import Button from '../../components/buttons/Button';
 import Strings from '../../utils/en';
-import NoDataFoundImage from '../../assets/no-data-found.svg';
+import EmptyState from '../../assets/empty-state.gif';
 import CopyClipboard from '../../assets/copyClipboard.svg';
+import More from '../../assets/more.svg';
+import Download from '../../assets/download.svg';
 import Play from '../../assets/play.svg';
 import Stop from '../../assets/stop.svg';
 import mp3Sound from '../../assets/result-audio.mp3';
@@ -173,8 +176,8 @@ const Result = () => {
   }
 
   async function fetchSuggestedForms() {
-    const followupPrompts = await getSuggestedForms(getFormName?.selectedCategory);
-    setIsSuggestedForms(followupPrompts);
+    const suggestedForms = await getSuggestedForms(getFormName?.selectedCategory);
+    setIsSuggestedForms(suggestedForms);
   }
 
   const handleCopyData = () => {
@@ -236,6 +239,8 @@ const Result = () => {
 
   const handleSuggestedForms = (item: any) => {
     dispatch(setCategory(item));
+    dispatch(resetGeneratedData())
+    navigate('/GeneratorAndResult')
   }
 
   return (
@@ -252,15 +257,6 @@ const Result = () => {
             <button className='speech-btn' onClick={speakText}> <img src={Play} /> </button>
           )
         )}
-
-        {generatedData?.length !== 0 && !generatedImage && (
-          <>
-            <button className='copyClipboard' title="Copy Content" onClick={handleCopyData}>
-              <img src={CopyClipboard} alt="Copy to Clipboard" />
-            </button>
-          </>
-        )}
-
         <div className='generatedImage'>
           {generatedImage && <img src={generatedImage} alt="Generated Image" />}
           {generatedImage && <Button title='Download Image' onClick={downloadImage} />}
@@ -269,7 +265,7 @@ const Result = () => {
 
         {!generatedData?.length && !generatedImage && (
           <div className='noDataFoundImage'>
-            <img src={NoDataFoundImage} alt="No Data Found" />
+            <a href='https://www.upeducators.com/' target='_blank'> <img src={EmptyState} alt="Empty State" /> </a>
           </div>
         )}
 
@@ -315,17 +311,37 @@ const Result = () => {
           <Button title='Send' type="submit" />
         </form>
       )}
-      {generatedData && getFollowPrompt.length !== 0 && !generatedImage && (
+      {generatedData && isSuggestedForms[0] !== undefined && !generatedImage && (
         <div className="related-forms">
           <h2>{Strings.result.relatedFormsTitle}</h2>
+          <ul>
             {isSuggestedForms.map((item, index) => (
-              <a href='javascript:void(0)' key={index} onClick={()=> handleSuggestedForms(item)}>
-                {item}
-              </a>
+              <li>
+                <a href='javascript:void(0)' key={index} onClick={() => handleSuggestedForms(item)}>
+                  {item.split(/(?=[A-Z])/).join(' ')}
+                </a>
+              </li>
             ))}
+          </ul>
         </div>
       )}
+
+      {generatedData?.length !== 0 && !generatedImage && (
+        <>
+          <div className='copyClipboard'>
+            <img src={More} alt="More Actions" />
+            <ul className='action-list'>
+              <li onClick={handleCopyData}><img src={CopyClipboard} alt="Copy Content" /> Copy Content</li>
+              <li> <img src={Download} alt="Download Word File" />
+              <DownloadWordFile data={generatedData.map((msg: any) => msg.content).join('\n')} fileName={getFormName?.selectedCategory || 'document.docx'} />
+              </li>
+            </ul>
+          </div>
+        </>
+      )}
+
     </div>
   );
 };
+
 export default Result;

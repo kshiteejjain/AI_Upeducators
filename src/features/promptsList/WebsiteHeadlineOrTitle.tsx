@@ -7,9 +7,10 @@ const CourseLandingPageTitle = () => {
     const { generatorData: { messages, input } } = useSelector((state) => state);
     const dispatch = useDispatch();
     const [formData, setFormData] = useState({
-        courseName: '',
+        topic: '',
+        pageObjective: '',
         targetAudience: '',
-        keywordFocus: '',
+        keyBenefit: ''
     });
     const handleInputChange = (e: ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
         const { name, value } = e.target;
@@ -18,48 +19,66 @@ const CourseLandingPageTitle = () => {
             [name]: value,
         }));
     };
-    const promptMessage = `Generate 10 engaging and descriptive titles for the course landing page. The title should include '${formData.courseName}', and may also incorporate '${formData.targetAudience}', focusing on '${formData.keywordFocus}'. The title should be clear, concise, and appealing to the target audience.    `
+    const promptMessage = `Generate 10 main headline and sub-headline for a landing page with the following details:
+    Topic: ${formData.topic}
+    Page Objective: ${formData.pageObjective}
+    Target Audience: ${formData.targetAudience}
+    Key Benefit: ${formData.keyBenefit}
+    Each main headline should be of 6-8 words and the sub-headline should be of 11-14 words.`
+
     const handleSubmit = (event: React.SyntheticEvent<HTMLFormElement>) => {
         event.preventDefault();
         sendPrompt(dispatch, { input, messages, generatorPrompt, promptMessage });
     };
     return (
         <div className="generator-section">
-            <h2>Course Landing Page Title</h2>
-            <h3>Create compelling titles for course landing pages, tailored to attract the target audience and clearly communicate the course's value.</h3>
+            <h2>Website Headline or Title</h2>
+            <h3>Generate Main Headline and Sub-headline for your website or Landing page.</h3>
             <form onSubmit={handleSubmit}>
                 <div className="form-group">
-                    <label htmlFor="courseName"> Course Name <span className="asterisk">*</span></label>
+                    <label htmlFor="topic"> Topic <span className="asterisk">*</span></label>
                     <input
                         required
                         className="form-control"
-                        name="courseName"
+                        name="topic"
                         onChange={handleInputChange}
-                        value={formData.courseName}
-                        placeholder="Eg. Advanced Python Programming."
+                        value={formData.topic}
+                        placeholder="Eg. Webinar on necessity of dance for kids"
                     />
                 </div>
 
                 <div className="form-group">
-                    <label htmlFor="targetAudience"> Target Audience </label>
+                    <label htmlFor="pageObjective"> Page Objective <span className="asterisk">*</span></label>
                     <input
+                        required
+                        className="form-control"
+                        name="pageObjective"
+                        onChange={handleInputChange}
+                        value={formData.pageObjective}
+                        placeholder="Eg. Webinar registration, Lead generation, Event registration"
+                    />
+                </div>
+
+                <div className="form-group">
+                    <label htmlFor="targetAudience"> Target Audience <span className="asterisk">*</span></label>
+                    <input
+                        required
                         className="form-control"
                         name="targetAudience"
                         onChange={handleInputChange}
                         value={formData.targetAudience}
-                        placeholder="Eg. beginners"
+                        placeholder="Eg. Parents, students"
                     />
                 </div>
 
                 <div className="form-group">
-                    <label htmlFor="keywordFocus"> Keyword to Focus on <span className="asterisk">*</span></label>
+                    <label htmlFor="keyBenefit"> Key Benefit </label>
                     <input
-                        required
                         className="form-control"
-                        name="keywordFocus"
+                        name="keyBenefit"
                         onChange={handleInputChange}
-                        value={formData.keywordFocus}
-                        placeholder="Eg. 1 to 1 classes, Become expert, Affordable fees"
+                        value={formData.keyBenefit}
+                        placeholder="Eg. Learn from Dance expert, become a professional dancer"
                     />
                 </div>
 

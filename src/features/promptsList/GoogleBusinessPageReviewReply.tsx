@@ -4,15 +4,17 @@ import { generatorPrompt } from '../promptListGeneratorSlice/QuestionGeneratorSl
 import Button from '../../components/buttons/Button';
 import { sendPrompt } from '../../utils/sendPrompt';
 
-const SEOForWebsite = () => {
+const HashtagGenerator = () => {
     const { generatorData: { messages, input } } = useSelector((state) => state);
     const dispatch = useDispatch();
+
     const getInitialFormData = () => ({
-        pageTitle: '',
-        targetAudience: '',
-        mustHaveKeyword: '',
-        otherKeywords: ''
+        ratingGiven: '',
+        reviewGiven: '',
+        reviewersDetails: '',
+        courseSkillName: ''
     });
+
     const [formData, setFormData] = useState(getInitialFormData);
 
     const handleInputChange = (e: ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
@@ -22,67 +24,72 @@ const SEOForWebsite = () => {
             [name]: value,
         }));
     };
-    const promptMessage = `Generate an SEO title tag (40-50 characters), meta description (140-150 characters), Page title and one liner that helps SEO for a web page about ${formData.pageTitle} targeted at ${formData.targetAudience}. The primary keyword is ${formData.mustHaveKeyword}, and secondary keywords include ${formData.otherKeywords}. Do not add secondary keywords in Title tag and Page title.`
+    const promptMessage = `What should be ideal reply to google business ${formData.ratingGiven} rating and review as an educational institute? Review was given by ${formData.reviewersDetails}. Course name is ${formData.courseSkillName}. Review was ${formData.reviewGiven}. Keep ideal character count. Reviewer’s name and designation (if provided) should come alongside.`;
 
     const handleSubmit = (event: React.SyntheticEvent<HTMLFormElement>) => {
         event.preventDefault();
         sendPrompt(dispatch, { input, messages, generatorPrompt, promptMessage });
+
     };
     return (
         <div className="generator-section">
-            <h2>SEO for Website</h2>
-            <h3>Generate SEO title tag, meta description, page title & one liner for your website</h3>
+            <h2>Google Business Page Review Reply</h2>
+            <h3>Generate replies for customers’ reviews</h3>
             <form onSubmit={handleSubmit}>
                 <div className="form-group">
-                    <label htmlFor="pageTitle">Page Title <span className="asterisk">*</span></label>
-                    <input
+                    <label htmlFor="ratingGiven"> Rating given (out of 5) <span className="asterisk">*</span></label>
+                    <select
                         required
                         className="form-control"
-                        name="pageTitle"
+                        name="ratingGiven"
                         onChange={handleInputChange}
-                        value={formData.pageTitle}
-                        placeholder="Eg. Yoga classes, Dance classes"
+                        value={formData.ratingGiven}
+                    >
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                        <option value="5">5</option>
+                    </select>
+                </div>
+
+                <div className="form-group">
+                    <label htmlFor="reviewGiven"> Review given </label>
+                    <input
+                        className="form-control"
+                        name="reviewGiven"
+                        onChange={handleInputChange}
+                        value={formData.reviewGiven}
+                        placeholder="Eg. Paste the review given by customer"
                     />
                 </div>
 
                 <div className="form-group">
-                    <label htmlFor="targetAudience">Target Audience <span className="asterisk">*</span></label>
+                    <label htmlFor="reviewersDetails"> Reviewer’s details </label>
                     <input
-                        required
                         className="form-control"
-                        name="targetAudience"
+                        name="reviewersDetails"
                         onChange={handleInputChange}
-                        value={formData.targetAudience}
-                        placeholder="Eg. Housewives, Students"
+                        value={formData.reviewersDetails}
+                        placeholder="Eg. Teena Desai, 8th class student, APS, Delhi"
                     />
                 </div>
 
                 <div className="form-group">
-                    <label htmlFor="mustHaveKeyword">Must have Keyword</label>
+                    <label htmlFor="courseSkillName"> Course/Skill name for which review was given </label>
                     <input
                         className="form-control"
-                        name="mustHaveKeyword"
+                        name="courseSkillName"
                         onChange={handleInputChange}
-                        value={formData.mustHaveKeyword}
-                        placeholder="Eg. yoga classes in mumbai, one-to-one attention"
+                        value={formData.courseSkillName}
+                        placeholder="Dance classes"
                     />
                 </div>
-
-                <div className="form-group">
-                    <label htmlFor="otherKeywords">Other Keywords</label>
-                    <input
-                        className="form-control"
-                        name="otherKeywords"
-                        onChange={handleInputChange}
-                        value={formData.otherKeywords}
-                        placeholder="Eg. near Bandra, Live classes"
-                    />
-                </div>
-
 
                 <Button title='Generate' type="submit" />
+
             </form>
         </div>
     )
 };
-export default SEOForWebsite;
+export default HashtagGenerator;

@@ -81,7 +81,7 @@ const InterdisciplinaryProjectIdeas = () => {
                         onChange={handleInputChange}
                         rows={5}
                         value={formData.additionalDetails}
-                        placeholder="For Example- Any Special Instruction, Learning Environment (e.g., Classroom, Online, Hybrid), Project Type (e.g., Research, Problem-solving, Collaborative), Project Duration (e.g.,1 class period, 1 week, 1 month)"
+                        placeholder={`For Example- Any Special Instruction, \nLearning Environment (e.g., Classroom, Online, Hybrid), \nProject Type (e.g., Research, Problem-solving, Collaborative), \nProject Duration (e.g.,1 class period, 1 week, 1 month)`}
                     ></textarea>
                 </div>
 
