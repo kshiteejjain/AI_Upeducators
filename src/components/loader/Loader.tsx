@@ -9,8 +9,10 @@ type Props = {
 const Loader = ({isSwipeText} : Props) => {
     const [currentIndex, setCurrentIndex] = useState(0);
     const textArray = [
+        "Do not refresh the page",
         "Let me think...",
         "Talking to AI...",
+        "Do not refresh the page",
         "Generating content for you...",
         "Almost there..."
     ];

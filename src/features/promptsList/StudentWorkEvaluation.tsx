@@ -66,12 +66,13 @@ const StudentWorkEvaluation = () => {
                 <div className='form-group'>
                     <label htmlFor='titleAssignment'> Title/Assignment Description
                         <span className="asterisk">*</span></label>
-                    <input
+                    <textarea
                         required
                         className='form-control'
                         name='titleAssignment'
                         onChange={handleInputChange}
                         value={formData.titleAssignment}
+                        rows={5}
                         placeholder="e.g., 'The Importance of Water Conservation', Write a short story about an adventure in a magical forest." />
                 </div>
 

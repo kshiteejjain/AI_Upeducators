@@ -77,7 +77,7 @@ const InterdisciplinaryProjectPlan = () => {
 
 
                 <div className='form-group'>
-                    <label htmlFor='topicLearningObjectives'> Objective Or Project Description <span className="asterisk">*</span></label>
+                    <label htmlFor='topicLearningObjectives'> Learning Objective Or Project Description <span className="asterisk">*</span></label>
                     <textarea
                         required
                         className='form-control'
@@ -97,7 +97,7 @@ const InterdisciplinaryProjectPlan = () => {
                         onChange={handleInputChange}
                         rows={5}
                         value={formData.additionalDetails}
-                        placeholder="For Example- Any Special Instruction, Learning Environment (e.g., Classroom, Online, Hybrid), Project Type (e.g., Research, Problem-solving, Collaborative), Project Duration (e.g.,1 class period, 1 week, 1 month)"
+                        placeholder={`For Example- Any Special Instruction, \nLearning Environment (e.g., Classroom, Online, Hybrid), \nProject Type (e.g., Research, Problem-solving, Collaborative), \nProject Duration (e.g.,1 class period, 1 week, 1 month`}
                     ></textarea>
                 </div>
 

@@ -8,9 +8,10 @@ const CoverLetter = () => {
     const { generatorData: { messages, input } } = useSelector((state) => state);
     const dispatch = useDispatch();
     const getInitialFormData = () => ({
-        jobRoleDescription: '',
-        board: '',
-        experienceYears: ''
+        jobRole: '',
+        schoolName: '',
+        keyHighlights: '',
+        customMessage: ''
 
     });
     const [formData, setFormData] = useState(getInitialFormData);
@@ -22,10 +23,11 @@ const CoverLetter = () => {
             [name]: value,
         }));
     };
-    const promptMessage = `Generate a professional cover letter for a candidate applying for this Job Role or Job Description: ${formData.jobRoleDescription}. 
-    The letter is addressed to ${formData.board} and should highlight these key applicant details: [Key Highlights]. 
-    Also, include this custom message: [Custom Message].
+    const promptMessage = `Generate a professional cover letter for a candidate applying for this Job Role or Job Description: ${formData.jobRole}. 
+    The letter is addressed to ${formData.schoolName} and should highlight these key applicant details: ${formData.keyHighlights}. 
+    Also, include this custom message: ${formData.customMessage}.
     The length of the letter should be at most 125 words.`
+    
     const handleSubmit = (event: React.SyntheticEvent<HTMLFormElement>) => {
         event.preventDefault();
         localStorage.setItem('isGPT4', 'true');
@@ -37,52 +39,51 @@ const CoverLetter = () => {
             <h3>Generate cover letters tailored to the job role.</h3>
             <form onSubmit={handleSubmit}>
                 <div className="form-group">
-                    <label htmlFor="jobRoleDescription">Job Role or Job Description <span className="asterisk">*</span></label>
+                    <label htmlFor="jobRole">Job Role or Job Description<span className="asterisk">*</span></label>
                     <textarea
                         required
                         className="form-control"
-                        name="jobRoleDescription"
+                        name="jobRole"
+                        value={formData.jobRole}
                         onChange={handleInputChange}
-                        value={formData.jobRoleDescription}
-                        placeholder="e.g., Mathematics Teacher, Administrator, Counselor, Science Teacher for Secondary Level, Online Teacher for Coding"
+                        placeholder="e.g., Mathematics Teacher in a CBSE Board School, Administrator, Counselor, Science Teacher for Secondary Level, Online Teacher for Coding"
                     ></textarea>
                 </div>
+
                 <div className="form-group">
-                    <label htmlFor="board">Board <span className="asterisk">*</span></label>
-                    <select
+                    <label htmlFor="schoolName">School or Organization Name<span className="asterisk">*</span></label>
+                    <input
                         required
                         className="form-control"
-                        name="board"
+                        name="schoolName"
+                        value={formData.schoolName}
                         onChange={handleInputChange}
-                        value={formData.board}
-                    >
-                        <option value="">Select the educational board you are applying to.</option>
-                        <option value="CBSE">CBSE</option>
-                        <option value="ICSE">ICSE</option>
-                        <option value="IGCSE">IGCSE</option>
-                        <option value="IB">IB</option>
-                        <option value="State Board">State Board</option>
-                    </select>
+                        placeholder="Enter the name of the school or organization you are applying to."
+                    />
                 </div>
+
                 <div className="form-group">
-                    <label htmlFor="experienceYears">Experience Years <span className="asterisk">*</span></label>
-                    <select
+                    <label htmlFor="keyHighlights">Key Highlights<span className="asterisk">*</span></label>
+                    <input
                         required
                         className="form-control"
-                        name="experienceYears"
+                        name="keyHighlights"
+                        value={formData.keyHighlights}
                         onChange={handleInputChange}
-                        value={formData.experienceYears}
-                    >
-                        <option value="">Select your total years of teaching experience.</option>
-                        <option value="Less than 1 year">Less than 1 year</option>
-                        <option value="1-3 years">1-3 years</option>
-                        <option value="3-5 years">3-5 years</option>
-                        <option value="5-10 years">5-10 years</option>
-                        <option value="More than 10 years">More than 10 years</option>
-                    </select>
+                        placeholder="e.g., Experience, Qualifications, Skills, Personal Traits, Achievements, and Accomplishments"
+                    />
                 </div>
 
-
+                <div className="form-group">
+                    <label htmlFor="customMessage">Custom Message</label>
+                    <textarea
+                        className="form-control"
+                        name="customMessage"
+                        value={formData.customMessage}
+                        onChange={handleInputChange}
+                        placeholder="A brief message or statement you want to be included in the letter."
+                    ></textarea>
+                </div>
                 <Button title='Generate' type="submit" />
             </form>
         </div>

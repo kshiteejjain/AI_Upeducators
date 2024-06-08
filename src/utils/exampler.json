@@ -10,13 +10,15 @@
         }
     },
     {
-        "formName": "AssignmentCreationTool",
+        "formName": "FacebookAdProblemSolution",
         "formFields": {
-            "Assignment Type": "Custom Type",
-            "Difficulty Level": "Easy",
-            "Additional Instructions": "Additional Instructions Custom"
+            "Use Cases": "A Dance trainer wants to create ad for her dance classes for kids to show to Parents.",
+            "Course/Skill Name*": "dance classes for kids",
+            "Audience*": "Parents",
+            "Problems I noticed my audience is facing": "Parents want children to be physically fit",
+            "Output": "1. Problem: Parents struggle to keep kids physically active and engaged. \nSolution: Enroll your child in fun and energizing dance classes! \n\n2. Problem: Parents are looking for a way to improve their child's coordination and creativity. \nSolution: Build coordination and creativity through our dynamic dance classes!"
         }
-    },
+     },
     {
         "formName": "EmailContentNurturing",
         "formFields": {

@@ -59,7 +59,7 @@ const GeneratorAndResult = () => {
                                     </ul>
 
                                 </div>
-                                <div className='overlay'></div>
+                                <div className='overlay' onClick={() => setShowExampler([])}></div>
                             </div>
                         )
                     })}

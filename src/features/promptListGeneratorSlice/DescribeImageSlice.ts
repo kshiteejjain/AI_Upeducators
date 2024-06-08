@@ -8,13 +8,6 @@ const creditValue = Number(import.meta.env.VITE_TEXT_GENERATOR_CREDITS);
 
 // Define the async thunk
 export const generatorPrompt = createAsyncThunk('generator/generatorPrompt', async (prompt, { getState }) => {
-  const promptList = JSON.parse(localStorage.getItem('prompts') || '[]'); // Get existing prompts or initialize as empty array
-  promptList.push({
-    role: 'user',
-    content: prompt,
-    isFollowUpPrompt: false
-  });
-  localStorage.setItem('prompts', JSON.stringify(promptList));
 
   await handleCreditDecrement(creditValue);
   try {
@@ -75,12 +68,12 @@ export const generatorPrompt = createAsyncThunk('generator/generatorPrompt', asy
             content: [
               {
                 type: 'text',
-                text: "What’s in this image?"
+                text: prompt[0].content[0].promptMsg                
               },
               {
                 type: 'image_url',
                 image_url: {
-                  url: 'https://app.upeducators.ai/assets/Upeducator-logo-44928903.png' // Assuming prompt contains the image URL
+                  url: prompt[0].content[0].imageURL              
                 }
               }
             ]
@@ -96,7 +89,7 @@ export const generatorPrompt = createAsyncThunk('generator/generatorPrompt', asy
       }
     );
 
-    console.log(prompt)
+    console.log('prompt', prompt)
     console.log('Model used ', response.data.model);
     return response?.data?.choices[0]?.message?.content?.trim();
   } catch (error) {

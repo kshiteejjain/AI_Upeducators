@@ -83,7 +83,6 @@ export const generatorPrompt = createAsyncThunk('generator/generatorPrompt', asy
         },
       }
     );
-    console.log(prompt)
     console.log('Model used ', response.data.model);
     return response?.data?.choices[0]?.message?.content?.trim();
   } catch (error) {

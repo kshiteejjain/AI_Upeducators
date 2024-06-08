@@ -63,13 +63,13 @@ const AssignmentGenerator = () => {
                 </div>  
 
                 <div className="form-group">
-                    <label htmlFor="topicLearningObjectives">Learning Objective Or Assignment Description <span className="asterisk">*</span></label>
-                    <textarea className="form-control" name="topicLearningObjectives" required onChange={handleInputChange} value={formData.topicLearningObjectives} rows={5} placeholder={`e.g., Analyzing historical events, Creating graphs and charts to analyze data, \nStudents will conduct a hands-on science experiment of their choice`}></textarea>
+                    <label htmlFor="topicLearningObjectives">Learning Objective Or Assignment Description</label>
+                    <textarea className="form-control" name="topicLearningObjectives" onChange={handleInputChange} value={formData.topicLearningObjectives} rows={5} placeholder={`e.g., Analyzing historical events, Creating graphs and charts to analyze data, \nStudents will conduct a hands-on science experiment of their choice`}></textarea>
                 </div>
 
                 <div className="form-group">
-                    <label htmlFor="additionalDetails">Additional Details <span className="asterisk">*</span></label>
-                    <textarea className="form-control" name="additionalDetails" required onChange={handleInputChange} value={formData.additionalDetails} rows={5} placeholder={`For Example- \nLearning Environment (e.g., Classroom, Online, Hybrid), \nAssignment Type (e.g., Essay, Research, Case Study, Problem Solving), \nAssignment Duration (e.g.,1 class period, 1 week, 1 month)`}></textarea>
+                    <label htmlFor="additionalDetails">Additional Details</label>
+                    <textarea className="form-control" name="additionalDetails" onChange={handleInputChange} value={formData.additionalDetails} rows={5} placeholder={`For Example- \nLearning Environment (e.g., Classroom, Online, Hybrid), \nAssignment Type (e.g., Essay, Research, Case Study, Problem Solving), \nAssignment Duration (e.g.,1 class period, 1 week, 1 month)`}></textarea>
                 </div>
                 <Button title='Generate' type="submit" />
             </form>

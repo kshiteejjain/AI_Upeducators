@@ -34,13 +34,14 @@ const MockInterview = () => {
             <h3>Simulate a real interview environment and generate custom mock interview questions.</h3>
             <form onSubmit={handleSubmit}>
                 <div className="form-group">
-                    <label htmlFor="jobRoleDescription">Job Role or Job Description <span className="asterisk">*</span></label>
+                    <label htmlFor="jobRoleDescription">Job Role or Job Description<span className="asterisk">*</span></label>
                     <textarea
                         required
                         className="form-control"
                         name="jobRoleDescription"
                         onChange={handleInputChange}
                         value={formData.jobRoleDescription}
+                        rows={5}
                         placeholder="e.g., Mathematics Teacher in a CBSE Board School, Administrator, Counselor, Science Teacher for Secondary Level, Online Teacher for Coding"
                     ></textarea>
                 </div>

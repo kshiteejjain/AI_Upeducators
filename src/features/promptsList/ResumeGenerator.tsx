@@ -27,19 +27,19 @@ const ResumeGenerator = () => {
     };
     const promptMessage = `Generate a professional and comprehensive resume by considering the following details:
     Tailor the resume to align with the specific requirements as per this Job Role or Job Description: ${formData.jobRole}.
-    Detail the teaching ‘Work Experience’ with minimum 3 point-wise accomplishments under: [Five Teaching Experiences].
-    Incorporate this in ‘Educational Background’ information: ${formData.educationalBackground}.
-    Highlight the candidate's skills under the ‘Skills’ section: [Skills].
-    
+    Detail the teaching ‘Work Experience’ with minimum 3 point-wise accomplishments under: ${formData.teachingExperience}.
+    Incorporate this in ‘Educational Background’ information:${formData.educationalBackground}.
+    Highlight the candidate's skills under the ‘Skills’ section: ${formData.skills}.
     Feature these details under ‘Additional Section’ by giving a suitable sub-category name: ${formData.additionalSections}.
     Include these details as additional accomplishments in the ‘Work Experience’ section: ${formData.keyHighlights}.
     Follow this structure in the output: Contact Details, Professional Summary, Work Experience, Educational Background, Skills, and Additional Section (with relevant sub-category).
     Follow this format for showing the Educational background information: 
-    [Degree Type] in [Area of Study]
-    [Name of Institution], [Location of Institution]
-    [Month Year of Graduation]
+    (Degree Type) in (Area of Study)
+    (Name of Institution), (Location of Institution)
+    (Month Year of Graduation)
     The resume should be well-organized and effectively showcase the educator's strengths, qualifications, and readiness for the potential job, making it compelling for employers.
     It should be tailored according to the job role and job description.`
+
     const handleSubmit = (event: React.SyntheticEvent<HTMLFormElement>) => {
         event.preventDefault();
         localStorage.setItem('isGPT4', 'true');
@@ -51,7 +51,7 @@ const ResumeGenerator = () => {
             <h3>Create a tailored resume highlighting your teaching experience, skills, and educational background.</h3>
             <form onSubmit={handleSubmit}>
                 <div className="form-group">
-                    <label htmlFor="jobRole">Job Role You Will Be Applying For <span className="asterisk">*</span></label>
+                    <label htmlFor="jobRole">Job Role You Will Be Applying For<span className="asterisk">*</span></label>
                     <input
                         required
                         className="form-control"
@@ -63,17 +63,15 @@ const ResumeGenerator = () => {
                 </div>
 
                 <div className="form-group">
-                    <label htmlFor="teachingExperience">Five Teaching Experiences (In Reverse Chronology) <span className="asterisk">*</span></label>
+                    <label htmlFor="teachingExperience">Teaching Experiences (Maximum 5 in Reverse Chronology)<span className="asterisk">*</span></label>
                     <textarea
                         required
                         className="form-control"
                         name="teachingExperience"
                         onChange={handleInputChange}
                         value={formData.teachingExperience}
-                        placeholder="Mention each position's School Name, Designation, and Duration. For Example:
-Don Bosco School (Coordinator 2022-Present)
-Army Public School (English Teacher 2020-2022)
-Delhi Public School (English Teacher 2018-2020)"
+                        rows={5}
+                        placeholder="Mention each position's School Name, Designation, and Duration."
                     ></textarea>
                 </div>
 
@@ -84,21 +82,21 @@ Delhi Public School (English Teacher 2018-2020)"
                         name="educationalBackground"
                         onChange={handleInputChange}
                         value={formData.educationalBackground}
-                        placeholder="List your Degrees, Area of Study, Name of Institution, Location of Institution, Month Year of Graduation. For Example:
-Master of Commerce in Accountancy from the University of Calcutta, Kolkata (June 2018)
-Bachelor of Education from WBUTTEPA, Kolkata (June 2016)
-Bachelor of Commerce in Accountancy from the University of Calcutta, Kolkata (June 2014)"
-                    ></textarea>
+                        rows={5}
+                        placeholder={`List your Degrees, Area of Study, Name of Institution, \nLocation of Institution, Month Year of Graduation`}>
+
+                        </textarea>
                 </div>
 
                 <div className="form-group">
                     <label htmlFor="skills">Skills</label>
-                    <input
+                    <textarea
                         className="form-control"
                         name="skills"
                         onChange={handleInputChange}
                         value={formData.skills}
-                        placeholder="Specific skills that you want to be included (e.g., Curriculum Development, Classroom Management, Technological Proficiency, Instructional Design)"
+                        rows={5}
+                        placeholder={`Specific skills that you want to be included \n(e.g., Curriculum Development, Classroom Management, \nTechnological Proficiency, Instructional Design)`}
                     />
                 </div>
 
@@ -110,10 +108,8 @@ Bachelor of Commerce in Accountancy from the University of Calcutta, Kolkata (Ju
                         name="additionalSections"
                         onChange={handleInputChange}
                         value={formData.additionalSections}
-                        placeholder="Certifications, Projects, Publications, Achievements, Awards or Recognitions, Languages, Interests/ Hobbies, Professional Development Activities. For Example:
-Certifications- Microsoft, and Google Certified Educator,
-Hobby- Reading books,
-Languages known- Hindi, English, Bengali"
+                        rows={5}
+                        placeholder={`Certifications, Projects, Publications, Achievements, \nAwards or Recognitions, Languages, Interests/ Hobbies, \nProfessional Development Activities`}
                     ></textarea>
                 </div>
 
@@ -124,10 +120,8 @@ Languages known- Hindi, English, Bengali"
                         name="keyHighlights"
                         onChange={handleInputChange}
                         value={formData.keyHighlights}
-                        placeholder="List the key highlights that you want to be included in Work Experience. For Example:
-Grades taught are 9 to 12 in Don Bosco School,
-Conducted VR and AR tours for students in Army Public School,
-Coordinated school-wide Literacy Initiatives in Delhi Public School"
+                        rows={5}
+                        placeholder="List the key highlights that you want to be included in Work Experience"
                     ></textarea>
                 </div>
 

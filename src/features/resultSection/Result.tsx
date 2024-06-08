@@ -2,20 +2,23 @@ import { ChangeEvent, useEffect, useMemo, useRef, useState } from 'react'
 import { useNavigate } from 'react-router-dom';
 import { generatorPrompt, resetGeneratedData, } from '../promptListGeneratorSlice/QuestionGeneratorSlice';
 import { useDispatch, useSelector } from 'react-redux';
+import useSpeechToText from 'react-hook-speech-to-text';
 import { sendPrompt } from '../../utils/sendPrompt';
 import DownloadWordFile from './DownloadWordFile';
 import Button from '../../components/buttons/Button';
 import Strings from '../../utils/en';
-import EmptyState from '../../assets/empty-state.gif';
-import CopyClipboard from '../../assets/copyClipboard.svg';
-import More from '../../assets/more.svg';
-import Download from '../../assets/download.svg';
 import Play from '../../assets/play.svg';
 import Stop from '../../assets/stop.svg';
 import mp3Sound from '../../assets/result-audio.mp3';
 import Loader from '../../components/loader/Loader';
 import { getFollowupPrompts, getSuggestedForms } from '../../utils/followupPromptsService';
 import ResponseFeedback from '../responseFeedback/responseFeedback';
+import EmptyState from '../../assets/empty-state.gif';
+import CopyClipboard from '../../assets/copyClipboard.svg';
+import More from '../../assets/more.svg';
+import Download from '../../assets/download.svg';
+import mic from '../../assets/mic.svg'
+import micMuted from '../../assets/micMuted.svg'
 
 import './Result.css';
 import { setCategory } from '../categories/CategoriesSlice';
@@ -243,6 +246,30 @@ const Result = () => {
     navigate('/GeneratorAndResult')
   }
 
+  // speech recognition
+  const { error, isRecording, results, startSpeechToText, stopSpeechToText, } = useSpeechToText({
+    continuous: false,
+    useLegacyResults: false,
+    timeout: 500,
+  });
+
+  useEffect(() => {
+    // Get the transcript of the last result
+    const lastTranscript = results.length > 0 ? results[results.length - 1].transcript : '';
+    setFormData(prevData => ({
+      ...prevData,
+      followUpPromptInput: lastTranscript,
+    }));
+
+    // Check if recording has finished and then submit form data
+    // if (!isRecording && formData.description !== "") {
+    //     handleSubmit(event);
+    // }
+    setTimeout(() => {
+
+    }, 3000)
+  }, [results, isRecording]);
+
   return (
     <div className="result-section" ref={resultRef}>
       {isLoading && <Loader isSwipeText />}
@@ -308,6 +335,12 @@ const Result = () => {
               placeholder="Ask Follow Up Questions..."
             />
           </div>
+          {(localStorage.getItem('curForm') === 'Mock Interview' || localStorage.getItem('curForm') === 'Interview a Famous Personality') && <div className='recording-options'>
+            <div className='recording-options-items'>
+              <button className='record' onClick={isRecording ? stopSpeechToText : startSpeechToText}> {isRecording ? <img src={micMuted} title='Stop Recording' /> : <img src={mic} title='Start Recording' />}  </button>
+            </div>
+          </div> }
+           &nbsp;&nbsp;&nbsp;
           <Button title='Send' type="submit" />
         </form>
       )}
@@ -333,7 +366,7 @@ const Result = () => {
             <ul className='action-list'>
               <li onClick={handleCopyData}><img src={CopyClipboard} alt="Copy Content" /> Copy Content</li>
               <li> <img src={Download} alt="Download Word File" />
-              <DownloadWordFile data={generatedData.map((msg: any) => msg.content).join('\n')} fileName={getFormName?.selectedCategory || 'document.docx'} />
+                <DownloadWordFile data={generatedData.map((msg: any) => msg.content).join('\n')} fileName={getFormName?.selectedCategory || 'document.docx'} />
               </li>
             </ul>
           </div>

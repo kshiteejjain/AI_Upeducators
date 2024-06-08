@@ -30,7 +30,7 @@ const TeamBuildingActivity = () => {
     };
     return (
         <div className="generator-section">
-            <h2>Team-Building Activity</h2>
+            <h2>Team Building Activity</h2>
             <h3>Generate team-building activities tailored for various age ranges and settings.</h3>
             <form onSubmit={handleSubmit}>
                 <div className="form-group">

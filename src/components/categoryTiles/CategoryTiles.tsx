@@ -64,7 +64,7 @@ const CategoryTiles = ({ title, onClick, thumbnailPath = '/src/assets/Upeducator
     return (
         <div className='tiles-group'>
             <div className='tiles' onClick={onClick}>
-                <img src={thumbnailPath} className='list-img' onError={({ currentTarget }) => currentTarget.src = logo} />
+                <img src={thumbnailPath} className='list-img' />
                 <div className='clickSection'>
                     <div className='tiles-icon'>
                         <h1 title={title}>{title}</h1>

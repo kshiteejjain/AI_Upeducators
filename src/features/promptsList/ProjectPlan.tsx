@@ -86,7 +86,7 @@ const ProjectPlan = () => {
                         onChange={handleInputChange}
                         value={formData.learningObjective}
                         rows={5}
-                        placeholder="e.g., Motion and Movement, The Impact of Climate Change, Analysing major Historical Events" />
+                        placeholder={`e.g., Develop critical thinking, Construct a working model to demonstrate the water cycle, \nPerform experiments to observe chemical reactions`} />
                 </div>
 
                 <div className='form-group'>
