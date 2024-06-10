@@ -3,7 +3,7 @@ export const sendPrompt = (dispatch, props) => {
   dispatch(isFollowUpPrompt(props.isFollowUpPrompt))
   const { messages, generatorPrompt, promptMessage } = props;
   if (localStorage.getItem('username') === 'ankushb@upeducators.com') {
-   alert('prompts alert => ' + props.promptMessage)
+   alert('prompts alert => ' + JSON.stringify(props.promptMessage))
   }
   const prompt = [...(messages || []), { role: 'user', content: promptMessage, isVisible: props.isFollowUpPrompt }];
   

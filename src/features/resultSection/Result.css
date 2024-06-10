@@ -113,7 +113,16 @@
     justify-content: space-between;
     padding: 1rem;
     border-top: 1px solid var(--mediumGray);
-    ;
+}
+
+.followUpPrompt form{
+    width: 100%;
+    display: flex;
+    align-items: center;
+}
+
+.followUpPrompt button {
+    margin-left: 1rem;
 }
 
 .followUpPrompt .form-group {
@@ -324,9 +333,5 @@
     .followup-prompts li {
         width: 100%;
         margin: 0 0 1rem 0;
-    }
-
-    .followUpPrompt button {
-        margin-left: 1rem;
     }
 }

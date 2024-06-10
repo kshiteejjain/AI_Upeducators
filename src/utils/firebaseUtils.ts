@@ -17,6 +17,7 @@ type UserDocumentData = {
   password?: string
   timestamp?: any
   account_id?: any;
+  isPaid: boolean;
 };
 export const fetchUserDocument = async (username: string): Promise<QuerySnapshot<DocumentData>> => {
   const collectionRef = collection(firestore, 'RegisteredUsers');
@@ -119,7 +120,8 @@ export const fetchAllForms = async (): Promise<any> => {
       thumbnailPath: doc.data().name,
       likes: doc.data().likes,
       dislikes: doc.data().dislikes,
-      isActive: doc.data().isActive
+      isActive: doc.data().isActive,
+      isPaid: doc.data().isPaid
     }));
     return categoryData;
   } catch (error) {
@@ -138,6 +140,7 @@ export const fetchAllUserData = async (firestore: Firestore): Promise<UserDocume
     const userData = querySnapshot.docs.map((doc) => ({
       access_duration_days: doc.data().access_duration_days || 0,
       credits_limit_perday: doc.data().credits_limit_perday || 0,
+      id: doc.data().id,
       name: doc.data().name,
       email: doc.data().email,
       phone: doc.data().phone,

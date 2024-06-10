@@ -85,14 +85,16 @@
 .tiles-group .usedBy strong{
     margin: 0 2px;
 }
-.bookmark {
+.bottom-right {
     position: absolute;
-    right: 8px;
-    bottom: 8px;
+    right: 10px;
+    bottom: 10px;
+}
+.bookmark {
     filter: grayscale(1);
     padding: 2px;
     border-radius: 2px;
-    z-index: 1;
+    margin-left: 10px;
 }
 .bookmark:hover{
     background-color: var(--gray);
@@ -119,6 +121,24 @@
 .bookmarked{
     filter: grayscale(0);
     opacity: 1;
+}
+.isPaid img{
+    opacity: 0.2;
+}
+.isPaid:hover:after{
+    content: '';
+    content: 'Paid Feature';
+    position: absolute;
+    top: auto;
+    bottom: -25px;
+    background-color: var(--black);
+    font-size: calc(var(--baseFontSize) - 5px);
+    color: var(--white);
+    white-space: nowrap;
+    padding: 3px 7px;
+    font-weight: bold;
+    border-radius: 4px;
+    left: -24px;
 }
 
 @media(max-width:767px){

@@ -106,7 +106,7 @@ const RegisteredUsers = () => {
         try {
             // Flatten user data for better export
             const flattenedUserData = userData.map(user => ({
-                'Name': user.name,
+            'Name': user.name,
             'Email': user.email,
             'Password': user.password,
             'Phone': user.phone,

@@ -17,7 +17,10 @@ const Register = () => {
     currentDateTime.setDate(currentDateTime.getDate() + 365)
     const formattedDateTime = currentDateTime.toISOString().split('T')[0];
     const registerDate = new Date().toISOString().split('T')[0];
+    const id = (Math.random()  + 2).toString(36).substring(2);
+
     const initialFormData = {
+        id: id,
         name: '',
         email: '',
         password: '',

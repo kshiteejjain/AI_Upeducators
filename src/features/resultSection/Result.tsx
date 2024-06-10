@@ -51,6 +51,7 @@ const Result = () => {
   const [getFollowPrompt, setGetFollowPrompt] = useState<string[]>([]);
   const [isSuggestedForms, setIsSuggestedForms] = useState<string[]>([]);
   const [isSpeaking, setIsSpeaking] = useState(false);
+  const [isBubbleLoader, setIsBubbleLoader] = useState(false);
 
   const resultRef = useRef<HTMLDivElement | null>(null)
   const generatedDataOption = isFollowUpPrompt ? generatedData : generatedData?.slice(-2);
@@ -124,8 +125,6 @@ const Result = () => {
                   <div key={lineIndex}>
                     {line.includes(':') ? (
                       renderBoldBeforeColon(line)
-                    ) : line.trim().endsWith('?') || line.trim().endsWith(':') || line.trim().endsWith('!') ? (
-                      <strong>{line}</strong>
                     ) : (
                       // Render each HTTP or HTTPS link as individual clickable links
                       line.split(/\b(https?:\/\/[^\s]+)\b/g).map((segment: any, segmentIndex: number) => {
@@ -153,6 +152,7 @@ const Result = () => {
     );
   });
 
+
   const speakText = () => {
     const speech = new SpeechSynthesisUtterance(generatedData[generatedData.length - 1].content);
     window.speechSynthesis.speak(speech);
@@ -168,7 +168,10 @@ const Result = () => {
   };
 
   useEffect(() => {
-    isSubmitClicked ? null : setIsLoading(loadingStatus === 'loading');
+    if (!isSubmitClicked) {
+      setIsLoading(loadingStatus === 'loading');
+      setIsBubbleLoader(false);
+    }
     generatedData?.length === 1 ? (resultAudio.play(), fetchFollowupPrompts(), fetchSuggestedForms()) : null;
 
   }, [generatedData, generatedImage, resultAudio]);
@@ -217,6 +220,7 @@ const Result = () => {
 
   const handleFollowupPromptSubmit = async (event: React.SyntheticEvent<HTMLFormElement>) => {
     event.preventDefault();
+    setIsBubbleLoader(true);
     setIsSubmitClicked(true);
     sendPrompt(dispatch, { input, messages, generatorPrompt, promptMessage, isFollowUpPrompt: true });
     setFormData({
@@ -247,7 +251,7 @@ const Result = () => {
   }
 
   // speech recognition
-  const { error, isRecording, results, startSpeechToText, stopSpeechToText, } = useSpeechToText({
+  const { isRecording, results, startSpeechToText, stopSpeechToText, } = useSpeechToText({
     continuous: false,
     useLegacyResults: false,
     timeout: 500,
@@ -256,19 +260,30 @@ const Result = () => {
   useEffect(() => {
     // Get the transcript of the last result
     const lastTranscript = results.length > 0 ? results[results.length - 1].transcript : '';
-    setFormData(prevData => ({
-      ...prevData,
-      followUpPromptInput: lastTranscript,
-    }));
 
-    // Check if recording has finished and then submit form data
-    // if (!isRecording && formData.description !== "") {
-    //     handleSubmit(event);
-    // }
-    setTimeout(() => {
+    if (!isRecording && lastTranscript) {
+      setFormData(() => ({
+        followUpPromptInput: lastTranscript,
+      }));
 
-    }, 3000)
+      // Optionally handle form submission here if needed
+      // if (formData.description !== "") {
+      //   handleSubmit(event);
+      // }
+    }
   }, [results, isRecording]);
+
+  const handleRecordClick = () => {
+    if (isRecording) {
+      stopSpeechToText();
+    } else {
+      setFormData(prevData => ({
+        ...prevData,
+        followUpPromptInput: '',  // Reset followUpPromptInput when starting new recording
+      }));
+      startSpeechToText();
+    }
+  };
 
   return (
     <div className="result-section" ref={resultRef}>
@@ -289,27 +304,25 @@ const Result = () => {
           {generatedImage && <Button title='Download Image' onClick={downloadImage} />}
         </div>
 
-
         {!generatedData?.length && !generatedImage && (
           <div className='noDataFoundImage'>
             <a href='https://www.upeducators.com/' target='_blank'> <img src={EmptyState} alt="Empty State" /> </a>
           </div>
         )}
-
       </div>
 
-      {generatedData && getFollowPrompt.length !== 0 && !generatedImage && (
+      {generatedData && getFollowPrompt.length !== 0 && !generatedImage && loadingStatus === 'succeeded' && (
         <ResponseFeedback />
       )}
-
-      {/* <div className="chat-bubble">
+      {(loadingStatus === 'loading' && isBubbleLoader) && <div className="chat-bubble">
         <div className="typing">
           <div className="dot"></div>
           <div className="dot"></div>
           <div className="dot"></div>
         </div>
-      </div> */}
-      {generatedData && getFollowPrompt.length !== 0 && !generatedImage && (
+      </div>}
+
+      {generatedData && getFollowPrompt.length !== 0 && !generatedImage && loadingStatus === 'succeeded' && (
         <div className="followup-prompts">
           <h2>{Strings.result.followupTitle}</h2>
           <ul>
@@ -323,26 +336,28 @@ const Result = () => {
       )}
 
       {generatedData?.length >= 1 && !generatedImage && (
-        <form onSubmit={handleFollowupPromptSubmit} className='followUpPrompt'>
-          <div className='form-group'>
-            <input
-              name="followUpPromptInput"
-              required
-              className='form-control'
-              onChange={handleInputChange}
-              value={formData.followUpPromptInput}
-              autoComplete="off"
-              placeholder="Ask Follow Up Questions..."
-            />
-          </div>
-          {(localStorage.getItem('curForm') === 'Mock Interview' || localStorage.getItem('curForm') === 'Interview a Famous Personality') && <div className='recording-options'>
-            <div className='recording-options-items'>
-              <button className='record' onClick={isRecording ? stopSpeechToText : startSpeechToText}> {isRecording ? <img src={micMuted} title='Stop Recording' /> : <img src={mic} title='Start Recording' />}  </button>
+        <div className='followUpPrompt'>
+          <form onSubmit={handleFollowupPromptSubmit}>
+            <div className='form-group'>
+              <input
+                name="followUpPromptInput"
+                required
+                className='form-control'
+                onChange={handleInputChange}
+                value={formData.followUpPromptInput}
+                autoComplete="off"
+                placeholder="Ask Follow Up Questions..."
+              />
             </div>
-          </div> }
-           &nbsp;&nbsp;&nbsp;
-          <Button title='Send' type="submit" />
-        </form>
+            <Button title='Send' type="submit" />
+          </form>
+          {(localStorage.getItem('curForm') === 'Mock Interview' || localStorage.getItem('curForm') === 'Interview a Famous Personality') &&
+            <div className='recording-options'>
+              <div className='recording-options-items'>
+                <button className='record' onClick={handleRecordClick}> {isRecording ? <img src={Stop} title='Stop Recording' /> : <img src={mic} title='Start Recording' />}  </button>
+              </div>
+            </div>}
+        </div>
       )}
       {generatedData && isSuggestedForms[0] !== undefined && !generatedImage && (
         <div className="related-forms">

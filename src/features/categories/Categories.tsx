@@ -24,7 +24,8 @@ type Props = {
     categoryName?: string;
     onClick?: () => void;
     isBookmarked: boolean | 0;
-    isActive: boolean
+    isActive: boolean;
+    isPaid: boolean
 };
 const Categories = () => {
     const [categories, setCategories] = useState<Props[]>([]);
@@ -73,7 +74,8 @@ const Categories = () => {
                     redirect: category?.redirect,
                     isBookmarked: category?.isBookmarked,
                     usageCount: category?.usageCount,
-                    isActive: category?.isActive
+                    isActive: category?.isActive,
+                    isPaid: category?.isPaid
                 }));
                 setCategories(formattedCategories);
             } catch (error) {
@@ -240,6 +242,7 @@ const Categories = () => {
                                         description={item && item.description}
                                         thumbnailPath={item && `/assets/${item?.name?.replace(/\s+/g, '-')}.svg`}
                                         bookmarkedIds={bookmarkedIds}
+                                        isPaid={item && item.isPaid}
                                     />
                                 ))}
                         </div>

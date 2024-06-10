@@ -2,9 +2,8 @@ import { useEffect, useState } from 'react';
 import { firestore } from '../../utils/firebase';
 import { fetchAllForms } from '../../utils/firebaseUtils';
 import Strings from '../../utils/en';
-import graph from '../../assets/graph.svg'
+import lock from '../../assets/lock.svg'
 import bookmarked from '../../assets/star.svg'
-import logo from '../../assets/empty-state.gif';
 
 import './CategoryTiles.css';
 
@@ -23,8 +22,9 @@ type Props = {
     onBookmarkClick?: () => void;
     thumbnailPath?: string;
     bookmarkedIds: number[];
+    isPaid: boolean;
 }
-const CategoryTiles = ({ title, onClick, thumbnailPath = '/src/assets/Upeducator-logo.png', description, id = 0 }: Props) => {
+const CategoryTiles = ({ title, onClick, thumbnailPath = '/src/assets/Upeducator-logo.png', description, id = 0, isPaid }: Props) => {
     const [formCount, setFormCount] = useState<Props[]>([]);
     const [currentBookmarkedIds, setCurrentBookmarkedIds] = useState<number[]>([]);
     const truncatedStory = description ?
@@ -63,7 +63,7 @@ const CategoryTiles = ({ title, onClick, thumbnailPath = '/src/assets/Upeducator
 
     return (
         <div className='tiles-group'>
-            <div className='tiles' onClick={onClick}>
+            <div className='tiles' onClick={isPaid === true ? undefined : onClick}>
                 <img src={thumbnailPath} className='list-img' />
                 <div className='clickSection'>
                     <div className='tiles-icon'>
@@ -71,7 +71,7 @@ const CategoryTiles = ({ title, onClick, thumbnailPath = '/src/assets/Upeducator
                     </div>
                     <p title={truncatedStory}>{truncatedStory}</p>
                     <p className='usedBy'>
-                        <img src={graph} className='graph' />
+                        {/* <img src={graph} className='graph' /> */}
                         {Strings.categories.usedBy}
                         <strong>
                             {formCount
@@ -80,16 +80,17 @@ const CategoryTiles = ({ title, onClick, thumbnailPath = '/src/assets/Upeducator
                                     <span key={index}>
                                         {item && item.usageCountBase && item.usageCount !== 0 ? (item?.usageCountBase + item?.usageCount) : item.usageCountBase}
                                     </span>
-
                                 ))}
-
                             &nbsp;
                             {Strings.categories.people}
                         </strong>
                     </p>
                 </div>
             </div>
-            <span onClick={() => toggleBookmark(id)} className={currentBookmarkedIds.includes(id) ? 'bookmark bookmarked' : 'bookmark'}> <img src={bookmarked} alt="Bookmarked" className="bookmark-icon" /> </span>
+            <div className='bottom-right'>
+                {isPaid && <span className='isPaid'> <img src={lock} alt="Bookmarked" className="bookmark-icon" /></span>}
+                <span onClick={() => toggleBookmark(id)} className={currentBookmarkedIds.includes(id) ? 'bookmark bookmarked' : 'bookmark'}> <img src={bookmarked} alt="Bookmarked" className="bookmark-icon" /> </span>
+            </div>
         </div>
     )
 };
