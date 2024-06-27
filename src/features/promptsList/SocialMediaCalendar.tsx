@@ -10,7 +10,7 @@ const SocialMediaCalendarGenerator = () => {
     const getInitialFormData = () => ({
         themesTopics: '',
         audience: '',
-        platform: ''
+        platform: 'Facebook'
     });
     const [formData, setFormData] = useState(getInitialFormData);
     const handleInputChange = (e: ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {

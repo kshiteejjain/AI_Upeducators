@@ -18,6 +18,7 @@ type UserDocumentData = {
   timestamp?: any
   account_id?: any;
   isPaid: boolean;
+  batch: string;
 };
 export const fetchUserDocument = async (username: string): Promise<QuerySnapshot<DocumentData>> => {
   const collectionRef = collection(firestore, 'RegisteredUsers');
@@ -143,6 +144,7 @@ export const fetchAllUserData = async (firestore: Firestore): Promise<UserDocume
       id: doc.data().id,
       name: doc.data().name,
       email: doc.data().email,
+      batch: doc.data().batch,
       phone: doc.data().phone,
       plan: doc.data().plan,
       isActiveUser: doc.data().isActiveUser,

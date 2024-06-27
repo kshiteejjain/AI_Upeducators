@@ -71,7 +71,7 @@ const BulkUsersUpload: React.FC<BulkUsersUploadProps> = (): ReactElement => {
                 dataRows.map(async (row) => {
                     const document = { ...initialFormData }; // Merge with initialFormData
                     let creditsToAdd = 0;
-
+            
                     row.forEach((value, index) => {
                         const headerLowercase = headers[index].toLowerCase();
                         if (headerLowercase === 'plan') {
@@ -86,61 +86,75 @@ const BulkUsersUpload: React.FC<BulkUsersUploadProps> = (): ReactElement => {
                                 document[headerLowercase] = isNaN(Number(value)) ? value : Number(value);
                         }
                     });
-
+            
                     const email = document['email'];
+                    console.log('email', email)
                     if (!email) throw new Error('Email is required.');
-
-                    // Check if email already exists in RegisteredUsers
-                    const docRef = doc(collectionRef, email);
-                    const docSnapshot = await getDoc(docRef);
-                    let existingRemainingCredits = 0;
-
-                    if (docSnapshot.exists()) {
-                        const existingData = docSnapshot.data();
-                        existingRemainingCredits = existingData.remain_credits || 0;
-
-                        // If the document exists, do not change the password
-                        delete document.password;
-                        await emailjs.send(import.meta.env.VITE_EMAILJS_SERVICE_ID, import.meta.env.VITE_EMAILJS_TEMPLATE_WELCOME_SUPER_EXISTING_USER, {
-                            registeredEmail: document.email,
-                            registeredUsername: document.name,
-                            registeredPlan: document.plan,
-                            credits: 1000,
-                            registeredDate: new Date().toISOString().split('T')[0].split('-').reverse().join('-'),
-                            expiryDate:document.expiry.split('-').reverse().join('-'),
-                            to_email: document.email,
-                        }, import.meta.env.VITE_EMAILJS_API_KEY);
-                    } else {
-                        // Generate random password for new users
-                        const password = generateRandomPassword();
-                        document.password = password;
-                        await emailjs.send(import.meta.env.VITE_EMAILJS_SERVICE_ID, import.meta.env.VITE_EMAILJS_TEMPLATE_WELCOME_REGISTER, {
-                            registeredEmail: document.email,
-                            registeredUsername: document.name,
-                            registeredPlan: document.plan,
-                            credits: 1000,
-                            registeredDate: new Date().toISOString().split('T')[0].split('-').reverse().join('-'),
-                            expiryDate:document.expiry.split('-').reverse().join('-'),
-                            to_email: document.email,
-                        }, import.meta.env.VITE_EMAILJS_API_KEY);
+            
+                    try {
+                        // Check if email already exists in RegisteredUsers
+                        const docRef = doc(collectionRef, email);
+                        const docSnapshot = await getDoc(docRef);
+                        let existingRemainingCredits = 0;
+                        let isExistingUser = false;
+            
+                        if (docSnapshot.exists()) {
+                            const existingData = docSnapshot.data();
+                            existingRemainingCredits = existingData.remain_credits || 0;
+            
+                            // If the document exists, do not change the password
+                            delete document.password;
+                            isExistingUser = true;
+                        } else {
+                            // Generate random password for new users
+                            const password = generateRandomPassword();
+                            document.password = password;
+                        }
+            
+                        // Update credits
+                        document.total_credits = existingRemainingCredits + creditsToAdd;
+                        document.remain_credits = existingRemainingCredits + creditsToAdd;
+            
+                        // Ensure plan is set to "Super"
+                        if (document.plan.toLowerCase() === 'super') {
+                            document.plan = 'Super';
+                        }
+            
+                        // Add the document to Firestore
+                        await setDoc(docRef, document, { merge: true });
+            
+                        // Send email after Firestore entry is successful
+                        if (isExistingUser) {
+                            await emailjs.send(import.meta.env.VITE_EMAILJS_SERVICE_ID, import.meta.env.VITE_EMAILJS_TEMPLATE_WELCOME_SUPER_EXISTING_USER, {
+                                registeredEmail: document.email,
+                                registeredUsername: document.name,
+                                registeredPlan: document.plan,
+                                credits: 1000,
+                                registeredDate: new Date().toISOString().split('T')[0].split('-').reverse().join('-'),
+                                expiryDate: document.expiry.split('-').reverse().join('-'),
+                                to_email: document.email,
+                            }, import.meta.env.VITE_EMAILJS_API_KEY);
+                        } else {
+                            await emailjs.send(import.meta.env.VITE_EMAILJS_SERVICE_ID, import.meta.env.VITE_EMAILJS_TEMPLATE_WELCOME_REGISTER, {
+                                registeredEmail: document.email,
+                                registeredUsername: document.name,
+                                registeredPlan: document.plan,
+                                credits: 1000,
+                                registeredDate: new Date().toISOString().split('T')[0].split('-').reverse().join('-'),
+                                expiryDate: document.expiry.split('-').reverse().join('-'),
+                                to_email: document.email,
+                            }, import.meta.env.VITE_EMAILJS_API_KEY);
+                        }
+                    } catch (error) {
+                        console.error('Error uploading to Firestore:', error);
+                        // Do not send email if there is an error with Firestore
                     }
-
-                    // If the document doesn't exist, create a new one
-                    document.total_credits = existingRemainingCredits + creditsToAdd;
-                    document.remain_credits = existingRemainingCredits + creditsToAdd;
-
-                    // Ensure plan is set to "Super"
-                    if (document.plan.toLowerCase() === 'super') {
-                        document.plan = 'Super';
-                    }
-
-                    // Add the document to Firestore
-                    await setDoc(docRef, document, { merge: true });
                 })
-            );
+            );            
             alert('Data uploaded to Firestore successfully!');
         } catch (error) {
-            alert(`Error uploading data to Firestore: ${error}`);
+            alert(`Error uploading data to Firestore: ${JSON.stringify(error)}`);
+            console.log(`Error uploading data to Firestore: ${JSON.stringify(error)}`)
         }
     };
 

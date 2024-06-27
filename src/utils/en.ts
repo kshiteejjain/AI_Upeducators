@@ -25,6 +25,9 @@ const Strings = {
     CreatePassword: {
         title: 'Create Password?',
     },
+    AddSuperUser: {
+        title: 'Add User',
+    },
     header: {
         signOut: 'Sign Out',
         metaTitle: 'upEducators- Best Online Certifications & Courses for Teachers | Google & Microsoft Certified',

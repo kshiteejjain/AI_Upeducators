@@ -346,7 +346,7 @@ const Result = () => {
                 onChange={handleInputChange}
                 value={formData.followUpPromptInput}
                 autoComplete="off"
-                placeholder="Ask Follow Up Questions..."
+                placeholder={localStorage.getItem('curForm') === 'Interview a Famous Personality' ? 'Ask your Next question' : localStorage.getItem('curForm') === 'Mock Interview' ? 'Type or Record your response' : 'Ask Follow Up Questions...'}
               />
             </div>
             <Button title='Send' type="submit" />

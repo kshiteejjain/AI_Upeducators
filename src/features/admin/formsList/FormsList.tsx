@@ -21,6 +21,7 @@ type UserDocumentData = {
     timeStamp?: string
     likes?: number,
     dislikes?: number,
+    suggestedForm: string
 };
 
 const FormsList = () => {
@@ -118,6 +119,7 @@ const FormsList = () => {
                             <th>Bookmarked</th>
                             <th>Likes</th>
                             <th>Dislikes</th>
+                            <th>Suggested Forms</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -159,6 +161,7 @@ const FormsList = () => {
                                     <td>{item?.isBookmarked ? 'Yes' : 'No'}</td>
                                     <td>{item?.likes}</td>
                                     <td className='text-red'>{item?.dislikes}</td>
+                                    <td>{item.suggestedForm}</td>
                                 </tr>
                             ))}
                     </tbody>

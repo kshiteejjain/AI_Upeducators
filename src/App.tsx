@@ -4,6 +4,7 @@ import GeneratorAndResult from './features/generatorAndResult/GeneratorAndResult
 import Login from './features/login/Login';
 import Categories from './features/categories/Categories';
 import BulkUpload from './features/bulkUpload/Index';
+import AddSuperUser from './features/AddUser/AddSuperUser';
 import ContactUs from './features/contactUs/ContactUs';
 import FreeTrial from './features/freeTrial/FreeTrial';
 import CreatePassword from './features/createPassword/CreatePassword';
@@ -47,6 +48,7 @@ function MainApp({ isLoggedIn }: Props) {
           <Route path="/Categories" element={<Categories />} />
           <Route path="/GeneratorAndResult" element={<GeneratorAndResult />} />
           <Route path="/BulkUpload" element={<BulkUpload />} />
+          <Route path="/AddSuperUser" element={<AddSuperUser />} />
           <Route path="/ContactUs" element={<ContactUs />} />
           <Route path="/Dashboard" element={<Dashboard />} />
           <Route path="/Profile" element={<Profile />} />

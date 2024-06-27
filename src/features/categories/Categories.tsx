@@ -7,6 +7,7 @@ import CategoryTiles from '../../components/categoryTiles/CategoryTiles';
 import Header from '../../components/header/Header';
 import { fetchAllForms } from '../../utils/firebaseUtils';
 import CategoriesFilter from '../categoriesFilter/CategoriesFilter';
+import CBSEJSON from '../../utils/boardWiseForms.json'
 import Strings from '../../utils/en';
 import BannerCarousel from '../../components/bannerCarousel/bannerCarousel';
 import tick from "../../assets/tick.svg"
@@ -90,6 +91,7 @@ const Categories = () => {
         dispatch(resetGeneratedData())
     }, [filterCategory]);
 
+
     const handleTile = (redirect?: string, name?: string) => {
         localStorage.setItem('curForm', name)
         if (redirect) {
@@ -120,20 +122,50 @@ const Categories = () => {
     };
 
     const handleBoardForms = () => {
-        setIsBoardForms(prev => !prev)
+        setIsBoardForms(prev => !prev);
+        setFilterCategory(prev => (prev === 'CBSE Board' ? 'All' : 'CBSE Board'))
     }
     const handleInputChange = (event: any) => {
         const { name, value } = event.target;
-        setFormData(prevFormData => {
+        setFormData((prevFormData) => {
             const updatedFormData = {
                 ...prevFormData,
-                [name]: value
+                [name]: value,
             };
-            localStorage.setItem('boardFormData', JSON.stringify(updatedFormData));
-
+            if (name === 'chapter') {
+                const selectedGrade = CBSEJSON?.CBSEForms?.Grades.find(item => item.grade === formData.gradeLevel);
+                if (selectedGrade && selectedGrade.Subjects[formData.subject]) {
+                    const selectedChapter = selectedGrade.Subjects[formData.subject].Chapters.find((chapter: string) => chapter?.name === value);
+                    if (selectedChapter) {
+                        updatedFormData.chapterDescription = selectedChapter.description;
+                        localStorage.setItem('upEdu_prefix', JSON.stringify(updatedFormData));
+                    }
+                }
+            } else {
+                localStorage.setItem('upEdu_prefix', JSON.stringify(updatedFormData));
+            }
+    
             return updatedFormData;
         });
     };
+    
+
+    const getSubjectsForGrade = (grade: string) => {
+        const selectedGrade = CBSEJSON?.CBSEForms?.Grades.find(item => item.grade === grade);
+        return selectedGrade ? Object.keys(selectedGrade.Subjects) : [];
+    };
+
+    const getChaptersForSubject = (grade: string, subject: string) => {
+        const selectedGrade = CBSEJSON?.CBSEForms?.Grades.find(item => item.grade === grade);
+        if (selectedGrade && selectedGrade.Subjects[subject]) {
+            return selectedGrade.Subjects[subject].Chapters.map(chapter => ({
+                name: chapter.name,
+                description: chapter.description
+            }));
+        }
+        return [];
+    };
+
 
     return (
         <>
@@ -171,9 +203,12 @@ const Categories = () => {
                                         onChange={handleInputChange}
                                         value={formData.gradeLevel}
                                         placeholder="Select the grade level for which the questions are being created">
-                                        <option value="">Select the grade</option>
-                                        <option value="6th-Grade">6th Grade</option>
-                                        <option value="7th-Grade">7th Grade</option>
+                                        <option>Please Select Grade</option>
+                                        {CBSEJSON.CBSEForms.Grades.map((item, index) => (
+                                            <option key={index} value={item.grade}>
+                                                {item.grade}
+                                            </option>
+                                        ))}
                                     </select>
                                 </div>
 
@@ -187,9 +222,12 @@ const Categories = () => {
                                         onChange={handleInputChange}
                                         value={formData.subject}
                                         placeholder="Select Subject">
-                                        <option value="">Select the subject</option>
-                                        <option value="Science">Science</option>
-                                        <option value="Mathematics">Mathematics</option>
+                                        <option>Please Select Subject</option>
+                                        {formData.gradeLevel && getSubjectsForGrade(formData.gradeLevel).map((subject, index) => (
+                                            <option key={index} value={subject}>
+                                                {subject}
+                                            </option>
+                                        ))}
                                     </select>
                                 </div>
 
@@ -203,12 +241,13 @@ const Categories = () => {
                                         onChange={handleInputChange}
                                         value={formData.chapter}
                                         placeholder="Select the relevant chapter name">
-                                        <option value="">Select the chapter</option>
-                                        <option value="Chapter 1">Chapter 1</option>
-                                        <option value="Chapter 2">Chapter 2</option>
-                                        <option value="Chapter 3">Chapter 3</option>
-                                        <option value="Chapter 4">Chapter 4</option>
-                                        <option value="Chapter 5">Chapter 5</option>
+                                        <option>Please Select Chapter</option>
+                                        {formData.gradeLevel && formData.subject &&
+                                            getChaptersForSubject(formData.gradeLevel, formData.subject).map((chapter: string, index: number) => (
+                                                <option key={index} value={chapter.name}>
+                                                    {chapter.name}
+                                                </option>
+                                            ))}
                                     </select>
                                 </div>
                             </form>

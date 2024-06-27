@@ -23,7 +23,7 @@ const EmailContentGenerator = () => {
             [name]: value,
         }));
     };
-    const promptMessage = `Generate a detailed description of the benefits of the course named ${formData.courseName} targeted towards ${formData.targetAudience} The course, which lasts for ${formData.courseDuration} and is offered in a ${formData.courseFormat} format, covers key topics such as ${formData.keyTopics}. This description should highlight how the course will be advantageous for the learners and what unique opportunities it offers.            `
+    const promptMessage = `Generate a detailed description of the benefits of the course named ${formData.courseName} targeted towards ${formData.targetAudience}. The course, which lasts for ${formData.courseDuration} and is offered in a ${formData.courseFormat} format, covers key topics such as ${formData.keyTopics}. This description should highlight how the course will be advantageous for the learners and what unique opportunities it offers. Description should be in 5 short points with a respective heading.`
     const handleSubmit = (event: React.SyntheticEvent<HTMLFormElement>) => {
         event.preventDefault();
         sendPrompt(dispatch, { input, messages, generatorPrompt, promptMessage });

@@ -3,101 +3,56 @@ import { useDispatch, useSelector } from 'react-redux';
 import { generatorPrompt } from '../promptListGeneratorSlice/QuestionGeneratorSlice';
 import Button from '../../components/buttons/Button';
 import { sendPrompt } from '../../utils/sendPrompt';
-import boardWiseData from '../../utils/boardWiseForms.json';
 
 const CBSECustomQuestions = () => {
     const { generatorData: { messages, input } } = useSelector((state) => state);
     const dispatch = useDispatch();
 
-    const getInitialFormData = () => {
-        const storedData = localStorage.getItem('boardFormData');
-        const defaultData = {
-            gradeLevel: '',
-            subject: '',
-            questionType: '',
-            chapter: '',
-            difficultyLevel: [] as string[],
-            contextPreference: '',
-            additionalDetails: '',
-        };
-        return storedData ? JSON.parse(storedData) : defaultData;
-    };
-
-    const [formData, setFormData] = useState(getInitialFormData);
-    const [boardWiseSelectedData, setBoardWiseSelectedData] = useState('');
-    const [promptMessageView, setPromptMessageView] = useState("")
-    
-    const fetchBoardData = () => {
-        const chapterData = boardWiseData?.CBSEForms?.[formData.gradeLevel]?.[formData.subject]?.[formData.chapter];
-    
-        if (chapterData) {
-            // If chapterData exists, check its type and handle accordingly
-            setBoardWiseSelectedData(typeof chapterData === 'string' ? chapterData : (chapterData.someProperty || 'Default info if property is missing'));
-            console.log("Fetched Board Data:", chapterData);
-        } else {
-            // If chapterData does not exist, return a default string
-            setBoardWiseSelectedData('No data found for the selected criteria.');
-        }
-    };
-    
-    useEffect(() => {
-        if (formData.gradeLevel && formData.subject && formData.chapter) {
-            fetchBoardData();
-        }
-    }, [formData.gradeLevel, formData.subject, formData.chapter]); 
+    // Fetching data from localStorage
+    const initialFormData = JSON.parse(localStorage.getItem('upEdu_prefix') || '{}');
+    const [formData, setFormData] = useState({
+        gradeLevel: initialFormData.gradeLevel || '',
+        subject: initialFormData.subject || '',
+        questionType: '',
+        chapter: initialFormData.chapter || '',
+        chapterDescription: initialFormData.chapterDescription || '',
+        difficultyLevel: [] as string[],
+        contextPreference: '',
+        additionalDetails: '',
+    });
 
     const handleInputChange = (e: ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
         const { name, value, type } = e.target;
-    
+
         if (type === 'checkbox') {
             const checkbox = e.target as HTMLInputElement;
             if (checkbox.checked) {
-                setFormData((prevData) => {
-                    const updatedData = {
-                        ...prevData,
-                        difficultyLevel: [...prevData.difficultyLevel, value]
-                    };
-                    localStorage.setItem('boardFormData', JSON.stringify(updatedData));
-                    return updatedData;
-                });
+                setFormData((prevData) => ({
+                    ...prevData,
+                    difficultyLevel: [...prevData.difficultyLevel, value]
+                }));
             } else {
-                setFormData((prevData) => {
-                    const updatedData = {
-                        ...prevData,
-                        difficultyLevel: prevData.difficultyLevel.filter((item) => item !== value)
-                    };
-                    localStorage.setItem('boardFormData', JSON.stringify(updatedData));
-                    return updatedData;
-                });
+                setFormData((prevData) => ({
+                    ...prevData,
+                    difficultyLevel: prevData.difficultyLevel.filter((item) => item !== value)
+                }));
             }
         } else {
-            setFormData((prevData) => {
-                const updatedData = {
-                    ...prevData,
-                    [name]: value,
-                };
-                localStorage.setItem('boardFormData', JSON.stringify(updatedData));
-                return updatedData;
-            });
+            setFormData((prevData) => ({
+                ...prevData,
+                [name]: value,
+            }));
         }
     };
-    
 
-
-    const promptMessage = `Generate 10 ${formData.questionType} questions for ${formData.gradeLevel} on ${formData.chapter}.
-    Refer to this Chapter outline for generating the output:
-    
-    ${boardWiseSelectedData}
-    
-    The questions should be framed within the context of ${formData.contextPreference} at a ${formData.difficultyLevel} difficulty level. 
-    Also, consider these additional details: ${formData.additionalDetails}.
-    `;
+    const promptMessage = `Generate 10 ${formData.questionType} questions for ${formData.gradeLevel} on ${formData.chapter}. It should be framed within the context of 
+    ${formData.contextPreference} at a ${formData.difficultyLevel} difficulty level. Also, consider these additional details: ${formData.additionalDetails}
+    The detailed outline of the unit is: ${formData.chapterDescription}`;
 
     const handleSubmit = (event: React.SyntheticEvent<HTMLFormElement>) => {
         event.preventDefault(); 
         sendPrompt(dispatch, { input, messages, generatorPrompt, promptMessage });
-        setPromptMessageView(promptMessage);
-        localStorage.removeItem('boardFormData');
+        localStorage.removeItem('upEdu_prefix'); // Remove stored data after submitting
     };
 
     return (
@@ -114,10 +69,9 @@ const CBSECustomQuestions = () => {
                         name="gradeLevel"
                         onChange={handleInputChange}
                         value={formData.gradeLevel}
+                        disabled
                         placeholder="Select the grade level for which the questions are being created">
-                        <option value="">Select the grade</option>
-                        <option value="6th-Grade">6th Grade</option>
-                        <option value="7th-Grade">7th Grade</option>
+                        <option value="">{formData?.gradeLevel}</option>
                     </select>
                 </div>
 
@@ -130,10 +84,23 @@ const CBSECustomQuestions = () => {
                         name="subject"
                         onChange={handleInputChange}
                         value={formData.subject}
-                        placeholder="Select Subject">
-                        <option value="">Select the subject</option>
-                        <option value="Science">Science</option>
-                        <option value="Mathematics">Mathematics</option>
+                        disabled
+                        >
+                        <option value="">{formData?.subject}</option>
+                    </select>
+                </div>
+                <div className='form-group'>
+                    <label htmlFor='chapter'>Chapter
+                        <span className="asterisk">*</span></label>
+                    <select
+                        required
+                        className='form-control'
+                        name="chapter"
+                        onChange={handleInputChange}
+                        value={formData.chapter}
+                        disabled
+                        >
+                        <option value="">{formData?.chapter}</option>
                     </select>
                 </div>
 
@@ -145,25 +112,6 @@ const CBSECustomQuestions = () => {
                         onChange={handleInputChange}
                         value={formData.questionType}
                         placeholder="Multiple Choice, True/False, Short Answer, Essay, Fill in the Blanks, Match the Following" />
-                </div>
-
-                <div className='form-group'>
-                    <label htmlFor='chapter'>Chapter
-                        <span className="asterisk">*</span></label>
-                    <select
-                        required
-                        className='form-control'
-                        name="chapter"
-                        onChange={handleInputChange}
-                        value={formData.chapter}
-                        placeholder="Select the relevant chapter name">
-                        <option value="">Select the chapter</option>
-                        <option value="Chapter 1">Chapter 1</option>
-                        <option value="Chapter 2">Chapter 2</option>
-                        <option value="Chapter 3">Chapter 3</option>
-                        <option value="Chapter 4">Chapter 4</option>
-                        <option value="Chapter 5">Chapter 5</option>
-                    </select>
                 </div>
 
                 <div className='form-group'>
@@ -186,7 +134,7 @@ const CBSECustomQuestions = () => {
 
                 <div className='form-group'>
                     <label htmlFor='contextPreference'>Context Preference</label>
-                        <input
+                    <input
                         className='form-control'
                         name="contextPreference"
                         onChange={handleInputChange}
@@ -196,7 +144,7 @@ const CBSECustomQuestions = () => {
 
                 <div className='form-group'>
                     <label htmlFor='additionalDetails'>Additional Details</label>
-                        <input
+                    <input
                         className='form-control'
                         name="additionalDetails"
                         onChange={handleInputChange}
@@ -207,8 +155,9 @@ const CBSECustomQuestions = () => {
                 <Button title='Generate' type="submit" />
 
             </form>
-            <p><strong>Prompt:</strong> {promptMessageView}</p>
+            <p><strong>Prompt:</strong> {promptMessage}</p>
         </div>
     )
 };
+
 export default CBSECustomQuestions;

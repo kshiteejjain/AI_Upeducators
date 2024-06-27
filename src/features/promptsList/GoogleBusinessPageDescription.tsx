@@ -24,7 +24,7 @@ const HashtagGenerator = () => {
             [name]: value,
         }));
     };
-    const promptMessage = `Create a Google Business page description for ${formData.instituteName}. Include Courses/Skill names, their highlights, features, SEO keyword and USP. Focus on the primary service/product ${formData.coursesSkillNames}. Highlight the unique selling points and features ${formData.uspFeatureMilestone}. Ensure the description is SEO-friendly with keywords ${formData.seoKeyword}. Keep total description in 150 words. Also create an SEO friendly short page name for Google business page. Format will be: Primary Course/Skill name and Then Institute name. Give Headings for these 2 points as Page name and Description. In page name take only names of 2 courses.`;
+    const promptMessage = `Create 1 Google Business page description for ${formData.instituteName}. Include Courses/Skill names, their highlights, features and USP and use proper and simple words. Focus on the primary service/product ${formData.coursesSkillNames}. Highlight the unique selling points and features ${formData.uspFeatureMilestone}. Keep total description in 100 words. Also create short page name for Google business page. Format will be: Primary Course/Skill name and Then Institute name including SEO keyword ${formData.seoKeyword}. In page name take only names of 2 courses. Give Headings for these 2 points as Page name and Description. Create in the format that a Google Business page description should have. Don't include city name in page name.`;
 
     const handleSubmit = (event: React.SyntheticEvent<HTMLFormElement>) => {
         event.preventDefault();

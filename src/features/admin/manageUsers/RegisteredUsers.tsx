@@ -10,6 +10,7 @@ import '../dashboard/Dashboard.css';
 type UserDocumentData = {
     name: string;
     email: string;
+    batch: string,
     password: string;
     phone: number;
     plan: string,
@@ -108,6 +109,7 @@ const RegisteredUsers = () => {
             const flattenedUserData = userData.map(user => ({
             'Name': user.name,
             'Email': user.email,
+            'Batch': user.batch,
             'Password': user.password,
             'Phone': user.phone,
             'Plan': user.plan,
@@ -136,7 +138,7 @@ const RegisteredUsers = () => {
             console.error('Error exporting to Excel:', error);
         }
     };
-    const handleSearchChange = (e) => {
+    const handleSearchChange = (e: any) => {
         setSearchTerm(e.target.value);
     };
 
@@ -163,11 +165,13 @@ const RegisteredUsers = () => {
                                 <tr>
                                     <th>Name</th>
                                     <th>Email</th>
+                                    <th>Batch</th>
                                     <th>Password</th>
                                     <th>Phone</th>
                                     <th>Plan</th>
                                     <th>Total Credits</th>
                                     <th>Remaining Credits</th>
+                                    <th>Used Credits</th>
                                     <th>Access Duration</th>
                                     <th>Expiry Date</th>
                                     <th>Limit Perday</th>
@@ -186,7 +190,10 @@ const RegisteredUsers = () => {
                                 {userData
                                     .filter((user) =>
                                         user.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                                        user.name.toLowerCase().includes(searchTerm.toLowerCase())
+                                        user.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                                        (user.batch?.toLowerCase().includes(searchTerm.toLowerCase())) ||
+                                        (user.plan?.toLowerCase().includes(searchTerm.toLowerCase())) ||
+                                        user.register_timestamp.toLowerCase().includes(searchTerm.toLowerCase())
                                     )
                                     .map((user) => (
                                         <tr key={user.email}>
@@ -207,6 +214,7 @@ const RegisteredUsers = () => {
                                                     user.email
                                                 )}
                                             </td>
+                                            <td>{user?.batch}</td>
                                             <td>
                                                 {editingUser && editingUser.email === user.email ? (
                                                     <input
@@ -268,6 +276,7 @@ const RegisteredUsers = () => {
                                             ) : (
                                                 user.remain_credits
                                             )}</td>
+                                            <td>{user.total_credits - user.remain_credits}</td>
                                             <td>{editingUser && editingUser.email === user.email ? (
                                                 <input
                                                     type="number"
@@ -282,7 +291,7 @@ const RegisteredUsers = () => {
                                             ) : (
                                                 user.access_duration_days
                                             )}</td>
-                                            <td>{user.expiry}</td>
+                                            <td>{user.expiry?.replace(/(\d{4})-(\d{2})-(\d{2})/, '$3-$2-$1')}</td>
                                             <td>{editingUser && editingUser.email === user.email ? (
                                                 <input
                                                     type="text"
@@ -335,7 +344,7 @@ const RegisteredUsers = () => {
                                             </td>
                                             <td> {user.isFreeUser ? 'Yes' : 'No'} </td>
                                             <td>{user.isPrePaidUser ? 'Yes' : 'No'}</td>
-                                            <td>{user.register_timestamp}</td>
+                                            <td>{user.register_timestamp?.replace(/(\d{4})-(\d{2})-(\d{2})/, '$3-$2-$1')}</td>
                                             <td>{user.campaignName}</td>
                                             <td>{user.campaignMedium}</td>
                                             <td>{user.campaignSource}</td>

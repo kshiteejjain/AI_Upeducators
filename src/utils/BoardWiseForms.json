@@ -1,146 +1,91 @@
 {
     "CBSEForms": {
-        "6th-Grade": {
-            "Science": {
-                "Chapter1": {
-                    "name": "Analyze the food items",
-                    "description": "Analyze the food items in order to identify the ingredients used in different food items. Identify the sources of ingredients that are used to prepare food items. Observe different food ingredients in order to recognize if their origin is from the part of the plant and recognize the respective part. List the animal products in order to understand how we depend on them for our food. Categorize organisms into Herbivores, carnivores & omnivores based on their food habits or nutrition."
-                },
-                "Chapter2": {
-                    "name": "Test Nutrients in Food",
-                    "description": "Improvise an activity to test the nutrients present in the given food items & critique their utility inadequate, inadequate & excess proportion. Explain the function of each nutrient in order to discuss the importance of nutrients in good health. Hypothesize the consequences of eliminating any one major nutrient in order to make a healthy food choice. Design a balanced diet plan in order to provide the body with sufficient nutrients it needs to function properly. Improvise an activity to test the nutrients present in the given food items & critique their utility inadequate, inadequate & excess proportions."
-                },
-                "Chapter3": {
-                    "name": "Fabric and Textiles",
-                    "description": "Examine various fabrics in order to predict what they are made up of Classify the given fabrics as Natural or Synthetic based on their source. Describe the processing of cotton and jute fibers into yarn in order to conclude the required conditions to grow them. Explain the various processes of making yarn from fibers in order to create the fabric. Outline the history of the textile industry in our country"
-                },
-                "Chapter4": {
-                    "name": "Properties of Materials",
-                    "description": "List the objects around us in order to analyze the materials they are made up of. Observe the appearance of the materials in order to differentiate them as lustre and nonlustre material. Plan and conduct an investigation in order to classify different kinds of materials by their observable properties. Examine the materials by compressing or scratching them in order to categorize them as hard and soft materials. Observe the change in the shape of objects added to water in order to categorize them as soluble and insoluble materials. Plan and conduct an investigation for various objects to classify them based on whether the object sinks or floats in water. See through the objects in order to classify them into opaque, transparent and translucent. Plan and conduct an investigation in order to classify different kinds of materials by their observable properties."
-                },
-                "Chapter5": {
-                    "name": "Separation of Mixtures",
-                    "description": "Identify properties of given items and select a property that would help them easily separate the items from each other. Arrives at the logical conclusion that certain specific methods can be employed to separate solid mixtures based on the size, color or weight of the components. Examine the solubility of salt in water in certain conditions in order to differentiate the solution as saturated and unsaturated. Conducts simple investigations to seek answers to queries, e.g., what are the food nutrients present in animal fodder? Can all physical changes be reversed? Does a freely suspended magnet align in a particular direction? Outlines methods that can be adapted in everyday life situations such as separation of husk from grains, separation of fine sand from coarse sand Carries out some of the improvised procedures of the composition of air; preparation of vermicompost, etc. separation of insoluble solids from liquids in a given situation Explains how multiple processes can be employed when the mixture has a soluble and insoluble component Outlines methods that can be adapted in everyday life situations such as separation of husk from grains, separation of fine sand from coarse sand Arrives at the logical conclusion that certain specific methods can be employed to separate solid mixtures based on the size, color or weight of the components."
-                },
-                "Chapter6": {
-                    "name": "ABC",
-                    "description": "XYZ"
+        "Grades": [
+            {
+                "grade": "6th-Grade",
+                "Subjects": {
+                    "Science": {
+                        "Chapters": [
+                            { "name": "Food: Where does it come from?", "description": "Analyze the food items in order to identify the ingredients used in different food items. Identify the sources of ingredients that are used to prepare food items. Observe different food ingredients in order to recognize if their origin is from the part of the plant and recognize the respective part. List the animal products in order to understand how we depend on them for our food. Categorize organisms into herbivores, carnivores, and omnivores based on their food habits or nutrition. Identifies materials and organisms, such as plant fibers and flowers, on the basis of observable features, i.e., appearance, and texture, Identify the sources of ingredients which are used to function, aroma, etc. Makes efforts to protect environment, e.g., minimising wastage of food, water, electricity and generation of waste; spreading awareness to adopt rain water harvesting; care for plants, etc. Classifies materials, organisms and processes based on observable properties, e.g., materials as soluble, insoluble, transparent, translucent and opaque; changes that can be reversed and cannot be reversed; plants as herbs, shrubs, trees, creeper, climbers; components of habitat as biotic and abiotic; motion as rectilinear, circular, periodic etc." },
+                            { "name": "Test Nutrients in Food", "description": "Improvise an activity..." },
+                            { "name": "Fabric and Textiles", "description": "Examine various fabrics..." },
+                            { "name": "Properties of Materials", "description": "List the objects around us..." },
+                            { "name": "Separation of Mixtures", "description": "Identify properties..." },
+                            { "name": "ABC", "description": "XYZ" }
+                        ]
+                    },
+                    "Mathematics": {
+                        "Chapters": [
+                            { "name": "Place Value and Number Sense", "description": "Find the place value..." },
+                            { "name": "Whole Numbers and Operations", "description": "Use the understanding..." },
+                            { "name": "Factors and Multiples", "description": "Arrange the numbers..." },
+                            { "name": "Geometrical Shapes and Figures", "description": "Give example(s)..." },
+                            { "name": "Angles and Shapes", "description": "Compare the given angles..." }
+                        ]
+                    }
                 }
             },
-            "Mathematics": {
-                "Chapter1": {
-                    "name": "Place Value and Number Sense",
-                    "description": "Find the place value of the digit and list the total numbers. List the total numbers that can be made from the given digits and know the place value of the digit in the number. Arrange the digits of a given number and make smaller or bigger numbers. Add 1 to the greatest 1-digit,2-digit, 3-digit number, and so on, and get the smallest next-digit number. Expand the given number and know the place value of a given digit in a particular number. Write the 6-digit number in expanded form and write its number name.Add and subtract one from the number and find the predecessor and successor of a given number. Add bigger-digit numbers and understand the situations dealing with larger numbers. Use places of the digits of a particular number and read it easily. Applies appropriate operations (addition, subtraction, multiplication, and division) in order to solve problems involving large numbers. Read the given situation and find the approximately estimated number. Estimate the number to the nearest tens and round off. Estimate the outcome of a number and get a quick round-off number. Round off the numbers and find their sum and difference easily. Round off the numbers and find their product easily. Use brackets to solve the problem and make calculations quick and to avoid confusion. Write numbers in the form of Roman numerals and represent and interpret the numbers written in a clock, timetable, etc. Apply the rules of Roman number operations and perform arithmetic operations on them."
-                },
-                "Chapter2": {
-                    "name": "Whole Numbers and Operations",
-                    "description": "Use the understanding of the predecessor of one and know the whole number. Explain the whole number and know the predecessor of 1 and the subtraction of the two same numbers. Define ‘unit distance’ and construct the number line Draw the Number line and represent the whole number. Draw a number line and find the predecessor and successor of a given number Represent the Numbers on a Number line and perform number operation. Apply properties of whole numbers and simplify the arithmetic expression. Represent numbers and form lines, rectangles, triangles, and a square. Form number patterns and verbal calculation and to understand numbers better."
-                },
-                "Chapter3": {
-                    "name": "Factors and Multiples",
-                    "description": "Arrange the numbers in a row and determine the factors of a given number. Determine the numbers that exactly divide the given number and find the factors. Write the factors of a given number and determine prime and composite numbers. Evaluate the factors of two or more numbers and find the common factors and multiples. Apply the rules of divisibility and find the factors of a number quickly. Factories a number through prime factorization and list the prime factors. Identifies number patterns through factorization in order to recognize and appreciate (through patterns) the broad classification of numbers as even, odd, prime, co-prime, etc. List down the common factors of given numbers and determine their HCF. List down the common multiples of given numbers and determine their LCM. Apply the concept of HCF and solve related real-life problems. Apply the concept of LCM and solve related real-life problems. Applies the concept of HCF or LCM in order to solve problems in a real-life situation."
-                },
-                "Chapter4": {
-                    "name": "Geometrical Shapes and Figures",
-                    "description": "Give example(s) and explain the importance of a point. Give example(s) and describe a line segment. Examine the given lines and identify intersecting lines among them. Examine the given lines and identify parallel lines among them. Describe a ray and identify it from the given figures. Compare the given figures and identify a ray, line, or line segment among them. Give example(s) and demonstrate an understanding of a simple curve and a curve that is not simple. Describe an open curve and a closed curve and distinguish between the two. Discuss the parts of a closed curve and determine the position of a point with respect to it. Examine the given curves and identify polygons and non-polygons. Draw a rough sketch of a polygon and label and describe its elements. Identify the elements of an Angle (Vertex, arm, interior, and exterior angles ) for the given angles. Give example(s) and name an angle in the given figure. Describe the elements of a triangle and identify them among the given figures. Describe the elements of a quadrilateral and identify them among the given figures. Describe the parts of a circle and identify them in the given circle. Draw a rough sketch of a circle and label and describe its elements. Determine the parts of closed curves and identify the position of a point with respect to a polygon and a circle Provides examples from surround in order to describe geometrical ideas like line, line segment, open and closed figures, angle, triangle, quadrilateral, circle, etc."
-                },
-                "Chapter5": {
-                    "name": "Angles and Shapes",
-                    "description": "Compare the given angles and classify them as a right angle, a straight angle, or a complete angle.Compare the given angles and classify them as an acute angle, obtuse angle, or a reflex angle according to their measure. Identify the different types of angles in our surroundings and demonstrate an understanding of angles. Use a protractor to measure the given angle and classify its type.Use a protractor and draw an angle of the given measure. Describe a perpendicular and a perpendicular bisector and identify the same in the given figure. Give example(s) of perpendicular lines and demonstrate an understanding of the same. And demonstrate an understanding of angles: a) Identifies examples of angles in the surroundings b) Classifies anglesaccording to their measure c) Estimates the measure of angles using 45°, 90°, and 180° as reference angles. Observe the measure of sides of a triangle and classify it into different types (scalene, isosceles, equilateral) basedon its sides.Observe the measure of angles of a triangle and classify it into different types (acute, obtuse, right) based on its angles. Classifies triangles with different measurements in order to show different types of triangles based on their angles and sides. Examine the given figures and classify type quadrilaterals based on their properties. Examine the given figures and identify polygons.Describe polygons and classify them based on their number of sides and angles. (Up to 8 sides)Give example(s) and distinguish between regular and irregular polygons. Classifies quadrilaterals with different measurements in order to show different types of quadrilaterals based ontheir sides and internal angles. Describe solid shapes and distinguish them from flat shapes.Examine the given solid shapes and identify their type (Cubes, Cuboids, cylinders, spheres, cones, prism, pyramids)Describe the faces, edges, and vertices of a 3D shape and discuss the various aspects of the given 3D object. Classifies commonly found 3-D objects from the surroundings in order to find spheres, cubes, cuboids, cylinders, cones, etc.Labels different parts of 3-D objects in order to explain the edges, vertices, and faces of the given 3-D object."
+            {
+                "grade": "7th-Grade",
+                "Subjects": {
+                    "Science": {
+                        "Chapters": [
+                            { "name": "Nutrition in Plants", "description": "Examine different methods..." },
+                            { "name": "Human Digestive System", "description": "Illustrate the human digestive system..." },
+                            { "name": "Fibers to Fabric", "description": "Examine the selective breeding process..." },
+                            { "name": "Heat and Temperature", "description": "Distinguish the Clinical thermometer..." },
+                            { "name": "Acids, Bases, and Salts", "description": "Examine the common substances..." }
+                        ]
+                    },
+                    "Mathematics": {
+                        "Chapters": [
+                            { "name": "Integers and Rational Numbers", "description": "Differentiate between whole numbers..." },
+                            { "name": "Fractions and Decimals", "description": "Define proper, improper..." },
+                            { "name": "Data Handling", "description": "Collect, record, and present data..." },
+                            { "name": "Algebraic Expressions", "description": "Use numbers and variables..." },
+                            { "name": "Lines and Angles", "description": "Recall the concept of line..." }
+                        ]
+                    }
                 }
             }
-        },
-        "7th-Grade": {
-            "Science": {
-                "Chapter1": {
-                    "name": "Nutrition in Plants",
-                    "description": "Examine different methods of nutrition in order to differentiate between autotrophic and heterotrophic nutritionEvaluate other plants in their surroundings & classify them as autotrophs, heterotrophs, saprotrophs, parasitic orsymbiotic based on their nutritional requirementsCategorize features of insectivores, saprophytes, and symbionts, based on their similarities.Evaluate if leaves that are red, purple/colors other than green might show lesser photosynthetic activity than green leavesConstruct the cause-and-effect model of plant rotation done by farmersRecall details/definitions specific to the autotrophic mode of nutrition in plants/photosynthesis/detection of photosynthetic activity of plants/nutrients other than carbohydrates, in plantsDefine Nutrition & its importance to living organismsElaborate the photosynthetic process in plantsList the nutrients and sunlight requirements in plants in order to explain how these are fulfilled through enquiry activityRelate the nutritional requirements of different organisms (plants & animals) to the environment or surroundings forsurvivalDescribe the process of photosynthesis with the help of word/chemical equationDraw a schematic diagram of a section through a leaf in order to pictorially represent photosynthesis.Establish the relationship between Rhizobium bacteria & leguminous plants."
-                },
-                "Chapter2": {
-                    "name": "Human Digestive System",
-                    "description": "Illustrate the human digestive system with the help of a well-labeled diagram & elaborate on the process & function of each partCompare & contrast the features of the digestive system of grass-eating animals with those of humansClassifies animals based on their modes of feeding.Perform the starch test on raw and chewed food in order to infer the role of saliva.Recall details pertaining to different modes of acquiring food. Summarize the functions of the Human digestive systemRecall details pertaining to nutrition in amoeba Illustrate the human digestive system with the help of a well-labelleddiagram & elaborate on the process & function of each part"
-                },
-                "Chapter3": {
-                    "name": "Fibers to Fabric",
-                    "description": "Examine the selective breeding process for obtaining special characteristics in the offspring, e.g. soft under hair in sheepCompare coarse beard hair & soft underhair of animals based on their utilityExamine the selective breeding process for obtaining special characteristics in the offspring, e.g. soft under hair in sheepOutline the steps involved in processing fibers into woolOutline the steps involved in obtaining silk from cocoonDescribe and illustrate diagrammatically the life cycle of the silk mothCritique the risk factors associated with the wool industry & appreciate the efforts of people involved in itExplain the significance of silk in the textile industryEvaluate the contribution of silk in the Indian Economy and appreciate our weavers for their intricate & dedicated efforts."
-                },
-                "Chapter4": {
-                    "name": "Heat and Temperature",
-                    "description": "Distinguish the Clinical thermometer from the Laboratory thermometer (range, least count, units of measurement)List precautions while using a clinal and laboratory thermometer in order to identify the role of a kink.Devise an activity or elaborate on a situation to show the rate of thermal conduction, convection & radiationDevise an activity to show that woolen clothes are insulators/ poor conductors of heat Critique the need for a Laboratory thermometer while doing experiments in the laboratories. Explain why a substance remains at the same temperature in a Thermos flask or vacuum bottle Correlate the modes oftransfer of heat to the usage of different clothes in different parts of the world (Polar, temperature, tropical, etc.)Observe the heating and cooling of objects in order to describe conductionApply the concept of convection to the heating of land and water in order to predict the description of land and sea breeze Categorize a given substance as hot & cold by a reliable measure (using temperature without touching)Distinguish the Clinical thermometer from the Laboratory of moving objects; time period of a simple pendulum, etc. thermometer (range, least count, units of measurement)."
-                },
-                "Chapter5": {
-                    "name": "Acids, Bases, and Salts",
-                    "description": "Examine the common substances used at home based on taste and touch and classify them as acidic or basicSummarizes observations with respect to the behavior of indicators in acidic and basic solutionsIdentify neutralization reactions and their characteristicsSummarize observations with respect to the behavior of indicators in acidic and basic solutions Identify neutralization reactions and their characteristics.Illustrates neutralization reactions seen in everyday life Evaluate the effectiveness of certain neutralization reactions employed in everyday life, based on observed data."
-                }
-            },
-            "Mathematics": {
-                "Chapter1": {
-                    "name": "Integers and Rational Numbers",
-                    "description": "Differentiate between whole numbers and integers and give concrete examples. Represent numbers with positive and negative signs and apply them to various situations. Represent integers on a number line perform operations and verify properties of integers. Apply properties of addition and subtraction of integers and simplify arithmetic expressions.Apply rules of multiplication of integers and solve various arithmetic expressions and contextual problems. Apply properties of multiplication of integers and simplify arithmetic expressions. Apply properties of addition, subtraction, and multiplication of integers and devise methods for easier calculation and solve problems based on real-life related to integers. Infer division of integers as inverse operation of multiplication and write multiplication statement into corresponding division statement.Apply properties of division of integers and simplify arithmetic expressions. Applies rules for multiplication and division in order to solve problems involving two integers with the same or different signs."
-                },
-                "Chapter2": {
-                    "name": "Fractions and Decimals",
-                    "description": "Define proper, improper, and mixed fractions and distinguish between them. Applies repeated addition and subtraction in order to interpret the division and multiplication of fractions. Multiply (or divide) the numerator and denominator with the same number and write equivalent fractionsConvert unlike fractions into like fractions and compare them. Expresses a fraction as percentages and decimals in order to solve daily life Convert unlike fractions into like fractions and compare them. Extend the concept of multiplication as repetitive addition for fractions and multiply a fraction and a whole number. Multiply fractions involving the term ‘of’Multiply fractions and calculate the total number of partsMultiply fractions and compare the value of the product with the original fractionsInvert a given fraction and find its reciprocalDivide two fractions and find the smaller parts of the fractionApplies algorithms for multiplication and division in order to multiply and divide fractions /decimals. Applies appropriate mathematical operations on rational numbers in order to solve problems related to daily life situations. recall and apply the concept of decimal representation and expansion and perform mathematical operations on decimal. Multiply decimal numbers by 10, 100 and 1000 and infer right shift in decimal point Find the intersection of 2 decimal numbers on the grid and represent their product. Divide decimal numbers by 10, 100, and 1000 and infer the left shift in the decimal pointDivide decimal numbers by a whole number and solve real-life problems related to decimals.Convert decimals into fractions and divide decimal numbers by another decimal number. Calculates the simple form of a fraction in order to distinguish quantities that are in proportion."
-                },
-                "Chapter3": {
-                    "name": "Data Handling",
-                    "description": "Collect, record, and present data and organize experiences or information, and draw inferences from them. Organize raw data into tabular form and make data easier to interpret. Organize raw data into tabular form and make data easier to interpret. Calculate the arithmetic mean and find its position in the data Calculate the range of the data and know the spread of the data. Calculate the mode of the data and find the observation that occurs most often in the data set. Calculate the median of the data and find the observation that lies in the middle of the data set. Represent data in a bar graph using the appropriate scale and represent given information in the form of a bar graphRepresent data using a double bar graph and compare and discuss two collections of data at a glance. Calculate probability and find the chance of occurring /not-occurring of the event/s. Represents data pictorially in order to interpret data using a bar graph. Calculates mean, median, and mode in order to find Median various representative values for simple data from her/his daily lifeCalculate the variability in real-life situations and appreciate the variation observed in real-life situations."
-                },
-                "Chapter4": {
-                    "name": "Algebraic Expressions",
-                    "description": "Use numbers and variables with different operations and express a real-life situation in the form of a simple linear equation. convert the given equation into words and express it in statement form.Use the trial and error method and determine the solution of a simple equation.Explain the first step to be taken and separate the variable while solving the given equation.Create a strategy and solve the given simple equation. Use the given solution and construct equations from it. Construct simple equations and solve them for the given problems /puzzles in familiar or unfamiliar contexts.Translates a real-life situation in the form of a simple algebraic equation in order to arrive at a generalized problemand solution for the situation."
-                },
-                "Chapter5": {
-                    "name": "Lines and Angles",
-                    "description": "Recall the concept of line, line segment, and angles and identify them in the given figure(s).Examine different angles and identify complementary angles.Examine different angles and identify supplementary angles.Examine different angles and determine the measure of their complement and supplement.Describe adjacent angles and identify a pair of adjacent angles in the given anglesExamine different angles and identify linear pairs. Describe vertically opposite angles and their property and identify them in the given figure. Identify different types of angles and determine the measure of unknown angles in the given figure. Compare the given lines and distinguish between intersecting and parallel lines. Discuss the different angles made by transversal and intersecting lines and identify them in the given figureUse the properties of angles made by a transversal of parallel lines and determine the measure of unknown anglesCreate a strategy and determine whether the given lines are parallel or not. Classifies pairs of angles based on their properties in order to describe linear, supplementary, complementary, adjacentand vertically opposite anglesApplies the properties of linear, supplementary, complementary, etc. Angle in order to find the value of one angle when the other one is given.Verifies the properties of various pairs of angles formed when a transversal cuts two lines in order to demonstrate the properties of angles when two lines are parallel."
-                }
-            }
-        }
+        ]
     },
     "NCERTForms": {
-        "6th-Grade": {
-            "Science": {
-                "Chapter1": {
-                    "name": "chapter 1 name",
-                    "description": "chapter 1 description"
-                },
-                "Chapter2": {
-                    "name": "chapter 2 name",
-                    "description": "chapter 2 description"
+        "Grades": [
+            {
+                "grade": "6th-Grade",
+                "Subjects": {
+                    "Science": {
+                        "Chapters": [
+                            { "name": "chapter 1 name", "description": "chapter 1 description" },
+                            { "name": "chapter 2 name", "description": "chapter 2 description" }
+                        ]
+                    },
+                    "Mathematics": {
+                        "Chapters": [
+                            { "name": "chapter 1 name", "description": "chapter 1 description" },
+                            { "name": "chapter 2 name", "description": "chapter 2 description" }
+                        ]
+                    }
                 }
             },
-            "Mathematics": {
-                "Chapter1": {
-                    "name": "chapter 1 name",
-                    "description": "chapter 1 description"
-                },
-                "Chapter2": {
-                    "name": "chapter 2 name",
-                    "description": "chapter 2 description"
+            {
+                "grade": "7th-Grade",
+                "Subjects": {
+                    "Science": {
+                        "Chapters": [
+                            { "name": "chapter 1 name", "description": "chapter 1 description" },
+                            { "name": "chapter 2 name", "description": "chapter 2 description" }
+                        ]
+                    },
+                    "Mathematics": {
+                        "Chapters": [
+                            { "name": "chapter 1 name", "description": "chapter 1 description" },
+                            { "name": "chapter 2 name", "description": "chapter 2 description" }
+                        ]
+                    }
                 }
             }
-        },
-        "7th-Grade": {
-            "Science": {
-                "Chapter1": {
-                    "name": "chapter 1 name",
-                    "description": "chapter 1 description"
-                },
-                "Chapter2": {
-                    "name": "chapter 2 name",
-                    "description": "chapter 2 description"
-                }
-            },
-            "Mathematics": {
-                "Chapter1": {
-                    "name": "chapter 1 name",
-                    "description": "chapter 1 description"
-                },
-                "Chapter2": {
-                    "name": "chapter 2 name",
-                    "description": "chapter 2 description"
-                }
-            }
-        }
+        ]
     }
 }

@@ -51,6 +51,7 @@
       clickedSubcategory
         ? localStorage.setItem('selectedSubcategory', clickedSubcategory)
         : localStorage.removeItem('selectedSubcategory');
+        window.scrollTo(0, 0)
     };
 
     const handleBookmarked = () => {

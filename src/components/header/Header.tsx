@@ -96,7 +96,8 @@ const Header = ({ isLoginPage, moreOptions = true }: Props) => {
             <p><a href='https://upeducators.ai/pricing/'> {Strings.profile.upgradePlan} </a></p>
           </div>
           {isAdmin && <nav>
-            <button onClick={() => navigate('/Dashboard')}>{Strings.header.admin}</button>
+            <button onClick={() => navigate('/Dashboard')}>{Strings.header.admin}</button> &nbsp;&nbsp;&nbsp;&nbsp;
+            <button onClick={() => navigate('/AddSuperUser')}>Add Super User</button>
           </nav>}
           <div className="username" onClick={toggleCreditDetails}> {Strings.header.welcome} &nbsp; <span> {username} </span>
             <span className='defaultProfile'><img src={defaultProfile} /> </span>
