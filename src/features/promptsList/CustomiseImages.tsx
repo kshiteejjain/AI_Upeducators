@@ -1,10 +1,8 @@
 import React, { useState, ChangeEvent, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
 import { generatorPrompt } from '../promptListGeneratorSlice/ImageGeneratorSlice';
 import Button from '../../components/buttons/Button';
 import { sendPrompt } from '../../utils/sendPrompt';
-import { fetchTotalCredits } from '../../utils/firebaseUtils';
 type ImageGeneratorData = {
   status: string;
 };
@@ -21,24 +19,7 @@ const CustomiseImages = () => {
   const dispatch = useDispatch();
   const loadingStatus = useSelector((state: RootState) => state.generatorData?.status);
   const [isLoading, setIsLoading] = useState(false);
-  const [remainingCredits, setRemainingCredits] = useState<number | undefined>(undefined);
-  const navigate = useNavigate();
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const storedUsername = sessionStorage.getItem('username') ?? 'User';
-        // Fetch only setRemainingCredits
-        await fetchTotalCredits(storedUsername, undefined, setRemainingCredits);
-      } catch (error) {
-        console.error("Error fetching data:", error);
-        // Handle errors as needed
-      }
-    };
-    fetchData();
-    if (remainingCredits !== undefined && remainingCredits < 5) {
-      navigate('/ContactUs');
-    }
-  }, [remainingCredits, navigate]);
+  
   useEffect(() => {
     setIsLoading(loadingStatus === 'loading');
   }, [loadingStatus]);

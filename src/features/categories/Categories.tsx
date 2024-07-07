@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
-import { setCategory } from './CategoriesSlice';
 import { resetGeneratedData } from '../promptListGeneratorSlice/QuestionGeneratorSlice';
+import { setCategory } from './CategoriesSlice';
 import CategoryTiles from '../../components/categoryTiles/CategoryTiles';
 import Header from '../../components/header/Header';
 import { fetchAllForms } from '../../utils/firebaseUtils';
@@ -10,9 +10,9 @@ import CategoriesFilter from '../categoriesFilter/CategoriesFilter';
 import CBSEJSON from '../../utils/boardWiseForms.json'
 import Strings from '../../utils/en';
 import BannerCarousel from '../../components/bannerCarousel/bannerCarousel';
-import tick from "../../assets/tick.svg"
 
 import './Categories.css';
+
 
 type Props = {
     id: number;
@@ -35,7 +35,6 @@ const Categories = () => {
     });
     const [searchTerm, setSearchTerm] = useState('');
     const [isSearchFocused, setIsSearchFocused] = useState(false);
-    const [isBoardForms, setIsBoardForms] = useState(false);
     const [formData, setFormData] = useState({
         gradeLevel: localStorage.getItem('gradeLevel') || '',
         subject: localStorage.getItem('subject') || '',
@@ -93,12 +92,22 @@ const Categories = () => {
 
 
     const handleTile = (redirect?: string, name?: string) => {
-        localStorage.setItem('curForm', name)
+        const formData = JSON.parse(localStorage.getItem('upEdu_prefix') || '{}');
+        if (localStorage.getItem('filterCategory') === 'CBSE Board') {
+            const { gradeLevel, subject, chapter } = formData;
+    
+            // If any required field is missing, don't redirect
+            if (!gradeLevel || !subject || !chapter) {
+                alert('Please select all required fields before proceeding.');
+                return;
+            }
+        }
         if (redirect) {
             dispatch(setCategory(redirect));
-            navigate('/GeneratorAndResult')
+            navigate(`/GeneratorAndResult/${redirect}`);
         }
     };
+
     const handleCategorySelect = (selectedCategory: string) => {
         if (selectedCategory === 'Bookmarked') {
             setBookmarkedOnly(true);
@@ -122,7 +131,6 @@ const Categories = () => {
     };
 
     const handleBoardForms = () => {
-        setIsBoardForms(prev => !prev);
         setFilterCategory(prev => (prev === 'CBSE Board' ? 'All' : 'CBSE Board'))
     }
     const handleInputChange = (event: any) => {
@@ -148,6 +156,10 @@ const Categories = () => {
             return updatedFormData;
         });
     };
+
+    const selectedGrade = JSON.parse(localStorage.getItem('upEdu_prefix'))?.gradeLevel || '';
+    const selectedSubject = JSON.parse(localStorage.getItem('upEdu_prefix'))?.subject || '';
+    const selectedChapter = JSON.parse(localStorage.getItem('upEdu_prefix'))?.chapter || '';
     
 
     const getSubjectsForGrade = (grade: string) => {
@@ -166,7 +178,6 @@ const Categories = () => {
         return [];
     };
 
-
     return (
         <>
             <Header />
@@ -177,7 +188,7 @@ const Categories = () => {
                     <div className='category-listing-wrapper'>
                         <div className='additional-filter-parent'>
                             <div className='additional-filters'>
-                                <button onClick={handleBoardForms}> {Strings.categories.searchCategories} {isBoardForms && <img src={tick} />} </button>
+                                <button className={localStorage.getItem('filterCategory') === 'CBSE Board' ? 'active' : ''} onClick={handleBoardForms}> {Strings.categories.searchCategories} </button>
                             </div>
                             <div className='search-wrapper'>
                                 <input
@@ -191,7 +202,7 @@ const Categories = () => {
                                 />
                             </div>
                         </div>
-                        {isBoardForms &&
+                        {localStorage.getItem('filterCategory') === 'CBSE Board' ?
                             <form className='board-forms-prefix'>
                                 <div className='form-group'>
                                     <label htmlFor='gradeLevel'>Grade Level
@@ -203,7 +214,7 @@ const Categories = () => {
                                         onChange={handleInputChange}
                                         value={formData.gradeLevel}
                                         placeholder="Select the grade level for which the questions are being created">
-                                        <option>Please Select Grade</option>
+                                        <option value="">{selectedGrade || 'Please Select Grade'}</option>
                                         {CBSEJSON.CBSEForms.Grades.map((item, index) => (
                                             <option key={index} value={item.grade}>
                                                 {item.grade}
@@ -222,7 +233,7 @@ const Categories = () => {
                                         onChange={handleInputChange}
                                         value={formData.subject}
                                         placeholder="Select Subject">
-                                        <option>Please Select Subject</option>
+                                        <option value="">{selectedSubject || 'Please Select Subject'}</option>
                                         {formData.gradeLevel && getSubjectsForGrade(formData.gradeLevel).map((subject, index) => (
                                             <option key={index} value={subject}>
                                                 {subject}
@@ -241,7 +252,7 @@ const Categories = () => {
                                         onChange={handleInputChange}
                                         value={formData.chapter}
                                         placeholder="Select the relevant chapter name">
-                                        <option>Please Select Chapter</option>
+                                        <option value="">{selectedChapter || 'Please Select Chapter'}</option>
                                         {formData.gradeLevel && formData.subject &&
                                             getChaptersForSubject(formData.gradeLevel, formData.subject).map((chapter: string, index: number) => (
                                                 <option key={index} value={chapter.name}>
@@ -251,9 +262,12 @@ const Categories = () => {
                                     </select>
                                 </div>
                             </form>
+                            :
+                            null
                         }
 
                         <div className='category-listing'>
+                            {categories.length === 0 ? <div className='loader-flex'> <div className="lds-ripple"><div></div><div></div></div> </div> : ''}
                             {categories
                                 .filter(item => {
                                     const isBookmarked = bookmarkedOnly ? bookmarkedIds.includes(item.id) : true;

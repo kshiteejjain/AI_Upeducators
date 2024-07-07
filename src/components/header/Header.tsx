@@ -89,7 +89,7 @@ const Header = ({ isLoginPage, moreOptions = true }: Props) => {
   return (
     <header className="header">
       <div className="container">
-        <img src={logo} alt={Strings.header.metaTitle} title={Strings.header.metaTitle} />
+        <img src={logo} alt={Strings.header.metaTitle} title={Strings.header.metaTitle} onClick={() => navigate('/')} />
         <div className="headerRight">
           <div className='headerRight-others'>
             <p> Remaining Credits: {remainingCredits}</p>

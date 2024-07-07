@@ -1,6 +1,6 @@
 import React, { Suspense, useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { useNavigate, useParams } from 'react-router-dom';
 import Header from '../../components/header/Header';
 import Button from '../../components/buttons/Button';
 import { resetGeneratedData } from '../promptListGeneratorSlice/QuestionGeneratorSlice';
@@ -17,7 +17,7 @@ type Props = {
 
 const GeneratorAndResult = () => {
     const [showExampler, setShowExampler] = useState<Props[]>([])
-    const pathName = useSelector((state) => state?.selectedCategory?.selectedCategory);
+    const { pathName } = useParams<{ pathName: string }>();
     const EmailContentGenerator = React.lazy(() => import(`../promptsList/${pathName}.tsx`));
     const Generator = pathName ? EmailContentGenerator : <p>Something went wrong</p>;
     const Result = React.lazy(() => import('../resultSection/Result'));

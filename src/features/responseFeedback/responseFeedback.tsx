@@ -1,22 +1,24 @@
+import { useState } from 'react';
+import { useParams } from 'react-router-dom';
 import { collection, doc, getDocs, query, updateDoc, where } from 'firebase/firestore';
 import { firestore } from '../../utils/firebase';
+import Loader from '../../components/loader/Loader';
 import ThumbsUp from '../../assets/thumb-up.svg';
 
 import  './responseFeedback.css';
-import Loader from '../../components/loader/Loader';
-import { useState } from 'react';
+
+
 
 const responseFeedback = () => {
     const [loader, setLoader] = useState(false);
-
+    const { pathName } = useParams();
     const likeResponse = async () => {
-        const curForm = localStorage.getItem('curForm');
         setLoader(true);
-        if (!curForm) {
+        if (!pathName) {
             return;
         }
         const collectionRef = collection(firestore, 'FormsList');
-        const q = query(collectionRef, where('name', '==', curForm));
+        const q = query(collectionRef, where('redirect', '==', pathName));
         const querySnapshot = await getDocs(q);
     
         if (querySnapshot.empty) {
@@ -37,15 +39,14 @@ const responseFeedback = () => {
     
 
     const needImprovement = async () => {
-        const curForm = localStorage.getItem('curForm');
         setLoader(true);
-        if (!curForm) {
+        if (!pathName) {
             console.log("No current form found in localStorage");
             return;
         }
     
         const collectionRef = collection(firestore, 'FormsList');
-        const q = query(collectionRef, where('name', '==', curForm));
+        const q = query(collectionRef, where('name', '==', pathName));
         const querySnapshot = await getDocs(q);
     
         if (querySnapshot.empty) {

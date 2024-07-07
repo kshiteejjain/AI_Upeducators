@@ -18,7 +18,6 @@ import CopyClipboard from '../../assets/copyClipboard.svg';
 import More from '../../assets/more.svg';
 import Download from '../../assets/download.svg';
 import mic from '../../assets/mic.svg'
-import micMuted from '../../assets/micMuted.svg'
 
 import './Result.css';
 import { setCategory } from '../categories/CategoriesSlice';
@@ -175,7 +174,7 @@ const Result = () => {
     generatedData?.length === 1 ? (resultAudio.play(), fetchFollowupPrompts(), fetchSuggestedForms()) : null;
 
   }, [generatedData, generatedImage, resultAudio]);
-
+  
   async function fetchFollowupPrompts() {
     const followupPrompts = await getFollowupPrompts(getFormName?.selectedCategory);
     setGetFollowPrompt(followupPrompts);

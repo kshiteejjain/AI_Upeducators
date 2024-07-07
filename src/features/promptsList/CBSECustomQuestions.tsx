@@ -10,6 +10,7 @@ const CBSECustomQuestions = () => {
 
     // Fetching data from localStorage
     const initialFormData = JSON.parse(localStorage.getItem('upEdu_prefix') || '{}');
+    const isFormDataPresent = initialFormData.gradeLevel || initialFormData.subject || initialFormData.chapter;
     const [formData, setFormData] = useState({
         gradeLevel: initialFormData.gradeLevel || '',
         subject: initialFormData.subject || '',

@@ -47,6 +47,7 @@ const Profile = () => {
     };
     const navigate = useNavigate();
     const dispatch = useDispatch();
+    
     useEffect(() => {
         const fetchData = async () => {
             try {
@@ -226,14 +227,20 @@ const Profile = () => {
                                 <thead>
                                     <tr>
                                         <th>Form Name</th>
-                                        <th>Usage</th>
+                                        <th>Credits Usage</th>
                                         <th>Date</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     {statsData
-                                        .filter((item) =>
-                                            item.email === localStorage.getItem('username') ?? 'User')
+                                        .filter((item) => item.email === localStorage.getItem('username') ?? 'User')
+                                        .sort((a, b) => {
+                                            // Ensure both timestamps are in comparable format
+                                            const timestampA = new Date(a.timestamp).getTime(); // Assuming a.timestamp is already in a date-like format
+                                            const timestampB = new Date(b.timestamp).getTime(); // Assuming b.timestamp is already in a date-like format
+
+                                            return timestampB - timestampA; // Sort in descending order
+                                        })
                                         .map((item, index) => {
                                             // Split the category name by uppercase letters and join with spaces
                                             const formattedCategoryName = item.categoryName
@@ -248,6 +255,7 @@ const Profile = () => {
                                             );
                                         })}
                                 </tbody>
+
                             </table>
                         </div>
                     </div>

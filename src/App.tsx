@@ -46,7 +46,7 @@ function MainApp({ isLoggedIn }: Props) {
         <>
           <Route path="/" element={<Login />} />
           <Route path="/Categories" element={<Categories />} />
-          <Route path="/GeneratorAndResult" element={<GeneratorAndResult />} />
+          <Route path="/GeneratorAndResult/:pathName" element={<GeneratorAndResult />} />
           <Route path="/BulkUpload" element={<BulkUpload />} />
           <Route path="/AddSuperUser" element={<AddSuperUser />} />
           <Route path="/ContactUs" element={<ContactUs />} />

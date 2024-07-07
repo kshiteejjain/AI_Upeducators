@@ -139,6 +139,7 @@ const Login = () => {
                             className='form-control'
                             required
                             name="email"
+                            autoFocus
                             value={userDetails.email}
                             onChange={(e) => setUserDetails({ ...userDetails, email: e.target.value })}
                         />
