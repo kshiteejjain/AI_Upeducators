@@ -1,4 +1,4 @@
-import React, { useState, ChangeEvent, useEffect } from 'react';
+import React, { useState, ChangeEvent } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { generatorPrompt } from '../promptListGeneratorSlice/QuestionGeneratorSlice';
 import Button from '../../components/buttons/Button';
@@ -10,7 +10,6 @@ const CBSECustomQuestions = () => {
 
     // Fetching data from localStorage
     const initialFormData = JSON.parse(localStorage.getItem('upEdu_prefix') || '{}');
-    const isFormDataPresent = initialFormData.gradeLevel || initialFormData.subject || initialFormData.chapter;
     const [formData, setFormData] = useState({
         gradeLevel: initialFormData.gradeLevel || '',
         subject: initialFormData.subject || '',

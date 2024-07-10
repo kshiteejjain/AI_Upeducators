@@ -60,7 +60,7 @@ const WhatsAppMessage = () => {
                 </div>
 
                 <div className="form-group">
-                    <label htmlFor="purpose">Purpose <span className="asterisk">*</span></label>
+                    <label htmlFor="purpose">Purpose<span className="asterisk">*</span></label>
                     <input
                         required
                         type="text"
@@ -73,7 +73,7 @@ const WhatsAppMessage = () => {
                 </div>
 
                 <div className="form-group">
-                    <label htmlFor="courseEventName">Course/Event Name <span className="asterisk">*</span></label>
+                    <label htmlFor="courseEventName">Course/Event Name<span className="asterisk">*</span></label>
                     <input
                         required
                         type="text"

@@ -33,7 +33,7 @@ const FacebookAdProblemSolution = () => {
             <h3>Create ads with impactful problem-solution statements.</h3>
             <form onSubmit={handleSubmit}>
                 <div className="form-group">
-                    <label htmlFor="courseSkillName"> Course/Skill Name <span className="asterisk">*</span></label>
+                    <label htmlFor="courseSkillName"> Course/Skill Name<span className="asterisk">*</span></label>
                     <input
                         required
                         className="form-control"
@@ -45,7 +45,7 @@ const FacebookAdProblemSolution = () => {
                 </div>
 
                 <div className="form-group">
-                    <label htmlFor="audience"> Audience <span className="asterisk">*</span></label>
+                    <label htmlFor="audience"> Audience<span className="asterisk">*</span></label>
                     <input
                         required
                         className="form-control"

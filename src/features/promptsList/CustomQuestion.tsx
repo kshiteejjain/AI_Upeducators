@@ -7,90 +7,104 @@ import { sendPrompt } from '../../utils/sendPrompt';
 const CustomQuestion = () => {
     const { generatorData: { messages, input } } = useSelector((state) => state);
     const dispatch = useDispatch();
-    const getInitialFormData = () => ({
+    const initialFormData = {
         gradeLevel: '',
         questionType: '',
         topic: '',
         difficultyLevel: [] as string[],
         contextPreference: '',
         additionalDetails: '',
-    });
-    const [formData, setFormData] = useState(getInitialFormData);
+        otherQuestionType: ''
+    };
+    const [formData, setFormData] = useState(initialFormData);
+    const [isOtherQuestionType, setIsOtherQuestionType] = useState(false);
+
     const handleInputChange = (e: ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
         const { name, value, type } = e.target;
-    
         if (type === 'checkbox') {
             const checkbox = e.target as HTMLInputElement;
-            if (checkbox.checked) {
-                setFormData((prevData) => ({
-                    ...prevData,
-                    difficultyLevel: [...prevData.difficultyLevel, value]
-                }));
-            } else {
-                setFormData((prevData) => ({
-                    ...prevData,
-                    difficultyLevel: prevData.difficultyLevel.filter((item) => item !== value)
-                }));
-            }
-        } else {
             setFormData((prevData) => ({
                 ...prevData,
-                [name]: value,
+                difficultyLevel: checkbox.checked
+                    ? [...prevData.difficultyLevel, value]
+                    : prevData.difficultyLevel.filter((item) => item !== value)
             }));
+        } else if (type === 'radio' && name === 'questionType') {
+            setFormData((prevData) => ({
+                ...prevData,
+                questionType: value,
+                otherQuestionType: value === 'Other' ? '' : prevData.otherQuestionType
+            }));
+            setIsOtherQuestionType(value === 'Other');
+        } else {
+            setFormData((prevData) => ({ ...prevData, [name]: value }));
         }
     };
-    const promptMessage = `Generate 10 ${formData.questionType} questions for ${formData.gradeLevel} on ${formData.topic}. It should be framed within the context of ${formData.contextPreference} at a ${formData.difficultyLevel} difficulty level. Also, consider these additional details: ${formData.additionalDetails}`;
+
+    const promptMessage = `Generate 10 ${isOtherQuestionType ? formData.otherQuestionType : formData.questionType} questions for ${formData.gradeLevel} on this Topic / Learning Objective: ${formData.topic}. 
+    It should be framed within the context of ${formData.contextPreference} at a ${formData.difficultyLevel} difficulty level. 
+    Also, consider these additional details: ${formData.additionalDetails}`;
+
     const handleSubmit = (event: React.SyntheticEvent<HTMLFormElement>) => {
         event.preventDefault();
         sendPrompt(dispatch, { input, messages, generatorPrompt, promptMessage });
     };
+
     return (
         <div className="generator-section">
             <h2>Custom Question</h2>
             <h3>Create questions based on your specific requirements.</h3>
             <form onSubmit={handleSubmit}>
                 <div className='form-group'>
-                    <label htmlFor='gradeLevel'> Grade Level <span className="asterisk">*</span></label>
+                    <label htmlFor='gradeLevel'>Grade Level<span className="asterisk">*</span></label>
                     <select
                         required
                         className='form-control'
                         name="gradeLevel"
                         onChange={handleInputChange}
                         value={formData.gradeLevel}
-                        placeholder="Select the grade level for which the questions are being created">
-                        <option value="Nursery">Nursery</option>
-                        <option value="Preparatory">Preparatory</option>
-                        <option value="1st-Grade">1st Grade</option>
-                        <option value="2nd-Grade">2nd Grade</option>
-                        <option value="3rd-Grade">3rd Grade</option>
-                        <option value="4th-Grade">4th Grade</option>
-                        <option value="5th-Grade">5th Grade</option>
-                        <option value="6th-Grade">6th Grade</option>
-                        <option value="7th-Grade">7th Grade</option>
-                        <option value="8th-Grade">8th Grade</option>
-                        <option value="9th-Grade">9th Grade</option>
-                        <option value="10th-Grade">10th Grade</option>
-                        <option value="11th-Grade">11th Grade</option>
-                        <option value="12th-Grade">12th Grade</option>
-                        <option value="College-Level">College Level</option>
+                    >
+                        <option value="">Select Grade Level</option>
+                        {["Nursery", "Preparatory", "1st-Grade", "2nd-Grade", "3rd-Grade", "4th-Grade", "5th-Grade", "6th-Grade", "7th-Grade", "8th-Grade", "9th-Grade", "10th-Grade", "11th-Grade", "12th-Grade", "College-Level"].map(level => (
+                            <option key={level} value={level}>{level}</option>
+                        ))}
                     </select>
                 </div>
 
-
                 <div className='form-group'>
-                    <label htmlFor='questionType'> Question Type <span className="asterisk">*</span></label>
-                    <input
-                        required
-                        className="form-control"
-                        name="questionType"
-                        onChange={handleInputChange}
-                        value={formData.questionType}
-                        placeholder="e.g., Multiple Choice, True/False, Short Answer, Essay, Fill in the Blanks, Match the Following"
-                    />
+                    <label htmlFor='questionType'>Question Type<span className="asterisk">*</span></label>
+                    <div className="radio-options">
+                        {["Multiple Choice", "True/False", "Short Answer", "Essay", "Fill in the Blanks", "Match the Following", "Other"].map(type => (
+                            <div key={type} className="radio-option">
+                                <input
+                                    type="radio"
+                                    name="questionType"
+                                    value={type}
+                                    checked={formData.questionType === type}
+                                    onChange={handleInputChange}
+                                />
+                                <label>{type}</label>
+                            </div>
+                        ))}
+                    </div>
                 </div>
 
+                {isOtherQuestionType && (
+                    <div className='form-group'>
+                        <label htmlFor='otherQuestionType'>Other<span className="asterisk">*</span></label>
+                        <input
+                            required
+                            className="form-control"
+                            name="otherQuestionType"
+                            onChange={handleInputChange}
+                            value={formData.otherQuestionType}
+                            placeholder="Specify the question type"
+                        />
+                    </div>
+                )}
+
                 <div className='form-group'>
-                    <label htmlFor='topic'> Topic <span className="asterisk">*</span></label>
+                    <label htmlFor='topic'>Topic / Learning Objective<span className="asterisk">*</span></label>
                     <input
                         required
                         className="form-control"
@@ -102,25 +116,19 @@ const CustomQuestion = () => {
                 </div>
 
                 <div className='form-group'>
-                    <label> Difficulty Level </label>
+                    <label>Difficulty Level</label>
                     <div className='checkbox-options'>
-                        <div className='checkbox-option'>
-                            <input type="checkbox" id="easy" name="easy" onChange={handleInputChange} value='easy' />
-                            <label htmlFor="easy">Easy</label>
-                        </div>
-                        <div className='checkbox-option'>
-                            <input type="checkbox" id="medium" name="medium" onChange={handleInputChange} value='medium' />
-                            <label htmlFor="medium">Medium</label>
-                        </div>
-                        <div className='checkbox-option'>
-                            <input type="checkbox" id="hard" name="hard" onChange={handleInputChange} value='hard' />
-                            <label htmlFor="hard">Hard</label>
-                        </div>
+                        {["Easy", "Medium", "Hard"].map(level => (
+                            <div key={level} className='checkbox-option'>
+                                <input type="checkbox" id={level} name="difficultyLevel" onChange={handleInputChange} value={level} />
+                                <label htmlFor={level}>{level}</label>
+                            </div>
+                        ))}
                     </div>
                 </div>
 
                 <div className='form-group'>
-                    <label htmlFor='contextPreference'> Context Preference </label>
+                    <label htmlFor='contextPreference'>Context Preference</label>
                     <textarea
                         className="form-control"
                         name="contextPreference"
@@ -132,7 +140,7 @@ const CustomQuestion = () => {
                 </div>
 
                 <div className='form-group'>
-                    <label htmlFor='additionalDetails'> Additional Details </label>
+                    <label htmlFor='additionalDetails'>Additional Details</label>
                     <textarea
                         className="form-control"
                         name="additionalDetails"
@@ -146,6 +154,7 @@ const CustomQuestion = () => {
                 <Button title='Generate' type="submit" />
             </form>
         </div>
-    )
+    );
 };
+
 export default CustomQuestion;

@@ -90,12 +90,12 @@ const Categories = () => {
         dispatch(resetGeneratedData())
     }, [filterCategory]);
 
-
+    const categoryQuery = Math.random().toString(36).slice(8)
     const handleTile = (redirect?: string, name?: string) => {
         const formData = JSON.parse(localStorage.getItem('upEdu_prefix') || '{}');
         if (localStorage.getItem('filterCategory') === 'CBSE Board') {
             const { gradeLevel, subject, chapter } = formData;
-    
+
             // If any required field is missing, don't redirect
             if (!gradeLevel || !subject || !chapter) {
                 alert('Please select all required fields before proceeding.');
@@ -105,6 +105,13 @@ const Categories = () => {
         if (redirect) {
             dispatch(setCategory(redirect));
             navigate(`/GeneratorAndResult/${redirect}`);
+
+            // Retrieve the existing object from localStorage
+            let existingData = localStorage.getItem('upEdu_prefix');
+            let data = existingData ? JSON.parse(existingData) : {};
+            data.catId = categoryQuery;
+            let updatedData = JSON.stringify(data);
+            localStorage.setItem('upEdu_prefix', updatedData);
         }
     };
 
@@ -152,7 +159,7 @@ const Categories = () => {
             } else {
                 localStorage.setItem('upEdu_prefix', JSON.stringify(updatedFormData));
             }
-    
+
             return updatedFormData;
         });
     };
@@ -160,7 +167,7 @@ const Categories = () => {
     const selectedGrade = JSON.parse(localStorage.getItem('upEdu_prefix'))?.gradeLevel || '';
     const selectedSubject = JSON.parse(localStorage.getItem('upEdu_prefix'))?.subject || '';
     const selectedChapter = JSON.parse(localStorage.getItem('upEdu_prefix'))?.chapter || '';
-    
+
 
     const getSubjectsForGrade = (grade: string) => {
         const selectedGrade = CBSEJSON?.CBSEForms?.Grades.find(item => item.grade === grade);
@@ -269,6 +276,7 @@ const Categories = () => {
                         <div className='category-listing'>
                             {categories.length === 0 ? <div className='loader-flex'> <div className="lds-ripple"><div></div><div></div></div> </div> : ''}
                             {categories
+                                .filter(item => item.name !== 'Story Creation Generator')
                                 .filter(item => {
                                     const isBookmarked = bookmarkedOnly ? bookmarkedIds.includes(item.id) : true;
                                     const isActive = item.isActive === true;

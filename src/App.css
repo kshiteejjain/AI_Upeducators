@@ -68,7 +68,13 @@ img {
 .checkbox-option {
   display: flex;
 }
-
+.radio-option {
+  display: flex;
+  align-items: center;
+}
+.radio-option input{
+  margin: 0 5px 0 0;
+}
 .asterisk {
   color: var(--error);
   font-size: var(--baseFontSize);

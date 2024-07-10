@@ -70,14 +70,14 @@ const CategoriesFilter: React.FC<Prop> = ({ onSelect }) => {
             {subCategories && subCategories.length > 0 && ` (${subCategories.length})`}
           </strong>
           {showSubcategories && subCategories && (
-           <span className="subCategories">
-           {[...subCategories].sort((a, b) => (a === 'All' ? -1 : b === 'All' ? 1 : 0)).map((subCategory, subIndex) => (
-             <span key={subIndex} onClick={() => handleClickTarget(subCategory)}>
-               - {subCategory.trim()}
-             </span>
-           ))}
-         </span>
-          )}
+              <span className="subCategories">
+                {subCategories.map((subCategory: string, subIndex: number) => (
+                  <span key={subIndex} onClick={() => handleClickTarget(subCategory)}>
+                    - {subCategory.trim()}
+                  </span>
+                ))}
+              </span>
+            )}
         </li>
       ))}
     </ul>

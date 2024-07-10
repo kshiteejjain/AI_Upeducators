@@ -2,7 +2,7 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
 import { handleCreditDecrement } from '../../utils/firebaseUtils';
 import { RootState } from 'react-redux';
-import { collection, doc, getDoc, getDocs, getFirestore, query, setDoc, updateDoc, where } from 'firebase/firestore';
+import { collection, doc, getDoc, getFirestore, setDoc, updateDoc } from 'firebase/firestore';
 
 const creditValue = Number(import.meta.env.VITE_TEXT_GENERATOR_CREDITS);
 // Define the async thunk
@@ -25,29 +25,32 @@ export const generatorPrompt = createAsyncThunk('generator/generatorPrompt', asy
     const firestore = getFirestore();
     const abcCollection = collection(firestore, 'CategoryStats');
     const user = localStorage.getItem('username'); // Assuming username is the user's email
+    const catId = JSON.parse(localStorage.getItem('upEdu_prefix') ?? '{}')?.catId;
 
     if (user) {
       const userDocRef = doc(abcCollection, user);
       const userDocSnapshot = await getDoc(userDocRef);
-
+    
       if (userDocSnapshot.exists()) {
         // User already has a document, update count
         const userData = userDocSnapshot.data();
-        const existingCategory = userData[selectedCategory];
-
+        const existingCategory = userData[catId];
+    
         if (existingCategory) {
-          // Category already exists for the user, increase count
+          // catId already exists for the user, increase count
           const currentCount = existingCategory.count || 0;
           await updateDoc(userDocRef, {
-            [selectedCategory]: {
+            [catId]: {
+              name: selectedCategory,
               count: currentCount + 1,
               timestamp: new Date().toLocaleString()
             }
           });
         } else {
-          // Add new category for the user
+          // Add new catId entry for the user
           await updateDoc(userDocRef, {
-            [selectedCategory]: {
+            [catId]: {
+              name: selectedCategory,
               count: 1,
               timestamp: new Date().toLocaleString()
             }
@@ -56,7 +59,8 @@ export const generatorPrompt = createAsyncThunk('generator/generatorPrompt', asy
       } else {
         // Add new document for the user
         await setDoc(userDocRef, {
-          [selectedCategory]: {
+          [catId]: {
+            name: selectedCategory,
             count: 1,
             timestamp: new Date().toLocaleString()
           }
@@ -65,6 +69,31 @@ export const generatorPrompt = createAsyncThunk('generator/generatorPrompt', asy
     } else {
       console.error("User is not logged in."); // Handle not logged in scenario
     }
+    
+    try {
+      const response = await axios.post(
+        `${import.meta.env.VITE_OPEN_AI_CHAT_COMPLETION_API_URL}`,
+        {
+          model: `${isGPT4 === 'true' ? 'gpt-4-0125-preview' : 'gpt-3.5-turbo'}`,
+          messages: prompt.map((msg) => ({
+            role: msg.role,
+            content: msg.content,
+          })),
+        },
+        {
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${import.meta.env.VITE_OPEN_AI_KEY}`,
+          },
+        }
+      );
+      console.log('Model used ', response.data.model);
+      return response?.data?.choices[0]?.message?.content?.trim();
+    } catch (error) {
+      alert(`Error sending message to OpenAI API:', ${error}`);
+      throw error;
+    }
+    
 
     const response = await axios.post(
       `${import.meta.env.VITE_OPEN_AI_CHAT_COMPLETION_API_URL}`,

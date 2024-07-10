@@ -18,28 +18,32 @@ export const generatorPrompt = createAsyncThunk('generator/generatorPrompt', asy
     const abcCollection = collection(firestore, 'CategoryStats');
     const user = localStorage.getItem('username'); // Assuming username is the user's email
 
+    const catId = JSON.parse(localStorage.getItem('upEdu_prefix') ?? '{}')?.catId;
+
     if (user) {
       const userDocRef = doc(abcCollection, user);
       const userDocSnapshot = await getDoc(userDocRef);
-
+    
       if (userDocSnapshot.exists()) {
         // User already has a document, update count
         const userData = userDocSnapshot.data();
-        const existingCategory = userData[selectedCategory];
-
+        const existingCategory = userData[catId];
+    
         if (existingCategory) {
-          // Category already exists for the user, increase count
+          // catId already exists for the user, increase count
           const currentCount = existingCategory.count || 0;
           await updateDoc(userDocRef, {
-            [selectedCategory]: {
+            [catId]: {
+              name: selectedCategory,
               count: currentCount + 1,
               timestamp: new Date().toLocaleString()
             }
           });
         } else {
-          // Add new category for the user
+          // Add new catId entry for the user
           await updateDoc(userDocRef, {
-            [selectedCategory]: {
+            [catId]: {
+              name: selectedCategory,
               count: 1,
               timestamp: new Date().toLocaleString()
             }
@@ -48,7 +52,8 @@ export const generatorPrompt = createAsyncThunk('generator/generatorPrompt', asy
       } else {
         // Add new document for the user
         await setDoc(userDocRef, {
-          [selectedCategory]: {
+          [catId]: {
+            name: selectedCategory,
             count: 1,
             timestamp: new Date().toLocaleString()
           }

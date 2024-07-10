@@ -17,8 +17,9 @@ type UserDocumentData = {
   password?: string
   timestamp?: any
   account_id?: any;
-  isPaid: boolean;
-  batch: string;
+  isPaid?: boolean;
+  batch?: string;
+  count?: number
 };
 export const fetchUserDocument = async (username: string): Promise<QuerySnapshot<DocumentData>> => {
   const collectionRef = collection(firestore, 'RegisteredUsers');
@@ -202,10 +203,10 @@ export const categoryStats = async (firestore: Firestore): Promise<UserDocumentD
       const email = doc.id;
       const categories = doc.data();
       Object.keys(categories).forEach((categoryName) => {
-        const { timestamp, count } = categories[categoryName];
+        const { timestamp, count, name } = categories[categoryName];
         userData.push({
           email,
-          categoryName,
+          categoryName: name,
           timestamp,
           count
         });

@@ -7,30 +7,54 @@ import { sendPrompt } from '../../utils/sendPrompt';
 const AcademicContent = () => {
     const { generatorData: { messages, input } } = useSelector((state) => state);
     const dispatch = useDispatch();
+
     const getInitialFormData = () => ({
         gradeLevel: '',
         topic: '',
         textLength: '',
+        otherTextLength: '', // New state for handling 'Other' text length
         contentType: '',
-        specialInstructions: ''
+        otherContentType: '', // New state for handling 'Other' content type
+        specialInstructions: '',
     });
+
     const [formData, setFormData] = useState(getInitialFormData);
+
     const handleInputChange = (e: ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
         const { name, value } = e.target;
-        setFormData((prevData) => ({
-            ...prevData,
-            [name]: value,
-        }));
+
+        // Update formData based on input type
+        if (name === 'textLength' && value === 'Other') {
+            setFormData((prevData) => ({
+                ...prevData,
+                textLength: value,
+                otherTextLength: '', // Reset other text length input when selecting 'Other'
+            }));
+        } else if (name === 'contentType' && value === 'Other') {
+            setFormData((prevData) => ({
+                ...prevData,
+                contentType: value,
+                otherContentType: '', // Reset other content type input when selecting 'Other'
+            }));
+        } else {
+            setFormData((prevData) => ({
+                ...prevData,
+                [name]: value,
+            }));
+        }
     };
-    const promptMessage = `Generate original academic content for ${formData.gradeLevel} focusing on the topic ${formData.topic}. The content should be approximately ${formData.textLength} in length. Special instructions: ${formData.specialInstructions}. Additionally, include references and citations. This content should be tailored to be educational and engaging for the specified grade level and subject matter. The content type is ${formData.contentType}.`;
+
+    const promptMessage = `Generate original academic content for ${formData.gradeLevel} focusing on this Topic / Learning Objective: ${formData.topic}. The content should be approximately ${formData.textLength === 'Other' ? formData.otherTextLength : formData.textLength} in length. Special instructions: ${formData.specialInstructions}. Additionally, include references and citations. This content should be tailored to be educational and engaging for the specified grade level and subject matter. The content type is ${formData.contentType === 'Other' ? formData.otherContentType : formData.contentType}.`;
+    console.log(promptMessage)
     const handleSubmit = (event: React.SyntheticEvent<HTMLFormElement>) => {
         event.preventDefault();
         sendPrompt(dispatch, { input, messages, generatorPrompt, promptMessage });
     };
+
     return (
         <div className="generator-section">
             <h2>Academic Content</h2>
-            <h3>Generates original academic content as per specific criteria.</h3>
+            <h3>Generate original academic content as per specific criteria.</h3>
             <form onSubmit={handleSubmit}>
                 <div className='form-group'>
                     <label htmlFor='gradeLevel'> Grade Level
@@ -61,7 +85,7 @@ const AcademicContent = () => {
                 </div>
 
                 <div className="form-group">
-                    <label htmlFor="topic"> Topic
+                    <label htmlFor="topic"> Topic / Learning Objective
                         <span className="asterisk">*</span></label>
                     <input
                         required
@@ -87,20 +111,111 @@ const AcademicContent = () => {
                         <option value="Medium">Medium (200-400 words)</option>
                         <option value="Long">Long (400-600 words)</option>
                         <option value="Very-Long">Very Long (600-800 words)</option>
+                        <option value="Other">Other</option>
                     </select>
                 </div>
-
+                {formData.textLength === 'Other' && (
+                    <div className='form-group'>
+                        <label htmlFor='otherQuestionType'>Other <span className="asterisk">*</span></label>
+                        <input
+                            className="form-control"
+                            name="otherTextLength"
+                            onChange={handleInputChange}
+                            value={formData.otherTextLength}
+                            placeholder="Specify other text length"
+                        />
+                    </div>
+                )}
 
                 <div className="form-group">
-                    <label htmlFor="contentType"> Content Type </label>
-                    <input
-                        className="form-control"
-                        name="contentType"
-                        onChange={handleInputChange}
-                        value={formData.contentType}
-                        placeholder="e.g., Textbook page, Essay, Short Story, Research Paper, News Article"
-                    />
+                    <label> Content Type
+                        <span className="asterisk">*</span></label>
+                    <label>
+                        <input
+                            type="radio"
+                            name="contentType"
+                            value="Textbook page"
+                            onChange={handleInputChange}
+                            checked={formData.contentType === 'Textbook page'}
+                        /> Textbook page
+                    </label>
+                    <label>
+                        <input
+                            type="radio"
+                            name="contentType"
+                            value="Flow Chart"
+                            onChange={handleInputChange}
+                            checked={formData.contentType === 'Flow Chart'}
+                        /> Flow Chart
+                    </label>
+                    <label>
+                        <input
+                            type="radio"
+                            name="contentType"
+                            value="Timeline/Chronology"
+                            onChange={handleInputChange}
+                            checked={formData.contentType === 'Timeline/Chronology'}
+                        /> Timeline/Chronology
+                    </label>
+                    <label>
+                        <input
+                            type="radio"
+                            name="contentType"
+                            value="Essay"
+                            onChange={handleInputChange}
+                            checked={formData.contentType === 'Essay'}
+                        /> Essay
+                    </label>
+                    <label>
+                        <input
+                            type="radio"
+                            name="contentType"
+                            value="Short Story"
+                            onChange={handleInputChange}
+                            checked={formData.contentType === 'Short Story'}
+                        /> Short Story
+                    </label>
+                    <label>
+                        <input
+                            type="radio"
+                            name="contentType"
+                            value="Research Paper"
+                            onChange={handleInputChange}
+                            checked={formData.contentType === 'Research Paper'}
+                        /> Research Paper
+                    </label>
+                    <label>
+                        <input
+                            type="radio"
+                            name="contentType"
+                            value="News Article"
+                            onChange={handleInputChange}
+                            checked={formData.contentType === 'News Article'}
+                        /> News Article
+                    </label>
+                    <label>
+                        <input
+                            type="radio"
+                            name="contentType"
+                            value="Other"
+                            onChange={handleInputChange}
+                            checked={formData.contentType === 'Other'}
+                        /> Other
+                    </label>
                 </div>
+                {formData.contentType === 'Other' && (
+                        <div className='form-group'>
+                            <label htmlFor='otherQuestionType'>Other <span className="asterisk">*</span></label>
+                            <input
+                                className="form-control"
+                                name="otherContentType"
+                                onChange={handleInputChange}
+                                value={formData.otherContentType}
+                                placeholder="Specify other content type"
+                            />
+                        </div>
+                    )}
+
                 <div className="form-group">
                     <label htmlFor="specialInstructions"> Special Instructions </label>
                     <textarea
@@ -109,8 +224,8 @@ const AcademicContent = () => {
                         onChange={handleInputChange}
                         rows={5}
                         value={formData.specialInstructions}
-                        placeholder="e.g., include real-world examples, incorporate statistical data, provide case studies, focus on recent trends">
-                    </textarea>
+                        placeholder="e.g., include real-world examples, incorporate statistical data, provide case studies, focus on recent trends"
+                    />
                 </div>
 
                 <Button title='Generate' type="submit" />
@@ -118,4 +233,5 @@ const AcademicContent = () => {
         </div>
     );
 };
+
 export default AcademicContent;
