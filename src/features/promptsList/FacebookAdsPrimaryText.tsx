@@ -43,7 +43,7 @@ const FacebookAdsPrimaryTextGenerator = () => {
       <h3>Craft primary text for Facebook ads, designed to resonate with your audience</h3>
       <form onSubmit={handleSubmit}>
         <div className="form-group">
-          <label htmlFor="facebookAdHeadline"> Headline of your Facebook ad <span className="asterisk">*</span></label>
+          <label htmlFor="facebookAdHeadline"> Headline of your Facebook ad<span className="asterisk">*</span></label>
           <input
             required
             className="form-control"
@@ -55,7 +55,7 @@ const FacebookAdsPrimaryTextGenerator = () => {
         </div>
 
         <div className="form-group">
-          <label htmlFor="audience"> Audience <span className="asterisk">*</span></label>
+          <label htmlFor="audience"> Audience<span className="asterisk">*</span></label>
           <input
             required
             className="form-control"

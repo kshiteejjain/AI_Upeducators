@@ -37,7 +37,7 @@ const StudentRecommendationLetter = () => {
             <h3>Generate a personalized letter of recommendation for any Student. </h3>
             <form onSubmit={handleSubmit}>
                 <div className='form-group'>
-                    <label htmlFor='purposeOfRecommendation'> Purpose of Recommendation <span className="asterisk">*</span> </label>
+                    <label htmlFor='purposeOfRecommendation'> Purpose of Recommendation<span className="asterisk">*</span> </label>
                     <input
                         required
                         className='form-control'
@@ -49,7 +49,7 @@ const StudentRecommendationLetter = () => {
                 </div>
 
                 <div className='form-group'>
-                    <label htmlFor='studentName'> Name of the Student <span className="asterisk">*</span> </label>
+                    <label htmlFor='studentName'> Name of the Student<span className="asterisk">*</span> </label>
                     <input
                         required
                         className='form-control'
@@ -61,7 +61,7 @@ const StudentRecommendationLetter = () => {
                 </div>
 
                 <div className='form-group'>
-                    <label htmlFor='studentGender'> Student’s Gender <span className="asterisk">*</span> </label>
+                    <label htmlFor='studentGender'> Student’s Gender<span className="asterisk">*</span> </label>
                     <select required className='form-control' name="studentGender" onChange={handleInputChange} value={formData.studentGender}>
                         <option value="" disabled selected>Select Gender</option>
                         <option value="Male">Male</option>
@@ -70,7 +70,7 @@ const StudentRecommendationLetter = () => {
                 </div>
 
                 <div className='form-group'>
-                    <label htmlFor='relationshipWithStudent'> Relationship with the Student <span className="asterisk">*</span> </label>
+                    <label htmlFor='relationshipWithStudent'> Relationship with the Student<span className="asterisk">*</span> </label>
                     <input
                         required
                         className='form-control'
@@ -93,7 +93,7 @@ const StudentRecommendationLetter = () => {
                 </div>
 
                 <div className='form-group'>
-                    <label htmlFor='studentDetails'> Student Details <span className="asterisk">*</span> </label>
+                    <label htmlFor='studentDetails'> Student Details<span className="asterisk">*</span> </label>
                     <textarea
                         required
                         className='form-control'
@@ -106,7 +106,7 @@ const StudentRecommendationLetter = () => {
                 </div>
 
                 <div className='form-group'>
-                    <label htmlFor='textLength'> Text Length <span className="asterisk">*</span> </label>
+                    <label htmlFor='textLength'> Text Length<span className="asterisk">*</span> </label>
                     <select required className='form-control' name="textLength" onChange={handleInputChange} value={formData.textLength}>
                         <option value="" disabled selected>Choose the desired length of the letter</option>
                         <option value="Short">Short (up to 200 words)</option>

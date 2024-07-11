@@ -53,7 +53,7 @@ const SoloTaxonomy = () => {
             <form onSubmit={handleSubmit}>
                 <div className='form-group'>
                     <label htmlFor='gradeLevel'> Grade Level
-                        <span className="asterisk">*</span></label>
+<span className="asterisk">*</span></label>
                     <select
                         required
                         className='form-control'
@@ -82,7 +82,7 @@ const SoloTaxonomy = () => {
 
                 <div className="form-group">
                     <label htmlFor="topic"> Topic
-                        <span className="asterisk">*</span></label>
+<span className="asterisk">*</span></label>
                     <input
                         required
                         className="form-control"
@@ -95,7 +95,7 @@ const SoloTaxonomy = () => {
 
                 <div className='form-group'>
                     <label htmlFor='soloTaxonomyLevels'> SOLO Taxonomy Levels
-                        <span className="asterisk">*</span></label>
+<span className="asterisk">*</span></label>
                     <div className='checkbox-group'>
                         <label>
                             <input
@@ -142,7 +142,7 @@ const SoloTaxonomy = () => {
 
                 <div className="form-group">
                     <label htmlFor="questionTypes"> Question Types
-                        <span className="asterisk">*</span></label>
+<span className="asterisk">*</span></label>
                     <input
                         required
                         className="form-control"

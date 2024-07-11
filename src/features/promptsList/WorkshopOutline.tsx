@@ -36,7 +36,7 @@ const WorkshopOutline = () => {
             <form onSubmit={handleSubmit}>
                 <div className='form-group'>
                     <label htmlFor='targetAudience'>Target Audience
-                        <span className="asterisk">*</span></label>
+<span className="asterisk">*</span></label>
                     <input
                         required
                         className='form-control'
@@ -48,7 +48,7 @@ const WorkshopOutline = () => {
 
                 <div className='form-group'>
                     <label htmlFor='workshopTitle'>Workshop Title/Topic
-                        <span className="asterisk">*</span></label>
+<span className="asterisk">*</span></label>
                     <input
                         required
                         className='form-control'
@@ -60,7 +60,7 @@ const WorkshopOutline = () => {
 
                 <div className='form-group'>
                     <label htmlFor='workshopDuration'>Workshop Duration
-                        <span className="asterisk">*</span></label>
+<span className="asterisk">*</span></label>
                     <input
                         required
                         className='form-control'

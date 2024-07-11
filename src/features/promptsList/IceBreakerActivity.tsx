@@ -35,7 +35,7 @@ const IceBreakerActivity = () => {
             <h3>Create icebreaker activities tailored for various age ranges and settings.</h3>
             <form onSubmit={handleSubmit}>
                 <div className="form-group">
-                    <label htmlFor="groupSize">Group Size <span className="asterisk">*</span></label>
+                    <label htmlFor="groupSize">Group Size<span className="asterisk">*</span></label>
                     <select className="form-control" name="groupSize" onChange={handleInputChange} value={formData.groupSize} required>
                         <option value="">Choose the size of the group that will participate in the icebreaker activity.</option>
                         <option value="5-10">5-10 members</option>
@@ -46,7 +46,7 @@ const IceBreakerActivity = () => {
                 </div>
 
                 <div className="form-group">
-                    <label htmlFor="activityContext">Activity Context <span className="asterisk">*</span></label>
+                    <label htmlFor="activityContext">Activity Context<span className="asterisk">*</span></label>
                     <input type="text" className="form-control" name="activityContext" onChange={handleInputChange} value={formData.activityContext} required placeholder="e.g., First Day of School, Starting a New Topic, Group Bonding, Cross-Department Collaboration, Fun Engagement" />
                 </div>
 

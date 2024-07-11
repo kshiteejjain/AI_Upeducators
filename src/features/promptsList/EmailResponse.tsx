@@ -30,7 +30,7 @@ const EmailResponse = () => {
             <h3>Create an email response based on the email you received.</h3>
             <form onSubmit={handleSubmit}>
                 <div className="form-group">
-                    <label htmlFor="receivedEmail"> Received Email <span className="asterisk">*</span></label>
+                    <label htmlFor="receivedEmail"> Received Email<span className="asterisk">*</span></label>
                     <textarea
                         required
                         className="form-control"
@@ -44,7 +44,7 @@ const EmailResponse = () => {
                 </div>
 
                 <div className="form-group">
-                    <label htmlFor="keyPointsToIncludeInReply"> Key Points to Include in Reply <span className="asterisk">*</span></label>
+                    <label htmlFor="keyPointsToIncludeInReply"> Key Points to Include in Reply<span className="asterisk">*</span></label>
                     <textarea
                         required
                         className="form-control"

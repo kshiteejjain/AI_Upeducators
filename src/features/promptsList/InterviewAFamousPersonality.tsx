@@ -35,7 +35,7 @@ const InterviewAHistoricalFigure = () => {
             <h3>Generate insightful interview responses from renowned personalities.</h3>
             <form onSubmit={handleSubmit}>
                 <div className="form-group">
-                    <label htmlFor="gradeLevel">Grade Level <span className="asterisk">*</span></label>
+                    <label htmlFor="gradeLevel">Grade Level<span className="asterisk">*</span></label>
                     <select
                         required
                         className="form-control"
@@ -76,7 +76,7 @@ const InterviewAHistoricalFigure = () => {
                 </div>
 
                 <div className="form-group">
-                    <label htmlFor="interviewQuestion">Interview Question <span className="asterisk">*</span></label>
+                    <label htmlFor="interviewQuestion">Interview Question<span className="asterisk">*</span></label>
                     <input
                         required
                         className="form-control"

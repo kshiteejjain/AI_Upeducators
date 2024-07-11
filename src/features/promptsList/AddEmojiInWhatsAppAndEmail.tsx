@@ -33,7 +33,7 @@ const AddEmojiInWhatsAppAndEmail = () => {
             <form onSubmit={handleSubmit}>
                 <div className='form-group'>
                     <label htmlFor='addYourContent'> Add Your Content
-                        <span className="asterisk">*</span>
+<span className="asterisk">*</span>
                     </label>
                     <textarea
                         required

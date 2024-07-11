@@ -76,14 +76,13 @@ const CustomQuestion = () => {
                     <div className="radio-options">
                         {["Multiple Choice", "True/False", "Short Answer", "Essay", "Fill in the Blanks", "Match the Following", "Other"].map(type => (
                             <div key={type} className="radio-option">
-                                <input
+                                <label><input
                                     type="radio"
                                     name="questionType"
                                     value={type}
                                     checked={formData.questionType === type}
                                     onChange={handleInputChange}
-                                />
-                                <label>{type}</label>
+                                /> {type}</label>
                             </div>
                         ))}
                     </div>

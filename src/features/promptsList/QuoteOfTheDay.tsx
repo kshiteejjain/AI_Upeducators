@@ -32,7 +32,7 @@ const QuoteOfTheDay = () => {
             <form onSubmit={handleSubmit}>
                 <div className="form-group">
                     <label htmlFor="topic"> Topic
-                        <span className="asterisk">*</span></label>
+<span className="asterisk">*</span></label>
                     <input
                         required
                         className="form-control"

@@ -33,7 +33,7 @@ const FacebookReelsTitleIdeas = () => {
             <h3>Generate creative title ideas for Reels.</h3>
             <form onSubmit={handleSubmit}>
                 <div className="form-group">
-                    <label htmlFor="audience"> Audience <span className="asterisk">*</span></label>
+                    <label htmlFor="audience"> Audience<span className="asterisk">*</span></label>
                     <input
                         required
                         className="form-control"
@@ -45,7 +45,7 @@ const FacebookReelsTitleIdeas = () => {
                 </div>
 
                 <div className="form-group">
-                    <label htmlFor="topicInterestArea"> Topic/Interest Area <span className="asterisk">*</span></label>
+                    <label htmlFor="topicInterestArea"> Topic/Interest Area<span className="asterisk">*</span></label>
                     <input
                         required
                         className="form-control"
@@ -56,7 +56,7 @@ const FacebookReelsTitleIdeas = () => {
                     />
                 </div>
                 <div className="form-group">
-                    <label htmlFor="duration"> Duration <span className="asterisk">*</span></label>
+                    <label htmlFor="duration"> Duration<span className="asterisk">*</span></label>
                     <input
                         required
                         className="form-control"

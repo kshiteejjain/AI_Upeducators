@@ -212,8 +212,7 @@ const Categories = () => {
                         {localStorage.getItem('filterCategory') === 'CBSE Board' ?
                             <form className='board-forms-prefix'>
                                 <div className='form-group'>
-                                    <label htmlFor='gradeLevel'>Grade Level
-                                        <span className="asterisk">*</span></label>
+                                    <label htmlFor='gradeLevel'>Grade Level<span className="asterisk">*</span></label>
                                     <select
                                         required
                                         className='form-control'
@@ -231,8 +230,7 @@ const Categories = () => {
                                 </div>
 
                                 <div className='form-group'>
-                                    <label htmlFor='subject'>Subject
-                                        <span className="asterisk">*</span></label>
+                                    <label htmlFor='subject'>Subject<span className="asterisk">*</span></label>
                                     <select
                                         required
                                         className='form-control'
@@ -250,8 +248,7 @@ const Categories = () => {
                                 </div>
 
                                 <div className='form-group'>
-                                    <label htmlFor='chapter'>Chapter
-                                        <span className="asterisk">*</span></label>
+                                    <label htmlFor='chapter'>Chapter<span className="asterisk">*</span></label>
                                     <select
                                         required
                                         className='form-control'

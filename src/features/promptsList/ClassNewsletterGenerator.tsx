@@ -37,7 +37,7 @@ const ClassNewsletterGenerator = () => {
             <h3>Create a customized newsletter for your class, highlighting recent activities, achievements, and upcoming events.</h3>
             <form onSubmit={handleSubmit}>
                 <div className='form-group'>
-                    <label htmlFor='classLevel'> Class Level <span className='asterisk'>*</span> </label>
+                    <label htmlFor='classLevel'> Class Level<span className='asterisk'>*</span> </label>
                     <select required className='form-control' name="classLevel" onChange={handleInputChange} value={formData.classLevel}>
                     <option value="">Select the grade level for which the project is intended.</option>
                         <option value="Nursery">Nursery</option>
@@ -62,7 +62,7 @@ const ClassNewsletterGenerator = () => {
                     <input type="date" className='form-control' name='newsletterDate' onChange={handleInputChange} value={formData.newsletterDate} />
                 </div>
                 <div className='form-group'>
-                    <label htmlFor='mainEvents'> Main Events <span className='asterisk'>*</span></label>
+                    <label htmlFor='mainEvents'> Main Events<span className='asterisk'>*</span></label>
                     <input required className='form-control' name='mainEvents' onChange={handleInputChange} value={formData.mainEvents} placeholder='Briefly describe the main events or highlights since the last newsletter.' /> 
                 </div>
                 {/* Add more form groups for other fields (upcomingEvents, specialAnnouncements, studentAchievements, parentReminders, teachersNote, length) as needed */}

@@ -34,7 +34,7 @@ const SEOForWebsite = () => {
             <h3>Generate SEO title tag, meta description, page title & one liner for your website</h3>
             <form onSubmit={handleSubmit}>
                 <div className="form-group">
-                    <label htmlFor="pageTitle">Page Title <span className="asterisk">*</span></label>
+                    <label htmlFor="pageTitle">Page Title<span className="asterisk">*</span></label>
                     <input
                         required
                         className="form-control"
@@ -46,7 +46,7 @@ const SEOForWebsite = () => {
                 </div>
 
                 <div className="form-group">
-                    <label htmlFor="targetAudience">Target Audience <span className="asterisk">*</span></label>
+                    <label htmlFor="targetAudience">Target Audience<span className="asterisk">*</span></label>
                     <input
                         required
                         className="form-control"

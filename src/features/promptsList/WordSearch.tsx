@@ -36,7 +36,7 @@ const WordSearch = () => {
             <h3>Create a custom Word Search game.</h3>
             <form onSubmit={handleSubmit}>
                 <div className="form-group">
-                    <label htmlFor="gradeLevel">Grade Level <span className="asterisk">*</span></label>
+                    <label htmlFor="gradeLevel">Grade Level<span className="asterisk">*</span></label>
                     <select
                         required
                         className="form-control"
@@ -63,7 +63,7 @@ const WordSearch = () => {
                     </select>
                 </div>
                 <div className="form-group">
-                    <label htmlFor="subject">Subject <span className="asterisk">*</span></label>
+                    <label htmlFor="subject">Subject<span className="asterisk">*</span></label>
                     <input
                         required
                         className="form-control"
@@ -74,7 +74,7 @@ const WordSearch = () => {
                     />
                 </div>
                 <div className="form-group">
-                    <label htmlFor="numberOfWords">Number of Words <span className="asterisk">*</span></label>
+                    <label htmlFor="numberOfWords">Number of Words<span className="asterisk">*</span></label>
                     <select
                         required
                         className="form-control"
@@ -91,7 +91,7 @@ const WordSearch = () => {
                     </select>
                 </div>
                 <div className="form-group">
-                    <label htmlFor="difficultyLevel">Difficulty Level <span className="asterisk">*</span></label>
+                    <label htmlFor="difficultyLevel">Difficulty Level<span className="asterisk">*</span></label>
                     <select
                         required
                         className="form-control"
@@ -106,7 +106,7 @@ const WordSearch = () => {
                     </select>
                 </div>
                 <div className="form-group">
-                    <label htmlFor="gridSize">Grid Size <span className="asterisk">*</span></label>
+                    <label htmlFor="gridSize">Grid Size<span className="asterisk">*</span></label>
                     <select
                         required
                         className="form-control"

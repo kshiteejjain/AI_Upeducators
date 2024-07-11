@@ -50,7 +50,7 @@ const TextWebPageSummarizer = () => {
             <h3>Summarize any text or web page in a concise format. </h3>
             <form onSubmit={handleSubmit}>
                 <div className="form-group">
-                    <label htmlFor="textURLToSummarize"> Text / URL to Summarize <span className="asterisk">*</span></label>
+                    <label htmlFor="textURLToSummarize"> Text / URL to Summarize<span className="asterisk">*</span></label>
                     <textarea
                         required
                         className="form-control"
@@ -62,7 +62,7 @@ const TextWebPageSummarizer = () => {
                     />
                 </div>
                 <div className="form-group">
-                    <label htmlFor="summaryLength"> Summary Length <span className="asterisk">*</span></label>
+                    <label htmlFor="summaryLength"> Summary Length<span className="asterisk">*</span></label>
                     <select
                         required
                         className='form-control'
@@ -81,7 +81,7 @@ const TextWebPageSummarizer = () => {
 
                 {formData.summaryLength === 'Other' && (
                         <div className='form-group'>
-                        <label htmlFor='otherQuestionType'>Other <span className="asterisk">*</span></label>
+                        <label htmlFor='otherQuestionType'>Other<span className="asterisk">*</span></label>
                         <input
                             className="form-control"
                             name="otherSummaryLength"

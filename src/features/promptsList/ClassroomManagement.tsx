@@ -36,7 +36,7 @@ const ClassroomRulesAndExpectations = () => {
             <form onSubmit={handleSubmit}>
                 <div className='form-group'>
                     <label htmlFor='gradeLevel'>Grade Level
-                        <span className="asterisk">*</span></label>
+<span className="asterisk">*</span></label>
                     <select
                         required
                         className='form-control'
@@ -65,7 +65,7 @@ const ClassroomRulesAndExpectations = () => {
 
                 <div className='form-group'>
                     <label htmlFor='behaviorFocus'>Behavior Focus or Common Challenges
-                        <span className="asterisk">*</span></label>
+<span className="asterisk">*</span></label>
                     <textarea
                         required
                         className='form-control'

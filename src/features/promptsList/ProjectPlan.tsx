@@ -37,7 +37,7 @@ const ProjectPlan = () => {
             <form onSubmit={handleSubmit}>
                 <div className='form-group'>
                     <label htmlFor='gradeLevel'>Grade Level
-                        <span className="asterisk">*</span></label>
+<span className="asterisk">*</span></label>
                     <select
                         required
                         className='form-control'
@@ -66,7 +66,7 @@ const ProjectPlan = () => {
 
                 <div className='form-group'>
                     <label htmlFor='topicOrTitle'>Topic or Title
-                        <span className="asterisk">*</span></label>
+<span className="asterisk">*</span></label>
                     <input
                         required
                         className='form-control'
@@ -78,7 +78,7 @@ const ProjectPlan = () => {
 
                 <div className='form-group'>
                     <label htmlFor='learningObjective'>Learning Objective Or Project Description
-                        <span className="asterisk">*</span></label>
+<span className="asterisk">*</span></label>
                     <textarea
                         required
                         className='form-control'

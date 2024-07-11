@@ -62,7 +62,7 @@ const CBSECustomQuestions = () => {
             <form onSubmit={handleSubmit}>
                 <div className='form-group'>
                     <label htmlFor='gradeLevel'>Grade Level
-                        <span className="asterisk">*</span></label>
+<span className="asterisk">*</span></label>
                     <select
                         required
                         className='form-control'
@@ -77,7 +77,7 @@ const CBSECustomQuestions = () => {
 
                 <div className='form-group'>
                     <label htmlFor='subject'>Subject
-                        <span className="asterisk">*</span></label>
+<span className="asterisk">*</span></label>
                     <select
                         required
                         className='form-control'
@@ -91,7 +91,7 @@ const CBSECustomQuestions = () => {
                 </div>
                 <div className='form-group'>
                     <label htmlFor='chapter'>Chapter
-                        <span className="asterisk">*</span></label>
+<span className="asterisk">*</span></label>
                     <select
                         required
                         className='form-control'
@@ -118,16 +118,13 @@ const CBSECustomQuestions = () => {
                     <label> Difficulty Level </label>
                     <div className='checkbox-options'>
                         <div className='checkbox-option'>
-                            <input type="checkbox" id="easy" name="easy" onChange={handleInputChange} value='easy' />
-                            <label htmlFor="easy">Easy</label>
+                            <label htmlFor="easy"><input type="checkbox" id="easy" name="easy" onChange={handleInputChange} value='easy' /> Easy</label>
                         </div>
                         <div className='checkbox-option'>
-                            <input type="checkbox" id="medium" name="medium" onChange={handleInputChange} value='medium' />
-                            <label htmlFor="medium">Medium</label>
+                            <label htmlFor="medium"><input type="checkbox" id="medium" name="medium" onChange={handleInputChange} value='medium' /> Medium</label>
                         </div>
                         <div className='checkbox-option'>
-                            <input type="checkbox" id="hard" name="hard" onChange={handleInputChange} value='hard' />
-                            <label htmlFor="hard">Hard</label>
+                            <label htmlFor="hard"><input type="checkbox" id="hard" name="hard" onChange={handleInputChange} value='hard' /> Hard</label>
                         </div>
                     </div>
                 </div>

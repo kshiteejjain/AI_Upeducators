@@ -52,7 +52,7 @@ const CustomiseImages = () => {
       <form onSubmit={handleSubmit}>
 
         <div className="form-group">
-          <label htmlFor="defineTheImage">Define the Image <span className="asterisk">*</span></label>
+          <label htmlFor="defineTheImage">Define the Image<span className="asterisk">*</span></label>
           <textarea
             required
             className="form-control"

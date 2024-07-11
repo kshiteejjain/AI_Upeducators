@@ -52,7 +52,7 @@ const TwentyFirstCenturySkillsBasedLessonPlan = () => {
             <form onSubmit={handleSubmit}>
                 <div className='form-group'>
                     <label htmlFor='gradeLevel'>Grade Level
-                        <span className="asterisk">*</span></label>
+<span className="asterisk">*</span></label>
                     <select
                         required
                         className='form-control'
@@ -81,7 +81,7 @@ const TwentyFirstCenturySkillsBasedLessonPlan = () => {
 
                 <div className='form-group'>
                     <label htmlFor='topicSubject'>Topic / Subject / Learning Objectives
-                        <span className="asterisk">*</span></label>
+<span className="asterisk">*</span></label>
                     <input
                         required
                         className='form-control'
@@ -92,25 +92,29 @@ const TwentyFirstCenturySkillsBasedLessonPlan = () => {
                 </div>
 
                 <div className='form-group'>
-                    <label htmlFor='twentyFirstCenturySkills'>21st Century Skills <span className='asterisk'>*</span></label>
+                    <label htmlFor='twentyFirstCenturySkills'>Addon<span className='asterisk'>*</span></label>
                     <div className="checkbox-options">
-                        {["Critical Thinking", "Creativity", "Collaboration", "Communication", "Problem-solving", "Innovation", "Teamwork", "Interpersonal skills", "Technology literacy", "Adaptability", "Leadership and Responsibility", "Initiative and Self-direction", "Others"].map(skill => (
+                        {["Critical Thinking", "Creativity", "Collaboration", "Communication", "Problem-solving", "Innovation", "Teamwork", "Interpersonal skills", "Technology literacy", "Adaptability", "Leadership and Responsibility", "Initiative and Self-direction", "Others"].map((skill, index) => (
                             <div key={skill} className="checkbox-option">
+                                <label htmlFor={`twentyFirstCenturySkills_${index}`}>
                                 <input
                                     type="checkbox"
+                                    id={`twentyFirstCenturySkills_${index}`}
                                     name="twentyFirstCenturySkills"
                                     value={skill}
                                     checked={formData.twentyFirstCenturySkills.includes(skill)}
                                     onChange={handleCheckboxChange}
                                 />
-                                <label htmlFor='twentyFirstCenturySkills'>{skill}</label>
+                                    {skill}
+                                </label>
                             </div>
                         ))}
                     </div>
                 </div>
+
                 {isTwentyFirstCenturySkillsOthers && <div className='form-group'>
                     <label htmlFor='twentyFirstCenturySkillsOthers'>Others
-                        <span className="asterisk">*</span></label>
+<span className="asterisk">*</span></label>
                     <input
                         required
                         className='form-control'

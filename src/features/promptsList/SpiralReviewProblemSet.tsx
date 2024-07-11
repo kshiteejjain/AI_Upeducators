@@ -33,7 +33,7 @@ const SpiralReviewProblemSet = () => {
             <h3>Generate a spiral review problem set to reinforce maths concepts. </h3>
             <form onSubmit={handleSubmit}>
                 <div className='form-group'>
-                    <label htmlFor='gradeLevel'> Grade Level <span className="asterisk">*</span></label>
+                    <label htmlFor='gradeLevel'> Grade Level<span className="asterisk">*</span></label>
                     <select required className='form-control' name="gradeLevel" onChange={handleInputChange} value={formData.gradeLevel} placeholder="Select the grade level for which the problem set is intended.">
                         <option value="Nursery">Nursery</option>
                         <option value="Preparatory">Preparatory</option>
@@ -54,7 +54,7 @@ const SpiralReviewProblemSet = () => {
                 </div>
 
                 <div className="form-group">
-                    <label htmlFor="mathsTopic"> Maths Topic <span className="asterisk">*</span></label>
+                    <label htmlFor="mathsTopic"> Maths Topic<span className="asterisk">*</span></label>
                     <input
                         required
                         className="form-control"
@@ -66,7 +66,7 @@ const SpiralReviewProblemSet = () => {
                 </div>
 
                 <div className="form-group">
-                    <label htmlFor="questionType"> Question Type <span className="asterisk">*</span></label>
+                    <label htmlFor="questionType"> Question Type<span className="asterisk">*</span></label>
                     <input
                         required
                         className="form-control"

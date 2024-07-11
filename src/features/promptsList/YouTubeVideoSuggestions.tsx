@@ -35,7 +35,7 @@ const YouTubeVideoSuggestions = () => {
             <h3>Generate a curated list of YouTube video suggestions on specific topics.</h3>
             <form onSubmit={handleSubmit}>
                 <div className="form-group">
-                    <label htmlFor="gradeLevel">Grade Level <span className="asterisk">*</span></label>
+                    <label htmlFor="gradeLevel">Grade Level<span className="asterisk">*</span></label>
                     <select
                         required
                         className="form-control"
@@ -65,7 +65,7 @@ const YouTubeVideoSuggestions = () => {
 
 
                 <div className="form-group">
-                    <label htmlFor="topicSubject">Topic/Subject <span className="asterisk">*</span></label>
+                    <label htmlFor="topicSubject">Topic/Subject<span className="asterisk">*</span></label>
                     <input
                         required
                         className="form-control"

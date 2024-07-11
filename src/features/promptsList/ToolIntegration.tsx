@@ -36,7 +36,7 @@ const ToolIntegration = () => {
             <h3>Find tools that can be integrated into educational content for any topic.</h3>
             <form onSubmit={handleSubmit}>
                 <div className="form-group">
-                    <label htmlFor="gradeLevel">Grade Level <span className="asterisk">*</span></label>
+                    <label htmlFor="gradeLevel">Grade Level<span className="asterisk">*</span></label>
                     <select
                         required
                         className="form-control"
@@ -66,7 +66,7 @@ const ToolIntegration = () => {
                 </div>
 
                 <div className="form-group">
-                    <label htmlFor="topicSubject">Topic/Subject <span className="asterisk">*</span></label>
+                    <label htmlFor="topicSubject">Topic/Subject<span className="asterisk">*</span></label>
                     <input
                         required
                         className="form-control"

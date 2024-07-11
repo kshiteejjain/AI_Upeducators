@@ -36,7 +36,7 @@ const DesignLogo = () => {
             <h3>Design a Logo for your classes</h3>
             <form onSubmit={handleSubmit}>
                 <div className="form-group">
-                    <label htmlFor="instituteName">Institute name <span className="asterisk">*</span></label>
+                    <label htmlFor="instituteName">Institute name<span className="asterisk">*</span></label>
                     <input
                         required
                         type="text"
@@ -49,7 +49,7 @@ const DesignLogo = () => {
                 </div>
 
                 <div className="form-group">
-                    <label htmlFor="serviceDescription">Service description <span className="asterisk">*</span></label>
+                    <label htmlFor="serviceDescription">Service description<span className="asterisk">*</span></label>
                     <input
                         required
                         type="text"

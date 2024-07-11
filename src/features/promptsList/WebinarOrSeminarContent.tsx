@@ -35,7 +35,7 @@ const WebinarContentStoriesExampleStatsActivities = () => {
             <h3>Generate Stories/Example/Stats/Activities for the Webinar or Seminar</h3>
             <form onSubmit={handleSubmit}>
                 <div className="form-group">
-                    <label htmlFor="webinarTitle"> Webinar Title <span className="asterisk">*</span></label>
+                    <label htmlFor="webinarTitle"> Webinar Title<span className="asterisk">*</span></label>
                     <input
                         required
                         className="form-control"
@@ -47,7 +47,7 @@ const WebinarContentStoriesExampleStatsActivities = () => {
                 </div>
 
                 <div className="form-group">
-                    <label htmlFor="audience"> Audience <span className="asterisk">*</span></label>
+                    <label htmlFor="audience"> Audience<span className="asterisk">*</span></label>
                     <input
                         required
                         className="form-control"
@@ -59,7 +59,7 @@ const WebinarContentStoriesExampleStatsActivities = () => {
                 </div>
 
                 <div className="form-group">
-                    <label htmlFor="duration"> Duration <span className="asterisk">*</span></label>
+                    <label htmlFor="duration"> Duration<span className="asterisk">*</span></label>
                     <input
                         required
                         className="form-control"
@@ -72,7 +72,7 @@ const WebinarContentStoriesExampleStatsActivities = () => {
 
 
                 <div className='form-group'>
-                    <label htmlFor='contentType'> Content Type <span className="asterisk">*</span> </label>
+                    <label htmlFor='contentType'> Content Type<span className="asterisk">*</span> </label>
                     <select className='form-control' name="contentType" onChange={handleInputChange} value={formData.contentType}>
                         <option value="Stories">Stories</option>
                         <option value="Examples">Examples</option>

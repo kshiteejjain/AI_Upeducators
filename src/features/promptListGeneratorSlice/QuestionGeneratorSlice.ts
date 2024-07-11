@@ -43,6 +43,7 @@ export const generatorPrompt = createAsyncThunk('generator/generatorPrompt', asy
             [catId]: {
               name: selectedCategory,
               count: currentCount + 1,
+              creditsUsed: currentCount + 1,
               timestamp: new Date().toLocaleString()
             }
           });
@@ -52,6 +53,7 @@ export const generatorPrompt = createAsyncThunk('generator/generatorPrompt', asy
             [catId]: {
               name: selectedCategory,
               count: 1,
+              creditsUsed: 1,
               timestamp: new Date().toLocaleString()
             }
           });

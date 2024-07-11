@@ -36,7 +36,7 @@ const InterviewQuestions = () => {
             <h3>Generate interview questions to prepare yourself for the relevant job.</h3>
             <form onSubmit={handleSubmit}>
                 <div className="form-group">
-                    <label htmlFor="jobRoleDescription">Job Role or Job Description <span className="asterisk">*</span></label>
+                    <label htmlFor="jobRoleDescription">Job Role or Job Description<span className="asterisk">*</span></label>
                     <textarea
                         required
                         className="form-control"
@@ -47,7 +47,7 @@ const InterviewQuestions = () => {
                     ></textarea>
                 </div>
                 <div className="form-group">
-                    <label htmlFor="experienceYears">Experience Years <span className="asterisk">*</span></label>
+                    <label htmlFor="experienceYears">Experience Years<span className="asterisk">*</span></label>
                     <select
                         required
                         className="form-control"

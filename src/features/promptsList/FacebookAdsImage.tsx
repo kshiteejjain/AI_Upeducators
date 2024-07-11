@@ -32,7 +32,7 @@ const DesignFacebookAdsCreative = () => {
             <h3>Design image for your facebook ad.</h3>
             <form onSubmit={handleSubmit}>
                 <div className="form-group">
-                    <label htmlFor="adHeadline">Ad Headline <span className="asterisk">*</span></label>
+                    <label htmlFor="adHeadline">Ad Headline<span className="asterisk">*</span></label>
                     <input
                         required
                         type="text"

@@ -31,7 +31,7 @@ const PersonalStyleTextRewriter = () => {
             <h3>Rewrite a given text in your style of writing.</h3>
             <form onSubmit={handleSubmit}>
                 <div className="form-group">
-                    <label htmlFor="originalText">Original Text <span className="asterisk">*</span></label>
+                    <label htmlFor="originalText">Original Text<span className="asterisk">*</span></label>
                     <textarea
                         required
                         className="form-control"
@@ -44,7 +44,7 @@ const PersonalStyleTextRewriter = () => {
                 </div>
 
                 <div className="form-group">
-                    <label htmlFor="yourWritingStyle">Your Writing Style <span className="asterisk">*</span></label>
+                    <label htmlFor="yourWritingStyle">Your Writing Style<span className="asterisk">*</span></label>
                     <textarea
                         required
                         className="form-control"

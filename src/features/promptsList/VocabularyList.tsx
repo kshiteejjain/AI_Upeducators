@@ -32,7 +32,7 @@ const VocabularyList = () => {
             <form onSubmit={handleSubmit}>
                 <div className='form-group'>
                     <label htmlFor='gradeLevel'> Grade Level
-                        <span className="asterisk">*</span></label>
+<span className="asterisk">*</span></label>
                     <select
                         required
                         className='form-control'
@@ -60,7 +60,7 @@ const VocabularyList = () => {
 
                 <div className="form-group">
                     <label htmlFor="topicOrText"> Topic or Text
-                        <span className="asterisk">*</span></label>
+<span className="asterisk">*</span></label>
                     <textarea
                         required
                         className="form-control"

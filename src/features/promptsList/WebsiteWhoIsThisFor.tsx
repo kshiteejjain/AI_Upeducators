@@ -31,7 +31,7 @@ const LandingPageWhoIsThisFor = () => {
             <h3>Generate Content for ‘Who is this for’ section on website or landing page.</h3>
             <form onSubmit={handleSubmit}>
                 <div className="form-group">
-                    <label htmlFor="topicLandingPage"> Topic of the Landing Page <span className="asterisk">*</span></label>
+                    <label htmlFor="topicLandingPage"> Topic of the Landing Page<span className="asterisk">*</span></label>
                     <input
                         required
                         className="form-control"
@@ -43,7 +43,7 @@ const LandingPageWhoIsThisFor = () => {
                 </div>
 
                 <div className="form-group">
-                    <label htmlFor="audience"> Audience <span className="asterisk">*</span></label>
+                    <label htmlFor="audience"> Audience<span className="asterisk">*</span></label>
                     <input
                         required
                         className="form-control"

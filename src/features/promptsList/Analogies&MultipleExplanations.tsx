@@ -33,7 +33,7 @@ const AnalogiesMultipleExplanations = () => {
             <h3>Generate multiple explanations and analogies of concepts.</h3>
             <form onSubmit={handleSubmit}>
                 <div className="form-group">
-                    <label htmlFor="gradeLevel">Grade Level <span className="asterisk">*</span></label>
+                    <label htmlFor="gradeLevel">Grade Level<span className="asterisk">*</span></label>
                     <select className="form-control" name="gradeLevel"  onChange={handleInputChange} value={formData.gradeLevel} required>
                         <option value="">Select the grade level of your students.</option>
                         <option value="Nursery">Nursery</option>
@@ -55,7 +55,7 @@ const AnalogiesMultipleExplanations = () => {
                 </div>
 
                 <div className="form-group">
-                    <label htmlFor="topicConcept">Topic/Concept <span className="asterisk">*</span></label>
+                    <label htmlFor="topicConcept">Topic/Concept<span className="asterisk">*</span></label>
                     <input type="text" className="form-control" name="topicConcept"  onChange={handleInputChange} value={formData.topicConcept} required placeholder="e.g., Photosynthesis, Pythagoras Theorem, World War II, Gravity" />
                 </div>
 

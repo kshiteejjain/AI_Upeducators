@@ -36,7 +36,7 @@ const CourseLandingPageTitle = () => {
             <h3>Generate Main Headline and Sub-headline for your website or Landing page.</h3>
             <form onSubmit={handleSubmit}>
                 <div className="form-group">
-                    <label htmlFor="topic"> Topic <span className="asterisk">*</span></label>
+                    <label htmlFor="topic"> Topic<span className="asterisk">*</span></label>
                     <input
                         required
                         className="form-control"
@@ -48,7 +48,7 @@ const CourseLandingPageTitle = () => {
                 </div>
 
                 <div className="form-group">
-                    <label htmlFor="pageObjective"> Page Objective <span className="asterisk">*</span></label>
+                    <label htmlFor="pageObjective"> Page Objective<span className="asterisk">*</span></label>
                     <input
                         required
                         className="form-control"
@@ -60,7 +60,7 @@ const CourseLandingPageTitle = () => {
                 </div>
 
                 <div className="form-group">
-                    <label htmlFor="targetAudience"> Target Audience <span className="asterisk">*</span></label>
+                    <label htmlFor="targetAudience"> Target Audience<span className="asterisk">*</span></label>
                     <input
                         required
                         className="form-control"

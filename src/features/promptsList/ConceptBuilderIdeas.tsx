@@ -31,7 +31,7 @@ const ConceptBuilderIdeas = () => {
             <h3>Develop a deep understanding of concepts.</h3>
             <form onSubmit={handleSubmit}>
                 <div className='form-group'>
-                    <label htmlFor='gradeLevel'> Grade Level <span className="asterisk">*</span></label>
+                    <label htmlFor='gradeLevel'> Grade Level<span className="asterisk">*</span></label>
                     <select required className='form-control' name="gradeLevel" onChange={handleInputChange} value={formData.gradeLevel} placeholder="Select the grade level of your students.">
                         <option value="Nursery">Nursery</option>
                         <option value="Preparatory">Preparatory</option>
@@ -52,7 +52,7 @@ const ConceptBuilderIdeas = () => {
                 </div>
 
                 <div className="form-group">
-                    <label htmlFor="topic"> Topic <span className="asterisk">*</span></label>
+                    <label htmlFor="topic"> Topic<span className="asterisk">*</span></label>
                     <input
                         required
                         className="form-control"

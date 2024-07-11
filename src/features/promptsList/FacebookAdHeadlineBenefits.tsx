@@ -45,7 +45,7 @@ const FacebookAdHeadlineBenefits = () => {
             <h3>Create Headline &  benefits for Facebook ads creative</h3>
             <form onSubmit={handleSubmit}>
                 <div className="form-group">
-                    <label htmlFor="courseSkillName"> Course/Skill Name <span className="asterisk">*</span></label>
+                    <label htmlFor="courseSkillName"> Course/Skill Name<span className="asterisk">*</span></label>
                     <input
                         required
                         className="form-control"
@@ -58,7 +58,7 @@ const FacebookAdHeadlineBenefits = () => {
 
 
                 <div className="form-group">
-                    <label htmlFor="audience"> Audience <span className="asterisk">*</span></label>
+                    <label htmlFor="audience"> Audience<span className="asterisk">*</span></label>
                     <input
                         required
                         className="form-control"

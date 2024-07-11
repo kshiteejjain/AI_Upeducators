@@ -52,7 +52,7 @@ const LeadNurturingEmailIdeas = () => {
             <h3>Generate tailored lead nurturing email ideas for 6 weeks</h3>
             <form onSubmit={handleSubmit}>
                 <div className="form-group">
-                    <label htmlFor="topic"> Topic <span className="asterisk">*</span></label>
+                    <label htmlFor="topic"> Topic<span className="asterisk">*</span></label>
                     <input
                         required
                         className="form-control"
@@ -64,7 +64,7 @@ const LeadNurturingEmailIdeas = () => {
                 </div>
 
                 <div className="form-group">
-                    <label htmlFor="audience"> Audience <span className="asterisk">*</span></label>
+                    <label htmlFor="audience"> Audience<span className="asterisk">*</span></label>
                     <input
                         required
                         className="form-control"

@@ -20,6 +20,7 @@ interface UserData {
     total_credits: number;
     categoryName: string;
     count: number;
+    creditsUsed: number
     timestamp: string | number;
     mobileCountryCode: number;
     mobile: number;
@@ -250,7 +251,8 @@ const Profile: React.FC = () => {
                                 <thead>
                                     <tr>
                                         <th>Category Name</th>
-                                        <th>Count</th>
+                                        <th>Query Count</th>
+                                        <th>Credits Used</th>
                                         <th>Timestamp</th>
                                     </tr>
                                 </thead>
@@ -261,6 +263,7 @@ const Profile: React.FC = () => {
                                                 <span className='link'>{item.categoryName.split(/(?=[A-Z])/).join(' ')}</span>
                                             </td>
                                             <td>{item.count}</td>
+                                            <td>{item.creditsUsed}</td>
                                             <td>{item.timestamp}</td>
                                         </tr>
                                     ))}

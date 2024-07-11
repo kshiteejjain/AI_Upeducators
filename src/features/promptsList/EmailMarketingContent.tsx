@@ -35,7 +35,7 @@ const EmailContentGenerator = () => {
             <form onSubmit={handleSubmit}>
                 <div className="form-group">
                     <label htmlFor="emailSubject">Email Subject
-                        <span className="asterisk">*</span></label>
+<span className="asterisk">*</span></label>
                     <input
                         required
                         className="form-control"

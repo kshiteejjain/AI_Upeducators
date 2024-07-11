@@ -37,7 +37,7 @@ const LandingPageWhatWillYouLearn = () => {
             <form onSubmit={handleSubmit}>
                 <div className="form-group">
                     <label htmlFor="topicOfLandingPage"> Topic of the Landing Page
-                        <span className="asterisk">*</span>
+<span className="asterisk">*</span>
                     </label>
                     <input
                         required
@@ -62,7 +62,7 @@ const LandingPageWhatWillYouLearn = () => {
 
                 <div className="form-group">
                     <label htmlFor="audience"> Audience
-                        <span className="asterisk">*</span>
+<span className="asterisk">*</span>
                     </label>
                     <input
                         required

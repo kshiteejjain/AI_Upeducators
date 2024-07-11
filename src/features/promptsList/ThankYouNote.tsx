@@ -34,7 +34,7 @@ const ThankYouNote = () => {
             <form onSubmit={handleSubmit}>
                 <div className="form-group">
                     <label htmlFor="relationship"> Relationship
-                        <span className="asterisk">*</span></label>
+<span className="asterisk">*</span></label>
                     <input
                         required
                         className="form-control"
@@ -46,7 +46,7 @@ const ThankYouNote = () => {
                 </div>
                 <div className="form-group">
                     <label htmlFor="reason"> Reason
-                        <span className="asterisk">*</span></label>
+<span className="asterisk">*</span></label>
                     <input
                         required
                         className="form-control"

@@ -2,86 +2,29 @@
     "CBSEForms": {
         "Grades": [
             {
-                "grade": "6th-Grade",
+                "grade": "Grade 1",
                 "Subjects": {
-                    "Science": {
-                        "Chapters": [
-                            { "name": "Food: Where does it come from?", "description": "Analyze the food items in order to identify the ingredients used in different food items. Identify the sources of ingredients that are used to prepare food items. Observe different food ingredients in order to recognize if their origin is from the part of the plant and recognize the respective part. List the animal products in order to understand how we depend on them for our food. Categorize organisms into herbivores, carnivores, and omnivores based on their food habits or nutrition. Identifies materials and organisms, such as plant fibers and flowers, on the basis of observable features, i.e., appearance, and texture, Identify the sources of ingredients which are used to function, aroma, etc. Makes efforts to protect environment, e.g., minimising wastage of food, water, electricity and generation of waste; spreading awareness to adopt rain water harvesting; care for plants, etc. Classifies materials, organisms and processes based on observable properties, e.g., materials as soluble, insoluble, transparent, translucent and opaque; changes that can be reversed and cannot be reversed; plants as herbs, shrubs, trees, creeper, climbers; components of habitat as biotic and abiotic; motion as rectilinear, circular, periodic etc." },
-                            { "name": "Test Nutrients in Food", "description": "Improvise an activity..." },
-                            { "name": "Fabric and Textiles", "description": "Examine various fabrics..." },
-                            { "name": "Properties of Materials", "description": "List the objects around us..." },
-                            { "name": "Separation of Mixtures", "description": "Identify properties..." },
-                            { "name": "ABC", "description": "XYZ" }
-                        ]
-                    },
                     "Mathematics": {
                         "Chapters": [
-                            { "name": "Place Value and Number Sense", "description": "Find the place value..." },
-                            { "name": "Whole Numbers and Operations", "description": "Use the understanding..." },
-                            { "name": "Factors and Multiples", "description": "Arrange the numbers..." },
-                            { "name": "Geometrical Shapes and Figures", "description": "Give example(s)..." },
-                            { "name": "Angles and Shapes", "description": "Compare the given angles..." }
+                            { "name": "Shapes and Space", 
+                            "description": "Describes spatial relationships using 'top-bottom, under /above-below. Describes spatial relationships using' bigger-smaller, near-farther'. Matches and sorts common 2D shapes by features and size. Matches common 3D objects to corresponding shapes and classifies them based on observable features. Recognizes 'circle' and 'square' and establishes correspondence with everyday objects. Recognizes 'rectangle' and 'triangle' and establishes correspondence with everyday objects. Matches and sorts concrete objects and pictures based on visual attributes like shape, size, and colour. Applies own rule(s) to sort groups of objects. Describes the physical features of various solids /shapes in her own language. Classifies objects into groups based on a few physical attributes such as shape, size, and other observable properties including rolling and sliding recites number names, and counts objects up to 20, concretely, pictorially, and symbolically." },
+                            { "name": "Numbers 1 to 9", "description": " Establishes one-to-one correspondence between objects and compares one collection with the other (concrete and pictorial). Recipes number names in standard order (1-9) and pair one number name with only one object. Uses cardinality in counting (concrete, pictorial). Uses ordinality in counting (concrete, pictorial). Uses number count is independent of object arrangement (number conservation). Identifies and writes numbers (1-9). Matches object with correct numbers (1-9) and create groups corresponding to a given number (concrete, pictorial). Determines if one group has more / less/ same items as the other. Creates groups with equal number of items (1- 9) (Numerically and pictorially). Completes number sequences by counting forward and backward (1-9). Sequences up to three numbers (1-9) in increasing or decreasing order (concrete and pictorial). Develops concept of zero and its symbol. Classifies objects into groups based on a few physical attributes such as shape, size, and other observable properties including rolling and sliding recites number names, and counts objects up to 20, concretely, pictorially, and symbolically. Identifies numbers 1 to 20 Counts objects using numbers 1 to 9. Compares numbers up to 20. Identifies numbers up to 99 and writes numerals. Works with numbers 1 to 20. Counts objects using numbers 1 to 9. Compares numbers up to 20. For example, tells whether the number of girls or a number of boys is more in the class. Observes, extends, and creates patterns of shapes and numbers. Works with numbers 1 to 20. Counts objects using numbers 1 to 9. Compares numbers up to 20. For example, tells whether the number of girls or a number of boys is more in the class."}
                         ]
+                    },
+                    "Science": {
+                        "Chapters": [
+                            { "name": "Motion", "description": "Establishes one-to-one correspondence between objects and compares one collection with the other (concrete and pictorial). Recipes number names in standard order (1-9) and pair one number name with only one object. Uses cardinality in counting (concrete, pictorial). Uses ordinality in counting (concrete, pictorial)."}
+                       ]
                     }
                 }
             },
             {
-                "grade": "7th-Grade",
+                "grade": "Grade 2",
                 "Subjects": {
-                    "Science": {
-                        "Chapters": [
-                            { "name": "Nutrition in Plants", "description": "Examine different methods..." },
-                            { "name": "Human Digestive System", "description": "Illustrate the human digestive system..." },
-                            { "name": "Fibers to Fabric", "description": "Examine the selective breeding process..." },
-                            { "name": "Heat and Temperature", "description": "Distinguish the Clinical thermometer..." },
-                            { "name": "Acids, Bases, and Salts", "description": "Examine the common substances..." }
-                        ]
-                    },
                     "Mathematics": {
                         "Chapters": [
-                            { "name": "Integers and Rational Numbers", "description": "Differentiate between whole numbers..." },
-                            { "name": "Fractions and Decimals", "description": "Define proper, improper..." },
-                            { "name": "Data Handling", "description": "Collect, record, and present data..." },
-                            { "name": "Algebraic Expressions", "description": "Use numbers and variables..." },
-                            { "name": "Lines and Angles", "description": "Recall the concept of line..." }
-                        ]
-                    }
-                }
-            }
-        ]
-    },
-    "NCERTForms": {
-        "Grades": [
-            {
-                "grade": "6th-Grade",
-                "Subjects": {
-                    "Science": {
-                        "Chapters": [
-                            { "name": "chapter 1 name", "description": "chapter 1 description" },
-                            { "name": "chapter 2 name", "description": "chapter 2 description" }
-                        ]
-                    },
-                    "Mathematics": {
-                        "Chapters": [
-                            { "name": "chapter 1 name", "description": "chapter 1 description" },
-                            { "name": "chapter 2 name", "description": "chapter 2 description" }
-                        ]
-                    }
-                }
-            },
-            {
-                "grade": "7th-Grade",
-                "Subjects": {
-                    "Science": {
-                        "Chapters": [
-                            { "name": "chapter 1 name", "description": "chapter 1 description" },
-                            { "name": "chapter 2 name", "description": "chapter 2 description" }
-                        ]
-                    },
-                    "Mathematics": {
-                        "Chapters": [
-                            { "name": "chapter 1 name", "description": "chapter 1 description" },
-                            { "name": "chapter 2 name", "description": "chapter 2 description" }
+                            { "name": "What is Long, What is Round- 3D Shapes", "description": " Matches and sorts everyday 3D objects and common 2D shapes based on observable features. Describes basic 3D and 2D shapes with their observable characteristics. Identifies basic 3D shapes such as cuboids, cylinders, cones, and spheres by their names. Distinguishes between straight and curved lines. Draws / represents straight lines in various orientations (vertical, horizontal, slant)." },
+                            { "name": "Counting in Groups", "description": "Numerals (1-99): Counts (concretely, pictorially, and symbolically) and recites number names. Numerals (1-50): Recognizes and writes numerals. Numerals (51-99): Recognizes and writes numerals. Numerals (1-50): Completes number sequences by counting onwards and backwards (without skips). Numerals (51-99): Completes number sequences by counting onwards and backwards (without skips). Numerals (1-99): Compares groups and numbers and understands < and > symbols. Numerals (1-99): Sequence numbers in increasing or decreasing order. Works with two-digit numbers. Reads and writes numerals for numbers up to 99. Uses place value in writing and comparing two-digit numbers. Forms the greatest and smallest two-digit numbers (with and without repetition of given digits). Solves simple daily life problems/situations by adding two-digit numbers. Solves daily life situations based on the subtraction of two-digit numbers. Represents an amount up to Rs. 100 using 3-4 notes and coins (of the same/different denominations of play money)." }
                         ]
                     }
                 }

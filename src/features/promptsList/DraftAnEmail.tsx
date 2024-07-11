@@ -32,7 +32,7 @@ const ProfessionalEmail = () => {
             <h3>Generate emails for communication.</h3>
             <form onSubmit={handleSubmit}>
                 <div className="form-group">
-                    <label htmlFor="purposeOfEmail"> Purpose of Email <span className="asterisk">*</span></label>
+                    <label htmlFor="purposeOfEmail"> Purpose of Email<span className="asterisk">*</span></label>
                     <input
                         required
                         className="form-control"
@@ -43,7 +43,7 @@ const ProfessionalEmail = () => {
                     />
                 </div>
                 <div className="form-group">
-                    <label htmlFor="relationshipWithReceiver"> Relationship with the Receiver <span className="asterisk">*</span></label>
+                    <label htmlFor="relationshipWithReceiver"> Relationship with the Receiver<span className="asterisk">*</span></label>
                     <input
                         required
                         className="form-control"
@@ -54,7 +54,7 @@ const ProfessionalEmail = () => {
                     />
                 </div>
                 <div className="form-group">
-                    <label htmlFor="keyPointsToInclude"> Key Points to Include <span className="asterisk">*</span></label>
+                    <label htmlFor="keyPointsToInclude"> Key Points to Include<span className="asterisk">*</span></label>
                     <textarea
                         required
                         className="form-control"

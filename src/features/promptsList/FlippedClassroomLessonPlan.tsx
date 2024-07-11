@@ -32,7 +32,7 @@ const FlippedClassroomLessonPlan = () => {
             <h3>Create a lesson plan tailored according to flipped classroom approach.</h3>
             <form onSubmit={handleSubmit}>
                 <div className='form-group'>
-                    <label htmlFor='gradeLevel'> Grade Level <span className="asterisk">*</span></label>
+                    <label htmlFor='gradeLevel'> Grade Level<span className="asterisk">*</span></label>
                     <select
                         required
                         className='form-control'
@@ -60,7 +60,7 @@ const FlippedClassroomLessonPlan = () => {
 
 
                 <div className='form-group'>
-                    <label htmlFor='subjectTopicObjectives'> Topic or Learning Objective <span className="asterisk">*</span></label>
+                    <label htmlFor='subjectTopicObjectives'> Topic or Learning Objective<span className="asterisk">*</span></label>
                     <textarea
                         required
                         className='form-control'

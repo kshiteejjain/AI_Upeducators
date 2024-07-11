@@ -71,7 +71,7 @@ const DescribeImage = () => {
             <h3>Upload the image and get description.</h3>
             <form onSubmit={handleSubmit}>
                 <div className="form-group">
-                    <label htmlFor="image">Upload Image <span className="asterisk">*</span></label>
+                    <label htmlFor="image">Upload Image<span className="asterisk">*</span></label>
                     <input
                         type='file'
                         className="form-control"
@@ -80,7 +80,7 @@ const DescribeImage = () => {
                     />
                 </div>
                 <div className="form-group">
-                    <label htmlFor="instructions">Instructions <span className="asterisk">*</span></label>
+                    <label htmlFor="instructions">Instructions<span className="asterisk">*</span></label>
                     <textarea
                         className="form-control"
                         name="instructions"

@@ -31,7 +31,7 @@ const FacebookAdsReelsScript = () => {
             <h3>Create content for Facebook ad reels</h3>
             <form onSubmit={handleSubmit}>
                 <div className="form-group">
-                    <label htmlFor="courseSkillName"> Course/Skill Name <span className="asterisk">*</span></label>
+                    <label htmlFor="courseSkillName"> Course/Skill Name<span className="asterisk">*</span></label>
                     <input
                         required
                         className="form-control"
@@ -42,7 +42,7 @@ const FacebookAdsReelsScript = () => {
                     />
                 </div>
                 <div className="form-group">
-                    <label htmlFor="audience"> Audience <span className="asterisk">*</span></label>
+                    <label htmlFor="audience"> Audience<span className="asterisk">*</span></label>
                     <input
                         required
                         className="form-control"

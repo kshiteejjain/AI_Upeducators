@@ -44,7 +44,7 @@ const IntroParagraphForWebsite = () => {
                 </div>
 
                 <div className="form-group">
-                    <label htmlFor="pageTitle">Page Title <span className="asterisk">*</span></label>
+                    <label htmlFor="pageTitle">Page Title<span className="asterisk">*</span></label>
                     <input
                         required
                         className="form-control"
@@ -56,7 +56,7 @@ const IntroParagraphForWebsite = () => {
                 </div>
 
                 <div className="form-group">
-                    <label htmlFor="wordCount">Word Count <span className="asterisk">*</span></label>
+                    <label htmlFor="wordCount">Word Count<span className="asterisk">*</span></label>
                     <input
                         required
                         type="text"

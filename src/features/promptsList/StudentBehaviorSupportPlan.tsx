@@ -32,7 +32,7 @@ const StudentBehaviorSupportPlan = () => {
             <h3>Generate suggestions for student behavior support plans tailored to student needs and behaviors.</h3>
             <form onSubmit={handleSubmit}>
                 <div className="form-group">
-                    <label htmlFor="studentAgeGroup">Student Age Group <span className="asterisk">*</span></label>
+                    <label htmlFor="studentAgeGroup">Student Age Group<span className="asterisk">*</span></label>
                     <select
                         required
                         className="form-control"
@@ -49,7 +49,7 @@ const StudentBehaviorSupportPlan = () => {
                 </div>
 
                 <div className="form-group">
-                    <label htmlFor="behaviourConcern">Behavior Concern <span className="asterisk">*</span></label>
+                    <label htmlFor="behaviourConcern">Behavior Concern<span className="asterisk">*</span></label>
                     <input
                         required
                         className="form-control"

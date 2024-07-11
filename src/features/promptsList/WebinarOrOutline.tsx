@@ -32,7 +32,7 @@ const WebinarOutline = () => {
             <h3>Generate a structured outline for webinar or seminar, focusing on the title and audience</h3>
             <form onSubmit={handleSubmit}>
                 <div className="form-group">
-                    <label htmlFor="webinarTitle"> Webinar Title <span className="asterisk">*</span></label>
+                    <label htmlFor="webinarTitle"> Webinar Title<span className="asterisk">*</span></label>
                     <input
                         required
                         className="form-control"
@@ -43,7 +43,7 @@ const WebinarOutline = () => {
                     />
                 </div>
                 <div className="form-group">
-                    <label htmlFor="audience"> Audience <span className="asterisk">*</span></label>
+                    <label htmlFor="audience"> Audience<span className="asterisk">*</span></label>
                     <input
                         required
                         className="form-control"
@@ -55,7 +55,7 @@ const WebinarOutline = () => {
                 </div>
 
                 <div className="form-group">
-                    <label htmlFor="duration"> Duration <span className="asterisk">*</span></label>
+                    <label htmlFor="duration"> Duration<span className="asterisk">*</span></label>
                     <input
                         required
                         className="form-control"

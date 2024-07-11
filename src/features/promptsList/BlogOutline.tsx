@@ -34,7 +34,7 @@ const BlogOutline = () => {
             <form onSubmit={handleSubmit}>
                 <div className="form-group">
                     <label htmlFor="blogTitle"> Blog Title
-                        <span className="asterisk">*</span>
+<span className="asterisk">*</span>
                     </label>
                     <input
                         required
@@ -48,7 +48,7 @@ const BlogOutline = () => {
 
                 <div className="form-group">
                     <label htmlFor="audience"> Audience
-                        <span className="asterisk">*</span>
+<span className="asterisk">*</span>
                     </label>
                     <input
                         required

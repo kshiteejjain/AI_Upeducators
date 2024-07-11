@@ -31,7 +31,7 @@ const KeywordSearch = () => {
             <h3>Generate high search volume keywords</h3>
             <form onSubmit={handleSubmit}>
                 <div className='form-group'>
-                    <label htmlFor='mainKeyword'>Main Keyword <span className='asterisk'>*</span></label>
+                    <label htmlFor='mainKeyword'>Main Keyword<span className='asterisk'>*</span></label>
                     <input required className='form-control' name='mainKeyword' onChange={handleInputChange} value={formData.mainKeyword} placeholder='Maths classes for 8th and 9th' />
                 </div>
                 

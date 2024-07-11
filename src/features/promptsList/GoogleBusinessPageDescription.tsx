@@ -37,7 +37,7 @@ const HashtagGenerator = () => {
             <h3> Generate a Description for Google Business Page</h3>
             <form onSubmit={handleSubmit}>
                 <div className="form-group">
-                    <label htmlFor="instituteName"> Institute Name <span className="asterisk">*</span></label>
+                    <label htmlFor="instituteName"> Institute Name<span className="asterisk">*</span></label>
                     <input
                         required
                         className="form-control"
@@ -49,7 +49,7 @@ const HashtagGenerator = () => {
                 </div>
 
                 <div className="form-group">
-                    <label htmlFor="coursesSkillNames"> Courses/Skill Names <span className="asterisk">*</span></label>
+                    <label htmlFor="coursesSkillNames"> Courses/Skill Names<span className="asterisk">*</span></label>
                     <input
                         required
                         className="form-control"

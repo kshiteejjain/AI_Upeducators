@@ -35,23 +35,23 @@ const BrochureContentGenerator = () => {
             <h3>Generate engaging and informative content for brochures on various topics, skills, and services.</h3>
             <form onSubmit={handleSubmit}>
                 <div className='form-group'>
-                    <label htmlFor='businessInstitutionName'>Business/Institution Name <span className='asterisk'>*</span></label>
+                    <label htmlFor='businessInstitutionName'>Business/Institution Name<span className='asterisk'>*</span></label>
                     <input required className='form-control' name='businessInstitutionName' onChange={handleInputChange} value={formData.businessInstitutionName} placeholder='Enter the name of your business or institution.' />
                 </div>
                 <div className='form-group'>
-                    <label htmlFor='skillService'>Skill/Service <span className='asterisk'>*</span></label>
+                    <label htmlFor='skillService'>Skill/Service<span className='asterisk'>*</span></label>
                     <input required className='form-control' name='skillService' onChange={handleInputChange} value={formData.skillService} placeholder='Describe the main skill or service you want to highlight in the brochure.' />
                 </div>
                 <div className='form-group'>
-                    <label htmlFor='targetAudience'>Target Audience <span className='asterisk'>*</span></label>
+                    <label htmlFor='targetAudience'>Target Audience<span className='asterisk'>*</span></label>
                     <input required className='form-control' name='targetAudience' onChange={handleInputChange} value={formData.targetAudience} placeholder='Specify your target audience, such as families, professionals, students, etc.' />
                 </div>
                 <div className='form-group'>
-                    <label htmlFor='usp'>Unique Selling Points <span className='asterisk'>*</span></label>
+                    <label htmlFor='usp'>Unique Selling Points<span className='asterisk'>*</span></label>
                     <input required className='form-control' name='usp' onChange={handleInputChange} value={formData.usp} placeholder='List key features or unique selling points of your skill/service.' />
                 </div>
                 <div className='form-group'>
-                    <label htmlFor='toneOfVoice'> Tone of Voice <span className='asterisk'>*</span> </label>
+                    <label htmlFor='toneOfVoice'> Tone of Voice<span className='asterisk'>*</span> </label>
                     <select required className='form-control' name="toneOfVoice" onChange={handleInputChange} value={formData.toneOfVoice}>
                         <option value="professional">Professional</option>
                         <option value="friendly">Friendly</option>
@@ -65,7 +65,7 @@ const BrochureContentGenerator = () => {
                     </select>
                 </div>
                 <div className='form-group'>
-                    <label htmlFor='additionalInformation'>Additional Information <span className='asterisk'>*</span></label>
+                    <label htmlFor='additionalInformation'>Additional Information<span className='asterisk'>*</span></label>
                     <textarea required className='form-control' name='additionalInformation' onChange={handleInputChange} rows={5} value={formData.additionalInformation} placeholder='Include any additional information like history, achievements, testimonials, etc.'> </textarea>
                 </div>
 

@@ -32,7 +32,7 @@ const CustomTextRewriter = () => {
             <h3>Transform any given text according to specific requirements.</h3>
             <form onSubmit={handleSubmit}>
                 <div className='form-group'>
-                    <label htmlFor='originalText'> Original Text <span className="asterisk">*</span> </label>
+                    <label htmlFor='originalText'> Original Text<span className="asterisk">*</span> </label>
                     <textarea
                         required
                         className='form-control'
@@ -45,7 +45,7 @@ const CustomTextRewriter = () => {
                 </div>
 
                 <div className='form-group'>
-                    <label htmlFor='criteriaRewriting'> Criteria for Rewriting <span className="asterisk">*</span> </label>
+                    <label htmlFor='criteriaRewriting'> Criteria for Rewriting<span className="asterisk">*</span> </label>
                     <textarea
                         required
                         className='form-control'
@@ -58,7 +58,7 @@ const CustomTextRewriter = () => {
                 </div>
 
                 <div className='form-group'>
-                    <label htmlFor='lengthRewrittenText'> Length of Rewritten Text <span className="asterisk">*</span> </label>
+                    <label htmlFor='lengthRewrittenText'> Length of Rewritten Text<span className="asterisk">*</span> </label>
                     <select required className='form-control' name="lengthRewrittenText" onChange={handleInputChange} value={formData.lengthRewrittenText}>
                         <option value="" disabled selected>Choose the length of the rewritten text</option>
                         <option value="Original-Word-Count">Original Word Count</option>

@@ -34,7 +34,7 @@ const InterdisciplinaryProjectIdeas = () => {
             <h3>Generate ideas to integrate different disciplines.</h3>
             <form onSubmit={handleSubmit}>
                 <div className='form-group'>
-                    <label htmlFor='gradeLevel'> Grade Level <span className="asterisk">*</span></label>
+                    <label htmlFor='gradeLevel'> Grade Level<span className="asterisk">*</span></label>
                     <select
                         required
                         className='form-control'
@@ -61,7 +61,7 @@ const InterdisciplinaryProjectIdeas = () => {
                 </div>
 
                 <div className='form-group'>
-                    <label htmlFor='subjectsTopics'> Subjects/Topics to Integrate <span className="asterisk">*</span></label>
+                    <label htmlFor='subjectsTopics'> Subjects/Topics to Integrate<span className="asterisk">*</span></label>
                     <textarea
                         required
                         className="form-control"

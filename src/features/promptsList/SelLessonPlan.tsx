@@ -34,7 +34,7 @@ const SelLessonPlan = () => {
             <form onSubmit={handleSubmit}>
                 <div className='form-group'>
                     <label htmlFor='gradeLevel'> Grade Level
-                        <span className="asterisk">*</span></label>
+<span className="asterisk">*</span></label>
                     <select
                         required
                         className='form-control'
@@ -62,7 +62,7 @@ const SelLessonPlan = () => {
 
                 <div className='form-group'>
                     <label htmlFor='selFocusArea'> SEL Focus Area
-                        <span className="asterisk">*</span></label>
+<span className="asterisk">*</span></label>
                     <select
                         required
                         className='form-control'

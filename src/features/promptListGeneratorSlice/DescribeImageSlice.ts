@@ -23,19 +23,22 @@ export const generatorPrompt = createAsyncThunk('generator/generatorPrompt', asy
     if (user) {
       const userDocRef = doc(abcCollection, user);
       const userDocSnapshot = await getDoc(userDocRef);
-    
+
       if (userDocSnapshot.exists()) {
         // User already has a document, update count
         const userData = userDocSnapshot.data();
         const existingCategory = userData[catId];
-    
+
         if (existingCategory) {
           // catId already exists for the user, increase count
           const currentCount = existingCategory.count || 0;
+          const newCount = currentCount + 1;
+          const creditsUsed = newCount * 5;
           await updateDoc(userDocRef, {
             [catId]: {
               name: selectedCategory,
-              count: currentCount + 1,
+              count: newCount,
+              creditsUsed: creditsUsed,
               timestamp: new Date().toLocaleString()
             }
           });
@@ -45,6 +48,7 @@ export const generatorPrompt = createAsyncThunk('generator/generatorPrompt', asy
             [catId]: {
               name: selectedCategory,
               count: 1,
+              creditsUsed: 5,
               timestamp: new Date().toLocaleString()
             }
           });
@@ -55,6 +59,7 @@ export const generatorPrompt = createAsyncThunk('generator/generatorPrompt', asy
           [catId]: {
             name: selectedCategory,
             count: 1,
+            creditsUsed: 5,
             timestamp: new Date().toLocaleString()
           }
         });
@@ -73,12 +78,12 @@ export const generatorPrompt = createAsyncThunk('generator/generatorPrompt', asy
             content: [
               {
                 type: 'text',
-                text: prompt[0].content[0].promptMsg                
+                text: prompt[0].content[0].promptMsg
               },
               {
                 type: 'image_url',
                 image_url: {
-                  url: prompt[0].content[0].imageURL              
+                  url: prompt[0].content[0].imageURL
                 }
               }
             ]

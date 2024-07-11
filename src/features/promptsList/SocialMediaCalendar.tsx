@@ -32,7 +32,7 @@ const SocialMediaCalendarGenerator = () => {
             <h3>Generate a daily social media posting calendar.</h3>
             <form onSubmit={handleSubmit}>
                 <div className="form-group">
-                    <label htmlFor="audience"> Audience <span className="asterisk">*</span></label>
+                    <label htmlFor="audience"> Audience<span className="asterisk">*</span></label>
                     <input
                         required
                         className="form-control"
@@ -55,7 +55,7 @@ const SocialMediaCalendarGenerator = () => {
                 </div>
                 <div className="form-group">
                     <label htmlFor="platform"> Platform
-                        <span className="asterisk">*</span>
+<span className="asterisk">*</span>
                     </label>
                     <select
                         required

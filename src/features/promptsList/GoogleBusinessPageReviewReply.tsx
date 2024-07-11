@@ -37,7 +37,7 @@ const HashtagGenerator = () => {
             <h3>Generate replies for customers’ reviews</h3>
             <form onSubmit={handleSubmit}>
                 <div className="form-group">
-                    <label htmlFor="ratingGiven"> Rating given (out of 5) <span className="asterisk">*</span></label>
+                    <label htmlFor="ratingGiven"> Rating given (out of 5)<span className="asterisk">*</span></label>
                     <select
                         required
                         className="form-control"

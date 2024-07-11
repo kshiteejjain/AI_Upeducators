@@ -31,7 +31,7 @@ const MakeItRelevant = () => {
             <h3>Generate ideas to make your teaching content relevant by considering the interests and backgrounds of your students.</h3>
             <form onSubmit={handleSubmit}>
                 <div className='form-group'>
-                    <label htmlFor='gradeLevel'> Grade Level <span className="asterisk">*</span> </label>
+                    <label htmlFor='gradeLevel'> Grade Level<span className="asterisk">*</span> </label>
                     <select required className='form-control' name="gradeLevel" onChange={handleInputChange} value={formData.gradeLevel}>
                         <option value="" disabled selected>Select the grade level of your class</option>
                         <option value="Nursery">Nursery</option>
@@ -53,7 +53,7 @@ const MakeItRelevant = () => {
                 </div>
 
                 <div className='form-group'>
-                    <label htmlFor='topic'> Topic <span className="asterisk">*</span> </label>
+                    <label htmlFor='topic'> Topic<span className="asterisk">*</span> </label>
                     <input
                         required
                         className='form-control'
@@ -65,7 +65,7 @@ const MakeItRelevant = () => {
                 </div>
 
                 <div className='form-group'>
-                    <label htmlFor='describeStudents'> Describe your students <span className="asterisk">*</span> </label>
+                    <label htmlFor='describeStudents'> Describe your students<span className="asterisk">*</span> </label>
                     <textarea
                         required
                         className='form-control'

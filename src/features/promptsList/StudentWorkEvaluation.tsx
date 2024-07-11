@@ -37,7 +37,7 @@ const StudentWorkEvaluation = () => {
             <form onSubmit={handleSubmit}>
                 <div className='form-group'>
                     <label htmlFor='gradeLevel'> Grade Level
-                        <span className="asterisk">*</span></label>
+<span className="asterisk">*</span></label>
                     <select
                         required
                         className='form-control'
@@ -65,7 +65,7 @@ const StudentWorkEvaluation = () => {
 
                 <div className='form-group'>
                     <label htmlFor='titleAssignment'> Title/Assignment Description
-                        <span className="asterisk">*</span></label>
+<span className="asterisk">*</span></label>
                     <textarea
                         required
                         className='form-control'
@@ -78,7 +78,7 @@ const StudentWorkEvaluation = () => {
 
                 <div className='form-group'>
                     <label htmlFor='studentWork'> Student Work
-                        <span className="asterisk">*</span></label>
+<span className="asterisk">*</span></label>
                     <textarea
                         required
                         className='form-control'

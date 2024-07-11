@@ -31,7 +31,7 @@ const WebinarTitle = () => {
             <h3>Generate innovative titles for your Webinars or Seminars</h3>
             <form onSubmit={handleSubmit}>
                 <div className="form-group">
-                    <label htmlFor="topic"> Topic <span className="asterisk">*</span></label>
+                    <label htmlFor="topic"> Topic<span className="asterisk">*</span></label>
                     <input
                         required
                         className="form-control"
@@ -42,7 +42,7 @@ const WebinarTitle = () => {
                     />
                 </div>
                 <div className="form-group">
-                    <label htmlFor="audience"> Audience <span className="asterisk">*</span></label>
+                    <label htmlFor="audience"> Audience<span className="asterisk">*</span></label>
                     <input
                         required
                         className="form-control"

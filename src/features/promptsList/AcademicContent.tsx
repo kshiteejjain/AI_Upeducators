@@ -57,8 +57,7 @@ const AcademicContent = () => {
             <h3>Generate original academic content as per specific criteria.</h3>
             <form onSubmit={handleSubmit}>
                 <div className='form-group'>
-                    <label htmlFor='gradeLevel'> Grade Level
-                        <span className="asterisk">*</span></label>
+                    <label htmlFor='gradeLevel'> Grade Level<span className="asterisk">*</span></label>
                     <select
                         required
                         className='form-control'
@@ -85,8 +84,7 @@ const AcademicContent = () => {
                 </div>
 
                 <div className="form-group">
-                    <label htmlFor="topic"> Topic / Learning Objective
-                        <span className="asterisk">*</span></label>
+                    <label htmlFor="topic"> Topic / Learning Objective<span className="asterisk">*</span></label>
                     <input
                         required
                         className="form-control"
@@ -98,8 +96,7 @@ const AcademicContent = () => {
                 </div>
 
                 <div className='form-group'>
-                    <label htmlFor='textLength'> Text Length
-                        <span className="asterisk">*</span></label>
+                    <label htmlFor='textLength'> Text Length<span className="asterisk">*</span></label>
                     <select
                         required
                         className='form-control'
@@ -116,7 +113,7 @@ const AcademicContent = () => {
                 </div>
                 {formData.textLength === 'Other' && (
                     <div className='form-group'>
-                        <label htmlFor='otherQuestionType'>Other <span className="asterisk">*</span></label>
+                        <label htmlFor='otherQuestionType'>Other<span className="asterisk">*</span></label>
                         <input
                             className="form-control"
                             name="otherTextLength"
@@ -128,8 +125,7 @@ const AcademicContent = () => {
                 )}
 
                 <div className="form-group">
-                    <label> Content Type
-                        <span className="asterisk">*</span></label>
+                    <label> Content Type<span className="asterisk">*</span></label>
                     <label>
                         <input
                             type="radio"
@@ -205,7 +201,7 @@ const AcademicContent = () => {
                 </div>
                 {formData.contentType === 'Other' && (
                         <div className='form-group'>
-                            <label htmlFor='otherQuestionType'>Other <span className="asterisk">*</span></label>
+                            <label htmlFor='otherQuestionType'>Other<span className="asterisk">*</span></label>
                             <input
                                 className="form-control"
                                 name="otherContentType"

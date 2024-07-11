@@ -54,7 +54,7 @@ const InteractiveQuiz = () => {
             <h3>Create an interactive quiz for students on any topic.</h3>
             <form onSubmit={handleSubmit}>
                 <div className="form-group">
-                    <label htmlFor="gradeLevel">Grade Level <span className="asterisk">*</span></label>
+                    <label htmlFor="gradeLevel">Grade Level<span className="asterisk">*</span></label>
                     <select
                         required
                         className="form-control"
@@ -83,7 +83,7 @@ const InteractiveQuiz = () => {
                 </div>
 
                 <div className="form-group">
-                    <label htmlFor="subjectTopic">Subject/Topic <span className="asterisk">*</span></label>
+                    <label htmlFor="subjectTopic">Subject/Topic<span className="asterisk">*</span></label>
                     <input
                         required
                         className="form-control"

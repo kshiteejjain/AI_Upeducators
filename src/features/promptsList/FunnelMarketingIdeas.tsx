@@ -34,7 +34,7 @@ const FunnelMarketingIdeas = () => {
       <h3>Generate Funnel marketing ideas for Facebook ad.</h3>
       <form onSubmit={handleSubmit}>
         <div className="form-group">
-          <label htmlFor="courseSkillName">Course/Skill name <span className="asterisk">*</span></label>
+          <label htmlFor="courseSkillName">Course/Skill name<span className="asterisk">*</span></label>
           <input
             required
             type="text"
@@ -47,7 +47,7 @@ const FunnelMarketingIdeas = () => {
         </div>
 
         <div className="form-group">
-          <label htmlFor="audience">Audience <span className="asterisk">*</span></label>
+          <label htmlFor="audience">Audience<span className="asterisk">*</span></label>
           <input
             required
             type="text"

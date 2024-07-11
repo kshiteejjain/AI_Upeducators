@@ -47,7 +47,7 @@ const LandingPageAboutMe = () => {
             <form onSubmit={handleSubmit}>
                 <div className='form-group'>
                     <label htmlFor='trainersName'> Trainer’s Name and Brief Introduction
-                        <span className="asterisk">*</span>
+<span className="asterisk">*</span>
                     </label>
                     <textarea
                         required

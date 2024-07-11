@@ -36,7 +36,7 @@ const AssignmentGenerator = () => {
             <h3>Generate assignments on any topic.</h3>
             <form onSubmit={handleSubmit}>
                 <div className="form-group">
-                    <label htmlFor="gradeLevel">Grade Level <span className="asterisk">*</span></label>
+                    <label htmlFor="gradeLevel">Grade Level<span className="asterisk">*</span></label>
                     <select className="form-control" name="gradeLevel" required onChange={handleInputChange} value={formData.gradeLevel}>
                         <option value="">Select the grade level for which the assignment is intended.</option>
                         <option value="Nursery">Nursery</option>
@@ -58,7 +58,7 @@ const AssignmentGenerator = () => {
                 </div>
 
                 <div className="form-group">
-                    <label htmlFor="topicOrTitle">Topic or Title <span className="asterisk">*</span></label>
+                    <label htmlFor="topicOrTitle">Topic or Title<span className="asterisk">*</span></label>
                     <input className="form-control" name="topicOrTitle" required onChange={handleInputChange} value={formData.topicOrTitle} placeholder="e.g., World History, Forces and Motion, The Impact of Climate Change" />
                 </div>  
 

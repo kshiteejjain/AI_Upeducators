@@ -29,7 +29,7 @@ const ProofreadText = () => {
             <h3>Proofread your text to correct grammar, spelling, punctuation, etc.</h3>
             <form onSubmit={handleSubmit}>
                 <div className="form-group">
-                    <label htmlFor="originalText"> Original Text <span className="asterisk">*</span></label>
+                    <label htmlFor="originalText"> Original Text<span className="asterisk">*</span></label>
                     <textarea
                         required
                         className="form-control"

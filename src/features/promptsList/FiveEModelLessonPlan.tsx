@@ -35,7 +35,7 @@ const FiveEModelLessonPlan = () => {
             <form onSubmit={handleSubmit}>
                 <div className='form-group'>
                     <label htmlFor='gradeLevel'> Grade Level
-                        <span className="asterisk">*</span></label>
+<span className="asterisk">*</span></label>
                     <select
                         required
                         className='form-control'
@@ -63,7 +63,7 @@ const FiveEModelLessonPlan = () => {
 
                 <div className='form-group'>
                     <label htmlFor='topicLearningObjectives'> Topic / Learning Objectives
-                        <span className="asterisk">*</span></label>
+<span className="asterisk">*</span></label>
                     <textarea
                         required
                         className='form-control'

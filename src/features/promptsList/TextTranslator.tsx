@@ -31,7 +31,7 @@ const TextTranslatorGenerator = () => {
             <form onSubmit={handleSubmit}>
                 <div className='form-group'>
                     <label htmlFor='text'> Text
-                        <span className="asterisk">*</span></label>
+<span className="asterisk">*</span></label>
                     <textarea
                         required
                         className='form-control'
@@ -45,7 +45,7 @@ const TextTranslatorGenerator = () => {
 
                 <div className="form-group">
                     <label htmlFor="targetLanguage"> Target Language
-                        <span className="asterisk">*</span></label>
+<span className="asterisk">*</span></label>
                     <input
                         required
                         className="form-control"

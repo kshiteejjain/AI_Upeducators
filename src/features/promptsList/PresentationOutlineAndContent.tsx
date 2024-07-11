@@ -33,7 +33,7 @@ const PresentationContent = () => {
             <h3>Generate engaging content for your Presentations.</h3>
             <form onSubmit={handleSubmit}>
                 <div className='form-group'>
-                    <label htmlFor='gradeLevel'>Grade Level <span className="asterisk">*</span></label>
+                    <label htmlFor='gradeLevel'>Grade Level<span className="asterisk">*</span></label>
                     <select
                         required
                         className='form-control'
@@ -60,7 +60,7 @@ const PresentationContent = () => {
                 </div>
 
                 <div className="form-group">
-                    <label htmlFor="topic">Topic <span className="asterisk">*</span></label>
+                    <label htmlFor="topic">Topic<span className="asterisk">*</span></label>
                     <input
                         required
                         className="form-control"

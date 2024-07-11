@@ -44,10 +44,13 @@ export const generatorPrompt = createAsyncThunk('generator/generatorPrompt', asy
         if (existingCategory) {
           // catId already exists for the user, increase count
           const currentCount = existingCategory.count || 0;
+          const newCount = currentCount + 1;
+          const creditsUsed = newCount * 5;
           await updateDoc(userDocRef, {
             [catId]: {
               name: selectedCategory,
-              count: currentCount + 1,
+              count: newCount,
+              creditsUsed: creditsUsed,
               timestamp: new Date().toLocaleString()
             }
           });
@@ -57,6 +60,7 @@ export const generatorPrompt = createAsyncThunk('generator/generatorPrompt', asy
             [catId]: {
               name: selectedCategory,
               count: 1,
+              creditsUsed: 5,
               timestamp: new Date().toLocaleString()
             }
           });
@@ -67,6 +71,7 @@ export const generatorPrompt = createAsyncThunk('generator/generatorPrompt', asy
           [catId]: {
             name: selectedCategory,
             count: 1,
+            creditsUsed: 5,
             timestamp: new Date().toLocaleString()
           }
         });

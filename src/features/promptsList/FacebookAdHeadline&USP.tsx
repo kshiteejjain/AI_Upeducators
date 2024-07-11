@@ -42,7 +42,7 @@ const FacebookAdHeadlineUSP = () => {
             <h3>Craft Facebook ad headlines & unique selling propositions (USP) effortlessly</h3>
             <form onSubmit={handleSubmit}>
                 <div className="form-group">
-                    <label htmlFor="courseSkillName"> Course/Skill Name <span className="asterisk">*</span></label>
+                    <label htmlFor="courseSkillName"> Course/Skill Name<span className="asterisk">*</span></label>
                     <input
                         required
                         className="form-control"
@@ -54,7 +54,7 @@ const FacebookAdHeadlineUSP = () => {
                 </div>
 
                 <div className="form-group">
-                    <label htmlFor="audience"> Audience <span className="asterisk">*</span></label>
+                    <label htmlFor="audience"> Audience<span className="asterisk">*</span></label>
                     <input
                         required
                         className="form-control"

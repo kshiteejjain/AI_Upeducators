@@ -30,7 +30,7 @@ const MisconceptionBuster = () => {
             <h3>Generate common misconceptions on any topic and strategies to address them.</h3>
             <form onSubmit={handleSubmit}>
                 <div className='form-group'>
-                    <label htmlFor='gradeLevel'> Grade Level <span className="asterisk">*</span> </label>
+                    <label htmlFor='gradeLevel'> Grade Level<span className="asterisk">*</span> </label>
                     <select required className='form-control' name="gradeLevel" onChange={handleInputChange} value={formData.gradeLevel}>
                         <option value="" disabled selected>Select the grade level for which the misconceptions are to be addressed</option>
                         <option value="Nursery">Nursery</option>
@@ -52,7 +52,7 @@ const MisconceptionBuster = () => {
                 </div>
 
                 <div className='form-group'>
-                    <label htmlFor='topic'> Topic <span className="asterisk">*</span> </label>
+                    <label htmlFor='topic'> Topic<span className="asterisk">*</span> </label>
                     <input
                         required
                         className='form-control'

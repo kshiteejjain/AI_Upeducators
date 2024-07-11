@@ -44,7 +44,7 @@ const ResumeRewriter = () => {
             <h3>Tailor your resume to align with the job description or update your current resume to make it more impactful.</h3>
             <form onSubmit={handleSubmit}>
                 <div className="form-group">
-                    <label htmlFor="currentResume">Current Resume <span className="asterisk">*</span></label>
+                    <label htmlFor="currentResume">Current Resume<span className="asterisk">*</span></label>
                     <textarea
                         required
                         className="form-control"
@@ -56,7 +56,7 @@ const ResumeRewriter = () => {
                     ></textarea>
                 </div>
                 <div className="form-group">
-                    <label htmlFor="jobDescription">Job Description <span className="asterisk">*</span></label>
+                    <label htmlFor="jobDescription">Job Description<span className="asterisk">*</span></label>
                     <textarea
                         required
                         className="form-control"

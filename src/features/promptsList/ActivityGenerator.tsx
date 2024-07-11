@@ -38,8 +38,7 @@ const ActivityGenerator = () => {
             <h3>Create customized educational activities.</h3>
             <form onSubmit={handleSubmit}>
                 <div className='form-group'>
-                    <label htmlFor='gradeLevel'>Grade Level
-                        <span className="asterisk">*</span></label>
+                    <label htmlFor='gradeLevel'>Grade Level<span className="asterisk">*</span></label>
                     <select
                         required
                         className='form-control'
@@ -68,7 +67,7 @@ const ActivityGenerator = () => {
 
                 <div className='form-group'>
                     <label htmlFor='topicOrTitle'>Topic or Title
-                        <span className="asterisk">*</span></label>
+<span className="asterisk">*</span></label>
                     <input
                         required
                         className='form-control'

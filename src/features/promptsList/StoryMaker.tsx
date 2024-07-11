@@ -37,7 +37,7 @@ const StoryMaker = () => {
             <form onSubmit={handleSubmit}>
                 <div className='form-group'>
                     <label htmlFor='gradeLevel'> Grade Level
-                        <span className="asterisk">*</span></label>
+<span className="asterisk">*</span></label>
                     <select
                         required
                         className='form-control'
@@ -66,7 +66,7 @@ const StoryMaker = () => {
 
                 <div className='form-group'>
                     <label htmlFor='topicTheme'>Topic or Theme
-                        <span className="asterisk">*</span></label>
+<span className="asterisk">*</span></label>
                     <textarea
                         required
                         className='form-control'
@@ -79,7 +79,7 @@ const StoryMaker = () => {
                 </div>
 
                 <div className='form-group'>
-                    <label htmlFor='textLength'> Text Length <span className="asterisk">*</span></label>
+                    <label htmlFor='textLength'> Text Length<span className="asterisk">*</span></label>
                     <select
                         required
                         className='form-control'

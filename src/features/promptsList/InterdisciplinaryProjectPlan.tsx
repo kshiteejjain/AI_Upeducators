@@ -37,7 +37,7 @@ const InterdisciplinaryProjectPlan = () => {
             <h3>Generate a project plan that integrates different disciplines</h3>
             <form onSubmit={handleSubmit}>
                 <div className='form-group'>
-                    <label htmlFor='gradeLevel'> Grade Level <span className="asterisk">*</span></label>
+                    <label htmlFor='gradeLevel'> Grade Level<span className="asterisk">*</span></label>
                     <select
                         required
                         className='form-control'
@@ -64,7 +64,7 @@ const InterdisciplinaryProjectPlan = () => {
                 </div>
 
                 <div className='form-group'>
-                    <label htmlFor='topicOrTitle'> Topic or Title <span className="asterisk">*</span></label>
+                    <label htmlFor='topicOrTitle'> Topic or Title<span className="asterisk">*</span></label>
                     <input
                         required
                         className="form-control"
@@ -77,7 +77,7 @@ const InterdisciplinaryProjectPlan = () => {
 
 
                 <div className='form-group'>
-                    <label htmlFor='topicLearningObjectives'> Learning Objective Or Project Description <span className="asterisk">*</span></label>
+                    <label htmlFor='topicLearningObjectives'> Learning Objective Or Project Description<span className="asterisk">*</span></label>
                     <textarea
                         required
                         className='form-control'

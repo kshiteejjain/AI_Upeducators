@@ -32,7 +32,7 @@ const ColoringWorksheet = () => {
             <h3>Create custom coloring worksheets tailored for children's educational and recreational needs.</h3>
             <form onSubmit={handleSubmit}>
                 <div className="form-group">
-                    <label htmlFor="ageGroup">Age Group <span className="asterisk">*</span></label>
+                    <label htmlFor="ageGroup">Age Group<span className="asterisk">*</span></label>
                     <select
                         required
                         className="form-control"
@@ -48,7 +48,7 @@ const ColoringWorksheet = () => {
                 </div>
 
                 <div className="form-group">
-                    <label htmlFor="themeShortDescription">Theme or Short Description <span className="asterisk">*</span></label>
+                    <label htmlFor="themeShortDescription">Theme or Short Description<span className="asterisk">*</span></label>
                     <input
                         required
                         className="form-control"

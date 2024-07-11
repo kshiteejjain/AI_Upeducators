@@ -37,7 +37,7 @@ const AuthorsStyleRewriter = () => {
             <form onSubmit={handleSubmit}>
                 <div className='form-group'>
                     <label htmlFor='gradeLevel'>Grade Level
-                        <span className="asterisk">*</span></label>
+<span className="asterisk">*</span></label>
                     <select
                         required
                         className='form-control'
@@ -66,7 +66,7 @@ const AuthorsStyleRewriter = () => {
 
                 <div className='form-group'>
                     <label htmlFor='author'>Author
-                        <span className="asterisk">*</span></label>
+<span className="asterisk">*</span></label>
                     <input
                         required
                         className='form-control'
@@ -78,7 +78,7 @@ const AuthorsStyleRewriter = () => {
 
                 <div className='form-group'>
                     <label htmlFor='originalText'>Original Text
-                        <span className="asterisk">*</span></label>
+<span className="asterisk">*</span></label>
                     <textarea
                         required
                         className='form-control'
@@ -92,7 +92,7 @@ const AuthorsStyleRewriter = () => {
 
                 <div className='form-group'>
                     <label htmlFor='lengthRewrittenText'>Length of Rewritten Text
-                        <span className="asterisk">*</span></label>
+<span className="asterisk">*</span></label>
                     <select
                         required
                         className='form-control'

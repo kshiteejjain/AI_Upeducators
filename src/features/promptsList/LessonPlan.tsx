@@ -93,8 +93,9 @@ const LessonPlan = () => {
                 <div className='form-group'>
                     <label htmlFor='otherAddOns'>Addons</label>
                     <div className="checkbox-options">
-                        {["21st Century Skills", "Learning Outcomes", "Differentiation Strategies", "Startup/Warm Up Activity", "Life Skills", "Support Strategies", "Correlation with other Subjects", "HOTS Questions", "21st Century Skills", "Gamification Ideas", "Entry and Exit Tickets", "Other"].map(skill => (
+                        {["Learning Outcomes", "Differentiation Strategies", "Startup/Warm Up Activity", "Life Skills", "Support Strategies", "Correlation with other Subjects", "HOTS Questions", "21st Century Skills", "Gamification Ideas", "Entry and Exit Tickets", "Other"].map(skill => (
                             <div key={skill} className="checkbox-option">
+                                <label>
                                 <input
                                     type="checkbox"
                                     name="otherAddOns"
@@ -102,7 +103,7 @@ const LessonPlan = () => {
                                     checked={formData.otherAddOns.includes(skill)}
                                     onChange={handleCheckboxChange}
                                 />
-                                <label>{skill}</label>
+                                    {skill}</label>
                             </div>
                         ))}
                     </div>
@@ -110,7 +111,7 @@ const LessonPlan = () => {
 
                 {isOthersAddon && (
                     <div className='form-group'>
-                        <label htmlFor='otherAddOnsInput'>Others <span className="asterisk">*</span></label>
+                        <label htmlFor='otherAddOnsInput'>Others<span className="asterisk">*</span></label>
                         <input
                             required
                             className='form-control'

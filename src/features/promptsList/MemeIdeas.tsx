@@ -33,7 +33,7 @@ const MemeIdeas = () => {
       <h3>Generate meme ideas that resonate with your target audience.</h3>
       <form onSubmit={handleSubmit}>
         <div className="form-group">
-          <label htmlFor="audience">Audience <span className="asterisk">*</span></label>
+          <label htmlFor="audience">Audience<span className="asterisk">*</span></label>
           <input
             required
             type="text"

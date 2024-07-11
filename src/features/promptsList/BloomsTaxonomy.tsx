@@ -52,7 +52,7 @@ const BloomsTaxonomy = () => {
             <h3>Generate questions as per Bloom's Taxonomy.</h3>
             <form onSubmit={handleSubmit}>
                 <div className='form-group'>
-                    <label htmlFor='gradeLevel'>Grade Level <span className="asterisk">*</span></label>
+                    <label htmlFor='gradeLevel'>Grade Level<span className="asterisk">*</span></label>
                     <select
                         required
                         className='form-control'
@@ -67,7 +67,7 @@ const BloomsTaxonomy = () => {
                 </div>
 
                 <div className="form-group">
-                    <label htmlFor="topic">Topic / Learning Objective <span className="asterisk">*</span></label>
+                    <label htmlFor="topic">Topic / Learning Objective<span className="asterisk">*</span></label>
                     <input
                         required
                         className="form-control"
@@ -79,7 +79,7 @@ const BloomsTaxonomy = () => {
                 </div>
 
                 <div className='form-group'>
-                    <label htmlFor='bloomsTaxonomyLevels'>Bloom's Taxonomy Levels <span className="asterisk">*</span></label>
+                    <label htmlFor='bloomsTaxonomyLevels'>Bloom's Taxonomy Levels<span className="asterisk">*</span></label>
                     <div className='checkbox-group'>
                         {["Remembering", "Understanding", "Applying", "Analyzing", "Evaluating", "Creating"].map(level => (
                             <label key={level}>
@@ -95,10 +95,11 @@ const BloomsTaxonomy = () => {
                 </div>
 
                 <div className='form-group'>
-                    <label htmlFor='questionType'>Question Type <span className="asterisk">*</span></label>
+                    <label htmlFor='questionType'>Question Type<span className="asterisk">*</span></label>
                     <div className="radio-options">
                         {["Multiple Choice", "True/False", "Short Answer", "Essay", "Fill in the Blanks", "Match the Following", "Other"].map(type => (
                             <div key={type} className="radio-option">
+                                <label>
                                 <input
                                     type="radio"
                                     name="questionType"
@@ -106,7 +107,7 @@ const BloomsTaxonomy = () => {
                                     checked={formData.questionType === type}
                                     onChange={handleInputChange}
                                 />
-                                <label>{type}</label>
+                                    {type}</label>
                             </div>
                         ))}
                     </div>
@@ -114,7 +115,7 @@ const BloomsTaxonomy = () => {
 
                 {isOtherQuestionType && (
                     <div className='form-group'>
-                        <label htmlFor='otherQuestionType'>Other <span className="asterisk">*</span></label>
+                        <label htmlFor='otherQuestionType'>Other<span className="asterisk">*</span></label>
                         <input
                             required
                             className="form-control"

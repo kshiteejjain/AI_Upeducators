@@ -34,7 +34,7 @@ const MultimediaResources = () => {
             <h3>Generate various types of resources and references such as videos, articles, images, etc.</h3>
             <form onSubmit={handleSubmit}>
                 <div className="form-group">
-                    <label htmlFor="gradeLevel">Grade Level <span className="asterisk">*</span></label>
+                    <label htmlFor="gradeLevel">Grade Level<span className="asterisk">*</span></label>
                     <select
                         required
                         className="form-control"
@@ -63,7 +63,7 @@ const MultimediaResources = () => {
                 </div>
 
                 <div className="form-group">
-                    <label htmlFor="subjectTopic">Subject/Topic <span className="asterisk">*</span></label>
+                    <label htmlFor="subjectTopic">Subject/Topic<span className="asterisk">*</span></label>
                     <input
                         required
                         className="form-control"
@@ -75,7 +75,7 @@ const MultimediaResources = () => {
                 </div>
 
                 <div className="form-group">
-                    <label htmlFor="resourceType">Resource Type <span className="asterisk">*</span></label>
+                    <label htmlFor="resourceType">Resource Type<span className="asterisk">*</span></label>
                     <div>
                         <label><input type="checkbox" name="YouTube Videos" value={formData.resourceType} onChange={handleInputChange} /> YouTube Videos</label>
                         <label><input type="checkbox" name="Documentaries" value={formData.resourceType} onChange={handleInputChange} /> Documentaries</label>
