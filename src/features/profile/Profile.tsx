@@ -260,7 +260,7 @@ const Profile: React.FC = () => {
                                     {displayedItems.map((item, index) => (
                                         <tr key={index}>
                                             <td onClick={() => handleTile(item.categoryName)}>
-                                                <span className='link'>{item.categoryName.split(/(?=[A-Z])/).join(' ')}</span>
+                                                <span className='link'>{item.categoryName}</span>
                                             </td>
                                             <td>{item.count}</td>
                                             <td>{item.creditsUsed}</td>

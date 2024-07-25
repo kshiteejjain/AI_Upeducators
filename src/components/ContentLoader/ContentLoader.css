@@ -1,0 +1,110 @@
+.page {
+    width: 32%; /* Adjusted width to make the box slightly bigger */
+    margin: 0;
+    padding: 0;
+    height: 112px;
+    border-radius: 0.4rem;
+    background-color: var(--white);
+    box-sizing: border-box;
+    cursor: pointer;
+    box-shadow: 0 0 2px var(--white);
+    transition: all .3s;
+    margin: 0 1.3% 1.3% 0;
+    border: 1px solid var(--gray);
+}
+.page-title {
+    margin-top: 5px;
+    margin-bottom: 10px;
+}
+.page-content {
+    padding: 20px 0; /* Slightly increased padding */
+}
+.placeholder-content {
+    height: 70px; /* Increased height */
+    overflow: hidden;
+    position: relative;
+    animation-duration: 1.7s;
+    animation-fill-mode: forwards;
+    animation-iteration-count: infinite;
+    animation-timing-function: linear;
+    animation-name: placeholderAnimate;
+    background: #f6f7f8;
+    background: linear-gradient(to right, #eee 2%, #ddd 18%, #eee 33%);
+    background-size: 1300px;
+}
+.placeholder-content_item {
+    width: 100%;
+    height: 8px; /* Increased height */
+    position: absolute;
+    background: #fff;
+    z-index: 2;
+}
+.placeholder-content_item:after, .placeholder-content_item:before {
+    width: inherit;
+    height: inherit;
+    content: '';
+    position: absolute;
+}
+.placeholder-content_item:nth-child(3) {
+    top: 0px;
+    left: 0;
+    width: 6%;
+    height: 100%;
+}
+.placeholder-content_item:nth-child(4) {
+    top: 10px;
+    width: 20px;
+    left: 70px; /* Adjusted position */
+    height: 40px; /* Increased height */
+}
+.placeholder-content_item:nth-child(5) {
+    top: 20px;
+    left: 90px; /* Adjusted position */
+    height: 10px; /* Increased height */
+}
+.placeholder-content_item:nth-child(6) {
+    top: 40px;
+    left: 90px; /* Adjusted position */
+    height: 10px; /* Increased height */
+}
+.placeholder-content_item:nth-child(7) {
+    top: 10px;
+    right: 0;
+    width: 23%;
+    height: 12px; /* Increased height */
+}
+.placeholder-content_item:nth-child(8) {
+    top: 0;
+    right: 0;
+    width: 10%;
+    height: 100%;
+}
+.placeholder-content_item:nth-child(9) {
+    top: 50px; /* Adjusted position */
+    height: 12px; /* Increased height */
+    left: 0;
+}
+.placeholder-content_item:nth-child(10) {
+    top: 70px; /* Adjusted position */
+    height: 10px; /* Increased height */
+    left: 0;
+}
+.placeholder-content_item:nth-child(11) {
+    top: 90px; /* Adjusted position */
+    left: 0;
+    height: 100%;
+}
+@keyframes placeholderAnimate {
+    0% {
+        background-position: -650px 0;
+    }
+    100% {
+        background-position: 650px 0;
+    }
+}
+
+@media(max-width:767px){
+    .page{
+        width: 100%;
+    }
+}

@@ -10,8 +10,6 @@ const TextWebPageSummarizer = () => {
 
     const getInitialFormData = () => ({
         textURLToSummarize:'',
-        summaryLength: '',
-        outputType: '',
         questionType: '',
         otherQuestionType: ''
     });
@@ -37,7 +35,9 @@ const TextWebPageSummarizer = () => {
         }
     };
 
-    const promptMessage = `Generate a ${formData.outputType} summary of the following text or link: ${formData.textURLToSummarize}. The summary should be approximately ${formData.summaryLength} in length. Use the ${isOtherQuestionType ? formData.otherQuestionType : formData.questionType} approach for summarization.`;
+    const promptMessage = `Generate 10 ${formData.questionType} questions based on the following text or link: ${formData.textURLToSummarize}
+    The questions should be relevant to the key themes and ideas in the text or URL.
+    `;
 
     const handleSubmit = (event: React.SyntheticEvent<HTMLFormElement>) => {
         event.preventDefault();
@@ -60,32 +60,6 @@ const TextWebPageSummarizer = () => {
                         rows={5}
                         placeholder="Paste the text or URL you want to summarize."
                     />
-                </div>
-                <div className="form-group">
-                    <label htmlFor="summaryLength"> Summary Length<span className="asterisk">*</span></label>
-                    <input
-                        required
-                        className="form-control"
-                        name="summaryLength"
-                        type="text"
-                        onChange={handleInputChange}
-                        value={formData.summaryLength}
-                        placeholder="e.g., 100 words, 150 words, 200 words"
-                    />
-                </div>
-
-                <div className="form-group">
-                    <label> Output Type<span className="asterisk">*</span></label>
-                    <select
-                        required
-                        className='form-control'
-                        name="outputType"
-                        onChange={handleInputChange}
-                        value={formData.outputType}>
-                        <option value="">Select One</option>
-                        <option value="Paragraph-style">Paragraph-style</option>
-                        <option value="Bullet point">Bullet point</option>
-                    </select>
                 </div>
 
                 <div className="form-group">

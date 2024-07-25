@@ -12,6 +12,7 @@ import Strings from '../../utils/en';
 import BannerCarousel from '../../components/bannerCarousel/bannerCarousel';
 
 import './Categories.css';
+import ContentLoader from '../../components/ContentLoader/ContentLoader';
 
 
 type Props = {
@@ -271,39 +272,47 @@ const Categories = () => {
                         }
 
                         <div className='category-listing'>
-                            {categories.length === 0 ? <div className='loader-flex'> <div className="lds-ripple"><div></div><div></div></div> </div> : ''}
-                            {categories
-                                .filter(item => item.name !== 'Story Creation Generator')
-                                .filter(item => {
-                                    const isBookmarked = bookmarkedOnly ? bookmarkedIds.includes(item.id) : true;
-                                    const isActive = item.isActive === true;
-                                    const isMatchingSearchTerm =
-                                        isSearchFocused && searchTerm === '' ||
-                                        (!isSearchFocused && searchTerm === '') ||
-                                        (item && item.name && item.name.toLowerCase().includes(searchTerm.toLowerCase()));
-                                    if (bookmarkedOnly) {
-                                        return isBookmarked && isMatchingSearchTerm;
-                                    } else {
-                                        const isMatchingCategory = filterCategory === 'All' || (item && item?.categoryName?.toLowerCase().split(',').map(cat => cat.trim()).includes(filterCategory?.toLowerCase()));
-                                        return isActive && isBookmarked && isMatchingCategory && isMatchingSearchTerm;
-                                    }
-                                })
-                                .sort((a, b) => (b.usageCount || 0) - (a.usageCount || 0))
-                                .map((item, index) => (
-                                    <CategoryTiles
-                                        key={index}
-                                        id={item && item.id}
-                                        title={item && item.name}
-                                        onClick={() => handleTile(item && item.redirect, item.name)}
-                                        tilesIcon={item && item.IconComponent}
-                                        categoryAlt={item && item.name}
-                                        description={item && item.description}
-                                        thumbnailPath={item && `/assets/${item?.name?.replace(/\s+/g, '-')}.svg`}
-                                        bookmarkedIds={bookmarkedIds}
-                                        isPaid={item && item.isPaid}
-                                    />
-                                ))}
+                            {categories.length === 0 ? (
+                                <>
+                                    {[...Array(12)].map((_, index) => (
+                                        <ContentLoader key={index} />
+                                    ))}
+                                </>
+                            ) : (
+                                categories
+                                    .filter(item => item.name !== 'Story Creation Generator')
+                                    .filter(item => {
+                                        const isBookmarked = bookmarkedOnly ? bookmarkedIds.includes(item.id) : true;
+                                        const isActive = item.isActive === true;
+                                        const isMatchingSearchTerm =
+                                            isSearchFocused && searchTerm === '' ||
+                                            (!isSearchFocused && searchTerm === '') ||
+                                            (item && item.name && item.name.toLowerCase().includes(searchTerm.toLowerCase()));
+                                        if (bookmarkedOnly) {
+                                            return isBookmarked && isMatchingSearchTerm;
+                                        } else {
+                                            const isMatchingCategory = filterCategory === 'All' || (item && item?.categoryName?.toLowerCase().split(',').map(cat => cat.trim()).includes(filterCategory?.toLowerCase()));
+                                            return isActive && isBookmarked && isMatchingCategory && isMatchingSearchTerm;
+                                        }
+                                    })
+                                    .sort((a, b) => (b.usageCount || 0) - (a.usageCount || 0))
+                                    .map((item, index) => (
+                                        <CategoryTiles
+                                            key={index}
+                                            id={item && item.id}
+                                            title={item && item.name}
+                                            onClick={() => handleTile(item && item.redirect, item.name)}
+                                            tilesIcon={item && item.IconComponent}
+                                            categoryAlt={item && item.name}
+                                            description={item && item.description}
+                                            thumbnailPath={item && `/assets/${item?.name?.replace(/\s+/g, '-')}.svg`}
+                                            bookmarkedIds={bookmarkedIds}
+                                            isPaid={item && item.isPaid}
+                                        />
+                                    ))
+                            )}
                         </div>
+
                     </div>
                 </div>
             </div>

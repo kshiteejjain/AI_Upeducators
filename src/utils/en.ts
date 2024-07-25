@@ -18,9 +18,9 @@ const Strings = {
         signUp: 'Sign up',
     },
     otp: {
-        title: 'Enter Your 6 Digit OTP',
+        title: 'Enter Your 6 Digit Code From Your Email',
         button: 'Verify',
-        emailSent: 'Security code has been sent to your email.'
+        emailSent: 'Security code has been sent to your registered email.'
     },
     CreatePassword: {
         title: 'Create Password?',

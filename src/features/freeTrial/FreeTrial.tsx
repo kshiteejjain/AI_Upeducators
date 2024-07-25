@@ -243,14 +243,14 @@ const FreeTrial = () => {
                 {isOTPScreen ?
                     <form onSubmit={logEmailAndOTP}>
                         <div className='form-group'>
-                            <label htmlFor='name'>OTP <span className='asterisk'>*</span></label>
+                            <label htmlFor='name'>Code<span className='asterisk'>*</span></label>
                             <input
                                 type='number'
                                 required
                                 className='form-control'
                                 name='otp'
                                 onChange={handleInputChangeOTP}
-                                placeholder='Enter OTP'
+                                placeholder='Enter Verification Code'
                             />
                         </div>
                         {error && <div className="errorMessage">{error}</div>}

@@ -363,7 +363,7 @@ const Result = () => {
           <h2>{Strings.result.relatedFormsTitle}</h2>
           <ul>
             {isSuggestedForms.map((item, index) => (
-              <li>
+              <li key={index}>
                 <a href='javascript:void(0)' key={index} onClick={() => handleSuggestedForms(item)}>
                   {item.split(/(?=[A-Z])/).join(' ')}
                 </a>

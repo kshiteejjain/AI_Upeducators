@@ -381,14 +381,14 @@ const Register = () => {
                 {isOTPScreen ?
                     <form onSubmit={logEmailAndOTP}>
                         <div className='form-group'>
-                            <label htmlFor='name'>OTP <span className='asterisk'>*</span></label>
+                            <label htmlFor='name'>Verification Code<span className='asterisk'>*</span></label>
                             <input
                                 type='number'
                                 required
                                 className='form-control'
                                 name='otp'
                                 onChange={handleInputChangeOTP}
-                                placeholder='Enter OTP'
+                                placeholder='Enter Code'
                             />
                         </div>
                         {error && <div className="errorMessage">{error}</div>}
