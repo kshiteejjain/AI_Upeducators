@@ -37,7 +37,7 @@ const Login = () => {
             // Check if a document with the given email and password exists
             const q = query(
                 collectionRef,
-                where('email', '==', userDetails?.email),
+                where('email', '==', userDetails?.email.toLowerCase()),
                 where('password', '==', userDetails?.password)
             );
             const querySnapshot = await getDocs(q);

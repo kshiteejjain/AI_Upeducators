@@ -56,7 +56,7 @@ const CreatePassword = () => {
             // Check if a document with the given email exists
             const q = query(
                 collectionRef,
-                where('email', '==', formData.email)
+                where('email', '==', formData.email.toLowerCase())
             );
             const querySnapshot = await getDocs(q);
             if (!querySnapshot.empty) {
@@ -68,7 +68,7 @@ const CreatePassword = () => {
                 // });
                 const otp = generateRandomOTP();
                 localStorage.setItem('otp_temp', otp.toString());
-                setEnteredEmail(formData.email);
+                setEnteredEmail(formData.email.toLowerCase());
                 setIsOTPScreen(true);
                 setLoading(false);
                 //setFormData(initialFormData);

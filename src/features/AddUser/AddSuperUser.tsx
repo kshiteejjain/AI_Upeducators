@@ -62,7 +62,8 @@ const AddSuperUser = () => {
         e.preventDefault();
         setLoading(true);
         try {
-            const docRef = doc(firestore, 'RegisteredUsers', formData.email);
+            const emailLowerCase = formData.email.toLowerCase();
+            const docRef = doc(firestore, 'RegisteredUsers', emailLowerCase);
             const docSnap = await getDoc(docRef);
 
             if (docSnap.exists()) {
@@ -92,6 +93,7 @@ const AddSuperUser = () => {
                 // No document with this email found, create new user
                 const newUser = {
                     ...formData,
+                    email: emailLowerCase,
                     total_credits: 1000,
                     remain_credits: 1000
                 };
