@@ -92,7 +92,7 @@ const Categories = () => {
     }, [filterCategory]);
 
     const categoryQuery = Math.random().toString(36).slice(8)
-    const handleTile = (redirect?: string, name?: string) => {
+    const handleTile = (redirect?: string) => {
         const formData = JSON.parse(localStorage.getItem('upEdu_prefix') || '{}');
         if (localStorage.getItem('filterCategory') === 'CBSE Board') {
             const { gradeLevel, subject, chapter } = formData;
@@ -163,27 +163,6 @@ const Categories = () => {
 
             return updatedFormData;
         });
-    };
-
-    const selectedGrade = JSON.parse(localStorage.getItem('upEdu_prefix'))?.gradeLevel || '';
-    const selectedSubject = JSON.parse(localStorage.getItem('upEdu_prefix'))?.subject || '';
-    const selectedChapter = JSON.parse(localStorage.getItem('upEdu_prefix'))?.chapter || '';
-
-
-    const getSubjectsForGrade = (grade: string) => {
-        const selectedGrade = CBSEJSON?.CBSEForms?.Grades.find(item => item.grade === grade);
-        return selectedGrade ? Object.keys(selectedGrade.Subjects) : [];
-    };
-
-    const getChaptersForSubject = (grade: string, subject: string) => {
-        const selectedGrade = CBSEJSON?.CBSEForms?.Grades.find(item => item.grade === grade);
-        if (selectedGrade && selectedGrade.Subjects[subject]) {
-            return selectedGrade.Subjects[subject].Chapters.map(chapter => ({
-                name: chapter.name,
-                description: chapter.description
-            }));
-        }
-        return [];
     };
 
     return (

@@ -12,6 +12,7 @@ const CBSECustomQuestions = () => {
     // Fetching data from localStorage
     const initialFormData = JSON.parse(localStorage.getItem('upEdu_prefix') || '{}');
     const [formData, setFormData] = useState({
+        board: initialFormData.board || '',
         gradeLevel: initialFormData.gradeLevel || '',
         subject: initialFormData.subject || '',
         questionType: '',
@@ -61,8 +62,27 @@ const CBSECustomQuestions = () => {
             <h2>CBSE Custom Questions</h2>
             <h3>Create questions based on your Board and specific requirements.</h3>
             <form onSubmit={handleSubmit}>
+            <div className='form-group'>
+    <label htmlFor='board'>Select Board<span className="asterisk">*</span></label>
+    <select
+        required
+        className='form-control'
+        name="board"
+        onChange={handleInputChange}
+        value={formData.board}>
+        <option value="">Any Board</option>
+        <option value="CBSE Board">CBSE Board</option>
+    </select>
+</div>
 
-                <BoardFormComponent />
+                {formData.board === 'CBSE Board' && (
+                    <BoardFormComponent
+                        gradeLevel={formData.gradeLevel}
+                        subject={formData.subject}
+                        chapter={formData.chapter}
+                        onInputChange={handleInputChange}
+                    />
+                )}
                 <div className='form-group'>
                     <label htmlFor='questionType'>Question Type</label>
                     <input

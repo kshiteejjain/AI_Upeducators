@@ -116,6 +116,17 @@ img {
   min-height: calc(100vh - 180px);
 }
 
+.generator-section .board-forms-prefix{
+  flex-direction: column;
+  padding: 0;
+  border: none;
+  margin: 0;
+}
+.generator-section .board-forms-prefix .form-group{
+  width: 100%;
+  margin-bottom: 1.5rem;
+}
+
 .backButton {
   text-align: left;
   margin-bottom: 13px;
