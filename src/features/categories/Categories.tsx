@@ -10,10 +10,10 @@ import CategoriesFilter from '../categoriesFilter/CategoriesFilter';
 import CBSEJSON from '../../utils/boardWiseForms.json'
 import Strings from '../../utils/en';
 import BannerCarousel from '../../components/bannerCarousel/bannerCarousel';
+import ContentLoader from '../../components/ContentLoader/ContentLoader';
+import BoardFormComponent from '../../features/promptsList/BoardFormComponent';
 
 import './Categories.css';
-import ContentLoader from '../../components/ContentLoader/ContentLoader';
-
 
 type Props = {
     id: number;
@@ -211,62 +211,12 @@ const Categories = () => {
                             </div>
                         </div>
                         {localStorage.getItem('filterCategory') === 'CBSE Board' ?
-                            <form className='board-forms-prefix'>
-                                <div className='form-group'>
-                                    <label htmlFor='gradeLevel'>Grade Level<span className="asterisk">*</span></label>
-                                    <select
-                                        required
-                                        className='form-control'
-                                        name="gradeLevel"
-                                        onChange={handleInputChange}
-                                        value={formData.gradeLevel}
-                                        placeholder="Select the grade level for which the questions are being created">
-                                        <option value="">{selectedGrade || 'Please Select Grade'}</option>
-                                        {CBSEJSON.CBSEForms.Grades.map((item, index) => (
-                                            <option key={index} value={item.grade}>
-                                                {item.grade}
-                                            </option>
-                                        ))}
-                                    </select>
-                                </div>
-
-                                <div className='form-group'>
-                                    <label htmlFor='subject'>Subject<span className="asterisk">*</span></label>
-                                    <select
-                                        required
-                                        className='form-control'
-                                        name="subject"
-                                        onChange={handleInputChange}
-                                        value={formData.subject}
-                                        placeholder="Select Subject">
-                                        <option value="">{selectedSubject || 'Please Select Subject'}</option>
-                                        {formData.gradeLevel && getSubjectsForGrade(formData.gradeLevel).map((subject, index) => (
-                                            <option key={index} value={subject}>
-                                                {subject}
-                                            </option>
-                                        ))}
-                                    </select>
-                                </div>
-
-                                <div className='form-group'>
-                                    <label htmlFor='chapter'>Chapter<span className="asterisk">*</span></label>
-                                    <select
-                                        required
-                                        className='form-control'
-                                        name="chapter"
-                                        onChange={handleInputChange}
-                                        value={formData.chapter}
-                                        placeholder="Select the relevant chapter name">
-                                        <option value="">{selectedChapter || 'Please Select Chapter'}</option>
-                                        {formData.gradeLevel && formData.subject &&
-                                            getChaptersForSubject(formData.gradeLevel, formData.subject).map((chapter: string, index: number) => (
-                                                <option key={index} value={chapter.name}>
-                                                    {chapter.name}
-                                                </option>
-                                            ))}
-                                    </select>
-                                </div>
-                            </form>
+                            <BoardFormComponent
+                                gradeLevel={formData.gradeLevel}
+                                subject={formData.subject}
+                                chapter={formData.chapter}
+                                onInputChange={handleInputChange}
+                            />
                             :
                             null
                         }
@@ -280,7 +230,6 @@ const Categories = () => {
                                 </>
                             ) : (
                                 categories
-                                    .filter(item => item.name !== 'Story Creation Generator')
                                     .filter(item => {
                                         const isBookmarked = bookmarkedOnly ? bookmarkedIds.includes(item.id) : true;
                                         const isActive = item.isActive === true;

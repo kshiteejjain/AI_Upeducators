@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { generatorPrompt } from '../promptListGeneratorSlice/QuestionGeneratorSlice';
 import Button from '../../components/buttons/Button';
 import { sendPrompt } from '../../utils/sendPrompt';
+import BoardFormComponent from './BoardFormComponent';
 
 const CBSECustomQuestions = () => {
     const { generatorData: { messages, input } } = useSelector((state) => state);
@@ -50,7 +51,7 @@ const CBSECustomQuestions = () => {
     The detailed outline of the unit is: ${formData.chapterDescription}`;
 
     const handleSubmit = (event: React.SyntheticEvent<HTMLFormElement>) => {
-        event.preventDefault(); 
+        event.preventDefault();
         sendPrompt(dispatch, { input, messages, generatorPrompt, promptMessage });
         localStorage.removeItem('upEdu_prefix'); // Remove stored data after submitting
     };
@@ -60,50 +61,8 @@ const CBSECustomQuestions = () => {
             <h2>CBSE Custom Questions</h2>
             <h3>Create questions based on your Board and specific requirements.</h3>
             <form onSubmit={handleSubmit}>
-                <div className='form-group'>
-                    <label htmlFor='gradeLevel'>Grade Level
-<span className="asterisk">*</span></label>
-                    <select
-                        required
-                        className='form-control'
-                        name="gradeLevel"
-                        onChange={handleInputChange}
-                        value={formData.gradeLevel}
-                        disabled
-                        placeholder="Select the grade level for which the questions are being created">
-                        <option value="">{formData?.gradeLevel}</option>
-                    </select>
-                </div>
 
-                <div className='form-group'>
-                    <label htmlFor='subject'>Subject
-<span className="asterisk">*</span></label>
-                    <select
-                        required
-                        className='form-control'
-                        name="subject"
-                        onChange={handleInputChange}
-                        value={formData.subject}
-                        disabled
-                        >
-                        <option value="">{formData?.subject}</option>
-                    </select>
-                </div>
-                <div className='form-group'>
-                    <label htmlFor='chapter'>Chapter
-<span className="asterisk">*</span></label>
-                    <select
-                        required
-                        className='form-control'
-                        name="chapter"
-                        onChange={handleInputChange}
-                        value={formData.chapter}
-                        disabled
-                        >
-                        <option value="">{formData?.chapter}</option>
-                    </select>
-                </div>
-
+                <BoardFormComponent />
                 <div className='form-group'>
                     <label htmlFor='questionType'>Question Type</label>
                     <input

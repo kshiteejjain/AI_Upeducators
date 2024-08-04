@@ -8,6 +8,7 @@ const creditValue = Number(import.meta.env.VITE_TEXT_GENERATOR_CREDITS);
 // Define the async thunk
 export const generatorPrompt = createAsyncThunk('generator/generatorPrompt', async (prompt, { getState }) => {
   const isGPT4 = localStorage.getItem('isGPT4');
+const isMini4 = localStorage.getItem('isMini4');
 
   const promptList = JSON.parse(localStorage.getItem('prompts') || '[]'); // Get existing prompts or initialize as empty array
   promptList.push({
@@ -76,7 +77,7 @@ export const generatorPrompt = createAsyncThunk('generator/generatorPrompt', asy
       const response = await axios.post(
         `${import.meta.env.VITE_OPEN_AI_CHAT_COMPLETION_API_URL}`,
         {
-          model: `${isGPT4 === 'true' ? 'gpt-4-0125-preview' : 'gpt-3.5-turbo'}`,
+          model: `${isGPT4 === 'true' ? 'gpt-4-0125-preview' : (isMini4 === 'true' ? 'gpt-4o-mini' : 'gpt-3.5-turbo')}`,
           messages: prompt.map((msg) => ({
             role: msg.role,
             content: msg.content,
@@ -90,6 +91,7 @@ export const generatorPrompt = createAsyncThunk('generator/generatorPrompt', asy
         }
       );
       console.log('Model used ', response.data.model);
+      localStorage.removeItem('isMini4');
       return response?.data?.choices[0]?.message?.content?.trim();
     } catch (error) {
       alert(`Error sending message to OpenAI API:', ${error}`);

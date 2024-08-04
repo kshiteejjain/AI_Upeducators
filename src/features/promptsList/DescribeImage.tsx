@@ -42,7 +42,7 @@ const DescribeImage = () => {
 
             try {
                 setLoader(true);
-                const response = await fetch(`${import.meta.env.VITE_FILE_UPLOAD_API_KEY}`, {
+                const response = await fetch(`${import.meta.env.VITE_FILE_UPLOAD_API_URL}`, {
                     method: 'POST',
                     body: formData,
                 });

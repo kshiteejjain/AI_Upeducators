@@ -79,6 +79,9 @@ const BulkFormsUpload: React.FC<BulkFormsUploadProps> = (): ReactElement => {
                     case 'isPaid':
                         document['isPaid'] = value.trim().toLowerCase() === 'yes';
                     break;
+                    case 'isActive':
+                        document['isActive'] = value.trim().toLowerCase() === 'yes';
+                    break;
                     default:
                         document[headers[index]] = value;
                         break;
