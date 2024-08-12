@@ -17,7 +17,7 @@ import EmptyState from '../../assets/empty-state.gif';
 import CopyClipboard from '../../assets/copyClipboard.svg';
 import More from '../../assets/more.svg';
 import Download from '../../assets/download.svg';
-import mic from '../../assets/mic.svg'
+import mic from '../../assets/mic.svg';
 
 import './Result.css';
 import { setCategory } from '../categories/CategoriesSlice';
@@ -67,17 +67,27 @@ const Result = () => {
       return null;
     }
 
-    const isTableResponse = msg.content.includes('table response:') || msg.content.includes('table response');
+    const isTableResponse = msg.content.includes('Table Response:') || msg.content.includes('Table Response');
     const isSimpleTableFormat = msg.content.trim().split('\n').every((line: any) => /^\|.*\|$/.test(line.trim()));
+
     const renderBoldBeforeColon = (text: string) => {
-      const parts = text.split(/(:\s*)/);
-      return (
-        <>
-          <strong>{parts.shift()}</strong>
-          {parts.join('')}
-        </>
-      );
+      // Replace ** with <strong> tags
+      let processedText = text.replace(/\*\*(.*?)\*\*/g, (_, p1) => `<strong>${p1}</strong>`);
+
+      // Replace #, ##, ###, ####, #####, ###### with corresponding <h1>, <h2>, ... <h6> tags
+      processedText = processedText.replace(/^\s*(#{1,6})\s+(.*)$/gm, (match, hashes, content) => {
+        const level = hashes.length; // Determine the level based on the number of hashes
+        return `<h${level}>${content}</h${level}>`;
+      });
+
+      // Return the processed text if it's not empty
+      return processedText.trim() !== '' ? (
+        <span dangerouslySetInnerHTML={{ __html: processedText }} />
+      ) : null;
     };
+
+
+
 
     return (
       <div className='response-data' key={index}>
@@ -87,68 +97,62 @@ const Result = () => {
           ) : (
             typeof msg.content === 'string' ? (
               isTableResponse ? (
-                // Render the content as a table
                 <table className='table-response'>
                   <tbody>
                     {msg.content.split('\n').map((line: any, lineIndex: number) => {
                       const columns = line.split('|').map((col: any) => col.trim()).filter((col: any) => col !== '');
                       return (
-                        <tr key={lineIndex}>
-                          {columns.map((col: any, colIndex: number) => (
-                            <td key={colIndex}>{col}</td>
-                          ))}
-                        </tr>
+                        columns.length > 0 && (
+                          <tr key={lineIndex}>
+                            {columns.map((col: any, colIndex: number) => (
+                              col !== '' && <td key={colIndex}>{renderBoldBeforeColon(col)}</td>
+                            ))}
+                          </tr>
+                        )
                       );
                     })}
                   </tbody>
                 </table>
               ) : isSimpleTableFormat ? (
-                // Render the simple table format "| Name | Value |"
                 <table className='table-response'>
                   <tbody>
                     {msg.content.split('\n').map((line: any, lineIndex: number) => {
                       const columns = line.split('|').map((col: any) => col.trim()).filter((col: any) => col !== '');
                       return (
-                        <tr key={lineIndex}>
-                          {columns.map((col: any, colIndex: number) => (
-                            <td key={colIndex}>{col}</td>
-                          ))}
-                        </tr>
+                        columns.length > 0 && (
+                          <tr key={lineIndex}>
+                            {columns.map((col: any, colIndex: number) => (
+                              col !== '' && <td key={colIndex}>{renderBoldBeforeColon(col)}</td>
+                            ))}
+                          </tr>
+                        )
                       );
                     })}
                   </tbody>
                 </table>
               ) : (
-                // Render the content as lines
-                msg.content.split('\n').map((line: any, lineIndex: number) => (
-                  <div key={lineIndex}>
-                    {line.includes(':') ? (
-                      renderBoldBeforeColon(line)
-                    ) : (
-                      // Render each HTTP or HTTPS link as individual clickable links
-                      line.split(/\b(https?:\/\/[^\s]+)\b/g).map((segment: any, segmentIndex: number) => {
-                        if (segment.match(/^https?:\/\//)) {
-                          return (
-                            <a key={segmentIndex} href={segment} target="_blank">{segment}</a>
-                          );
-                        } else {
-                          return (
-                            <span key={segmentIndex}>{segment}</span>
-                          );
-                        }
-                      })
-                    )}
-                    <br />
-                  </div>
-                ))
+                msg.content.split('\n').map((line: any, lineIndex: number) => {
+                  const lineContent = renderBoldBeforeColon(line);
+                  const isHeading = /<h[1-6]>.*<\/h[1-6]>/.test(lineContent?.props?.dangerouslySetInnerHTML?.__html || '');
+
+                  return lineContent && (
+                    <div key={lineIndex}>
+                      {lineContent}
+                      {!isHeading && <br />}
+                    </div>
+                  );
+                })
               )
             ) : (
-              <div>{msg.content}</div> // Render the content as is if it's not a string
+              msg.content.trim() !== '' && <div>{renderBoldBeforeColon(msg.content)}</div>
             )
           )}
         </div>
       </div>
     );
+
+
+
   });
 
 
@@ -174,7 +178,7 @@ const Result = () => {
     generatedData?.length === 1 ? (resultAudio.play(), fetchFollowupPrompts(), fetchSuggestedForms()) : null;
 
   }, [generatedData, generatedImage, resultAudio]);
-  
+
   async function fetchFollowupPrompts() {
     const followupPrompts = await getFollowupPrompts(getFormName?.selectedCategory);
     setGetFollowPrompt(followupPrompts);

@@ -13,10 +13,32 @@
     font-size: calc(var(--baseFontSize) - 2px);
     display: flex;
     align-items: center;
+    cursor: pointer;
   }
-  .username span{
-    text-transform: uppercase;
+  .username .circle {
+    font-size: calc(var(--baseFontSize) + 1px);
+    background-color: var(--primary);
+    color: var(--white);
+    padding: 10px;
+    border-radius: 100%;
+    width: 20px;
+    height: 20px;
+    line-height: 20px;
     font-weight: bold;
+    margin-right: 7px;
+}
+  .username img{
+    max-width: 20px;
+    transform: rotate(90deg);
+    opacity: 0.5;
+    transition: all .3s;
+  }
+  .username:hover img{
+    opacity: 1;
+  }
+  .username.visible img{
+    opacity: 1;
+    transform: rotate(-90deg);
   }
   .headerRight{
     text-align: right;
@@ -83,6 +105,9 @@
    outline: none;
    color: var(--primary);
   }
+  .language-selection{
+    margin-right: 20px;
+}
   @media(max-width:767px){
     .header img{
       max-width: 150px;
@@ -90,10 +115,10 @@
     .header .defaultProfile img{
       max-width: 22px;
     }
-    .username{
-      flex-direction: column-reverse;
-    }
     .headerRight-others{
       display: none;
+    }
+    .username img{
+      max-width: 20px;
     }
   }

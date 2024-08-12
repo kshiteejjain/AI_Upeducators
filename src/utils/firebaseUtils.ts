@@ -21,6 +21,7 @@ type UserDocumentData = {
   batch?: string;
   count?: number
   creditsUsed?: number
+  expiry?: string
 };
 export const fetchUserDocument = async (username: string): Promise<QuerySnapshot<DocumentData>> => {
   const collectionRef = collection(firestore, 'RegisteredUsers');

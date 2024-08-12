@@ -21,6 +21,7 @@ const CBSECustomQuestions = () => {
         difficultyLevel: [] as string[],
         contextPreference: '',
         additionalDetails: '',
+        topic: '',
     });
 
     const handleInputChange = (e: ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
@@ -46,10 +47,20 @@ const CBSECustomQuestions = () => {
             }));
         }
     };
+    
+    const handleChapterDescriptionChange = (description: string) => {
+        setFormData((prevData) => ({
+            ...prevData,
+            chapterDescription: description
+        }));
+    };
 
-    const promptMessage = `Generate 10 ${formData.questionType} questions for ${formData.gradeLevel} on ${formData.chapter}. It should be framed within the context of 
-    ${formData.contextPreference} at a ${formData.difficultyLevel} difficulty level. Also, consider these additional details: ${formData.additionalDetails}
-    The detailed outline of the unit is: ${formData.chapterDescription}`;
+    const subjectOrTopic = formData.board === 'CBSE Board' ? `${formData.subject}, ${formData.chapter}` : formData.topic;
+    const checkAdditionalDetails = formData.board === 'CBSE Board' ? `The detailed outline of the unit is: ${formData.chapterDescription}` : '';
+
+    const promptMessage = `Generate 10 ${formData.questionType} questions for ${formData.gradeLevel} on ${subjectOrTopic}. It should be framed within the context of 
+    ${formData.contextPreference} at a ${formData.difficultyLevel.join(', ')} difficulty level. Also, consider these additional details: ${formData.additionalDetails}.
+    The detailed outline of the unit is: ${checkAdditionalDetails}`;
 
     const handleSubmit = (event: React.SyntheticEvent<HTMLFormElement>) => {
         event.preventDefault();
@@ -62,27 +73,55 @@ const CBSECustomQuestions = () => {
             <h2>CBSE Custom Questions</h2>
             <h3>Create questions based on your Board and specific requirements.</h3>
             <form onSubmit={handleSubmit}>
-            <div className='form-group'>
-    <label htmlFor='board'>Select Board<span className="asterisk">*</span></label>
-    <select
-        required
-        className='form-control'
-        name="board"
-        onChange={handleInputChange}
-        value={formData.board}>
-        <option value="">Any Board</option>
-        <option value="CBSE Board">CBSE Board</option>
-    </select>
-</div>
-
-                {formData.board === 'CBSE Board' && (
+                <div className='form-group'>
+                    <label htmlFor='board'>Select Board<span className="asterisk">*</span></label>
+                    <select
+                        required
+                        className='form-control'
+                        name="board"
+                        onChange={handleInputChange}
+                        value={formData.board}>
+                        <option value="Any Board">Any Board</option>
+                        <option value="CBSE Board">CBSE Board</option>
+                    </select>
+                </div>
+                {formData.board === 'CBSE Board' ? (
                     <BoardFormComponent
                         gradeLevel={formData.gradeLevel}
                         subject={formData.subject}
                         chapter={formData.chapter}
                         onInputChange={handleInputChange}
+                        onChapterDescriptionChange={handleChapterDescriptionChange}
                     />
-                )}
+                ) : <>
+                    <div className='form-group'>
+                        <label htmlFor='gradeLevel'>Grade Level<span className="asterisk">*</span></label>
+                        <select
+                            required
+                            className='form-control'
+                            name="gradeLevel"
+                            onChange={handleInputChange}
+                            value={formData.gradeLevel}
+                        >
+                            <option value="">Select Grade Level</option>
+                            {["Nursery", "Preparatory", "1st-Grade", "2nd-Grade", "3rd-Grade", "4th-Grade", "5th-Grade", "6th-Grade", "7th-Grade", "8th-Grade", "9th-Grade", "10th-Grade", "11th-Grade", "12th-Grade", "College-Level"].map(level => (
+                                <option key={level} value={level}>{level}</option>
+                            ))}
+                        </select>
+                    </div>
+                    <div className='form-group'>
+                        <label htmlFor='topic'>Topic / Learning Objective<span className="asterisk">*</span></label>
+                        <input
+                            required
+                            className="form-control"
+                            name="topic"
+                            onChange={handleInputChange}
+                            value={formData.topic}
+                            placeholder="e.g., Environmental Awareness, World War II, Algebra, Photosynthesis, Gravity"
+                        />
+                    </div>
+                </>
+                }
                 <div className='form-group'>
                     <label htmlFor='questionType'>Question Type</label>
                     <input

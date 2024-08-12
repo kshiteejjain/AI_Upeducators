@@ -34,7 +34,6 @@ const Strings = {
         totalCredits: 'Total Credits:',
         remainingCredits: 'Remaining Credits:',
         creditsLimitPerday: 'Limit Per Day:',
-        welcome: 'Welcome',
         email: 'Email',
         goToCategory: 'Go To Categories',
         history: 'Search History',
@@ -51,7 +50,7 @@ const Strings = {
     },
     profile: {
         upgrade: 'Plans',
-        upgradePlan: 'Upgrade Plan'
+        upgradePlan: 'Upgrade'
     },
     result: {
         followupTitle: 'Followup Query?',

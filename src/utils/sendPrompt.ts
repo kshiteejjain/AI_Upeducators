@@ -1,11 +1,17 @@
 import { setMessages, isFollowUpPrompt, resetGeneratedData } from '../features/promptListGeneratorSlice/QuestionGeneratorSlice';
-export const sendPrompt = (dispatch, props) => {
+
+//Fetching Preferred Output Language
+const fetchLanguage = localStorage.getItem('upEdu_prefix');
+const data = fetchLanguage ? JSON.parse(fetchLanguage) : { lang: '' }; // Provide a default object if parsing fails or fetchLanguage is null
+const selectedLanguage = data.lang || '';
+
+export const sendPrompt = (dispatch: any, props: any) => {
   dispatch(isFollowUpPrompt(props.isFollowUpPrompt))
   const { messages, generatorPrompt, promptMessage } = props;
   if (localStorage.getItem('username') === 'ankushb@upeducators.com') {
    alert('prompts alert => ' + JSON.stringify(props.promptMessage))
   }
-  const prompt = [...(messages || []), { role: 'user', content: promptMessage, isVisible: props.isFollowUpPrompt }];
+  const prompt = [...(messages || []), { role: 'user', content: selectedLanguage === 'hindi' ? promptMessage  + ' Generate output in hindi' : promptMessage, isVisible: props.isFollowUpPrompt }];
   
   dispatch(setMessages(prompt));
   try {

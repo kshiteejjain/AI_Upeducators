@@ -1,14 +1,16 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import CBSEJSON from '../../utils/boardWiseForms.json'; // Adjust the path as needed
 
 interface Props {
-  gradeLevel: string;
-  subject: string;
-  chapter: string;
-  onInputChange: (event: React.ChangeEvent<HTMLSelectElement>) => void;
+  gradeLevel?: string;
+  subject?: string;
+  chapter?: string;
+  onInputChange?: (event: React.ChangeEvent<HTMLSelectElement>) => void;
+  onChapterDescriptionChange?: (description: string) => void; // New prop to pass chapter description
 }
 
-const GradeSubjectChapterForm: React.FC<Props> = ({ gradeLevel, subject, chapter, onInputChange }) => {
+const GradeSubjectChapterForm: React.FC<Props> = ({ gradeLevel, subject, chapter, onInputChange, onChapterDescriptionChange }) => {
+  const [chapters] = useState<{ name: string, description: string }[]>([]);
 
   const getSubjectsForGrade = (grade: string) => {
     const selectedGrade = CBSEJSON?.CBSEForms?.Grades.find(item => item.grade === grade);
@@ -25,6 +27,22 @@ const GradeSubjectChapterForm: React.FC<Props> = ({ gradeLevel, subject, chapter
     }
     return [];
   };
+
+  useEffect(() => {
+    if (gradeLevel && subject && chapter) {
+      const selectedGrade = CBSEJSON?.CBSEForms?.Grades.find(item => item.grade === gradeLevel);
+      if (selectedGrade && selectedGrade.Subjects[subject]) {
+        const selectedChapter = selectedGrade.Subjects[subject].Chapters.find(chap => chap.name === chapter);
+        if (selectedChapter) {
+          onChapterDescriptionChange(selectedChapter.description); // Send the chapter description to the parent
+        } else {
+          onChapterDescriptionChange(''); // Clear description if chapter not found
+        }
+      } else {
+        onChapterDescriptionChange(''); // Clear description if subject not found
+      }
+    }
+  }, [gradeLevel, subject, chapter, onChapterDescriptionChange]);
 
   return (
     <form className='board-forms-prefix'>
@@ -56,9 +74,9 @@ const GradeSubjectChapterForm: React.FC<Props> = ({ gradeLevel, subject, chapter
           value={subject}
           placeholder="Select Subject">
           <option value="">Please Select Subject</option>
-          {gradeLevel && getSubjectsForGrade(gradeLevel).map((subject, index) => (
-            <option key={index} value={subject}>
-              {subject}
+          {gradeLevel && getSubjectsForGrade(gradeLevel).map((sub, index) => (
+            <option key={index} value={sub}>
+              {sub}
             </option>
           ))}
         </select>
@@ -74,9 +92,9 @@ const GradeSubjectChapterForm: React.FC<Props> = ({ gradeLevel, subject, chapter
           value={chapter}
           placeholder="Select the relevant chapter name">
           <option value="">Please Select Chapter</option>
-          {gradeLevel && subject && getChaptersForSubject(gradeLevel, subject).map((chapter, index) => (
-            <option key={index} value={chapter.name}>
-              {chapter.name}
+          {gradeLevel && subject && getChaptersForSubject(gradeLevel, subject).map((chap, index) => (
+            <option key={index} value={chap.name}>
+              {chap.name}
             </option>
           ))}
         </select>

@@ -39,7 +39,7 @@
     border-radius: 3px;
     display: flex;
     align-items: center;
-    padding:11px 21px;
+    padding:9px 21px;
     font-size: calc(var(--baseFontSize) - 1px);
     white-space: nowrap;
     margin-right: 20px;
@@ -68,7 +68,6 @@
     width: 33%;
     margin-bottom: 7px;
 }
-
 
 @media(max-width:767px){
     .category-listing{

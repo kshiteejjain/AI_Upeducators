@@ -26,7 +26,6 @@ const OpenText = () => {
 
     const handleSubmit = (event: React.SyntheticEvent<HTMLFormElement>) => {
         event.preventDefault();
-        localStorage.setItem('isMini4', 'true');
         sendPrompt(dispatch, { input, messages, generatorPrompt, promptMessage });
     };
 
