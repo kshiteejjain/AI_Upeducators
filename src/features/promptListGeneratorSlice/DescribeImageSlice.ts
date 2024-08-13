@@ -71,7 +71,7 @@ export const generatorPrompt = createAsyncThunk('generator/generatorPrompt', asy
     const response = await axios.post(
       `${import.meta.env.VITE_OPEN_AI_CHAT_COMPLETION_API_URL}`,
       {
-        model: 'gpt-4o',
+        model: 'gpt-4o-mini',
         messages: [
           {
             role: 'user',

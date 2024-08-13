@@ -22,7 +22,7 @@ const BlogOutline = () => {
             [name]: value,
         }));
     };
-    const promptMessage = `I want to write a blog on ${formData.blogTitle}, the audience of my blog is ${formData.audience}. Please give me the outline of the blog which will help me in writing an engaging blog.     `;
+    const promptMessage = `I want to write a blog on ${formData.blogTitle}, the audience of my blog is ${formData.audience}. Please give me the outline of the blog which will help me in writing an engaging blog.`;
     const handleSubmit = (event: React.SyntheticEvent<HTMLFormElement>) => {
         event.preventDefault();
         sendPrompt(dispatch, { input, messages, generatorPrompt, promptMessage });

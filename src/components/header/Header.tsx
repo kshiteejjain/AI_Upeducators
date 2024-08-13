@@ -118,6 +118,16 @@ const Header = ({ isLoginPage, moreOptions = true }: Props) => {
             <select className='form-control' value={selectedLanguage} onChange={handleLanguage}>
               <option value='english'>English</option>
               <option value='hindi'>Hindi</option>
+              <option value='marathi'>Marathi</option>
+              <option value='bengali'>Bengali</option>
+              <option value='tamil'>Tamil</option>s
+              <option value='telugu'>Telugu</option>
+              <option value='kannada'>Kannada</option>
+              <option value='malayalam'>Malayalam</option>
+              <option value='gujarati'>Gujarati</option>
+              <option value='french'>French</option>
+              <option value='german'>German</option>
+              <option value='spanish'>Spanish</option>
             </select>
           </div>
 

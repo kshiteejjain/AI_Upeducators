@@ -11,7 +11,7 @@ export const sendPrompt = (dispatch: any, props: any) => {
   if (localStorage.getItem('username') === 'ankushb@upeducators.com') {
    alert('prompts alert => ' + JSON.stringify(props.promptMessage))
   }
-  const prompt = [...(messages || []), { role: 'user', content: selectedLanguage === 'hindi' ? promptMessage  + ' Generate output in hindi' : promptMessage, isVisible: props.isFollowUpPrompt }];
+  const prompt = [...(messages || []), { role: 'user', content: selectedLanguage ? promptMessage  + `Generate output in ${selectedLanguage}` : promptMessage, isVisible: props.isFollowUpPrompt }];
   
   dispatch(setMessages(prompt));
   try {

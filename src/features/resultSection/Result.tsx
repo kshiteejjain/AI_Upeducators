@@ -18,9 +18,12 @@ import CopyClipboard from '../../assets/copyClipboard.svg';
 import More from '../../assets/more.svg';
 import Download from '../../assets/download.svg';
 import mic from '../../assets/mic.svg';
+import { setCategory } from '../categories/CategoriesSlice';
+
+import { saveAs } from 'file-saver'
 
 import './Result.css';
-import { setCategory } from '../categories/CategoriesSlice';
+
 
 type RootState = {
   imageData: any;
@@ -85,9 +88,6 @@ const Result = () => {
         <span dangerouslySetInnerHTML={{ __html: processedText }} />
       ) : null;
     };
-
-
-
 
     return (
       <div className='response-data' key={index}>
@@ -201,17 +201,24 @@ const Result = () => {
 
   const downloadImage = () => {
     if (generatedImage) {
+      // Create a temporary link element
       const link = document.createElement('a');
       link.href = generatedImage;
+      link.download = 'generated_image.png'; // You can customize the file name
       link.download = 'generated_image.png';
       document.body.appendChild(link);
       link.click();
       document.body.removeChild(link);
     }
   };
+  
+  
+
+  
   const [formData, setFormData] = useState({
     followUpPromptInput: '',
   });
+  
   const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setFormData((prevData) => ({
