@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { generatorPrompt } from '../promptListGeneratorSlice/QuestionGeneratorSlice';
 import Button from '../../components/buttons/Button';
 import { sendPrompt } from '../../utils/sendPrompt';
+import { GET_JSON_RESPONSE } from '../../utils/Constant';
 
 const CustomQuestion = () => {
     const { generatorData: { messages, input } } = useSelector((state) => state);
@@ -43,12 +44,41 @@ const CustomQuestion = () => {
 
     const promptMessage = `Generate 10 ${isOtherQuestionType ? formData.otherQuestionType : formData.questionType} questions for ${formData.gradeLevel} on this Topic / Learning Objective: ${formData.topic}. 
     It should be framed within the context of ${formData.contextPreference} at a ${formData.difficultyLevel} difficulty level. 
-    Also, consider these additional details: ${formData.additionalDetails}`;
+    Also, consider these additional details: ${formData.additionalDetails}. give response in 2 format, rich  text and JSON. add a title Format2 just above JSON format. include question type for example radio, checkbox dropdown. do not add any extra character, follow valid json format in response, no white space.`;
+
+    // const handleSubmit = (event: React.SyntheticEvent<HTMLFormElement>) => {
+    //     event.preventDefault();
+    
+    //     // Construct prompt messages
+    //     const promptWithJson = `${promptMessage} ${GET_JSON_RESPONSE}`;
+    //     const promptWithoutJson = promptMessage;
+    
+    //     // Send request without JSON response
+    //     sendPrompt(dispatch, {
+    //         input,
+    //         messages,
+    //         generatorPrompt,
+    //         promptMessage: promptWithoutJson,
+    //         isJson: false // Flag indicating no JSON response
+    //     });
+    
+    //     // Send request with JSON response
+    //     sendPrompt(dispatch, {
+    //         input,
+    //         messages,
+    //         generatorPrompt,
+    //         promptMessage: promptWithJson,
+    //         isJson: true // Flag indicating JSON response
+    //     });
+    // };
 
     const handleSubmit = (event: React.SyntheticEvent<HTMLFormElement>) => {
         event.preventDefault();
         sendPrompt(dispatch, { input, messages, generatorPrompt, promptMessage });
     };
+    
+    
+
 
     return (
         <div className="generator-section">

@@ -1,6 +1,6 @@
-import { ChangeEvent, useEffect, useMemo, useRef, useState } from 'react'
+import { ChangeEvent, useEffect, useMemo, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { generatorPrompt, resetGeneratedData, } from '../promptListGeneratorSlice/QuestionGeneratorSlice';
+import { generatorPrompt, resetGeneratedData } from '../promptListGeneratorSlice/QuestionGeneratorSlice';
 import { useDispatch, useSelector } from 'react-redux';
 import useSpeechToText from 'react-hook-speech-to-text';
 import { sendPrompt } from '../../utils/sendPrompt';
@@ -19,11 +19,9 @@ import More from '../../assets/more.svg';
 import Download from '../../assets/download.svg';
 import mic from '../../assets/mic.svg';
 import { setCategory } from '../categories/CategoriesSlice';
-
-import { saveAs } from 'file-saver'
+import CreateGoogleForms from "../../utils/CreateGoogleForms";
 
 import './Result.css';
-
 
 type RootState = {
   imageData: any;
@@ -39,13 +37,14 @@ type RootState = {
     };
   };
 };
+
 const Result = () => {
   const { generatorData: { messages, input } } = useSelector((state) => state);
   const generatedData = useSelector((state: RootState) => state?.generatorData?.messages);
   const generatedImage = useSelector((state: RootState) => state?.imageData?.data?.data?.[0]?.url);
 
-  const isFollowUpPrompt = useSelector((state: RootState) => state.generatorData?.isFollowUpPrompt)
-  const getFormName = useSelector((state: RootState) => state?.selectedCategory)
+  const isFollowUpPrompt = useSelector((state: RootState) => state.generatorData?.isFollowUpPrompt);
+  const getFormName = useSelector((state: RootState) => state?.selectedCategory);
   const resultAudio = useMemo(() => new Audio(mp3Sound), []);
   const loadingStatus = useSelector((state: RootState) => state.generatorData?.status);
   const [isLoading, setIsLoading] = useState(false);
@@ -55,11 +54,61 @@ const Result = () => {
   const [isSpeaking, setIsSpeaking] = useState(false);
   const [isBubbleLoader, setIsBubbleLoader] = useState(false);
 
-  const resultRef = useRef<HTMLDivElement | null>(null)
+  const resultRef = useRef<HTMLDivElement | null>(null);
   const generatedDataOption = isFollowUpPrompt ? generatedData : generatedData?.slice(-2);
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
+
+  const extractTableContent = (text: string) => {
+    const tableSections = [];
+    const tableRegex = /StartTable([\s\S]*?)EndTable/g;
+    let match;
+    while ((match = tableRegex.exec(text)) !== null) {
+      tableSections.push(match[1].trim());
+    }
+    return tableSections;
+  };
+
+  const renderTable = (tableContent: string) => {
+    const rows = tableContent.split('\n').filter(line => line.trim() !== '');
+    return (
+      <table className='table-response'>
+        <tbody>
+          {rows.map((row, rowIndex) => {
+            const columns = row.split('|').map(col => col.trim()).filter(col => col !== '');
+            return (
+              columns.length > 0 && (
+                <tr key={rowIndex}>
+                  {columns.map((col, colIndex) => (
+                    <td key={colIndex}>{col}</td>
+                  ))}
+                </tr>
+              )
+            );
+          })}
+        </tbody>
+      </table>
+    );
+  };
+
+  // Helper function to apply rich text formatting
+  const formatText = (text: string) => {
+    // Handle headers (e.g., # Header, ## Subheader)
+    text = text.replace(/^(#{1,6})\s*(.+)$/gm, (match, p1, p2) => {
+      const level = p1.length;
+      return `<h${level}>${p2}</h${level}>`;
+    });
+
+    // Handle bold text (e.g., **bold**)
+    text = text.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+
+    // Handle bullet points (e.g., - bullet)
+    text = text.replace(/^-+\s*(.*)$/gm, '$1');
+    text = text.replace(/<\/li>(?=\s*<li>)/g, '</li><ul>').replace(/<\/li>(?=\s*$)/g, '</li></ul>');
+
+    return text;
+  };
 
   const content = generatedDataOption?.map((msg: any, index: number) => {
     if (!msg || !msg.content || typeof msg.content !== 'string') {
@@ -70,91 +119,24 @@ const Result = () => {
       return null;
     }
 
-    const isTableResponse = msg.content.includes('Table Response:') || msg.content.includes('Table Response');
-    const isSimpleTableFormat = msg.content.trim().split('\n').every((line: any) => /^\|.*\|$/.test(line.trim()));
-
-    const renderBoldBeforeColon = (text: string) => {
-      // Replace ** with <strong> tags
-      let processedText = text.replace(/\*\*(.*?)\*\*/g, (_, p1) => `<strong>${p1}</strong>`);
-
-      // Replace #, ##, ###, ####, #####, ###### with corresponding <h1>, <h2>, ... <h6> tags
-      processedText = processedText.replace(/^\s*(#{1,6})\s+(.*)$/gm, (match, hashes, content) => {
-        const level = hashes.length; // Determine the level based on the number of hashes
-        return `<h${level}>${content}</h${level}>`;
-      });
-
-      // Return the processed text if it's not empty
-      return processedText.trim() !== '' ? (
-        <span dangerouslySetInnerHTML={{ __html: processedText }} />
-      ) : null;
-    };
+    const tableContents = extractTableContent(msg.content);
+    const nonTableContent = msg.content.replace(/StartTable[\s\S]*?EndTable/g, '');
 
     return (
       <div className='response-data' key={index}>
         <div className={msg.role}>
-          {msg.role === 'user' ? (
-            <div dangerouslySetInnerHTML={{ __html: msg.content?.trim()?.replace(/\n/g, '<br />') }} />
-          ) : (
-            typeof msg.content === 'string' ? (
-              isTableResponse ? (
-                <table className='table-response'>
-                  <tbody>
-                    {msg.content.split('\n').map((line: any, lineIndex: number) => {
-                      const columns = line.split('|').map((col: any) => col.trim()).filter((col: any) => col !== '');
-                      return (
-                        columns.length > 0 && (
-                          <tr key={lineIndex}>
-                            {columns.map((col: any, colIndex: number) => (
-                              col !== '' && <td key={colIndex}>{renderBoldBeforeColon(col)}</td>
-                            ))}
-                          </tr>
-                        )
-                      );
-                    })}
-                  </tbody>
-                </table>
-              ) : isSimpleTableFormat ? (
-                <table className='table-response'>
-                  <tbody>
-                    {msg.content.split('\n').map((line: any, lineIndex: number) => {
-                      const columns = line.split('|').map((col: any) => col.trim()).filter((col: any) => col !== '');
-                      return (
-                        columns.length > 0 && (
-                          <tr key={lineIndex}>
-                            {columns.map((col: any, colIndex: number) => (
-                              col !== '' && <td key={colIndex}>{renderBoldBeforeColon(col)}</td>
-                            ))}
-                          </tr>
-                        )
-                      );
-                    })}
-                  </tbody>
-                </table>
-              ) : (
-                msg.content.split('\n').map((line: any, lineIndex: number) => {
-                  const lineContent = renderBoldBeforeColon(line);
-                  const isHeading = /<h[1-6]>.*<\/h[1-6]>/.test(lineContent?.props?.dangerouslySetInnerHTML?.__html || '');
-
-                  return lineContent && (
-                    <div key={lineIndex}>
-                      {lineContent}
-                      {!isHeading && <br />}
-                    </div>
-                  );
-                })
-              )
-            ) : (
-              msg.content.trim() !== '' && <div>{renderBoldBeforeColon(msg.content)}</div>
-            )
+          {tableContents.length > 0 && tableContents.map((tableContent, i) => (
+            <div key={`table-${i}`}>
+              {renderTable(tableContent)}
+            </div>
+          ))}
+          {nonTableContent.trim() && (
+            <div dangerouslySetInnerHTML={{ __html: formatText(nonTableContent.trim()).replace(/\n/g, '<br />') }} />
           )}
         </div>
       </div>
     );
-
-
-
   });
-
 
   const speakText = () => {
     const speech = new SpeechSynthesisUtterance(generatedData[generatedData.length - 1].content);
@@ -205,20 +187,16 @@ const Result = () => {
       const link = document.createElement('a');
       link.href = generatedImage;
       link.download = 'generated_image.png'; // You can customize the file name
-      link.download = 'generated_image.png';
       document.body.appendChild(link);
       link.click();
       document.body.removeChild(link);
     }
   };
-  
-  
 
-  
   const [formData, setFormData] = useState({
     followUpPromptInput: '',
   });
-  
+
   const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setFormData((prevData) => ({
@@ -226,6 +204,7 @@ const Result = () => {
       [name]: value,
     }));
   };
+
   const promptMessage = `${formData.followUpPromptInput}`;
 
   const handleFollowupPromptSubmit = async (event: React.SyntheticEvent<HTMLFormElement>) => {
@@ -238,8 +217,9 @@ const Result = () => {
     });
     setTimeout(() => {
       setIsSubmitClicked(false);
-    }, 2000)
+    }, 2000);
   };
+
   const scrollResultToBottom = () => {
     if (resultRef.current) {
       const resultDiv = resultRef.current;
@@ -247,7 +227,6 @@ const Result = () => {
     }
   };
 
-  // Use a timeout to scroll to the bottom after rendering changes
   useEffect(() => {
     setTimeout(() => {
       scrollResultToBottom();
@@ -256,30 +235,24 @@ const Result = () => {
 
   const handleSuggestedForms = (item: any) => {
     dispatch(setCategory(item));
-    dispatch(resetGeneratedData())
-    navigate('/GeneratorAndResult')
-  }
+    dispatch(resetGeneratedData());
+    navigate('/GeneratorAndResult');
+  };
 
-  // speech recognition
-  const { isRecording, results, startSpeechToText, stopSpeechToText, } = useSpeechToText({
+  // Speech recognition
+  const { isRecording, results, startSpeechToText, stopSpeechToText } = useSpeechToText({
     continuous: false,
     useLegacyResults: false,
     timeout: 500,
   });
 
   useEffect(() => {
-    // Get the transcript of the last result
     const lastTranscript = results.length > 0 ? results[results.length - 1].transcript : '';
 
     if (!isRecording && lastTranscript) {
       setFormData(() => ({
         followUpPromptInput: lastTranscript,
       }));
-
-      // Optionally handle form submission here if needed
-      // if (formData.description !== "") {
-      //   handleSubmit(event);
-      // }
     }
   }, [results, isRecording]);
 
@@ -393,6 +366,7 @@ const Result = () => {
               <li> <img src={Download} alt="Download Word File" />
                 <DownloadWordFile data={generatedData.map((msg: any) => msg.content).join('\n')} fileName={getFormName?.selectedCategory || 'document.docx'} />
               </li>
+              <li><CreateGoogleForms /></li>
             </ul>
           </div>
         </>

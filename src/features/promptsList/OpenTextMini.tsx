@@ -22,11 +22,17 @@ const OpenText = () => {
             [name]: value,
         }));
     };
-    const promptMessage = `${formData.description}.`
+    const promptMessage = `${formData.description}. only provide a RFC8259 compliant JSON response following this format without deviation.`
 
     const handleSubmit = (event: React.SyntheticEvent<HTMLFormElement>) => {
         event.preventDefault();
         sendPrompt(dispatch, { input, messages, generatorPrompt, promptMessage });
+
+        //Sending  isTable Output to  display response in table format
+        const upEduPrefix = localStorage.getItem('upEdu_prefix');
+        let upEduPrefixObject = upEduPrefix ? JSON.parse(upEduPrefix) : {};
+        upEduPrefixObject.isTable = true;
+        localStorage.setItem('upEdu_prefix', JSON.stringify(upEduPrefixObject));
     };
 
     // speech recognition
@@ -49,7 +55,7 @@ const OpenText = () => {
             handleSubmit(event);
         }
         setTimeout(() => {
-            
+
         }, 3000)
     }, [results, isRecording]);
 

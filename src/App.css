@@ -136,17 +136,17 @@ img {
   width: 100%;
 }
 
-.table {
+table {
   border-collapse: collapse;
   width: 100%;
 }
 
-.table tr:hover {
+table tr:hover {
   background-color: var(--lightGray);
 }
 
-.table th,
-.table td {
+table th,
+table td {
   text-align: left;
   padding: 0.3rem;
   border: 1px solid var(--grayBlue);
@@ -154,15 +154,15 @@ img {
   white-space: nowrap;
 }
 
-.table td button {
+table td button {
   margin-left: 1rem;
 }
 
-.table td button:first-child {
+table td button:first-child {
   margin-left: 0;
 }
 
-.table td .cellHighlight {
+table td .cellHighlight {
   padding: 2px 5px;
   box-sizing: border-box;
   display: block;
@@ -171,17 +171,17 @@ img {
   font-size: calc(var(--baseFontSize) - 4px);
 }
 
-.table td .cellHighlight.blue {
+table td .cellHighlight.blue {
   background-color: var(--primary);
   color: var(--white);
 }
 
-.table td .cellHighlight.red {
+table td .cellHighlight.red {
   background-color: var(--error);
   color: var(--white);
 }
 
-.table td input {
+table td input {
   width: auto;
 }
 

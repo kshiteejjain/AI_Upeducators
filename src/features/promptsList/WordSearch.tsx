@@ -24,7 +24,7 @@ const WordSearch = () => {
             [name]: value,
         }));
     };
-    const promptMessage = `Generate a Word Search game for students of Grade ${formData.gradeLevel} on ${formData.subject} with ${formData.numberOfWords} words at ${formData.difficultyLevel} difficulty. The grid size should be ${formData.gridSize} and it should match the cognitive skills of the targeted grade level.`
+    const promptMessage = `Generate a Word Search game for students of Grade ${formData.gradeLevel} on ${formData.subject} with ${formData.numberOfWords} words at ${formData.difficultyLevel} difficulty. The grid size should be ${formData.gridSize} and it should match the cognitive skills of the targeted grade level. Also note, when you start the table write ‘StartTable’ in the beginning and when you end the table immediately after it ends write ‘EndTable. "Add Words to find after the "EndTable". give me data table format which has table and rest data in richText, keep each character in separate column`
     const handleSubmit = (event: React.SyntheticEvent<HTMLFormElement>) => {
         event.preventDefault();
         localStorage.setItem('isGPT4', 'true');

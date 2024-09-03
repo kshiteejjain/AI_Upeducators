@@ -40,7 +40,7 @@
     max-height: 600px;
     overflow-y: auto;
 }
-.table th, .table td.wrapWord{
+table th, .table td.wrapWord{
     white-space: normal;
 }
 .text-red{

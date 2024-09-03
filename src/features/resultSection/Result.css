@@ -52,6 +52,7 @@
     padding: 2rem;
 }
 
+
 .resultQuestions:empty {
     border: none;
     margin: 0;
@@ -130,6 +131,11 @@
 }
 .copyClipboard ul li:hover {
     background-color: var(--grayBlue);
+}
+
+.copyClipboard ul li span {
+    display: flex;
+    align-items: center;
 }
 
 .generatedImage {

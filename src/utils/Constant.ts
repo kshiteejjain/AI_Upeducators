@@ -1,0 +1,1 @@
+export const GET_JSON_RESPONSE = 'Define question type like radio, checkbox, dropdown etc in json response. only provide a RFC8259 compliant JSON response following this format without deviation. don"t add any special character in response, it should be puree valid json format.';
