@@ -63,6 +63,7 @@ const Header = ({ isLoginPage, moreOptions = true }: Props) => {
         const loggedInUserEmail = localStorage.getItem('username');
         const loggedInUser = usersData.find(user => user.email === loggedInUserEmail);
         const expiry = loggedInUser?.expiry;
+        console.log(expiry)
         setUsername((loggedInUser?.name ?? '').split(' ').map(name => name[0]).join(''));
         if (expiry) {
           const currentDate = new Date();
@@ -112,56 +113,58 @@ const Header = ({ isLoginPage, moreOptions = true }: Props) => {
     <header className="header">
       <div className="container">
         <img src={logo} alt={Strings.header.metaTitle} title={Strings.header.metaTitle} onClick={() => navigate('/')} />
-        <div className="headerRight">
+        {username &&
+          <div className="headerRight">
 
-          <div className='language-selection'>
-            <select className='form-control' value={selectedLanguage} onChange={handleLanguage}>
-              <option value='english'>English</option>
-              <option value='hindi'>Hindi</option>
-              <option value='marathi'>Marathi</option>
-              <option value='bengali'>Bengali</option>
-              <option value='tamil'>Tamil</option>s
-              <option value='telugu'>Telugu</option>
-              <option value='kannada'>Kannada</option>
-              <option value='malayalam'>Malayalam</option>
-              <option value='gujarati'>Gujarati</option>
-              <option value='french'>French</option>
-              <option value='german'>German</option>
-              <option value='spanish'>Spanish</option>
-            </select>
+            <div className='language-selection'>
+              <select className='form-control' value={selectedLanguage} onChange={handleLanguage}>
+                <option value='english'>English</option>
+                <option value='hindi'>Hindi</option>
+                <option value='marathi'>Marathi</option>
+                <option value='bengali'>Bengali</option>
+                <option value='tamil'>Tamil</option>s
+                <option value='telugu'>Telugu</option>
+                <option value='kannada'>Kannada</option>
+                <option value='malayalam'>Malayalam</option>
+                <option value='gujarati'>Gujarati</option>
+                <option value='french'>French</option>
+                <option value='german'>German</option>
+                <option value='spanish'>Spanish</option>
+              </select>
+            </div>
+
+
+            <div className='headerRight-others'>
+              <p> Remaining Credits: <strong>{remainingCredits}</strong></p>
+              <p><a href='https://upeducators.ai/pricing/'> {Strings.profile.upgradePlan} </a></p>
+            </div>
+
+            {isAdmin && <nav>
+              <button onClick={() => navigate('/Dashboard')}>{Strings.header.admin}</button> &nbsp;&nbsp;&nbsp;&nbsp;
+              <button onClick={() => navigate('/AddSuperUser')}>Add Super User</button>
+            </nav>}
+
+            <div className={`username ${showCreditDetails ? 'visible' : 'hidden'}`} onClick={toggleCreditDetails}> <span className='circle'>{username} </span> <img src={chevron} /> </div>
+
+            <div className={`creditDetails ${showCreditDetails ? 'visible' : 'hidden'}`}>
+              {moreOptions && !isExpire &&
+                <>
+                  {remainingCredits !== undefined && remainingCredits > 0
+                    ? (
+                      <p>
+                        <Button title={Strings.header.goToCategory} isSecondary onClick={() => navigate('/Categories')} />
+                      </p>
+                    )
+                    : null
+                  }
+                  <p><Button title={Strings.header.myProfile} isSecondary onClick={() => navigate('/Profile')} /></p>
+                  <p><Button title={Strings.header.usage} isSecondary onClick={() => navigate('/Profile')} /></p>
+                </>}
+
+              {isLoginPage ?? <Button title={Strings.header.signOut} isSecondary onClick={handleLogout} />}
+            </div>
           </div>
-
-
-          <div className='headerRight-others'>
-            <p> Remaining Credits: <strong>{remainingCredits}</strong></p>
-            <p><a href='https://upeducators.ai/pricing/'> {Strings.profile.upgradePlan} </a></p>
-          </div>
-
-          {isAdmin && <nav>
-            <button onClick={() => navigate('/Dashboard')}>{Strings.header.admin}</button> &nbsp;&nbsp;&nbsp;&nbsp;
-            <button onClick={() => navigate('/AddSuperUser')}>Add Super User</button>
-          </nav>}
-
-          <div className={`username ${showCreditDetails ? 'visible' : 'hidden'}`} onClick={toggleCreditDetails}> <span className='circle'>{username} </span> <img src={chevron} /> </div>
-
-          <div className={`creditDetails ${showCreditDetails ? 'visible' : 'hidden'}`}>
-            {moreOptions && !isExpire &&
-              <>
-                {remainingCredits !== undefined && remainingCredits > 0
-                  ? (
-                    <p>
-                      <Button title={Strings.header.goToCategory} isSecondary onClick={() => navigate('/Categories')} />
-                    </p>
-                  )
-                  : null
-                }
-                <p><Button title={Strings.header.myProfile} isSecondary onClick={() => navigate('/Profile')} /></p>
-                <p><Button title={Strings.header.usage} isSecondary onClick={() => navigate('/Profile')} /></p>
-              </>}
-
-            {isLoginPage ?? <Button title={Strings.header.signOut} isSecondary onClick={handleLogout} />}
-          </div>
-        </div>
+        }
       </div>
     </header >
   );

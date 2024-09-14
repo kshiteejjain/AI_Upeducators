@@ -3,7 +3,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import { generatorPrompt } from '../promptListGeneratorSlice/QuestionGeneratorSlice';
 import Button from '../../components/buttons/Button';
 import { sendPrompt } from '../../utils/sendPrompt';
-import { GET_JSON_RESPONSE } from '../../utils/Constant';
 
 const CustomQuestion = () => {
     const { generatorData: { messages, input } } = useSelector((state) => state);
@@ -44,7 +43,11 @@ const CustomQuestion = () => {
 
     const promptMessage = `Generate 10 ${isOtherQuestionType ? formData.otherQuestionType : formData.questionType} questions for ${formData.gradeLevel} on this Topic / Learning Objective: ${formData.topic}. 
     It should be framed within the context of ${formData.contextPreference} at a ${formData.difficultyLevel} difficulty level. 
-    Also, consider these additional details: ${formData.additionalDetails}. give response in 2 format, rich  text and JSON. add a title Format2 just above JSON format. include question type for example radio, checkbox dropdown. do not add any extra character, follow valid json format in response, no white space.`;
+    Also, consider these additional details: ${formData.additionalDetails}. give response in 2 format, rich text and  a RFC8259 compliant JSON response following this format without deviation. add title 'Format2' before JSON response and give mixed type question including checkbox, dropdown and radio.  JSON format would always be in {
+        "question": "Which of the following shapes has only 3 sides?",
+        "options": ["Triangle", "Square", "Pentagon", "Hexagon"],
+        "type": "radio"
+        }, format`;
 
     // const handleSubmit = (event: React.SyntheticEvent<HTMLFormElement>) => {
     //     event.preventDefault();

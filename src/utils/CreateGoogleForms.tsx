@@ -12,16 +12,14 @@ const CreateGoogleForms = () => {
   const [formId, setFormId] = useState(null);
   const [error, setError] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
-  const [questionsData, setQuestionsData] = useState(['']);
+  const [questionsData, setQuestionsData] = useState([]);
 
   // Fetch JSON data from Redux store
   const generatedData = useSelector((state) => state?.generatorData?.messages[0]?.content);
-  // const questionsData = JSON.parse(generatedData)?.questions;
-
 
   function processText(inputText: string) {
     // Define the keywords or phrases to search for
-    const searchKeywords = ['Format2'];
+    const searchKeywords = ['Format2', 'Format2 \\(JSON response\\)'];
   
     // Create a regular expression to match any of the keywords or phrases
     const regex = new RegExp(searchKeywords.join('|'), 'i');
@@ -37,8 +35,9 @@ const CreateGoogleForms = () => {
     // Extract the part of the text after the matched position
     let jsonText = inputText.substring(format2Position + searchKeywords[0].length).trim();
   
-    // Clean the JSON string minimally to ensure proper format
+    // Remove Markdown delimiters and clean the JSON string
     let cleanedJsonText = jsonText
+      .replace(/```json|```/g, '') // Remove the JSON code block delimiters
       .replace(/^\s+|\s+$/g, '') // Remove leading and trailing whitespace
       .replace(/(\r\n|\n|\r)/gm, '') // Remove newlines and carriage returns
       .trim();
@@ -47,15 +46,17 @@ const CreateGoogleForms = () => {
       // Parse the JSON text into a JavaScript object
       const jsonObject = JSON.parse(cleanedJsonText);
       // Set questions data from the parsed JSON object
-      setQuestionsData(jsonObject.questions);
+      setQuestionsData(jsonObject);
+      console.log('questionsData', jsonObject)
     } catch (e) {
       console.error('Failed to parse JSON:', e);
     }
   }
   
+  
 
   useEffect(() => {
-    processText(generatedData)
+    processText(generatedData);
     function start() {
       gapi.client.init({
         apiKey: import.meta.env.VITE_GOOGLE_FORM_API_KEY,
@@ -72,7 +73,7 @@ const CreateGoogleForms = () => {
       });
     }
     gapi.load('client:auth2', start);
-  }, []);
+  }, [generatedData]); // Added dependency to reprocess when generatedData changes
 
   const onAuthChange = (isSignedIn) => {
     if (isSignedIn) {
@@ -87,16 +88,15 @@ const CreateGoogleForms = () => {
     gapi.auth2.getAuthInstance().signIn().then(() => {
       console.log('Successfully signed in');
     }).catch(err => {
-      alert('Error during sign-in:', err);
+      alert('Error during sign-in: ' + err.message); // Adjusted error handling
       setError('Sign-in failed. Please try again.');
     });
   };
 
-  // const handleSignOut = () => {
-  //   gapi.auth2.getAuthInstance().signOut();
-  // };
+  const handleSignOut = () => {
+    gapi.auth2.getAuthInstance().signOut();
+  };
 
-  // console.log('questionsData', questionsData.map(item => item.options.map(subitem => subitem.option)))
 
   const createForm = async () => {
     try {
@@ -144,9 +144,11 @@ const CreateGoogleForms = () => {
                 questionItem: {
                   question: {
                     choiceQuestion: {
-                      type: item.type === 'dropdown' ? 'DROP_DOWN' : 'RADIO', // Adjust based on valid types
+                      type: item.type === 'dropdown' ? 'DROP_DOWN' : item.type === 'checkbox' ? 'CHECKBOX' : 'RADIO',
                       // type: 'RADIO',
-                      options: Array.from(new Set(item?.options?.map(subitem => subitem?.option))).map(option => ({ value: option })),
+                      options: [
+                        ...item.options.map(subitem => ({ value: subitem })) // Dynamic values from item.options
+                      ],
                     },
                   },
                 },
@@ -165,8 +167,7 @@ const CreateGoogleForms = () => {
         console.error('Error updating form:', errorData);
         throw new Error(`Failed to update form: ${errorData.error.message}`);
       }
-
-      console.log('Form updated successfully');
+      alert('Form uploaded to your google form account');
       setIsLoading(false);
     } catch (err) {
       console.error('Error creating form or updating items:', err);
@@ -179,7 +180,7 @@ const CreateGoogleForms = () => {
       {isLoading && <Loader isSwipeText />}
       {isAuthenticated ? (
         <>
-          {/* <span onClick={handleSignOut}>Sign Out</span> */}
+          <span onClick={handleSignOut}>Sign Out</span>
           <span onClick={createForm}><img src={formIcon} /> Create Form and Add Items</span>
           {/* {formId && <p>Form created with ID: {formId}</p>} */}
           {/* {error && <p>Error: {error}</p>} */}

@@ -1,0 +1,24 @@
+.footer{
+    background-color: var(--white);
+    padding: 15px 0;
+    font-size: calc(var(--baseFontSize) - 1px);
+}
+.content{
+    text-align: left;
+    background-color: var(--white);
+    padding: 20px 50px;
+    box-sizing: border-box;
+    margin: 30px auto !important;
+    border-radius: 8px;
+}
+.footer button{
+    background-color: transparent;
+    margin: 0  10px;
+    padding: 0;
+    color: var(--darkGray);
+    border: 0;
+}
+.footer button:hover, .footer button:focus{
+    outline: 0;
+    color: var(--black);
+}

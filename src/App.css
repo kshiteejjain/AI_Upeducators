@@ -26,6 +26,10 @@ img {
   max-width: 100%;
 }
 
+ul li{
+  margin: 8px 0;
+}
+
 .form-group-flex {
   display: flex;
 }

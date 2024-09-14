@@ -22,7 +22,7 @@ const OpenText = () => {
             [name]: value,
         }));
     };
-    const promptMessage = `${formData.description}. only provide a RFC8259 compliant JSON response following this format without deviation.`
+    const promptMessage = `${formData.description}.`
 
     const handleSubmit = (event: React.SyntheticEvent<HTMLFormElement>) => {
         event.preventDefault();

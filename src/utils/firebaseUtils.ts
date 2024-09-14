@@ -53,7 +53,7 @@ export const fetchTotalCredits = async (
       }
     } else {
       // Handle the case when no document is found
-      alert('No document found for the current user');
+      console.warn('No document found for the current user');
     }
   } catch (error) {
     alert('Error querying data from Firestore: ' + error);

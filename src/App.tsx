@@ -11,7 +11,10 @@ import CreatePassword from './features/createPassword/CreatePassword';
 import Dashboard from './features/admin/dashboard/Dashboard';
 import Register from './features/register/Register';
 import Profile from './features/profile/Profile';
-import OnBoardingQuestions from './features/OnboardingQuestions/OnboardingQuestions'
+import OnBoardingQuestions from './features/OnboardingQuestions/OnboardingQuestions';
+import Footer from './features/Footer/Footer';
+import TermsConditions from './features/Footer/TermsConditions';
+import PrivacyPolicy from './features/Footer/PrivacyPolicy';
 
 import './App.css';
 
@@ -23,11 +26,14 @@ function App() {
   return (
     <React.StrictMode>
       <Router>
-      <Routes>
+        <Routes>
           <Route path="/FreeTrial" element={<FreeTrial />} />
           <Route path="/Register" element={<Register />} />
           <Route path="/CreatePassword" element={<CreatePassword />} />
           <Route path="/*" element={<MainApp isLoggedIn={isLoggedIn} />} />
+          <Route path="/Footer" element={<Footer />} />
+          <Route path="/TermsConditions" element={<TermsConditions />} />
+          <Route path="/PrivacyPolicy" element={<PrivacyPolicy />} />
         </Routes>
       </Router>
     </React.StrictMode>
@@ -41,25 +47,28 @@ function MainApp({ isLoggedIn }: Props) {
     }
   }, [navigate]);
   return (
-    <Routes>
-      {isLoggedIn ? (
-        <>
-          <Route path="/" element={<Login />} />
-          <Route path="/Categories" element={<Categories />} />
-          <Route path="/GeneratorAndResult/:pathName" element={<GeneratorAndResult />} />
-          <Route path="/BulkUpload" element={<BulkUpload />} />
-          <Route path="/AddSuperUser" element={<AddSuperUser />} />
-          <Route path="/ContactUs" element={<ContactUs />} />
-          <Route path="/Dashboard" element={<Dashboard />} />
-          <Route path="/Profile" element={<Profile />} />
-          <Route path="/OnBoardingQuestions" element={<OnBoardingQuestions />} />
-        </>
-      ) : (
-        <>
-          <Route path="/" element={<Login />} />
-        </>
-      )}
-    </Routes>
+    <>
+      <Routes>
+        {isLoggedIn ? (
+          <>
+            <Route path="/" element={<Login />} />
+            <Route path="/Categories" element={<Categories />} />
+            <Route path="/GeneratorAndResult/:pathName" element={<GeneratorAndResult />} />
+            <Route path="/BulkUpload" element={<BulkUpload />} />
+            <Route path="/AddSuperUser" element={<AddSuperUser />} />
+            <Route path="/ContactUs" element={<ContactUs />} />
+            <Route path="/Dashboard" element={<Dashboard />} />
+            <Route path="/Profile" element={<Profile />} />
+            <Route path="/OnBoardingQuestions" element={<OnBoardingQuestions />} />
+          </>
+        ) : (
+          <>
+            <Route path="/" element={<Login />} />
+          </>
+        )}
+      </Routes>
+      <Footer />
+    </>
   );
 }
 export default App;

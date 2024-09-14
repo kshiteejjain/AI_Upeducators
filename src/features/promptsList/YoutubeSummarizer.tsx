@@ -17,7 +17,7 @@ const YoutubeSummarizer = () => {
         setLoading(true);
         setError('');
         try {
-            const response = await fetch(`http://localhost:5000/transcript/${videoId}`);
+            const response = await fetch(`http://localhost:3000/transcript/${videoId}`);
             if (!response.ok) {
                 throw new Error('Network response was not ok');
             }
@@ -67,7 +67,6 @@ const YoutubeSummarizer = () => {
     };
 
     const promptMessage = `Generate original academic content for ${formData.gradeLevel} focusing on this Topic / Learning Objective: ${formData.topic}. The content should be approximately ${formData.textLength === 'Other' ? formData.otherTextLength : formData.textLength} in length. Special instructions: ${formData.specialInstructions}. Additionally, include references and citations. This content should be tailored to be educational and engaging for the specified grade level and subject matter. The content type is ${formData.contentType === 'Other' ? formData.otherContentType : formData.contentType}.`;
-    console.log(promptMessage)
     const handleSubmit = (event: React.SyntheticEvent<HTMLFormElement>) => {
         event.preventDefault();
         sendPrompt(dispatch, { input, messages, generatorPrompt, promptMessage });
