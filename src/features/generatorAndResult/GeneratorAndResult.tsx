@@ -24,6 +24,11 @@ const GeneratorAndResult = () => {
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const handleBack = () => {
+        const checkMindMap = JSON.parse(localStorage.getItem('upEdu_prefix') || '{}');
+        if ('isMindmap' in checkMindMap) {
+            delete checkMindMap.isMindmap;
+            localStorage.setItem('upEdu_prefix', JSON.stringify(checkMindMap));
+        }
         navigate(-1);
         dispatch(resetGeneratedData())
     };
@@ -51,11 +56,11 @@ const GeneratorAndResult = () => {
                                     <h1>{item.formName.replace(/([a-z])([A-Z])/g, '$1 $2')}</h1>
                                     <img src={Close} onClick={() => setShowExampler([])} className='close' />
                                     <ul>
-                                    {Object.keys(item?.formFields).map((key, index) => (
-                                        <li key={index}>
-                                        <strong>{key}</strong> <span dangerouslySetInnerHTML={{ __html: item?.formFields[key].replace(/(^[^:]+):/gm, '<strong>$1:</strong>').replace(/\n\n/g, '<br /><br />').replace(/\n/g, '<br />').replace(/\./g, '.<br />') }} />
-                                        </li>
-                                    ))}
+                                        {Object.keys(item?.formFields).map((key, index) => (
+                                            <li key={index}>
+                                                <strong>{key}</strong> <span dangerouslySetInnerHTML={{ __html: item?.formFields[key].replace(/(^[^:]+):/gm, '<strong>$1:</strong>').replace(/\n\n/g, '<br /><br />').replace(/\n/g, '<br />').replace(/\./g, '.<br />') }} />
+                                            </li>
+                                        ))}
                                     </ul>
 
                                 </div>

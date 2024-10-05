@@ -63,7 +63,6 @@ const Header = ({ isLoginPage, moreOptions = true }: Props) => {
         const loggedInUserEmail = localStorage.getItem('username');
         const loggedInUser = usersData.find(user => user.email === loggedInUserEmail);
         const expiry = loggedInUser?.expiry;
-        console.log(expiry)
         setUsername((loggedInUser?.name ?? '').split(' ').map(name => name[0]).join(''));
         if (expiry) {
           const currentDate = new Date();

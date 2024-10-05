@@ -20,6 +20,7 @@ import Download from '../../assets/download.svg';
 import mic from '../../assets/mic.svg';
 import { setCategory } from '../categories/CategoriesSlice';
 import CreateGoogleForms from "../../utils/CreateGoogleForms";
+import MarkmapHooks from '../../components/Markmap/Markmap.tsx';
 
 import './Result.css';
 
@@ -268,14 +269,25 @@ const Result = () => {
     }
   };
 
+  // Check the value of isMindmap in localStorage
+  const isMindmapExist = localStorage.getItem('upEdu_prefix');
+  const checkMindMap = isMindmapExist ? JSON.parse(isMindmapExist) : {};
+  const isMindmap = checkMindMap.isMindmap || false;
+
   return (
     <div className="result-section" ref={resultRef}>
+
       {isLoading && <Loader isSwipeText />}
 
       <div className="result-section-inner">
-        {content}
 
-        {generatedData?.length !== 0 && !generatedImage && loadingStatus === 'succeeded' && (
+      {generatedData?.length !== 0 && isMindmap ? (
+          <MarkmapHooks initialValue={generatedData[0]?.content} />
+        ) : (
+          content
+        )}
+
+        {generatedData?.length !== 0 && !generatedImage && loadingStatus === 'succeeded' && !isMindmap && (
           isSpeaking ? (
             <button className='speech-btn' onClick={stopSpeech}> <img src={Stop} /></button>
           ) : (
@@ -305,7 +317,7 @@ const Result = () => {
         </div>
       </div>}
 
-      {generatedData && getFollowPrompt.length !== 0 && !generatedImage && loadingStatus === 'succeeded' && (
+      {generatedData && getFollowPrompt.length !== 0 && !generatedImage && loadingStatus === 'succeeded' && !isMindmap && (
         <div className="followup-prompts">
           <h2>{Strings.result.followupTitle}</h2>
           <ul>
@@ -318,7 +330,7 @@ const Result = () => {
         </div>
       )}
 
-      {generatedData?.length >= 1 && !generatedImage && (
+      {generatedData?.length >= 1 && !generatedImage && !isMindmap && (
         <div className='followUpPrompt'>
           <form onSubmit={handleFollowupPromptSubmit}>
             <div className='form-group'>
@@ -371,7 +383,6 @@ const Result = () => {
           </div>
         </>
       )}
-
     </div>
   );
 };
