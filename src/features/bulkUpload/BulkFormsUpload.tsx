@@ -5,7 +5,6 @@ import { firestore } from '../../utils/firebase';
 import CSVReader from 'react-csv-reader';
 import Button from '../../components/buttons/Button';
 
-
 import './BulkUpload.css';
 
 type BulkFormsUploadProps = {};
@@ -20,7 +19,6 @@ const BulkFormsUpload: React.FC<BulkFormsUploadProps> = (): ReactElement => {
         // Process the CSV data as needed
         setCsvData(data);
     };
-
     const uploadFormsToFirestore = async () => {
         if (!csvData) {
             alert('No CSV data available.');
@@ -74,14 +72,14 @@ const BulkFormsUpload: React.FC<BulkFormsUploadProps> = (): ReactElement => {
                         document['dislikes'] = isNaN(Number(value)) ? null : Number(value);
                         break;
                     case 'isActive':
-                        document['isActive'] = value.trim().toLowerCase() === 'yes';
-                    break;
+                        const rawValue = value.trim(); // Get the raw value
+                        // Adjust the condition to check for "yes" or "TRUE"
+                        document['isActive'] = (rawValue.toLowerCase() === 'yes' || rawValue.toUpperCase() === 'TRUE');
+                        break;
+
                     case 'isPaid':
                         document['isPaid'] = value.trim().toLowerCase() === 'yes';
-                    break;
-                    case 'isActive':
-                        document['isActive'] = value.trim().toLowerCase() === 'yes';
-                    break;
+                        break;
                     default:
                         document[headers[index]] = value;
                         break;

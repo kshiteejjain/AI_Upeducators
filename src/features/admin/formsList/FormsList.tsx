@@ -12,7 +12,6 @@ type UserDocumentData = {
     description: string;
     categoryName: string;
     followupPrompts: [];
-    iconPath: string,
     redirect: string,
     isBookmarked: boolean,
     keyword?: string,
@@ -22,6 +21,7 @@ type UserDocumentData = {
     likes?: number,
     dislikes?: number,
     suggestedForm: string
+    isActive?: boolean
 };
 
 const FormsList = () => {
@@ -54,13 +54,13 @@ const FormsList = () => {
                 'Followup Prompts': Array.isArray(form.followupPrompts) ? form.followupPrompts.join(', ') : '',
                 'Keyword': Array.isArray(form.keyword) ? form.keyword.join(', ') : '',
                 'Usage Count': form.usageCount || 0, // Include Usage Count field
-                'Usage Count Base': form.usageCountBase || 0, // Include Usage Count Base field
-                Icon: form.iconPath,
+                'Usage Count Base': form.usageCountBase || 0, // Include Usage Count Base field 
                 'Form Path': form.redirect,
                 'Created At': form.timeStamp || '', // Include Created At field
                 Bookmarked: form.isBookmarked ? 'Yes' : 'No',
                 'Likes': form.likes,
-                'Dislikes': form.dislikes
+                'Dislikes': form.dislikes,
+                'isActive': form.isActive
             }));
     
             // Sort the flattenedformData array based on Id
@@ -113,13 +113,13 @@ const FormsList = () => {
                             <th>Keyword</th>
                             <th>Usage Count</th>
                             <th>Usage Count Base</th>
-                            <th>Icon</th>
                             <th>Form Path</th>
                             <th>Created At</th>
                             <th>Bookmarked</th>
                             <th>Likes</th>
                             <th>Dislikes</th>
                             <th>Suggested Forms</th>
+                            <th>is Active</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -155,13 +155,13 @@ const FormsList = () => {
                                     </td>
                                     <td>{item?.usageCount}</td>
                                     <td>{item?.usageCountBase}</td>
-                                    <td>{item?.iconPath}</td>
                                     <td>{item?.redirect}</td>
                                     <td>{item?.timeStamp}</td>
                                     <td>{item?.isBookmarked ? 'Yes' : 'No'}</td>
                                     <td>{item?.likes}</td>
                                     <td className='text-red'>{item?.dislikes}</td>
                                     <td>{item.suggestedForm}</td>
+                                    <td>{item.isActive ? 'Yes' : 'No'}</td>
                                 </tr>
                             ))}
                     </tbody>

@@ -23,7 +23,7 @@ const Strings = {
         emailSent: 'Security code has been sent to your registered email.'
     },
     CreatePassword: {
-        title: 'Create Password?',
+        title: 'Create or Forgot Password?',
     },
     AddSuperUser: {
         title: 'Add User',

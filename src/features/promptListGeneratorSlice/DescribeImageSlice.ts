@@ -83,6 +83,7 @@ export const generatorPrompt = createAsyncThunk('generator/generatorPrompt', asy
               {
                 type: 'image_url',
                 image_url: {
+                  // Use Base64 string directly
                   url: prompt[0].content[0].imageURL
                 }
               }

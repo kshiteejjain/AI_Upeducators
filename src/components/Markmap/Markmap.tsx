@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from 'react';
 import { Markmap } from 'markmap-view';
-import { transformer } from './markmap';
+import { transformer } from './Markmap';
 import { Toolbar } from 'markmap-toolbar';
 import html2canvas from 'html2canvas';
 
