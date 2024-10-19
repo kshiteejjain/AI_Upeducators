@@ -24,11 +24,6 @@ const GeneratorAndResult = () => {
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const handleBack = () => {
-        const checkMindMap = JSON.parse(localStorage.getItem('upEdu_prefix') || '{}');
-        if ('isMindmap' in checkMindMap) {
-            delete checkMindMap.isMindmap;
-            localStorage.setItem('upEdu_prefix', JSON.stringify(checkMindMap));
-        }
         navigate(-1);
         dispatch(resetGeneratedData())
     };

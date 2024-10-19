@@ -54,7 +54,7 @@ const EmailTitleGenerator = () => {
                         name="topic"
                         onChange={handleInputChange}
                         value={formData.topic}
-                        placeholder="Eg. Students, Parents, Business Professionals."
+                        placeholder="Roadmap, Mindmap, subject, topic"
                     />
                 </div>
 

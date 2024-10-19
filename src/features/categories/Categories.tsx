@@ -89,6 +89,15 @@ const Categories = () => {
 
         //Resetting store data
         dispatch(resetGeneratedData())
+
+        // Remove isMindmap from localStorage on component load
+        const existingData = localStorage.getItem('upEdu_prefix');
+        if (existingData) {
+            const data = JSON.parse(existingData);
+            delete data.isMindmap;  // Remove isMindmap if it exists
+            localStorage.setItem('upEdu_prefix', JSON.stringify(data)); // Save back
+        }
+        
     }, [filterCategory]);
 
     const categoryQuery = Math.random().toString(36).slice(8)
