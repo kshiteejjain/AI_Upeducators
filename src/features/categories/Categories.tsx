@@ -5,6 +5,7 @@ import { resetGeneratedData } from '../promptListGeneratorSlice/QuestionGenerato
 import { setCategory } from './CategoriesSlice';
 import CategoryTiles from '../../components/categoryTiles/CategoryTiles';
 import Header from '../../components/header/Header';
+import Button from '../../components/buttons/Button';
 import { fetchAllForms } from '../../utils/firebaseUtils';
 import CategoriesFilter from '../categoriesFilter/CategoriesFilter';
 import CBSEJSON from '../../utils/boardWiseForms.json'
@@ -43,6 +44,8 @@ const Categories = () => {
     });
     const [bookmarkedOnly, setBookmarkedOnly] = useState(false);
     const [bookmarkedIds, setBookmarkedIds] = useState<number[]>(() => JSON.parse(localStorage.getItem('bookmarks') || '[]'));
+    const [showAllCategories, setShowAllCategories] = useState(false);
+    const [selectedCategory, setSelectedCategory] = useState('All');
 
     const navigate = useNavigate();
     const dispatch = useDispatch();
@@ -69,7 +72,7 @@ const Categories = () => {
                     name: category?.name,
                     IconComponent: iconPathsObject[category?.name],
                     thumbnailPath: category?.thumbnailPath,
-                    categoryName: category?.categoryName,
+                    categoryName: category?.categoryName.split(',')[0].trim(),
                     description: category?.description,
                     id: category?.id,
                     redirect: category?.redirect,
@@ -97,7 +100,7 @@ const Categories = () => {
             delete data.isMindmap;  // Remove isMindmap if it exists
             localStorage.setItem('upEdu_prefix', JSON.stringify(data)); // Save back
         }
-        
+
     }, [filterCategory]);
 
     const categoryQuery = Math.random().toString(36).slice(8)
@@ -126,11 +129,13 @@ const Categories = () => {
     };
 
     const handleCategorySelect = (selectedCategory: string) => {
+        setSelectedCategory(selectedCategory); // Update selected category
         if (selectedCategory === 'Bookmarked') {
             setBookmarkedOnly(true);
         } else {
             setBookmarkedOnly(false);
             setFilterCategory(selectedCategory);
+            setShowAllCategories({}); // Reset the view more state when a category is selected
         }
     };
     const handleSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -174,6 +179,19 @@ const Categories = () => {
         });
     };
 
+    const groupByCategory = (categories) => {
+        return Object.groupBy(categories, (item) => item.categoryName);
+    };
+
+    const groupedCategories = groupByCategory(categories);
+
+    const handleReadMore = (categoryName: string) => {
+        setShowAllCategories(prev => ({
+            ...prev,
+            [categoryName]: true
+        }));
+    };
+
     return (
         <>
             <Header />
@@ -195,9 +213,11 @@ const Categories = () => {
                                     onFocus={handleSearchFocus}
                                     onBlur={handleSearchBlur}
                                     className='form-control'
+                                    autoFocus
                                 />
                             </div>
                         </div>
+
                         {localStorage.getItem('filterCategory') === 'CBSE Board' ?
                             <BoardFormComponent
                                 gradeLevel={formData.gradeLevel}
@@ -205,8 +225,7 @@ const Categories = () => {
                                 chapter={formData.chapter}
                                 onInputChange={handleInputChange}
                             />
-                            :
-                            null
+                            : null
                         }
 
                         <div className='category-listing'>
@@ -217,43 +236,70 @@ const Categories = () => {
                                     ))}
                                 </>
                             ) : (
-                                categories
-                                    .filter(item => {
+                                Object.entries(groupedCategories).map(([categoryName, items]) => {
+                                    const isCategoryVisible = items.some(item => {
                                         const isBookmarked = bookmarkedOnly ? bookmarkedIds.includes(item.id) : true;
                                         const isActive = item.isActive === true;
                                         const isMatchingSearchTerm =
                                             isSearchFocused && searchTerm === '' ||
                                             (!isSearchFocused && searchTerm === '') ||
                                             (item && item.name && item.name.toLowerCase().includes(searchTerm.toLowerCase()));
-                                        if (bookmarkedOnly) {
-                                            return isBookmarked && isMatchingSearchTerm;
-                                        } else {
-                                            const isMatchingCategory = filterCategory === 'All' || (item && item?.categoryName?.toLowerCase().split(',').map(cat => cat.trim()).includes(filterCategory?.toLowerCase()));
-                                            return isActive && isBookmarked && isMatchingCategory && isMatchingSearchTerm;
-                                        }
-                                    })
-                                    .sort((a, b) => (b.usageCount || 0) - (a.usageCount || 0))
-                                    .map((item, index) => (
-                                        <CategoryTiles
-                                            key={index}
-                                            id={item && item.id}
-                                            title={item && item.name}
-                                            onClick={() => handleTile(item && item.redirect, item.name)}
-                                            tilesIcon={item && item.IconComponent}
-                                            categoryAlt={item && item.name}
-                                            description={item && item.description}
-                                            thumbnailPath={item && `/assets/${item?.name?.replace(/\s+/g, '-')}.svg`}
-                                            bookmarkedIds={bookmarkedIds}
-                                            isPaid={item && item.isPaid}
-                                        />
-                                    ))
+                                        const isMatchingCategory = filterCategory === 'All' || (item && item?.categoryName?.toLowerCase().split(',').map(cat => cat.trim()).includes(filterCategory?.toLowerCase()));
+                                        return isActive && isBookmarked && isMatchingCategory && isMatchingSearchTerm;
+                                    });
+
+                                    // Only render the category group if it's visible
+                                    if (!isCategoryVisible) return null;
+
+                                    return (
+                                        <div className='category-group' key={categoryName}>
+                                            <h3 className="category-header">{categoryName} ({items.length})</h3>
+                                            <div className='category-tiles'>
+                                                {items
+                                                    .filter((item: any) => {
+                                                        const isBookmarked = bookmarkedOnly ? bookmarkedIds.includes(item.id) : true;
+                                                        const isActive = item.isActive === true;
+                                                        const isMatchingSearchTerm =
+                                                            isSearchFocused && searchTerm === '' ||
+                                                            (!isSearchFocused && searchTerm === '') ||
+                                                            (item && item.name && item.name.toLowerCase().includes(searchTerm.toLowerCase()));
+                                                        if (bookmarkedOnly) {
+                                                            return isBookmarked && isMatchingSearchTerm;
+                                                        } else {
+                                                            const isMatchingCategory = filterCategory === 'All' || (item && item?.categoryName?.toLowerCase().split(',').map(cat => cat.trim()).includes(filterCategory?.toLowerCase()));
+                                                            return isActive && isBookmarked && isMatchingCategory && isMatchingSearchTerm;
+                                                        }
+                                                    })
+                                                    .sort((a: number, b: number) => (b.usageCount || 0) - (a.usageCount || 0))
+                                                    .slice(0, selectedCategory === categoryName ? items.length : (showAllCategories[categoryName] ? items.length : 3))
+                                                    .map((item: string, index: number) => (
+                                                        <CategoryTiles
+                                                            key={index}
+                                                            id={item.id}
+                                                            title={item.name}
+                                                            onClick={() => handleTile(item.redirect, item.name)}
+                                                            tilesIcon={item.IconComponent}
+                                                            categoryAlt={item.name}
+                                                            description={item.description}
+                                                            thumbnailPath={`/assets/${item.name.replace(/\s+/g, '-')}.svg`}
+                                                            bookmarkedIds={bookmarkedIds}
+                                                            isPaid={item.isPaid}
+                                                        />
+                                                    ))}
+
+                                                {!(selectedCategory === categoryName) && !showAllCategories[categoryName] && items.length > 3 && (
+                                                    <Button title="View More" isSecondary type="button" onClick={() => handleReadMore(categoryName)} />
+                                                )}
+                                            </div>
+                                        </div>
+                                    );
+                                })
                             )}
                         </div>
-
                     </div>
                 </div>
             </div>
         </>
-    )
+    );
 };
 export default Categories;

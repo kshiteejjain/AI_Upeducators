@@ -98,7 +98,7 @@ export const generatorPrompt = createAsyncThunk('generator/generatorPrompt', asy
     );
     return response.data;
   } catch (error) {
-    console.error('Error in generatorPrompt:', error.response?.data);
+    console.error('Error in generatorPrompt:', error);
     throw error;
   }
 });
